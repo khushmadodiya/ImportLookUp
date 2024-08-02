@@ -177,7 +177,10 @@ class _InsertDataScreenState extends State<InsertDataScreen> {
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurple),
                     onPressed: (){
                   adddetail();
-                }, child: Text("Submit",style: TextStyle(color: Colors.white),))
+                }, child: Text("Submit",style: TextStyle(color: Colors.white),)),
+                const SizedBox(
+                  height: 20,
+                ),
               ],
             ),
           ),

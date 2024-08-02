@@ -9,14 +9,14 @@ class TextFieldInput extends StatefulWidget {
   final String hintText;
   final TextInputType textInputType;
   final maxlines;
-
+  final ispass;
 
   const TextFieldInput({
     Key? key,
     required this.textEditingController,
 
     required this.hintText,
-    required this.textInputType, this.maxlines=2,
+    required this.textInputType, this.maxlines=1, this.ispass=false,
 
       }) : super(key: key);
 
@@ -46,6 +46,7 @@ class _TextFieldInputState extends State<TextFieldInput> {
       onChanged: (text)=>setState(() {
         widget.textEditingController.text =text;
       }),
+      obscureText: widget.ispass ? true : false,
     );
   }
 }
