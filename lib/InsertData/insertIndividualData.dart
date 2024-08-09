@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:import_lookup/Backend/add_asessee_data.dart';
 import 'package:import_lookup/Widgets/controllers.dart';
 
 import '../Widgets/text_field.dart';
@@ -29,7 +30,26 @@ class _InsertDataScreenState extends State<InsertDataScreen> {
 
   void adddetail() async {
     if (_formkey.currentState!.validate()) {
-
+      Map<String, dynamic> asseserDetails = {
+        'name': nameOfAsseser.text,
+        'division_range': Division.text,
+        'OIO_and_date': OIONOAndDate.text,
+        'duty_or_arear': TotalDutyOfArear.text,
+        'penalty': Penlty.text,
+        'amount_recovered': AmmountRecoverSofar.text,
+        'pre_deposit': PredepositIfAny.text,
+        'total_arrears_pending': TotalArearsForPending.text,
+        'brief_facts': BrifFectOftheCase.text,
+        'status': PresentStatusOfCase.text,
+        'appeal_no': ApealNo.text,
+        'stay_order_no_and_date': StayOrderNoAndDate.text,
+        'remark': PresentStatusOfCase.text,
+      };
+      String res=  await AddAsesse().addDetails(asseserDetails,OIONOAndDate.text);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('$res Details added successfully!')),
+      );
+      _formkey.currentState!.reset();
     } else {
       print('error');
     }
