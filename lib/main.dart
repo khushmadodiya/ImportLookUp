@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:import_lookup/InsertData/insertIndividualData.dart';
+import 'package:import_lookup/Screens/SignupScreen.dart';
+import 'package:import_lookup/Screens/firstpage.dart';
 
 import 'Screens/loginScreen.dart';
 import 'firebase_options.dart';
@@ -36,7 +38,7 @@ class MyApp extends StatelessWidget {
               return Center(child: Text('An error occurred'));
             }
           }
-          return LoginScreen();
+          return const AppealPeriodNotOver();
         },
       )
     );
