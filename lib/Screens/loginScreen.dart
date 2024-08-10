@@ -117,33 +117,34 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(
                   height: 12,
                 ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: [
-                //     Container(
-                //       padding: const EdgeInsets.symmetric(vertical: 8),
-                //       child: const Text(
-                //         'Dont have an account?',
-                //       ),
-                //     ),
-                //     GestureDetector(
-                //       onTap: () => Navigator.of(context).push(
-                //         MaterialPageRoute(
-                //           builder: (context) => const SignupScreen(),
-                //         ),
-                //       ),
-                //       child: Container(
-                //         padding: const EdgeInsets.symmetric(vertical: 8),
-                //         child: const Text(
-                //           ' Signup.',
-                //           style: TextStyle(
-                //               fontWeight: FontWeight.bold,color: Colors.deepPurple
-                //           ),
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: const Text(
+                        'Dont have an account?',
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const SignupScreen(),
+                        ),
+                      ),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: const Text(
+                          ' Signup.',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,color: Colors.deepPurple
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
