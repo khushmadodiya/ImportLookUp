@@ -62,58 +62,63 @@ class _LoginScreenState extends State<LoginScreen> {
               horizontal: MediaQuery.of(context).size.width / 3)
               : const EdgeInsets.symmetric(horizontal: 32),
           width: double.infinity,
+          height:MediaQuery.of(context).size.height,
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Icon(Icons.person_outline,size: 150,color: Colors.grey[800],),
-                const SizedBox(
-                  height: 24,
-                ),
-                Text('Import LookUp',style: TextStyle(fontWeight: FontWeight.w600,fontSize: 30,color: Colors.deepPurple),),
-                SizedBox(height: 20,),
-                TextFieldInput(
-                  hintText: 'Enter your email',
-                  textInputType: TextInputType.emailAddress,
-                  textEditingController: _emailController,
-
-                ),
-                const SizedBox(
-                  height: 24,
-                ),
-                TextFieldInput(
-                  hintText: 'Enter your password',
-                  textInputType: TextInputType.text,
-                  textEditingController: _passwordController,
-                  ispass: true,
-
-                ),
-                const SizedBox(
-                  height: 24,
-                ),
-                InkWell(
-                  onTap: loginUser,
-                  child: Container(
-                    width: double.infinity,
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    decoration: const ShapeDecoration(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(4)),
+            child: Container(
+              height:MediaQuery.of(context).size.height,
+              width:MediaQuery.of(context).size.width,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Icon(Icons.person_outline,size: 150,color: Colors.grey[800],),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                 const Text('Import LookUp',style: TextStyle(fontWeight: FontWeight.w600,fontSize: 30,color: Colors.deepPurple),),
+                 const SizedBox(height: 20,),
+                  TextFieldInput(
+                    hintText: 'Enter your email',
+                    textInputType: TextInputType.emailAddress,
+                    textEditingController: _emailController,
+              
+                  ),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  TextFieldInput(
+                    hintText: 'Enter your password',
+                    textInputType: TextInputType.text,
+                    textEditingController: _passwordController,
+                    ispass: true,
+              
+                  ),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  InkWell(
+                    onTap: loginUser,
+                    child: Container(
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      decoration: const ShapeDecoration(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                        ),
+                        color: Colors.deepPurple,
                       ),
-                      color: Colors.deepPurple,
-                    ),
-                    child: !_isLoading
-                        ? const Text(
-                      'Log in',style: TextStyle(color: Colors.white,fontSize: 20),
-                    )
-                        : const CircularProgressIndicator(
-                      color: Colors.white,
+                      child: !_isLoading
+                          ? const Text(
+                        'Log in',style: TextStyle(color: Colors.white,fontSize: 20),
+                      )
+                          : const CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                ),
+
                 const SizedBox(
                   height: 12,
                 ),
@@ -146,6 +151,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
               ],
+
+              ),
+
             ),
           ),
         ),

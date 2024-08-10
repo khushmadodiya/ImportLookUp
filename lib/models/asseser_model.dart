@@ -4,6 +4,7 @@ class Asseser {
   final String name;
   final String division_range;
   final String OIO_and_date;
+  final String Date;
   final String duty_or_arear;
   final String penalty;
   final String amount_recovered;
@@ -18,6 +19,7 @@ class Asseser {
     required this.name,
     required this.division_range,
     required this.OIO_and_date,
+    required this.Date,
     required this.duty_or_arear,
     required this.penalty,
     required this.amount_recovered,
@@ -34,6 +36,7 @@ class Asseser {
       name: json['name'] as String,
       division_range: json['division_range'] as String,
       OIO_and_date: json['OIO_and_date'] as String,
+      Date: json['Date']as String,
       duty_or_arear: json['duty_or_arear'] as String,
       penalty: json['penalty'] as String,
       amount_recovered: json['amount_recovered'] as String,
@@ -51,6 +54,7 @@ class Asseser {
       'name': name,
       'division_range': division_range,
       'OIO_and_date': OIO_and_date,
+      'Date':Date,
       'duty_or_arear': duty_or_arear,
       'penalty': penalty,
       'amount_recovered': amount_recovered,

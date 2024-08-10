@@ -2,8 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:import_lookup/InsertData/insertIndividualData.dart';
+import 'package:import_lookup/Screens/SignupScreen.dart';
+import 'package:import_lookup/Screens/firstpage.dart';
 
 import 'Screens/loginScreen.dart';
+import 'Screens/show_asseser_details.dart';
 import 'firebase_options.dart';
 
 void main() async{
@@ -31,12 +34,12 @@ class MyApp extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             if (snapshot.hasData) {
-              return InsertDataScreen();
+              return LoginScreen();
             } else if (snapshot.hasError) {
               return Center(child: Text('An error occurred'));
             }
           }
-          return LoginScreen();
+          return const ShowAsserDetails();
         },
       )
     );
