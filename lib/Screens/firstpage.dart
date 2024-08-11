@@ -82,6 +82,8 @@ class _AddAsseserDetailsState extends State<AddAsseserDetails> {
         'GSTIN':_GSTINController.text,
         'PAN':_PANController.text,
         'complete_track': ['${date} OIO is filed'],
+        'category':"apeal period not over",
+        'isshifted':1,
       };
       String res=  await AddAsesse().addDetails(asseserDetails);
      if(res=="s") {

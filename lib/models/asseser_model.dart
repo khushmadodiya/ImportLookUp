@@ -20,6 +20,8 @@ class Asseser {
   String? PAN;
   Double? Age;
   List<String>? complete_track;
+  Bool? isshifted;
+  String? category;
 
   Asseser({
     this.name,
@@ -40,6 +42,8 @@ class Asseser {
     this.PAN,
     this.Age,
     this.complete_track,
+    this.isshifted,
+    this.category
   });
 
   factory Asseser.fromJson(Map<String, dynamic> json) {
@@ -62,6 +66,8 @@ class Asseser {
       PAN: json['PAN'] as String,
       Age: json['Age'] as Double,
       complete_track: json['complete_track'] as List<String>,
+      isshifted: json['Isshifted'] as Bool,
+      category: json['category']as String
 
     );
   }
@@ -86,6 +92,8 @@ class Asseser {
       'PAN': PAN,
       'Age':Age,
       'complete_track':[],
+      'isshifted':isshifted,
+      'category':category
 
     };
   }
