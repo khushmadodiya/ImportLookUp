@@ -45,7 +45,7 @@ class _InsertDataScreenState extends State<InsertDataScreen> {
         'stay_order_no_and_date': StayOrderNoAndDate.text,
         'remark': PresentStatusOfCase.text,
       };
-      String res=  await AddAsesse().addDetails(asseserDetails,OIONOAndDate.text);
+      String res=  await AddAsesse().addDetails(asseserDetails);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('$res Details added successfully!')),
       );

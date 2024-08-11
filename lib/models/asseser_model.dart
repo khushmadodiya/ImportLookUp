@@ -1,34 +1,45 @@
 import 'dart:core';
+import 'dart:ffi';
 
 class Asseser {
-  final String name;
-  final String division_range;
-  final String OIO_and_date;
-  final String Date;
-  final String duty_or_arear;
-  final String penalty;
-  final String amount_recovered;
+  String? name;
+  String? division_range;
+  String? OIO_and_date;
+  String? Date;
+  String? duty_or_arear;
+  String? penalty;
+  String? amount_recovered;
   String? pre_deposit;
-  final String total_arrears_pending;
-  final String breif_fect;
-  final String status;
-  final String apeal_no;
-  final String stay_order_no_and_data;
+  String? total_arrears_pending;
+  String? breif_fect;
+  String? status;
+  String? apeal_no;
+  String? stay_order_no_and_data;
+  String? IEC;
+  String? GSTIN;
+  String? PAN;
+  Double? Age;
+  List<String>? complete_track;
 
   Asseser({
-    required this.name,
-    required this.division_range,
-    required this.OIO_and_date,
-    required this.Date,
-    required this.duty_or_arear,
-    required this.penalty,
-    required this.amount_recovered,
+    this.name,
+    this.division_range,
+    this.OIO_and_date,
+    this.Date,
+    this.duty_or_arear,
+    this.penalty,
+    this.amount_recovered,
     this.pre_deposit,
-    required this.total_arrears_pending,
-    required this.breif_fect,
-    required this.status,
-    required this.apeal_no,
-    required this.stay_order_no_and_data,
+    this.total_arrears_pending,
+    this.breif_fect,
+    this.status,
+    this.apeal_no,
+    this.stay_order_no_and_data,
+    this.GSTIN,
+    this.IEC,
+    this.PAN,
+    this.Age,
+    this.complete_track,
   });
 
   factory Asseser.fromJson(Map<String, dynamic> json) {
@@ -46,6 +57,12 @@ class Asseser {
       status: json['status'] as String,
       apeal_no: json['apeal_no'] as String,
       stay_order_no_and_data: json['stay_order_no_and_data'] as String,
+      IEC: json['IEC'] as String,
+      GSTIN: json['GSTIN'] as String,
+      PAN: json['PAN'] as String,
+      Age: json['Age'] as Double,
+      complete_track: json['complete_track'] as List<String>,
+
     );
   }
 
@@ -64,6 +81,12 @@ class Asseser {
       'status': status,
       'apeal_no': apeal_no,
       'stay_order_no_and_data': stay_order_no_and_data,
+      'IEC': IEC,
+      'GSTIN': GSTIN,
+      'PAN': PAN,
+      'Age':Age,
+      'complete_track':[],
+
     };
   }
 }

@@ -5,6 +5,7 @@ import 'package:import_lookup/InsertData/insertIndividualData.dart';
 import 'package:import_lookup/Screens/SignupScreen.dart';
 import 'package:import_lookup/Screens/firstpage.dart';
 
+import 'Screens/dashboard.dart';
 import 'Screens/loginScreen.dart';
 import 'Screens/show_asseser_details.dart';
 import 'firebase_options.dart';
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
               return Center(child: Text('An error occurred'));
             }
           }
-          return const ShowAsserDetails();
+          return DashboardScreen();
         },
       )
     );

@@ -7,10 +7,10 @@ import 'package:uuid/uuid.dart';
 
 
 class AddAsesse {
-  Future<String> addDetails( Map<String , dynamic> asseserDetails,OIO)async{
+  Future<String> addDetails( Map<String , dynamic> asseserDetails)async{
    String res = "error";
    try{
-     await FirebaseFirestore.instance.collection('assesers').doc(OIO).set(asseserDetails);
+     await FirebaseFirestore.instance.collection('assesers').add(asseserDetails);
      return res ='s';
    }
    catch(e){
@@ -21,3 +21,4 @@ class AddAsesse {
 
 
 }
+
