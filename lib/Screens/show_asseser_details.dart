@@ -55,6 +55,7 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
                     11: FixedColumnWidth(300),
                     12: FixedColumnWidth(250),
                     13: FixedColumnWidth(150),
+                    14: FixedColumnWidth(150),
                   },
                   children: [
                     // Header Row
@@ -76,6 +77,7 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
                         _buildHeaderCell('Status'),
                         _buildHeaderCell('Appeal No.'),
                         _buildHeaderCell('Stay Order No and Date'),
+                        _buildHeaderCell('Change Data'),
                       ],
                     ),
                     // Data Rows
@@ -101,9 +103,13 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
                           _multiLineText(data['status'] ?? ''),
                           _multiLineText(data['appeal_no'] ?? ''),
                           _multiLineText(data['stay_order_no_and_date'] ?? ''),
+                          // _multiLineText('Update Data'),
+                          ElevatedButton(onPressed:(){}, child:const Text("Transfer Case"))
+                          // _buildHeaderCell('Change Data'),
                         ],
                       );
                     }).toList(),
+                   
                   ],
                 ),
               ),
@@ -135,7 +141,7 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
           style: const TextStyle(fontSize: 15),
           overflow: TextOverflow.visible,
           softWrap: true,
-          maxLines: 5000, // Limit the number of lines shown initially
+          maxLines: 5000, 
         ),
       ),
     );
