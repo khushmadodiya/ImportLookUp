@@ -52,6 +52,9 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
     super.initState();
     final asseserProvider = Provider.of<AsseserProvider>(context, listen: false);
     asseserProvider.fetchAssesers(); // Fetch data on widget initialization
+    setState(() {
+
+    });
   }
 
   int num = 0;
@@ -100,7 +103,6 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
                   _buildHeaderRow(),
                   for(int i=0;i<asseserProvider.assesers!.length;i++)
                     _buildDataRow(asseserProvider.assesers![i])
-
                 ],
               ),
             ),
@@ -133,6 +135,7 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
 
   TableRow _buildDataRow(Map<String, dynamic> data) {
     String day = _calculateDayCount(data['date']).toString();
+    print(data['uid']);
     return TableRow(
       children: [
         _multiLineText(num.toString()),
@@ -141,7 +144,7 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
         _multiLineText(data['oio'] ?? 'N/A'),
         _multiLineText(data['date'] ?? 'N/A'),
         _multiLineText(day),
-        _multiLineText(data['duty_or_arrears'] ?? 'N/A'),
+        _multiLineText(data['duty_or_arear'] ?? 'N/A'),
         _multiLineText(data['penalty'] ?? 'N/A'),
         _multiLineText(data['amount_recovered'] ?? 'N/A'),
         _multiLineText(data['pre_deposit'] ?? 'N/A'),
@@ -163,7 +166,7 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => UpdateUniversalDetails()));
+                  builder: (context) => UpdateUniversalDetails(index:num)));
         },
         child: const Text("Transfer Case"),
       ),

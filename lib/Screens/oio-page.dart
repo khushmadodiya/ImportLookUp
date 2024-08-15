@@ -65,7 +65,7 @@ class _AddAsseserDetailsState extends State<AddAsseserDetails> {
   void adddetail() async {
      var uid = Uuid().v1();
       Map<String, dynamic> asseserDetails = {
-        'oio': uid,
+        'uid': uid,
         'name': _assesseeNameController.text,
         'division_range': _divisionRangeController.text,
         'oio': _oioNoDateController.text,
