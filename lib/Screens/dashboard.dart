@@ -40,13 +40,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
             DrawerHeader(
               child: Text('Custom Import'),
             ),
-            ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Home'),
-              onTap: () {
-                _onItemTapped(0);
-                Navigator.pop(context);
-              },
+            Container(
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20)
+              ),
+              child: MouseRegion(
+                onHover: (event){
+
+                },
+                child: ListTile(
+                  leading: Icon(Icons.home),
+                  title: Text('Home'),
+                  onTap: () {
+                    _onItemTapped(0);
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
             ),
             // ListTile(
             //   title: DropdownButton<String>(
