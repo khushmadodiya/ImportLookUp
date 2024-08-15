@@ -10,33 +10,33 @@ import 'package:provider/provider.dart';
 import '../models/oio_model.dart';
 import '../provider/provider.dart';
 
-class Firstpage extends StatefulWidget {
-  const Firstpage({super.key});
-
-  @override
-  State<Firstpage> createState() => _FirstpageState();
-}
-
-class _FirstpageState extends State<Firstpage> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getData();
-  }
-  void getData(){
-    Future.delayed(Duration(seconds: 5)).whenComplete(() {
-      setState(() {});
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>ShowAsserDetails()));
-    });
-  }
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(child: CircularProgressIndicator()),
-    );
-  }
-}
+// class Firstpage extends StatefulWidget {
+//   const Firstpage({super.key});
+//
+//   @override
+//   State<Firstpage> createState() => _FirstpageState();
+// }
+//
+// class _FirstpageState extends State<Firstpage> {
+//   @override
+//   void initState() {
+//     // TODO: implement initState
+//     super.initState();
+//     getData();
+//   }
+//   void getData(){
+//     Future.delayed(Duration(seconds: 5)).whenComplete(() {
+//       setState(() {});
+//       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>ShowAsserDetails()));
+//     });
+//   }
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: Center(child: CircularProgressIndicator()),
+//     );
+//   }
+// }
 
 
 class ShowAsserDetails extends StatefulWidget {
@@ -47,10 +47,25 @@ class ShowAsserDetails extends StatefulWidget {
 }
 
 class _ShowAsserDetailsState extends State<ShowAsserDetails> {
+  @override
+  void initState() {
+    super.initState();
+    final asseserProvider = Provider.of<AsseserProvider>(context, listen: false);
+    asseserProvider.fetchAssesers(); // Fetch data on widget initialization
+  }
+
   int num = 0;
   @override
   Widget build(BuildContext context) {
     final asseserProvider = Provider.of<AsseserProvider>(context);
+
+    if (asseserProvider.isLoading) {
+      return Center(child: CircularProgressIndicator());
+    }
+
+    if (asseserProvider.assesers == null || asseserProvider.assesers!.isEmpty) {
+      return Center(child: Text('No data found'));
+    }
 
     return Scaffold(
       appBar: AppBar(title: const Text('Show Asseser Details')),

@@ -2,7 +2,7 @@ import 'dart:core';
 
 
 class Asseser {
-  String? uid;
+  // String? uid;
   String? name;
   String? division_range;
   String? oio;
@@ -25,7 +25,7 @@ class Asseser {
   String? category;
 
   Asseser({
-    required this.uid,
+     // this.uid,
     this.name,
     this.division_range,
     this.oio,
@@ -48,36 +48,64 @@ class Asseser {
     this.category
   });
 
+  // factory Asseser.fromJson(Map<String, dynamic> json) {
+  //   return Asseser(
+  //     // uid: json['uid'] as String,
+  //     name: json['name'] as String,
+  //     division_range: json['division_range'] as String,
+  //     oio: json['oio'] as String,
+  //     date: json['date']as String,
+  //     duty_or_arear: json['duty_or_arear'] as String,
+  //     penalty: json['penalty'] as String,
+  //     amount_recovered: json['amount_recovered'] as String,
+  //     pre_deposit: json['pre_deposit'] as String?,
+  //     total_arrears_pending: json['total_arrears_pending'] as String,
+  //     breif_fect: json['breif_fect'] as String,
+  //     status: json['status'] as String,
+  //     apeal_no: json['apeal_no'] as String,
+  //     stay_order_no_and_data: json['stay_order_no_and_data'] as String,
+  //     iec: json['iec'] as String,
+  //     gstin: json['gstin'] as String,
+  //     pan: json['pan'] as String,
+  //     age: json['age'] as double,
+  //     complete_track: json['complete_track'] as List<String>,
+  //     isshifted: json['Isshifted'] as bool,
+  //     category: json['category']as String
+  //
+  //   );
+  // }
+
   factory Asseser.fromJson(Map<String, dynamic> json) {
     return Asseser(
-      uid: json['uid'] as String,
-      name: json['name'] as String,
-      division_range: json['division_range'] as String,
-      oio: json['oio'] as String,
-      date: json['date']as String,
-      duty_or_arear: json['duty_or_arear'] as String,
-      penalty: json['penalty'] as String,
-      amount_recovered: json['amount_recovered'] as String,
-      pre_deposit: json['pre_deposit'] as String?,
-      total_arrears_pending: json['total_arrears_pending'] as String,
-      breif_fect: json['breif_fect'] as String,
-      status: json['status'] as String,
-      apeal_no: json['apeal_no'] as String,
-      stay_order_no_and_data: json['stay_order_no_and_data'] as String,
-      iec: json['iec'] as String,
-      gstin: json['gstin'] as String,
-      pan: json['pan'] as String,
-      age: json['age'] as double,
-      complete_track: json['complete_track'] as List<String>,
-      isshifted: json['Isshifted'] as bool,
-      category: json['category']as String
-
+      name: json['name'] as String? ?? '',
+      division_range: json['division_range'] as String? ?? '',
+      oio: json['oio'] as String? ?? '',
+      date: json['date'] as String? ?? '',
+      duty_or_arear: json['duty_or_arear'] as String? ?? '',
+      penalty: json['penalty'] as String? ?? '',
+      amount_recovered: json['amount_recovered'] as String? ?? '',
+      pre_deposit: json['pre_deposit'] as String? ?? '',
+      total_arrears_pending: json['total_arrears_pending'] as String? ?? '',
+      breif_fect: json['breif_fect'] as String? ?? '',
+      status: json['status'] as String? ?? '',
+      apeal_no: json['apeal_no'] as String? ?? '',
+      stay_order_no_and_data: json['stay_order_no_and_data'] as String? ?? '',
+      iec: json['iec'] as String? ?? '',
+      gstin: json['gstin'] as String? ?? '',
+      pan: json['pan'] as String? ?? '',
+      age: (json['age'] as num?)?.toDouble() ?? 0.0, // Convert to double and handle null
+      complete_track: (json['complete_track'] as List<dynamic>?)
+          ?.map((item) => item as String)
+          .toList() ?? [], // Convert List<dynamic> to List<String> and handle null
+      isshifted: json['Isshifted'] as bool? ?? false, // Handle null for boolean
+      category: json['category'] as String? ?? '',
     );
   }
 
+
   Map<String, dynamic> toJson() {
     return {
-      'uid': uid,
+      // 'uid': uid,
       'name': name,
       'division_range': division_range,
       'oio': oio,
