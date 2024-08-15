@@ -4,19 +4,18 @@ import 'package:flutter/widgets.dart';
 // import 'package:intl/intl.dart';
 import 'package:import_lookup/Screens/Custom%20code/textfiled.dart';
 import 'package:intl/intl.dart';
-import 'package:uuid/uuid.dart';
 
 import '../Backend/add_asessee_data.dart';
 // Adjust import path as necessary
 
-class AddAsseserDetails extends StatefulWidget {
-  const AddAsseserDetails({super.key});
+class UpdateUniversalDetails extends StatefulWidget {
+  const UpdateUniversalDetails({super.key});
 
   @override
-  State<AddAsseserDetails> createState() => _AddAsseserDetailsState();
+  State<UpdateUniversalDetails> createState() => _UpdateUniversalDetailsState();
 }
 
-class _AddAsseserDetailsState extends State<AddAsseserDetails> {
+class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
   // Controllers for each text field
   final TextEditingController _assesseeNameController = TextEditingController();
   final TextEditingController _divisionRangeController = TextEditingController();
@@ -61,38 +60,42 @@ class _AddAsseserDetailsState extends State<AddAsseserDetails> {
     super.dispose();
 
   }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
 
+  }
   void adddetail() async {
-     var uid = Uuid().v1();
-      Map<String, dynamic> asseserDetails = {
-        'oio': uid,
-        'name': _assesseeNameController.text,
-        'division_range': _divisionRangeController.text,
-        'oio': _oioNoDateController.text,
-        'date':date,
-        'duty_or_arear': _totalDutyOfArrearController.text,
-        'penalty': _penaltyController.text,
-        'amount_recovered': _amountRecoveredController.text,
-        'pre_deposit': _preDepositController.text,
-        'total_arrears_pending': _totalArrearsPendingController.text,
-        'brief_facts': _briefFactsController.text,
-        'status': _presentStatusController.text,
-        'appeal_no': _appealNoController.text,
-        'stay_order_no_and_date': _stayOrderNoDateController.text,
-        'remark': _amountRecoveredController.text,
-        'iec':_IECController.text,
-        'gstin':_GSTINController.text,
-        'pan':_PANController.text,
-        'complete_track': ['${date} OIO is filed'],
-        'category':"apeal period not over",
-        'isshifted':1,
-      };
-      String res=  await AddAsesse().addDetails(asseserDetails,uid);
-     if(res=="s") {
-       ScaffoldMessenger.of(context).showSnackBar(
-         SnackBar(content: Text('$res Details added successfully!')),
-       );
-     }
+
+    Map<String, dynamic> asseserDetails = {
+      'name': _assesseeNameController.text,
+      'division_range': _divisionRangeController.text,
+      'oio': _oioNoDateController.text,
+      'date':date,
+      'duty_or_arear': _totalDutyOfArrearController.text,
+      'penalty': _penaltyController.text,
+      'amount_recovered': _amountRecoveredController.text,
+      'pre_deposit': _preDepositController.text,
+      'total_arrears_pending': _totalArrearsPendingController.text,
+      'brief_facts': _briefFactsController.text,
+      'status': _presentStatusController.text,
+      'appeal_no': _appealNoController.text,
+      'stay_order_no_and_date': _stayOrderNoDateController.text,
+      'remark': _amountRecoveredController.text,
+      'iec':_IECController.text,
+      'gstin':_GSTINController.text,
+      'pan':_PANController.text,
+      'complete_track': ['${date} OIO is filed'],
+      'category':"apeal period not over",
+      'isshifted':1,
+    };
+    // String res=  await AddAsesse().addDetails(asseserDetails);
+    // if(res=="s") {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     SnackBar(content: Text('$res Details added successfully!')),
+    //   );
+    // }
   }
 
   @override
@@ -137,34 +140,34 @@ class _AddAsseserDetailsState extends State<AddAsseserDetails> {
                               border: OutlineInputBorder(),
                             ),
                           )
-                          ),
-                         const SizedBox(width:20,),
-                          SizedBox(
-                            height: 51,
-                            width:300,
-                            child: InkWell(
-                              onTap:()async {
-                                DateTime? dat=await showDatePicker(context: context, firstDate:DateTime(1500), lastDate:DateTime.now());
-                                if(dat!=null){
-                                  date=DateFormat('dd-MM-yyyy').format(dat);
-                                  setState(() {
+                      ),
+                      const SizedBox(width:20,),
+                      SizedBox(
+                        height: 51,
+                        width:300,
+                        child: InkWell(
+                          onTap:()async {
+                            DateTime? dat=await showDatePicker(context: context, firstDate:DateTime(1500), lastDate:DateTime.now());
+                            if(dat!=null){
+                              date=DateFormat('dd-MM-yyyy').format(dat);
+                              setState(() {
 
-                                  });
-                                }
-                              },
-                              child: Container(
-                                decoration:BoxDecoration(
-                                  border:Border.all(
-                                    color:Colors.grey
-                                  ),
-                                ),
-                              width: MediaQuery.of(context).size.width * 0.3,
-                              child:Center(child: Text(date)),
+                              });
+                            }
+                          },
+                          child: Container(
+                            decoration:BoxDecoration(
+                              border:Border.all(
+                                  color:Colors.grey
                               ),
                             ),
+                            width: MediaQuery.of(context).size.width * 0.3,
+                            child:Center(child: Text(date)),
                           ),
-                          const SizedBox(width:20,),
-                          SizedBox(
+                        ),
+                      ),
+                      const SizedBox(width:20,),
+                      SizedBox(
                           width: MediaQuery.of(context).size.width * 0.518,
                           child: TextField(
                             controller: _totalDutyOfArrearController,
@@ -174,7 +177,7 @@ class _AddAsseserDetailsState extends State<AddAsseserDetails> {
                               border: OutlineInputBorder(),
                             ),
                           )
-                          ),
+                      ),
                     ],
                   ),
                 ),
@@ -234,12 +237,12 @@ class _AddAsseserDetailsState extends State<AddAsseserDetails> {
                   width: 300,
                   child: Center(
                       child: Text(
-                    'Save Data',
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.red,
-                        fontWeight: FontWeight.bold),
-                  )),
+                        'Save Data',
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.red,
+                            fontWeight: FontWeight.bold),
+                      )),
                 ),
               )
             ],
@@ -279,23 +282,23 @@ class _AddAsseserDetailsState extends State<AddAsseserDetails> {
           const SizedBox(width: 8),
           maxLines == null
               ? Expanded(
-                  child: CustomTextField(
-                    controller: controller2,
-                    hintText: label2,
-                    labelText: label2,
-                    width: 300,
-                  ),
-                )
+            child: CustomTextField(
+              controller: controller2,
+              hintText: label2,
+              labelText: label2,
+              width: 300,
+            ),
+          )
               : Expanded(
-                  child: CustomTextField(
-                    controller: controller2,
-                    hintText: label2,
-                    labelText: label2,
-                    width: 300,
-                    height: 100,
-                    maxLines: maxLines,
-                  ),
-                ),
+            child: CustomTextField(
+              controller: controller2,
+              hintText: label2,
+              labelText: label2,
+              width: 300,
+              height: 100,
+              maxLines: maxLines,
+            ),
+          ),
         ],
       ),
     );

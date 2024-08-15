@@ -2,6 +2,42 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:import_lookup/Backend/fetchAsseserData.dart';
+import 'package:import_lookup/Screens/dashboard.dart';
+import 'package:import_lookup/Screens/universal-update-details-page.dart';
+import 'package:provider/provider.dart';
+
+import '../models/oio_model.dart';
+import '../provider/provider.dart';
+
+class Firstpage extends StatefulWidget {
+  const Firstpage({super.key});
+
+  @override
+  State<Firstpage> createState() => _FirstpageState();
+}
+
+class _FirstpageState extends State<Firstpage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getData();
+  }
+  void getData(){
+    Future.delayed(Duration(seconds: 5)).whenComplete(() {
+      setState(() {});
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>ShowAsserDetails()));
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(child: CircularProgressIndicator()),
+    );
+  }
+}
+
 
 class ShowAsserDetails extends StatefulWidget {
   const ShowAsserDetails({super.key});
@@ -12,65 +48,48 @@ class ShowAsserDetails extends StatefulWidget {
 
 class _ShowAsserDetailsState extends State<ShowAsserDetails> {
   int num = 0;
-  // String dayCount='0';
-
   @override
   Widget build(BuildContext context) {
+    final asseserProvider = Provider.of<AsseserProvider>(context);
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Show Area Date')),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('assesers').snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator(color: Colors.white));
-          }
+      appBar: AppBar(title: const Text('Show Asseser Details')),
+      body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: Table(
+                border: TableBorder.all(width: 1.0, color: Colors.black),
+                columnWidths: const {
+                  0: FixedColumnWidth(50),
+                  1: FixedColumnWidth(150),
+                  2: FixedColumnWidth(150),
+                  3: FixedColumnWidth(150),
+                  4: FixedColumnWidth(150),
+                  5: FixedColumnWidth(150),
+                  6: FixedColumnWidth(150),
+                  7: FixedColumnWidth(150),
+                  8: FixedColumnWidth(150),
+                  9: FixedColumnWidth(150),
+                  10: FixedColumnWidth(150),
+                  11: FixedColumnWidth(300),
+                  12: FixedColumnWidth(300),
+                  13: FixedColumnWidth(250),
+                  14: FixedColumnWidth(150),
+                  15: FixedColumnWidth(150),
+                },
+                children: [
+                  // Header Row
+                  _buildHeaderRow(),
+                  for(int i=0;i<asseserProvider.assesers!.length;i++)
+                    _buildDataRow(asseserProvider.assesers![i])
 
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text("No data available."));
-          }
-
-          return SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Padding(
-                padding: const EdgeInsets.all(18.0),
-                child: Table(
-                  border: TableBorder.all(width: 1.0, color: Colors.black),
-                  columnWidths: const {
-                    0: FixedColumnWidth(50),
-                    1: FixedColumnWidth(150),
-                    2: FixedColumnWidth(150),
-                    3: FixedColumnWidth(150),
-                    4: FixedColumnWidth(150),
-                    5: FixedColumnWidth(150),
-                    6: FixedColumnWidth(150),
-                    7: FixedColumnWidth(150),
-                    8: FixedColumnWidth(150),
-                    9: FixedColumnWidth(150),
-                    10: FixedColumnWidth(150),
-                    11: FixedColumnWidth(300),
-                    12: FixedColumnWidth(300),
-                    13: FixedColumnWidth(250),
-                    14: FixedColumnWidth(150),
-                    15: FixedColumnWidth(150),
-                  },
-                  children: [
-                    // Header Row
-                    _buildHeaderRow(),
-                    // Data Rows
-                    ...snapshot.data!.docs.map((doc) {
-                      num++;
-                      final data = doc.data() as Map<String, dynamic>;
-                      return _buildDataRow(data);
-                    }).toList(),
-                  ],
-                ),
+                ],
               ),
             ),
-          );
-        },
-      ),
+          )),
     );
   }
 
@@ -98,7 +117,7 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
   }
 
   TableRow _buildDataRow(Map<String, dynamic> data) {
-    String day=_calculateDayCount(data['date']).toString();
+    String day = _calculateDayCount(data['date']).toString();
     return TableRow(
       children: [
         _multiLineText(num.toString()),
@@ -126,8 +145,10 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
       padding: const EdgeInsets.symmetric(vertical: 15),
       child: ElevatedButton(
         onPressed: () {
-          // Define your transfer case action here
-          // For example, navigate to another screen or show a dialog
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => UpdateUniversalDetails()));
         },
         child: const Text("Transfer Case"),
       ),
@@ -155,18 +176,15 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
           style: const TextStyle(fontSize: 15),
           overflow: TextOverflow.visible,
           softWrap: true,
-          maxLines: 5000,
         ),
       ),
     );
   }
 
   int _calculateDayCount(String dateStr) {
-
     List<String> parts = dateStr.split('-');
 
     if (parts.length != 3) {
-      // print("hello i am dipuijjjmik ${parts.length}");
       return 0;
     }
 
@@ -178,15 +196,12 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
     try {
       dateTime = DateTime(year, month, day);
     } catch (e) {
-      // print("hello i am");
       return 0;
     }
 
     final now = DateTime.now();
-
     final difference = now.difference(dateTime);
-    // difference.inDays.toString();
-    print("hello i am dipu ${difference.inDays}");
+
     return difference.inDays;
   }
 }

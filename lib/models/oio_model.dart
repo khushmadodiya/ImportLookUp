@@ -1,7 +1,8 @@
 import 'dart:core';
-import 'dart:ffi';
+
 
 class Asseser {
+  String? uid;
   String? name;
   String? division_range;
   String? oio;
@@ -18,12 +19,13 @@ class Asseser {
   String? iec;
   String? gstin;
   String? pan;
-  Double? age;
+  double? age;
   List<String>? complete_track;
-  Bool? isshifted;
+  bool? isshifted;
   String? category;
 
   Asseser({
+    required this.uid,
     this.name,
     this.division_range,
     this.oio,
@@ -48,6 +50,7 @@ class Asseser {
 
   factory Asseser.fromJson(Map<String, dynamic> json) {
     return Asseser(
+      uid: json['uid'] as String,
       name: json['name'] as String,
       division_range: json['division_range'] as String,
       oio: json['oio'] as String,
@@ -64,9 +67,9 @@ class Asseser {
       iec: json['iec'] as String,
       gstin: json['gstin'] as String,
       pan: json['pan'] as String,
-      age: json['age'] as Double,
+      age: json['age'] as double,
       complete_track: json['complete_track'] as List<String>,
-      isshifted: json['isshifted'] as Bool,
+      isshifted: json['Isshifted'] as bool,
       category: json['category']as String
 
     );
@@ -74,6 +77,7 @@ class Asseser {
 
   Map<String, dynamic> toJson() {
     return {
+      'uid': uid,
       'name': name,
       'division_range': division_range,
       'oio': oio,
