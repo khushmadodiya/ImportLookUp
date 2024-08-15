@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:import_lookup/Screens/oio-page.dart';
-import 'package:import_lookup/Screens/show-assesess-deatils.dart';
+import 'package:import_lookup/Screens/show-oio-details.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
