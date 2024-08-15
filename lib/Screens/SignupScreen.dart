@@ -5,7 +5,7 @@ import 'package:import_lookup/InsertData/insertIndividualData.dart';
 
 import '../Backend/authmethos.dart';
 import '../Widgets/text_field.dart';
-import 'loginScreen.dart';
+import 'login-screen.dart';
 
 
 
