@@ -14,7 +14,7 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
   Widget build(BuildContext context) {
     int num=0;
     return Scaffold(
-      appBar: AppBar(title: Text('Show Area Date')),
+      // appBar: AppBar(title: Text('Apel')),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('assesers').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -90,7 +90,7 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
                           _multiLineText(num.toString()),
                           _multiLineText(data['name'] ?? ''),
                           _multiLineText(data['division_range'] ?? ''),
-                          _multiLineText(data['oio_and_date'] ?? ''),
+                          _multiLineText(data['oio'] ?? ''),
                           _multiLineText(data['date'] ?? ''),
                           _multiLineText(data['duty_or_arrears'] ?? ''),
                           _multiLineText(data['penalty'] ?? ''),

@@ -4,8 +4,8 @@ import 'dart:ffi';
 class Asseser {
   String? name;
   String? division_range;
-  String? OIO_and_date;
-  String? Date;
+  String? oio;
+  String? date;
   String? duty_or_arear;
   String? penalty;
   String? amount_recovered;
@@ -15,10 +15,10 @@ class Asseser {
   String? status;
   String? apeal_no;
   String? stay_order_no_and_data;
-  String? IEC;
-  String? GSTIN;
-  String? PAN;
-  Double? Age;
+  String? iec;
+  String? gstin;
+  String? pan;
+  Double? age;
   List<String>? complete_track;
   Bool? isshifted;
   String? category;
@@ -26,8 +26,8 @@ class Asseser {
   Asseser({
     this.name,
     this.division_range,
-    this.OIO_and_date,
-    this.Date,
+    this.oio,
+    this.date,
     this.duty_or_arear,
     this.penalty,
     this.amount_recovered,
@@ -37,10 +37,10 @@ class Asseser {
     this.status,
     this.apeal_no,
     this.stay_order_no_and_data,
-    this.GSTIN,
-    this.IEC,
-    this.PAN,
-    this.Age,
+    this.gstin,
+    this.iec,
+    this.pan,
+    this.age,
     this.complete_track,
     this.isshifted,
     this.category
@@ -50,8 +50,8 @@ class Asseser {
     return Asseser(
       name: json['name'] as String,
       division_range: json['division_range'] as String,
-      OIO_and_date: json['OIO_and_date'] as String,
-      Date: json['Date']as String,
+      oio: json['oio'] as String,
+      date: json['date']as String,
       duty_or_arear: json['duty_or_arear'] as String,
       penalty: json['penalty'] as String,
       amount_recovered: json['amount_recovered'] as String,
@@ -61,12 +61,12 @@ class Asseser {
       status: json['status'] as String,
       apeal_no: json['apeal_no'] as String,
       stay_order_no_and_data: json['stay_order_no_and_data'] as String,
-      IEC: json['IEC'] as String,
-      GSTIN: json['GSTIN'] as String,
-      PAN: json['PAN'] as String,
-      Age: json['Age'] as Double,
+      iec: json['iec'] as String,
+      gstin: json['gstin'] as String,
+      pan: json['pan'] as String,
+      age: json['age'] as Double,
       complete_track: json['complete_track'] as List<String>,
-      isshifted: json['Isshifted'] as Bool,
+      isshifted: json['isshifted'] as Bool,
       category: json['category']as String
 
     );
@@ -76,8 +76,8 @@ class Asseser {
     return {
       'name': name,
       'division_range': division_range,
-      'OIO_and_date': OIO_and_date,
-      'Date':Date,
+      'oio': oio,
+      'date':date,
       'duty_or_arear': duty_or_arear,
       'penalty': penalty,
       'amount_recovered': amount_recovered,
@@ -87,10 +87,10 @@ class Asseser {
       'status': status,
       'apeal_no': apeal_no,
       'stay_order_no_and_data': stay_order_no_and_data,
-      'IEC': IEC,
-      'GSTIN': GSTIN,
-      'PAN': PAN,
-      'Age':Age,
+      'iec': iec,
+      'gstin': gstin,
+      'pan': pan,
+      'age':age,
       'complete_track':[],
       'isshifted':isshifted,
       'category':category

@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:import_lookup/InsertData/insertIndividualData.dart';
+import 'package:import_lookup/Screens/dashboard.dart';
 
 import '../Backend/authmethos.dart';
 import '../Widgets/text_field.dart';
@@ -47,7 +47,7 @@ class _SignupScreenState extends State<SignupScreen> {
         _isLoading = false;
       });
       if (context.mounted) {
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>InsertDataScreen()), (route) => false);
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>DashboardScreen()), (route) => false);
       }
     } else {
       setState(() {

@@ -13,10 +13,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
   static List<Widget> _widgetOptions = <Widget>[
     ShowAsserDetails(),
     AddAsseserDetails(),
+    Text('Appeal period is not over'),
     Text('Supreme Court'),
     Text('High Court'),
     Text('CESTAT'),
-    Text("Commr Appeal")
+    Text("Commr Appeal"),
+    Text("OL"),
+    Text("DRT"),
+    Text("BIFR"),
+    Text("NCLT-Units"),
+    Text("'Appeal period not over but appeal filed'"),
+    Text("'Settelment commitsion cases'"),
+    Text("'Arrear under section-11'"),
+    Text( 'Arrear under section-142'),
+
+
   ];
 
   void _onItemTapped(int index) {
@@ -41,7 +52,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: Text('Custom Import'),
             ),
             Container(
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20)
               ),
@@ -51,7 +62,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 },
                 child: ListTile(
                   leading: Icon(Icons.home),
-                  title: Text('Home'),
+                  title: Text('Appeal perirod is not over'),
                   onTap: () {
                     _onItemTapped(0);
                     Navigator.pop(context);
@@ -59,35 +70,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
               ),
             ),
-            // ListTile(
-            //   title: DropdownButton<String>(
-            //     hint: Text("Select Screen"),
-            //     value: selectedScreen,
-            //     items: <String>['Screen 1', 'Screen 2', 'Screen 3']
-            //         .map((String value) {
-            //       return DropdownMenuItem<String>(
-            //         value: value,
-            //         child: Text(value),
-            //       );
-            //     }).toList(),
-            //     onChanged: (newValue) {
-            //       setState(() {
-            //         selectedScreen = newValue;
-            //       });
-            //
-            //       // Navigate to the selected screen
-            //       if (newValue == 'Screen 1') {
-            //         _onItemTapped(0);
-            //       } else if (newValue == 'Screen 2') {
-            //         Navigator.pushNamed(context, '/screen2');
-            //       } else if (newValue == 'Screen 3') {
-            //         Navigator.pushNamed(context, '/screen3');
-            //       }
-            //     },
-            //   ),
-            // ),
             Container(
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20)
               ),
@@ -100,53 +84,169 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 },
               ),
             ),
-            ListTile(
-              title: DropdownButton<String>(
-                elevation: 0,
+            Container(
+              decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                padding: EdgeInsets.all(10),
-                underline: Text(''),
-                // icon: Icon(Icons.report),
-                hint: Row(
-                  children: [
-                    Icon(Icons.report),
-                    Text("Arrears Under Litigation", style: TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.w500,color: Colors.black),),
-                  ],
+
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: ListTile(
+                title: DropdownButton<String>(
+                  elevation: 0,
+
+                  underline: Text(''),
+                  // icon: Icon(Icons.report),
+                  hint: Row(
+                    children: [
+                      Icon(Icons.report),
+                      Text("Arrears Under Litigation", style: TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.w500,color: Colors.black),),
+                    ],
+                  ),
+
+                  items: <String>[
+                    'Commr Appeal',
+                    'CESTAT',
+                    'High Court',
+                    'Supreme Court'
+                  ]
+                      .map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {
+                    setState(() {
+                      selectedScreen = newValue;
+                    });
+
+                    // Navigate to the selected screen
+                    if (newValue == 'Commr Appeal') {
+                      _onItemTapped(6);
+                      Navigator.pop(context);
+                    } else if (newValue == 'CESTAT') {
+                      _onItemTapped(5);
+                      Navigator.pop(context);
+                    } else if (newValue == 'High Court') {
+                      _onItemTapped(4);
+                      Navigator.pop(context);
+                    } else if (newValue == 'Supreme Court') {
+                      _onItemTapped(3);
+                      Navigator.pop(context);
+                    }
+                  },
                 ),
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
 
-                items: <String>[
-                  'Commr Appeal',
-                  'CESTAT',
-                  'High Court',
-                  'Supreme Court'
-                ]
-                    .map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                onChanged: (newValue) {
-                  setState(() {
-                    selectedScreen = newValue;
-                  });
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: ListTile(
+                title: DropdownButton<String>(
+                  elevation: 0,
 
-                  // Navigate to the selected screen
-                  if (newValue == 'Commr Appeal') {
-                    _onItemTapped(5);
-                    Navigator.pop(context);
-                  } else if (newValue == 'CESTAT') {
-                    _onItemTapped(4);
-                    Navigator.pop(context);
-                  } else if (newValue == 'High Court') {
-                    _onItemTapped(3);
-                    Navigator.pop(context);
-                  } else if (newValue == 'Supreme Court') {
-                    _onItemTapped(5);
-                    Navigator.pop(context);
-                  }
-                },
+                  underline: Text(''),
+                  // icon: Icon(Icons.report),
+                  hint: const Row(
+                    children: [
+                      Icon(Icons.report),
+                     Text("Restrained Arrears", style: TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.w500,color: Colors.black),),
+                    ],
+                  ),
+
+                  items: <String>[
+                    'OL',
+                    'DRT',
+                    'BIFR',
+                    'NCLT-Units'
+                  ]
+                      .map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {
+                    setState(() {
+                      selectedScreen = newValue;
+                    });
+
+                    // Navigate to the selected screen
+                    if (newValue == 'OL') {
+                      _onItemTapped(7);
+                      Navigator.pop(context);
+                    } else if (newValue == 'DRT') {
+                      _onItemTapped(8);
+                      Navigator.pop(context);
+                    } else if (newValue ==  'BIFR') {
+                      _onItemTapped(9);
+                      Navigator.pop(context);
+                    } else if (newValue == 'NCLT-Units') {
+                      _onItemTapped(10);
+                      Navigator.pop(context);
+                    }
+                  },
+                ),
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: ListTile(
+                title: DropdownButton<String>(
+                  elevation: 0,
+
+                  underline: Text(''),
+                  // icon: Icon(Icons.report),
+                  hint: const Row(
+                    children: [
+                      Icon(Icons.report),
+                     Text("Recoverable Arrear", style: TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.w500,color: Colors.black),),
+                    ],
+                  ),
+
+                  items: <String>[
+                    'Appeal period not over but appeal filed',
+                    'Settelment commitsion cases',
+                    'Arrear under section-11',
+                    'Arrear under section-142',
+                  ]
+                      .map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {
+                    setState(() {
+                      selectedScreen = newValue;
+                    });
+
+                    // Navigate to the selected screen
+                    if (newValue =='Appeal period not over but appeal filed') {
+                      _onItemTapped(11);
+                      Navigator.pop(context);
+                    } else if (newValue =='Settelment commitsion cases') {
+                      _onItemTapped(12);
+                      Navigator.pop(context);
+                    } else if (newValue ==  'Arrear under section-11') {
+                      _onItemTapped(13);
+                      Navigator.pop(context);
+                    } else if (newValue == 'Arrear under section-142') {
+                      _onItemTapped(14);
+                      Navigator.pop(context);
+                    }
+                  },
+                ),
               ),
             ),
 
