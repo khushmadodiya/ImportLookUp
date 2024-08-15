@@ -7,10 +7,7 @@ class AsseserService {
 
   Future<List<Asseser>> fetchAssesers() async {
     try {
-      // Fetch the collection of documents
       QuerySnapshot snapshot = await _firestore.collection('assesers').get();
-
-      // Map each document to an Asseser object
       List<Asseser> assesers = snapshot.docs.map((doc) {
         return Asseser.fromJson(doc.data() as Map<String, dynamic>);
       }).toList();

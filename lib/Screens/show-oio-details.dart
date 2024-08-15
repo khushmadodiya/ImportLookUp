@@ -1,5 +1,6 @@
+// ignore_for_file: unused_element
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ShowAsserDetails extends StatefulWidget {
@@ -10,26 +11,22 @@ class ShowAsserDetails extends StatefulWidget {
 }
 
 class _ShowAsserDetailsState extends State<ShowAsserDetails> {
+  int num = 0;
+  // String dayCount='0';
+
   @override
   Widget build(BuildContext context) {
-    int num=0;
     return Scaffold(
-      // appBar: AppBar(title: Text('Apel')),
+      appBar: AppBar(title: const Text('Show Area Date')),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('assesers').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: Colors.white,
-              ),
-            );
+            return const Center(child: CircularProgressIndicator(color: Colors.white));
           }
 
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(
-              child: Text("No data available."),
-            );
+            return const Center(child: Text("No data available."));
           }
 
           return SingleChildScrollView(
@@ -51,71 +48,88 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
                     7: FixedColumnWidth(150),
                     8: FixedColumnWidth(150),
                     9: FixedColumnWidth(150),
-                    10: FixedColumnWidth(300),
+                    10: FixedColumnWidth(150),
                     11: FixedColumnWidth(300),
-                    12: FixedColumnWidth(250),
-                    13: FixedColumnWidth(150),
+                    12: FixedColumnWidth(300),
+                    13: FixedColumnWidth(250),
                     14: FixedColumnWidth(150),
+                    15: FixedColumnWidth(150),
                   },
                   children: [
                     // Header Row
-                    TableRow(
-                      children: [
-                        _buildHeaderCell('S No.'),
-                        _buildHeaderCell('Name'),
-                        _buildHeaderCell('Division/Range'),
-                        _buildHeaderCell('OIO'),
-                        _buildHeaderCell('Date'),
-                        _buildHeaderCell('Duty or Arrears'),
-                        _buildHeaderCell('Penalty'),
-                        _buildHeaderCell('Amount Recovered'),
-                        _buildHeaderCell('Pre Deposit'),
-                        _buildHeaderCell('Total Arrears Pending'),
-                        _buildHeaderCell('Brief Facts'),
-                        
-                        
-                        _buildHeaderCell('Status'),
-                        _buildHeaderCell('Appeal No.'),
-                        _buildHeaderCell('Stay Order No and Date'),
-                        _buildHeaderCell('Change Data'),
-                      ],
-                    ),
+                    _buildHeaderRow(),
                     // Data Rows
                     ...snapshot.data!.docs.map((doc) {
-                      
+                      num++;
                       final data = doc.data() as Map<String, dynamic>;
-                      num=num+1;
-                      return TableRow(
-                        children: [
-                          _multiLineText(num.toString()),
-                          _multiLineText(data['name'] ?? ''),
-                          _multiLineText(data['division_range'] ?? ''),
-                          _multiLineText(data['oio'] ?? ''),
-                          _multiLineText(data['date'] ?? ''),
-                          _multiLineText(data['duty_or_arrears'] ?? ''),
-                          _multiLineText(data['penalty'] ?? ''),
-                          _multiLineText(data['amount_recovered'] ?? ''),
-                          _multiLineText(data['pre_deposit'] ?? ''),
-                          _multiLineText(data['total_arrears_pending']??''),
-                          _multiLineText(data['brief_facts'] ?? ''),
-                          
-                          
-                          _multiLineText(data['status'] ?? ''),
-                          _multiLineText(data['appeal_no'] ?? ''),
-                          _multiLineText(data['stay_order_no_and_date'] ?? ''),
-                          // _multiLineText('Update Data'),
-                          ElevatedButton(onPressed:(){}, child:const Text("Transfer Case"))
-                          // _buildHeaderCell('Change Data'),
-                        ],
-                      );
+                      return _buildDataRow(data);
                     }).toList(),
-                   
                   ],
                 ),
               ),
             ),
           );
         },
+      ),
+    );
+  }
+
+  TableRow _buildHeaderRow() {
+    return TableRow(
+      children: [
+        _buildHeaderCell('S No.'),
+        _buildHeaderCell('Name'),
+        _buildHeaderCell('Division/Range'),
+        _buildHeaderCell('OIO'),
+        _buildHeaderCell('Date'),
+        _buildHeaderCell('Day Count'),
+        _buildHeaderCell('Duty or Arrears'),
+        _buildHeaderCell('Penalty'),
+        _buildHeaderCell('Amount Recovered'),
+        _buildHeaderCell('Pre Deposit'),
+        _buildHeaderCell('Total Arrears Pending'),
+        _buildHeaderCell('Brief Facts'),
+        _buildHeaderCell('Status'),
+        _buildHeaderCell('Appeal No.'),
+        _buildHeaderCell('Stay Order No and Date'),
+        _buildHeaderCell('Change Data'),
+      ],
+    );
+  }
+
+  TableRow _buildDataRow(Map<String, dynamic> data) {
+    String day=_calculateDayCount(data['date']).toString();
+    return TableRow(
+      children: [
+        _multiLineText(num.toString()),
+        _multiLineText(data['name'] ?? 'N/A'),
+        _multiLineText(data['division_range'] ?? 'N/A'),
+        _multiLineText(data['oio'] ?? 'N/A'),
+        _multiLineText(data['date'] ?? 'N/A'),
+        _multiLineText(day),
+        _multiLineText(data['duty_or_arrears'] ?? 'N/A'),
+        _multiLineText(data['penalty'] ?? 'N/A'),
+        _multiLineText(data['amount_recovered'] ?? 'N/A'),
+        _multiLineText(data['pre_deposit'] ?? 'N/A'),
+        _multiLineText(data['total_arrears_pending'] ?? 'N/A'),
+        _multiLineText(data['brief_facts'] ?? 'N/A'),
+        _multiLineText(data['status'] ?? 'N/A'),
+        _multiLineText(data['appeal_no'] ?? 'N/A'),
+        _multiLineText(data['stay_order_no_and_date'] ?? 'N/A'),
+        _buildTransferButton(),
+      ],
+    );
+  }
+
+  Widget _buildTransferButton() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 15),
+      child: ElevatedButton(
+        onPressed: () {
+          // Define your transfer case action here
+          // For example, navigate to another screen or show a dialog
+        },
+        child: const Text("Transfer Case"),
       ),
     );
   }
@@ -132,7 +146,7 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
 
   Widget _multiLineText(String text) {
     return Container(
-      height:70,
+      height: 70,
       padding: const EdgeInsets.all(8.0),
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -141,9 +155,38 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
           style: const TextStyle(fontSize: 15),
           overflow: TextOverflow.visible,
           softWrap: true,
-          maxLines: 5000, 
+          maxLines: 5000,
         ),
       ),
     );
+  }
+
+  int _calculateDayCount(String dateStr) {
+
+    List<String> parts = dateStr.split('-');
+
+    if (parts.length != 3) {
+      // print("hello i am dipuijjjmik ${parts.length}");
+      return 0;
+    }
+
+    int day = int.parse(parts[0]);
+    int month = int.parse(parts[1]);
+    int year = int.parse(parts[2]);
+
+    DateTime dateTime;
+    try {
+      dateTime = DateTime(year, month, day);
+    } catch (e) {
+      // print("hello i am");
+      return 0;
+    }
+
+    final now = DateTime.now();
+
+    final difference = now.difference(dateTime);
+    // difference.inDays.toString();
+    print("hello i am dipu ${difference.inDays}");
+    return difference.inDays;
   }
 }

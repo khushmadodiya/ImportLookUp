@@ -1,11 +1,13 @@
 
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:import_lookup/Screens/dashboard.dart';
 import '../Backend/authmethos.dart';
 import '../Widgets/text_field.dart';
 import 'SignupScreen.dart';
+import 'dashboard.dart';
 
 
 class LoginScreen extends StatefulWidget {
@@ -35,7 +37,11 @@ class _LoginScreenState extends State<LoginScreen> {
         email: _emailController.text, password: _passwordController.text);
     if (res == 'success') {
       if (context.mounted) {
+
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>DashboardScreen()), (route) => false);
+
+
+
 
         setState(() {
           _isLoading = false;
