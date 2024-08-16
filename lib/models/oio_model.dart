@@ -4,7 +4,7 @@ import 'dart:core';
 
 
 class Asseser {
-  // String? uid;
+  String? uid;
   String? name;
   String? division_range;
   String? oio;
@@ -14,7 +14,7 @@ class Asseser {
   String? amount_recovered;
   String? pre_deposit;
   String? total_arrears_pending;
-  String? breif_fect;
+  String? brief_facts;
   String? status;
   String? apeal_no;
   String? stay_order_no_and_data;
@@ -25,9 +25,11 @@ class Asseser {
   List<String>? complete_track;
   bool? isshifted;
   String? category;
+  String? remark;
+  String? subcategory;
 
   Asseser({
-     // this.uid,
+     this.uid,
     this.name,
     this.division_range,
     this.oio,
@@ -37,7 +39,7 @@ class Asseser {
     this.amount_recovered,
     this.pre_deposit,
     this.total_arrears_pending,
-    this.breif_fect,
+    this.brief_facts,
     this.status,
     this.apeal_no,
     this.stay_order_no_and_data,
@@ -47,12 +49,15 @@ class Asseser {
     this.age,
     this.complete_track,
     this.isshifted,
-    this.category
+    this.category,
+    this.remark,
+    this.subcategory
   });
 
   
   factory Asseser.fromJson(Map<String, dynamic> json) {
     return Asseser(
+      uid:json['uid'] as String? ??'',
       name: json['name'] as String? ?? '',
       division_range: json['division_range'] as String? ?? '',
       oio: json['oio'] as String? ?? '',
@@ -62,7 +67,7 @@ class Asseser {
       amount_recovered: json['amount_recovered'] as String? ?? '',
       pre_deposit: json['pre_deposit'] as String? ?? '',
       total_arrears_pending: json['total_arrears_pending'] as String? ?? '',
-      breif_fect: json['breif_fect'] as String? ?? '',
+      brief_facts: json['brief_facts'] as String? ?? '',
       status: json['status'] as String? ?? '',
       apeal_no: json['apeal_no'] as String? ?? '',
       stay_order_no_and_data: json['stay_order_no_and_data'] as String? ?? '',
@@ -70,18 +75,18 @@ class Asseser {
       gstin: json['gstin'] as String? ?? '',
       pan: json['pan'] as String? ?? '',
       age: (json['age'] as num?)?.toDouble() ?? 0.0, // Convert to double and handle null
-      complete_track: (json['complete_track'] as List<dynamic>?)
-          ?.map((item) => item as String)
-          .toList() ?? [], // Convert List<dynamic> to List<String> and handle null
+      complete_track: (json['complete_track'] as List<dynamic>?)?.map((item) => item as String).toList() ?? [], // Convert List<dynamic> to List<String> and handle null
       isshifted: json['Isshifted'] as bool? ?? false, // Handle null for boolean
       category: json['category'] as String? ?? '',
+      subcategory: json['subcategory'] as String? ?? '',
+      remark: json['remark'] as String? ?? '',
     );
   }
 
 
   Map<String, dynamic> toJson() {
     return {
-      // 'uid': uid,
+      'uid': uid,
       'name': name,
       'division_range': division_range,
       'oio': oio,
@@ -91,7 +96,7 @@ class Asseser {
       'amount_recovered': amount_recovered,
       'pre_deposit': pre_deposit,
       'total_arrears_pending': total_arrears_pending,
-      'breif_fect': breif_fect,
+      'brief_facts': brief_facts,
       'status': status,
       'apeal_no': apeal_no,
       'stay_order_no_and_data': stay_order_no_and_data,
@@ -101,8 +106,9 @@ class Asseser {
       'age':age,
       'complete_track':[],
       'isshifted':isshifted,
-      'category':category
-
+      'category':category,
+      'subcategory':subcategory,
+      'remark': remark
     };
   }
 }

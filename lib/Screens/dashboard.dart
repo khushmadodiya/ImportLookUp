@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:import_lookup/Screens/cestat_page.dart';
+import 'package:import_lookup/Screens/comm_page.dart';
+import 'package:import_lookup/Screens/high_court_page.dart';
 import 'package:import_lookup/Screens/oio-page.dart';
 import 'package:import_lookup/Screens/show-oio-details.dart';
+import 'package:import_lookup/Screens/supreme_court_page.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/provider.dart';
@@ -17,10 +21,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
     ShowAsserDetails(),
     AddAsseserDetails(),
     Text('Appeal period is not over'),
-    Text('Supreme Court'),
-    Text('High Court'),
-    Text('CESTAT'),
-    Text("Commr Appeal"),
+    SupremeCourtCases(),
+    HighCourtCases(),
+    CestatCases(),
+    CommApealCases(),
     Text("OL"),
     Text("DRT"),
     Text("BIFR"),

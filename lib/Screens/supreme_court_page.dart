@@ -7,20 +7,18 @@ import 'package:import_lookup/Screens/dashboard.dart';
 import 'package:import_lookup/Screens/universal-update-details-page.dart';
 import 'package:provider/provider.dart';
 
-import '../global.dart';
 import '../models/oio_model.dart';
 import '../provider/provider.dart';
 
 
-
-class ShowAsserDetails extends StatefulWidget {
-  const ShowAsserDetails({super.key});
+class SupremeCourtCases extends StatefulWidget {
+  const SupremeCourtCases({super.key});
 
   @override
-  State<ShowAsserDetails> createState() => _ShowAsserDetailsState();
+  State<SupremeCourtCases> createState() => _SupremeCourtCasesState();
 }
 
-class _ShowAsserDetailsState extends State<ShowAsserDetails> {
+class _SupremeCourtCasesState extends State<SupremeCourtCases> {
   @override
   void initState() {
     super.initState();
@@ -32,7 +30,6 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
   }
 
   int num = 0;
-  int index=0;
   @override
   Widget build(BuildContext context) {
     final asseserProvider = Provider.of<AsseserProvider>(context);
@@ -41,16 +38,17 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
       return Center(child: CircularProgressIndicator());
     }
 
-    if (asseserProvider.assesers == null || asseserProvider.assesers().isEmpty) {
+    if (asseserProvider.assesers == null || asseserProvider.assesers()!.isEmpty) {
       return Center(child: Text('No data found'));
     }
     List<TableRow> rows = [];
-    for (int i = 0; i < asseserProvider.assesers().length; i++) {
-      final asseser = asseserProvider.assesers()[i];
-      if (asseser['category'] == selectedcategory) {
-        print(asseser['category']);
+    for (int i = 0; i < asseserProvider.assesers()!.length; i++) {
+      final asseser = asseserProvider.assesers()![i];
+      print(asseser['subcategory']);
+      if (asseser['subcategory'] == 'SC') {
+        print(asseser['subcategory']);
         num++;
-        rows.add(_buildDataRow(asseser,i));
+        rows.add(_buildDataRow(asseser));
       }
     }
     return Scaffold(
@@ -84,9 +82,7 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
                 children: [
                   // Header Row
                   _buildHeaderRow(),
-                  for(int i=0;i<asseserProvider.assesers().length;i++)
-                    _buildDataRow(asseserProvider.assesers()[i],i)
-
+                  ...rows
                 ],
               ),
             ),
@@ -117,13 +113,14 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
     );
   }
 
-  TableRow _buildDataRow(Map<String, dynamic> data,int i) {
+  TableRow _buildDataRow(Map<String, dynamic> data) {
     String day = _calculateDayCount(data['date']).toString();
-    // print(data['uid']);
-    print(data['penalty']);
+    print(data['uid']);
+    print(data['category']);
+
     return TableRow(
       children: [
-        _multiLineText((i+1).toString()),
+        _multiLineText(num.toString()),
         _multiLineText(data['name'] ?? 'N/A'),
         _multiLineText(data['division_range'] ?? 'N/A'),
         _multiLineText(data['oio'] ?? 'N/A'),
@@ -138,12 +135,12 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
         _multiLineText(data['status'] ?? 'N/A'),
         _multiLineText(data['appeal_no'] ?? 'N/A'),
         _multiLineText(data['stay_order_no_and_date'] ?? 'N/A'),
-        _buildTransferButton(i),
+        _buildTransferButton(),
       ],
     );
   }
 
-  Widget _buildTransferButton(int i) {
+  Widget _buildTransferButton() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 15),
       child: ElevatedButton(
@@ -151,7 +148,7 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => UpdateUniversalDetails(index:i)));
+                  builder: (context) => UpdateUniversalDetails(index:num)));
         },
         child: const Text("Transfer Case"),
       ),
