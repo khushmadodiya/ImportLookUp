@@ -54,7 +54,7 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
       }
     }
     return Scaffold(
-      appBar: AppBar(title: const Text('Show Asseser Details')),
+      appBar: AppBar(title: const Text('SHOW OIO DETAILS')),
       body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: SingleChildScrollView(
