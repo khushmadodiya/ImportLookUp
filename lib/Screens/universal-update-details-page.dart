@@ -38,7 +38,7 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
 
   String date = 'Select OIO Date';
 
-  String? selectedCategory="Arrear where appeal period is not over";
+  String? selectedCategory;
   String? selectedSubCategory;
 
   final Map<String, List<String>> categorySubCategoryMap = {
@@ -55,9 +55,9 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
       "Settlement Commission cases",
       "Units closed/defaulters not traceable",
       "Arrear under Section -11 of Central Excise Act 1944",
-      "Arrear under Section 142 (1)(c)(i) & (ii)"
+      "Arrear under Section 142 (1)(c)(i) & (ii)",
+      "Arrears fit for Write-off"
     ],
-    "Arrears fit for Write-off": []
   };
   List<Map<String,dynamic>>? data;
 
@@ -86,7 +86,7 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
     _IECController.text = data![widget.index]['iec'].toString();
     _GSTINController.text = data![widget.index]['gstin'].toString();
     _PANController.text = data![widget.index]['pan'].toString();
-    // selectedCategory = data![widget.index]['category'].toString();
+    selectedCategory = data![widget.index]['category'].toString();
     // selectedSubCategory = data![widget.index]['subcategory']?.toString();
   }
 

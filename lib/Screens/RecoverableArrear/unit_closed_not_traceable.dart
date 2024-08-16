@@ -15,6 +15,7 @@ class RecoverableUnitClose extends StatefulWidget {
 class _RecoverableUnitCloseState extends State<RecoverableUnitClose> {
   @override
   void initState() {
+    print('unit colosed called.................');
     super.initState();
     final asseserProvider = Provider.of<AsseserProvider>(context, listen: false);
     asseserProvider.fetchAssesers(); // Fetch data on widget initialization
@@ -39,7 +40,7 @@ class _RecoverableUnitCloseState extends State<RecoverableUnitClose> {
     for (int i = 0; i < asseserProvider.assesers()!.length; i++) {
       final asseser = asseserProvider.assesers()![i];
       print(asseser['subcategory']);
-      if (asseser['subcategory'] == 'Settlement Commission cases') {
+      if (asseser['subcategory'] == 'Units closed/defaulters not traceable') {
         print(asseser['subcategory']);
         num++;
         rows.add(_buildDataRow(asseser,i));
