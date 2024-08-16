@@ -86,6 +86,7 @@ class _AddAsseserDetailsState extends State<AddAsseserDetails> {
         'pan':_PANController.text,
         'complete_track': ['${date} OIO is filed'],
         'category':selectedcategory,
+        'subcategory':'',
         'isshifted':0,
       };
       String res=  await AddAsesse().addDetails(asseserDetails,uid);
