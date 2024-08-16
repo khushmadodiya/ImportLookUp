@@ -14,7 +14,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   int _selectedIndex = 0;
 
-  final List<Widget> _widgetOptions = [
+  final  List<Widget> _widgetOptions = [
     ShowAsserDetails(),
     AddAsseserDetails(),
     Text('Appeal period is not over'),
@@ -32,10 +32,47 @@ class _DashboardScreenState extends State<DashboardScreen> {
     Text('Arrear under section-142'),
   ];
 
-  void _onItemTapped(int index) {
+  void _onItemTapped(int index, String itemName) {
     setState(() {
       _selectedIndex = index;
     });
+    _showSnackBar(itemName);
+  }
+
+  void _showSnackBar(String itemName) {
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Container(
+          width: MediaQuery.of(context).size.width * 0.5,// Adjust width
+          child: Row(
+            children: [
+              Icon(Icons.info_outline, color: Colors.white),
+              SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  'Selected: $itemName',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+        ),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        backgroundColor: Colors.blue.shade700,
+        duration:const Duration(seconds: 2),
+        action: SnackBarAction(
+          label: 'OK',
+          textColor: Colors.white,
+          onPressed: () {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          },
+        ),
+      ),
+    );
   }
 
   @override
@@ -152,7 +189,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       selectedItemColor: Colors.amber[800],
       onTap: (index) {
         if (index <= 1) {
-          _onItemTapped(index);
+          _onItemTapped(index, index == 0 ? 'Home' : 'Add');
         } else {
           _showBottomSheet(index);
         }
@@ -172,19 +209,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        return ListView(
-          children: _getOptionsForParentIndex(parentIndex)
-              .entries
-              .map((entry) => ListTile(
-                    title: Text(entry.key),
-                    onTap: () {
-                      setState(() {
-                        _selectedIndex = entry.value;
-                      });
-                      Navigator.pop(context);
-                    },
-                  ))
-              .toList(),
+        return Container(
+          width:350,
+          height:250,
+          decoration:BoxDecoration(
+            color:Colors.amber.withOpacity(0.1),
+            borderRadius:BorderRadius.circular(5)
+          ),
+          child: Center(
+            child: ListView(
+              
+              children: _getOptionsForParentIndex(parentIndex)
+                  .entries
+                  .map((entry) => ListTile(
+                        title: Text(entry.key),
+                        onTap: () {
+                          _onItemTapped(entry.value, entry.key);
+                          Navigator.pop(context);
+                        },
+                      ))
+                  .toList(),
+            ),
+          ),
         );
       },
     );
@@ -228,7 +274,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       title: Text(text),
       selected: _selectedIndex == index,
       onTap: () {
-        _onItemTapped(index);
+        _onItemTapped(index, text);
         Navigator.pop(context);
       },
     );
@@ -246,7 +292,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           title: Text(child),
           selected: _selectedIndex == indexMap[child],
           onTap: () {
-            _onItemTapped(indexMap[child]!);
+            _onItemTapped(indexMap[child]!, child);
             Navigator.pop(context);
           },
         );
