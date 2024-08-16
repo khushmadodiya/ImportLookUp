@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:import_lookup/Screens/ResrainedArriers/BIFR.dart';
+import 'package:import_lookup/Screens/ResrainedArriers/DRT.dart';
+import 'package:import_lookup/Screens/ResrainedArriers/NCLT.dart';
+import 'package:import_lookup/Screens/ResrainedArriers/OL.dart';
 import 'package:import_lookup/Screens/cestat_page.dart';
 import 'package:import_lookup/Screens/comm_page.dart';
 import 'package:import_lookup/Screens/high_court_page.dart';
@@ -25,10 +29,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
     HighCourtCases(),
     CestatCases(),
     CommApealCases(),
-    Text("OL"),
-    Text("DRT"),
-    Text("BIFR"),
-    Text("NCLT-Units"),
+    OLPage(),
+    DRTPage(),
+    BIFRPage(),
+    NCLTPage(),
     Text("'Appeal period not over but appeal filed'"),
     Text("'Settelment commitsion cases'"),
     Text("'Arrear under section-11'"),
