@@ -10,33 +10,6 @@ import 'package:provider/provider.dart';
 import '../models/oio_model.dart';
 import '../provider/provider.dart';
 
-// class Firstpage extends StatefulWidget {
-//   const Firstpage({super.key});
-//
-//   @override
-//   State<Firstpage> createState() => _FirstpageState();
-// }
-//
-// class _FirstpageState extends State<Firstpage> {
-//   @override
-//   void initState() {
-//     // TODO: implement initState
-//     super.initState();
-//     getData();
-//   }
-//   void getData(){
-//     Future.delayed(Duration(seconds: 5)).whenComplete(() {
-//       setState(() {});
-//       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>ShowAsserDetails()));
-//     });
-//   }
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Center(child: CircularProgressIndicator()),
-//     );
-//   }
-// }
 
 
 class ShowAsserDetails extends StatefulWidget {
@@ -63,7 +36,7 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
       return Center(child: CircularProgressIndicator());
     }
 
-    if (asseserProvider.assesers == null || asseserProvider.assesers!.isEmpty) {
+    if (asseserProvider.assesers == null || asseserProvider.assesers().isEmpty) {
       return Center(child: Text('No data found'));
     }
 
@@ -98,8 +71,8 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
                 children: [
                   // Header Row
                   _buildHeaderRow(),
-                  for(int i=0;i<asseserProvider.assesers!.length;i++)
-                    _buildDataRow(asseserProvider.assesers![i])
+                  for(int i=0;i<asseserProvider.assesers().length;i++)
+                    _buildDataRow(asseserProvider.assesers()[i])
 
                 ],
               ),
@@ -141,7 +114,7 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
         _multiLineText(data['oio'] ?? 'N/A'),
         _multiLineText(data['date'] ?? 'N/A'),
         _multiLineText(day),
-        _multiLineText(data['duty_or_arrears'] ?? 'N/A'),
+        _multiLineText(data['duty_or_arear'] ?? 'N/A'),
         _multiLineText(data['penalty'] ?? 'N/A'),
         _multiLineText(data['amount_recovered'] ?? 'N/A'),
         _multiLineText(data['pre_deposit'] ?? 'N/A'),
