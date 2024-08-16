@@ -5,14 +5,14 @@ import '../../provider/provider.dart';
 
 
 
-class RecoverableUnitClose extends StatefulWidget {
-  const RecoverableUnitClose({super.key});
+class RecoverableWriteOff extends StatefulWidget {
+  const RecoverableWriteOff({super.key});
 
   @override
-  State<RecoverableUnitClose> createState() => _RecoverableUnitCloseState();
+  State<RecoverableWriteOff> createState() => _RecoverableWriteOffState();
 }
 
-class _RecoverableUnitCloseState extends State<RecoverableUnitClose> {
+class _RecoverableWriteOffState extends State<RecoverableWriteOff> {
   @override
   void initState() {
     super.initState();
@@ -27,7 +27,6 @@ class _RecoverableUnitCloseState extends State<RecoverableUnitClose> {
   @override
   Widget build(BuildContext context) {
     final asseserProvider = Provider.of<AsseserProvider>(context);
-
     if (asseserProvider.isLoading) {
       return Center(child: CircularProgressIndicator());
     }
@@ -39,7 +38,7 @@ class _RecoverableUnitCloseState extends State<RecoverableUnitClose> {
     for (int i = 0; i < asseserProvider.assesers()!.length; i++) {
       final asseser = asseserProvider.assesers()![i];
       print(asseser['subcategory']);
-      if (asseser['subcategory'] == 'Settlement Commission cases') {
+      if (asseser['subcategory'] == 'Arrears fit for Write-off') {
         print(asseser['subcategory']);
         num++;
         rows.add(_buildDataRow(asseser,i));

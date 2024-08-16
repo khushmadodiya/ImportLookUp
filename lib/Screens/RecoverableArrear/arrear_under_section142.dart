@@ -5,14 +5,14 @@ import '../../provider/provider.dart';
 
 
 
-class RecoverableUnitClose extends StatefulWidget {
-  const RecoverableUnitClose({super.key});
+class RecoverableArrearUnder142 extends StatefulWidget {
+  const RecoverableArrearUnder142({super.key});
 
   @override
-  State<RecoverableUnitClose> createState() => _RecoverableUnitCloseState();
+  State<RecoverableArrearUnder142> createState() => _RecoverableArrearUnder142State();
 }
 
-class _RecoverableUnitCloseState extends State<RecoverableUnitClose> {
+class _RecoverableArrearUnder142State extends State<RecoverableArrearUnder142> {
   @override
   void initState() {
     super.initState();
@@ -39,7 +39,7 @@ class _RecoverableUnitCloseState extends State<RecoverableUnitClose> {
     for (int i = 0; i < asseserProvider.assesers()!.length; i++) {
       final asseser = asseserProvider.assesers()![i];
       print(asseser['subcategory']);
-      if (asseser['subcategory'] == 'Settlement Commission cases') {
+      if (asseser['subcategory'] == 'Arrear under Section 142 (1)(c)(i) & (ii)') {
         print(asseser['subcategory']);
         num++;
         rows.add(_buildDataRow(asseser,i));
