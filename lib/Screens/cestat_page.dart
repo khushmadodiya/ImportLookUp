@@ -38,12 +38,12 @@ class _CestatCasesState extends State<CestatCases> {
       return Center(child: CircularProgressIndicator());
     }
 
-    if (asseserProvider.assesers == null || asseserProvider.assesers!.isEmpty) {
+    if (asseserProvider.assesers == null || asseserProvider.assesers()!.isEmpty) {
       return Center(child: Text('No data found'));
     }
     List<TableRow> rows = [];
-    for (int i = 0; i < asseserProvider.assesers!.length; i++) {
-      final asseser = asseserProvider.assesers![i];
+    for (int i = 0; i < asseserProvider.assesers()!.length; i++) {
+      final asseser = asseserProvider.assesers()![i];
       print(asseser['subcategory']);
       if (asseser['subcategory'] == 'CESTAT') {
         print(asseser['subcategory']);

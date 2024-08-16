@@ -66,7 +66,7 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
     // TODO: implement initState
     super.initState();
     final asseserProvider = Provider.of<AsseserProvider>(context, listen: false);
-    data = asseserProvider.assesers;
+    data = asseserProvider.assesers();
     print(data![widget.index].toString());
     _assesseeNameController.text = data![widget.index]['name'].toString();
     _divisionRangeController.text = data![widget.index]['division_range'].toString();

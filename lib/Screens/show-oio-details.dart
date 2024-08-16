@@ -11,33 +11,6 @@ import '../global.dart';
 import '../models/oio_model.dart';
 import '../provider/provider.dart';
 
-// class Firstpage extends StatefulWidget {
-//   const Firstpage({super.key});
-//
-//   @override
-//   State<Firstpage> createState() => _FirstpageState();
-// }
-//
-// class _FirstpageState extends State<Firstpage> {
-//   @override
-//   void initState() {
-//     // TODO: implement initState
-//     super.initState();
-//     getData();
-//   }
-//   void getData(){
-//     Future.delayed(Duration(seconds: 5)).whenComplete(() {
-//       setState(() {});
-//       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>ShowAsserDetails()));
-//     });
-//   }
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Center(child: CircularProgressIndicator()),
-//     );
-//   }
-// }
 
 
 class ShowAsserDetails extends StatefulWidget {
@@ -68,16 +41,16 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
       return Center(child: CircularProgressIndicator());
     }
 
-    if (asseserProvider.assesers == null || asseserProvider.assesers!.isEmpty) {
+    if (asseserProvider.assesers == null || asseserProvider.assesers().isEmpty) {
       return Center(child: Text('No data found'));
     }
     List<TableRow> rows = [];
-    for (int i = 0; i < asseserProvider.assesers!.length; i++) {
-      final asseser = asseserProvider.assesers![i];
+    for (int i = 0; i < asseserProvider.assesers().length; i++) {
+      final asseser = asseserProvider.assesers()[i];
       if (asseser['category'] == selectedcategory) {
         print(asseser['category']);
         num++;
-        rows.add(_buildDataRow(asseser));
+        rows.add(_buildDataRow(asseser,i));
       }
     }
     return Scaffold(
@@ -111,8 +84,10 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
                 children: [
                   // Header Row
                   _buildHeaderRow(),
-                  ...rows
-                   ],
+                  for(int i=0;i<asseserProvider.assesers().length;i++)
+                    _buildDataRow(asseserProvider.assesers()[i],i)
+
+                ],
               ),
             ),
           )),
@@ -142,13 +117,13 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
     );
   }
 
-  TableRow _buildDataRow(Map<String, dynamic> data) {
+  TableRow _buildDataRow(Map<String, dynamic> data,int i) {
     String day = _calculateDayCount(data['date']).toString();
     // print(data['uid']);
     print(data['penalty']);
     return TableRow(
       children: [
-        _multiLineText(num.toString()),
+        _multiLineText((i+1).toString()),
         _multiLineText(data['name'] ?? 'N/A'),
         _multiLineText(data['division_range'] ?? 'N/A'),
         _multiLineText(data['oio'] ?? 'N/A'),
@@ -163,12 +138,12 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
         _multiLineText(data['status'] ?? 'N/A'),
         _multiLineText(data['appeal_no'] ?? 'N/A'),
         _multiLineText(data['stay_order_no_and_date'] ?? 'N/A'),
-        _buildTransferButton(),
+        _buildTransferButton(i),
       ],
     );
   }
 
-  Widget _buildTransferButton() {
+  Widget _buildTransferButton(int i) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 15),
       child: ElevatedButton(
@@ -176,7 +151,7 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => UpdateUniversalDetails(index:num)));
+                  builder: (context) => UpdateUniversalDetails(index:i)));
         },
         child: const Text("Transfer Case"),
       ),

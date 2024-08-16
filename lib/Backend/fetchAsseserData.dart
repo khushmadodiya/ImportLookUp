@@ -13,7 +13,7 @@ class AsseserService {
         Asseser asseser = Asseser.fromJson(doc.data() as Map<String, dynamic>);
         return asseser.toJson();
       }).toList();
-      print(asseserMaps); // Log the mapped data
+      // print(asseserMaps); // Log the mapped data
       return asseserMaps;
     } catch (e) {
       print("Error fetching assesers: $e");
