@@ -7,47 +7,18 @@ import 'package:import_lookup/Screens/dashboard.dart';
 import 'package:import_lookup/Screens/universal-update-details-page.dart';
 import 'package:provider/provider.dart';
 
-import '../global.dart';
 import '../models/oio_model.dart';
 import '../provider/provider.dart';
 
-// class Firstpage extends StatefulWidget {
-//   const Firstpage({super.key});
-//
-//   @override
-//   State<Firstpage> createState() => _FirstpageState();
-// }
-//
-// class _FirstpageState extends State<Firstpage> {
-//   @override
-//   void initState() {
-//     // TODO: implement initState
-//     super.initState();
-//     getData();
-//   }
-//   void getData(){
-//     Future.delayed(Duration(seconds: 5)).whenComplete(() {
-//       setState(() {});
-//       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>ShowAsserDetails()));
-//     });
-//   }
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Center(child: CircularProgressIndicator()),
-//     );
-//   }
-// }
 
-
-class ShowAsserDetails extends StatefulWidget {
-  const ShowAsserDetails({super.key});
+class SupremeCourtCases extends StatefulWidget {
+  const SupremeCourtCases({super.key});
 
   @override
-  State<ShowAsserDetails> createState() => _ShowAsserDetailsState();
+  State<SupremeCourtCases> createState() => _SupremeCourtCasesState();
 }
 
-class _ShowAsserDetailsState extends State<ShowAsserDetails> {
+class _SupremeCourtCasesState extends State<SupremeCourtCases> {
   @override
   void initState() {
     super.initState();
@@ -59,7 +30,6 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
   }
 
   int num = 0;
-  int index=0;
   @override
   Widget build(BuildContext context) {
     final asseserProvider = Provider.of<AsseserProvider>(context);
@@ -74,8 +44,9 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
     List<TableRow> rows = [];
     for (int i = 0; i < asseserProvider.assesers!.length; i++) {
       final asseser = asseserProvider.assesers![i];
-      if (asseser['category'] == selectedcategory) {
-        print(asseser['category']);
+      print(asseser['subcategory']);
+      if (asseser['subcategory'] == 'SC') {
+        print(asseser['subcategory']);
         num++;
         rows.add(_buildDataRow(asseser));
       }
@@ -112,7 +83,7 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
                   // Header Row
                   _buildHeaderRow(),
                   ...rows
-                   ],
+                ],
               ),
             ),
           )),
@@ -144,8 +115,9 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
 
   TableRow _buildDataRow(Map<String, dynamic> data) {
     String day = _calculateDayCount(data['date']).toString();
-    // print(data['uid']);
-    print(data['penalty']);
+    print(data['uid']);
+    print(data['category']);
+
     return TableRow(
       children: [
         _multiLineText(num.toString()),

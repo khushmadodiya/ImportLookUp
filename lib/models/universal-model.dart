@@ -19,6 +19,7 @@ class UniversalModel{
   String? PAN;
   double? Age;
   String? category;
+  String? subcategory;
 
   UniversalModel({
   this.name,
@@ -38,7 +39,8 @@ class UniversalModel{
     this.IEC,
     this.PAN,
     this.Age,
-    this.category
+    this.category,
+    this.subcategory
     
   });
 
@@ -61,7 +63,8 @@ class UniversalModel{
       GSTIN: json['GSTIN'] as String,
       PAN: json['PAN'] as String,
       Age: json['Age'] as double,
-      category: json['category']as String
+      category: json['category']as String,
+      subcategory: json['subcategory']as String,
 
     );
   }
@@ -86,7 +89,8 @@ class UniversalModel{
       'PAN': PAN,
       'Age':Age,
       'complete_track':[],
-      'category':category
+      'category':category,
+      'subcategory':subcategory,
     };
   }
 }

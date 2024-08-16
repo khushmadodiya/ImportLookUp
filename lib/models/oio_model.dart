@@ -24,6 +24,7 @@ class Asseser {
   bool? isshifted;
   String? category;
   String? remark;
+  String? subcategory;
 
   Asseser({
      this.uid,
@@ -47,7 +48,8 @@ class Asseser {
     this.complete_track,
     this.isshifted,
     this.category,
-    this.remark
+    this.remark,
+    this.subcategory
   });
 
   // factory Asseser.fromJson(Map<String, dynamic> json) {
@@ -100,6 +102,7 @@ class Asseser {
       complete_track: (json['complete_track'] as List<dynamic>?)?.map((item) => item as String).toList() ?? [], // Convert List<dynamic> to List<String> and handle null
       isshifted: json['Isshifted'] as bool? ?? false, // Handle null for boolean
       category: json['category'] as String? ?? '',
+      subcategory: json['subcategory'] as String? ?? '',
       remark: json['remark'] as String? ?? '',
     );
   }
@@ -128,6 +131,7 @@ class Asseser {
       'complete_track':[],
       'isshifted':isshifted,
       'category':category,
+      'subcategory':subcategory,
       'remark': remark
     };
   }

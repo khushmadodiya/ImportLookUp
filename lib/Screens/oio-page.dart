@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 // import 'package:intl/intl.dart';
 import 'package:import_lookup/Screens/Custom%20code/textfiled.dart';
+import 'package:import_lookup/global.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
@@ -84,8 +85,8 @@ class _AddAsseserDetailsState extends State<AddAsseserDetails> {
         'gstin':_GSTINController.text,
         'pan':_PANController.text,
         'complete_track': ['${date} OIO is filed'],
-        'category':"apeal period not over",
-        'isshifted':1,
+        'category':selectedcategory,
+        'isshifted':0,
       };
       String res=  await AddAsesse().addDetails(asseserDetails,uid);
      if(res=="s") {

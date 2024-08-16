@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:import_lookup/Backend/AddUniversalDetails.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -41,10 +43,10 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
 
   final Map<String, List<String>> categorySubCategoryMap = {
     "Arrear in Litigation/Appeal": [
-      "SC/HC",
+      "SC","HC",
       "CESTAT",
-      "Commissioner (Appeal)",
-      "Additional Secretary (Revision Application)"
+      "Commissioner Appeal",
+      // "Additional Secretary (Revision Application)"
     ],
     "Restrained Arrear": ["OL", "DRT", "BIFR", "NCLT"],
     "Arrear where appeal period is not over": [],
@@ -57,36 +59,35 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
     ],
     "Arrears fit for Write-off": []
   };
+  List<Map<String,dynamic>>? data;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     final asseserProvider = Provider.of<AsseserProvider>(context, listen: false);
-    List<Map<String,dynamic>>? data = asseserProvider.assesers;
+    data = asseserProvider.assesers;
     print(data![widget.index].toString());
     _assesseeNameController.text = data![widget.index]['name'].toString();
-    _divisionRangeController.text = data[widget.index]['division_range'].toString();
-    _oioNoDateController.text = data[widget.index]['oio'].toString();
-    date = data[widget.index]['date'].toString();  // Date value
-    _totalDutyOfArrearController.text = data[widget.index]['duty_or_arear'].toString();
-    _penaltyController.text = data[widget.index]['penalty'].toString();
-    _interestController.text = data[widget.index]['interest'].toString();
-    _amountRecoveredController.text = data[widget.index]['amount_recovered'].toString();
-    _preDepositController.text = data[widget.index]['pre_deposit'].toString();
-    _totalArrearsPendingController.text = data[widget.index]['total_arrears_pending'].toString();
-    _briefFactsController.text = data[widget.index]['brief_facts'].toString();
-    _presentStatusController.text = data[widget.index]['status'].toString();
-    _appealNoController.text = data[widget.index]['appeal_no'].toString();
-    _stayOrderNoDateController.text = data[widget.index]['stay_order_no_and_date'].toString();
-    _effortsMadeRemarksController.text = data[widget.index]['remark'].toString();
-    _IECController.text = data[widget.index]['iec'].toString();
-    _GSTINController.text = data[widget.index]['gstin'].toString();
-    _PANController.text = data[widget.index]['pan'].toString();
-
-    // Assign selected category and subcategory
-    // selectedCategory = data[widget.index]['category'].toString();
-    // selectedSubCategory = data[widget.index]['subcategory']?.toString();
+    _divisionRangeController.text = data![widget.index]['division_range'].toString();
+    _oioNoDateController.text = data![widget.index]['oio'].toString();
+    date = data![widget.index]['date'].toString();  // Date value
+    _totalDutyOfArrearController.text = data![widget.index]['duty_or_arear'].toString();
+    _penaltyController.text = data![widget.index]['penalty'].toString();
+    _interestController.text = data![widget.index]['interest'].toString();
+    _amountRecoveredController.text = data![widget.index]['amount_recovered'].toString();
+    _preDepositController.text = data![widget.index]['pre_deposit'].toString();
+    _totalArrearsPendingController.text = data![widget.index]['total_arrears_pending'].toString();
+    _briefFactsController.text = data![widget.index]['brief_facts'].toString();
+    _presentStatusController.text = data![widget.index]['status'].toString();
+    _appealNoController.text = data![widget.index]['appeal_no'].toString();
+    _stayOrderNoDateController.text = data![widget.index]['stay_order_no_and_date'].toString();
+    _effortsMadeRemarksController.text = data![widget.index]['remark'].toString();
+    _IECController.text = data![widget.index]['iec'].toString();
+    _GSTINController.text = data![widget.index]['gstin'].toString();
+    _PANController.text = data![widget.index]['pan'].toString();
+    // selectedCategory = data![widget.index]['category'].toString();
+    // selectedSubCategory = data![widget.index]['subcategory']?.toString();
   }
 
   @override
@@ -112,7 +113,8 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
   }
 
   void addDetail() async {
-    var uid = Uuid().v1();
+    var uid = data![widget.index]['uid'];
+
     Map<String, dynamic> asseserDetails = {
       'uid': uid,
       'name': _assesseeNameController.text,
@@ -132,15 +134,23 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
       'iec': _IECController.text,
       'gstin': _GSTINController.text,
       'pan': _PANController.text,
-      'complete_track': ['${date} OIO is filed'],
+      'complete_track': selectedCategory=="Arrear where appeal period is not over"?['${date} OIO is filed']:['${date} shifted to $selectedCategory : $selectedSubCategory'],
       'category': selectedCategory ?? "None",
-      'isshifted': 1,
+      'subcategory':selectedSubCategory ?? "None",
+      'isshifted': selectedCategory=="Arrear where appeal period is not over"?0:1,
     };
-    String res = await AddAsesse().addDetails(asseserDetails, uid);
+
+    String trackEntry = selectedCategory == "Arrear where appeal period is not over"
+        ? '${date} OIO is filed'
+        : '${date} shifted to $selectedCategory : $selectedSubCategory';
+
+    String res = await AddUniversalDetails().addDetails(asseserDetails,uid,trackEntry);
     if (res == "s") {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Details added successfully!')),
+
       );
+      Navigator.pop(context);
     }
   }
 
