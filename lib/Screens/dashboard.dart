@@ -5,9 +5,6 @@ import 'package:import_lookup/Screens/high_court_page.dart';
 import 'package:import_lookup/Screens/oio-page.dart';
 import 'package:import_lookup/Screens/show-oio-details.dart';
 import 'package:import_lookup/Screens/supreme_court_page.dart';
-import 'package:provider/provider.dart';
-
-import '../provider/provider.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -17,7 +14,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   int _selectedIndex = 0;
 
-  static const List<Widget> _widgetOptions =  <Widget>[
+  final List<Widget> _widgetOptions = [
     ShowAsserDetails(),
     AddAsseserDetails(),
     Text('Appeal period is not over'),
@@ -29,9 +26,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     Text("DRT"),
     Text("BIFR"),
     Text("NCLT-Units"),
-    Text("'Appeal period not over but appeal filed'"),
-    Text("'Settelment commitsion cases'"),
-    Text("'Arrear under section-11'"),
+    Text("Appeal period not over but appeal filed"),
+    Text("Settlement commission cases"),
+    Text("Arrear under section-11"),
     Text('Arrear under section-142'),
   ];
 
@@ -43,80 +40,182 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isWideScreen = screenWidth > 700;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dashboard'),
       ),
-      drawer: Drawer(
-        backgroundColor: Colors.white,
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              child: Text('Custom Import'),
+      drawer: isWideScreen ? null : _buildDrawer(),
+      body: _widgetOptions.elementAt(_selectedIndex),
+      bottomNavigationBar: isWideScreen ? _buildBottomBar() : null,
+    );
+  }
+
+  Widget _buildDrawer() {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          const DrawerHeader(
+            decoration: BoxDecoration(color: Colors.blue),
+            child: Text(
+              'Custom Import',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+              ),
             ),
-            _buildDrawerItem(
-              icon: Icons.home,
-              text: 'Appeal period is not over',
-              index: 0,
-            ),
-            _buildDrawerItem(
-              icon: Icons.person,
-              text: 'Add asserdetails',
-              index: 1,
-            ),
-            _buildDropdown(
-              hintText: 'Arrears Under Litigation',
-              items: <String>[
-                'Commr Appeal',
-                'CESTAT',
-                'High Court',
-                'Supreme Court'
-              ],
-              indexMap: {
-                'Commr Appeal': 6,
-                'CESTAT': 5,
-                'High Court': 4,
-                'Supreme Court': 3,
-              },
-            ),
-            _buildDropdown(
-              hintText: 'Restrained Arrears',
-              items: <String>[
-                'OL',
-                'DRT',
-                'BIFR',
-                'NCLT-Units'
-              ],
-              indexMap: {
-                'OL': 7,
-                'DRT': 8,
-                'BIFR': 9,
-                'NCLT-Units': 10,
-              },
-            ),
-            _buildDropdown(
-              hintText: 'Recoverable Arrear',
-              items: <String>[
-                'Appeal period not over but appeal filed',
-                'Settelment commitsion cases',
-                'Arrear under section-11',
-                'Arrear under section-142',
-              ],
-              indexMap: {
-                'Appeal period not over but appeal filed': 11,
-                'Settelment commitsion cases': 12,
-                'Arrear under section-11': 13,
-                'Arrear under section-142': 14,
-              },
-            ),
-          ],
-        ),
-      ),
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+          ),
+          _buildDrawerItem(
+            icon: Icons.home,
+            text: 'Appeal period is not over',
+            index: 2,
+          ),
+          _buildDrawerItem(
+            icon: Icons.person,
+            text: 'Add asserdetails',
+            index: 1,
+          ),
+          _buildExpandableListItem(
+            title: 'Arrears Under Litigation',
+            children: [
+              'Commr Appeal',
+              'CESTAT',
+              'High Court',
+              'Supreme Court'
+            ],
+            indexMap: {
+              'Commr Appeal': 6,
+              'CESTAT': 5,
+              'High Court': 4,
+              'Supreme Court': 3,
+            },
+          ),
+          _buildExpandableListItem(
+            title: 'Restrained Arrears',
+            children: ['OL', 'DRT', 'BIFR', 'NCLT-Units'],
+            indexMap: {
+              'OL': 7,
+              'DRT': 8,
+              'BIFR': 9,
+              'NCLT-Units': 10,
+            },
+          ),
+          _buildExpandableListItem(
+            title: 'Recoverable Arrear',
+            children: [
+              'Appeal period not over but appeal filed',
+              'Settlement commission cases',
+              'Arrear under section-11',
+              'Arrear under section-142',
+            ],
+            indexMap: {
+              'Appeal period not over but appeal filed': 11,
+              'Settlement commission cases': 12,
+              'Arrear under section-11': 13,
+              'Arrear under section-142': 14,
+            },
+          ),
+        ],
       ),
     );
+  }
+
+  Widget _buildBottomBar() {
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person),
+          label: 'Add',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.gavel),
+          label: 'Litigation',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.block),
+          label: 'Restrained',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.monetization_on),
+          label: 'Recoverable',
+        ),
+      ],
+      currentIndex: _getBottomNavIndex(),
+      selectedItemColor: Colors.amber[800],
+      onTap: (index) {
+        if (index <= 1) {
+          _onItemTapped(index);
+        } else {
+          _showBottomSheet(index);
+        }
+      },
+    );
+  }
+
+  int _getBottomNavIndex() {
+    if (_selectedIndex <= 1) return _selectedIndex;
+    if (_selectedIndex >= 3 && _selectedIndex <= 6) return 2;
+    if (_selectedIndex >= 7 && _selectedIndex <= 10) return 3;
+    if (_selectedIndex >= 11 && _selectedIndex <= 14) return 4;
+    return 0;
+  }
+
+  void _showBottomSheet(int parentIndex) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return ListView(
+          children: _getOptionsForParentIndex(parentIndex)
+              .entries
+              .map((entry) => ListTile(
+                    title: Text(entry.key),
+                    onTap: () {
+                      setState(() {
+                        _selectedIndex = entry.value;
+                      });
+                      Navigator.pop(context);
+                    },
+                  ))
+              .toList(),
+        );
+      },
+    );
+  }
+
+  Map<String, int> _getOptionsForParentIndex(int parentIndex) {
+    switch (parentIndex) {
+      case 2:
+        return {
+          'Commr Appeal': 6,
+          'CESTAT': 5,
+          'High Court': 4,
+          'Supreme Court': 3,
+        };
+      case 3:
+        return {
+          'OL': 7,
+          'DRT': 8,
+          'BIFR': 9,
+          'NCLT-Units': 10,
+        };
+      case 4:
+        return {
+          'Appeal period not over but appeal filed': 11,
+          'Settlement commission cases': 12,
+          'Arrear under section-11': 13,
+          'Arrear under section-142': 14,
+        };
+      default:
+        return {};
+    }
   }
 
   Widget _buildDrawerItem({
@@ -124,63 +223,34 @@ class _DashboardScreenState extends State<DashboardScreen> {
     required String text,
     required int index,
   }) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      decoration: BoxDecoration(
-        color: _selectedIndex == index ? Colors.blue.withOpacity(0.1) : Colors.transparent,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: ListTile(
-        leading: Icon(icon),
-        title: Text(text),
-        onTap: () {
-          _onItemTapped(index);
-          Navigator.pop(context);
-        },
-      ),
+    return ListTile(
+      leading: Icon(icon),
+      title: Text(text),
+      selected: _selectedIndex == index,
+      onTap: () {
+        _onItemTapped(index);
+        Navigator.pop(context);
+      },
     );
   }
 
-  Widget _buildDropdown({
-    required String hintText,
-    required List<String> items,
+  Widget _buildExpandableListItem({
+    required String title,
+    required List<String> children,
     required Map<String, int> indexMap,
   }) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      child: ListTile(
-        title: DropdownButton<String>(
-          elevation: 0,
-          underline: Text(''),
-          hint: Row(
-            children: [
-              Icon(Icons.report),
-              Text(
-                hintText,
-                style: TextStyle(
-                    fontSize: 18, fontWeight: FontWeight.w500, color: Colors.black),
-              ),
-            ],
-          ),
-          items: items.map((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
-          onChanged: (newValue) {
-            if (newValue != null) {
-              setState(() {
-                _selectedIndex = indexMap[newValue]!;
-              });
-              Navigator.pop(context);
-            }
+    return ExpansionTile(
+      title: Text(title),
+      children: children.map((child) {
+        return ListTile(
+          title: Text(child),
+          selected: _selectedIndex == indexMap[child],
+          onTap: () {
+            _onItemTapped(indexMap[child]!);
+            Navigator.pop(context);
           },
-        ),
-      ),
+        );
+      }).toList(),
     );
   }
 }
