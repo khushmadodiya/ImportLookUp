@@ -47,7 +47,7 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
     List<TableRow> rows = [];
     for (int i = 0; i < asseserProvider.assesers().length; i++) {
       final asseser = asseserProvider.assesers()[i];
-      if (asseser['category'] == selectedcategory) {
+      if (asseser['category'] == selectedcategory ) {
         print(asseser['category']);
         num++;
         rows.add(_buildDataRow(asseser,i));
@@ -84,9 +84,9 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
                 children: [
                   // Header Row
                   _buildHeaderRow(),
-                  for(int i=0;i<asseserProvider.assesers().length;i++)
-                    _buildDataRow(asseserProvider.assesers()[i],i)
-
+                  // for(int i=0;i<asseserProvider.assesers().length;i++)
+                    // _buildDataRow(asseserProvider.assesers()[i],i)
+                     ...rows
                 ],
               ),
             ),
