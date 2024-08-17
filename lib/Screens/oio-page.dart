@@ -130,7 +130,7 @@ class _AddAsseserDetailsState extends State<AddAsseserDetails> {
                     children: [
                       // TextField(),
                       SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.24,
+                          width: MediaQuery.of(context).size.width * 0.269,
                           child: TextField(
                             controller: _oioNoDateController,
                             decoration:const InputDecoration(
@@ -142,8 +142,9 @@ class _AddAsseserDetailsState extends State<AddAsseserDetails> {
                           ),
                          const SizedBox(width:20,),
                           SizedBox(
+
                             height: 51,
-                            width:300,
+                            width:MediaQuery.of(context).size.width/5,
                             child: InkWell(
                               onTap:()async {
                                 DateTime? dat=await showDatePicker(context: context, firstDate:DateTime(1500), lastDate:DateTime.now());
@@ -160,22 +161,24 @@ class _AddAsseserDetailsState extends State<AddAsseserDetails> {
                                     color:Colors.grey
                                   ),
                                 ),
-                              width: MediaQuery.of(context).size.width * 0.3,
+                              width: MediaQuery.of(context).size.width * 0.48,
                               child:Center(child: Text(date)),
                               ),
                             ),
                           ),
                           const SizedBox(width:20,),
-                          SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.518,
-                          child: TextField(
-                            controller: _totalDutyOfArrearController,
-                            decoration:const InputDecoration(
-                              hintText:'Total Duty Arrear',
-                              labelText: 'Total Duty Arrear',
-                              border: OutlineInputBorder(),
+                          Expanded(
+                            child: SizedBox(
+                            // width: MediaQuery.of(context).size.width,
+                            child: TextField(
+                              controller: _totalDutyOfArrearController,
+                              decoration:const InputDecoration(
+                                hintText:'Total Duty Arrear',
+                                labelText: 'Total Duty Arrear',
+                                border: OutlineInputBorder(),
+                              ),
+                            )
                             ),
-                          )
                           ),
                     ],
                   ),

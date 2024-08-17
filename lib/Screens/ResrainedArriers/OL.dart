@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:import_lookup/Screens/universal-update-details-page.dart';
+import 'package:import_lookup/excael-download-option.dart';
 import 'package:provider/provider.dart';
 import '../../provider/provider.dart';
 
@@ -24,6 +25,7 @@ class _OLPageState extends State<OLPage> {
   }
 
   int num = 0;
+  List<Map<String,dynamic>>myData=[];
   @override
   Widget build(BuildContext context) {
     final asseserProvider = Provider.of<AsseserProvider>(context);
@@ -41,46 +43,67 @@ class _OLPageState extends State<OLPage> {
       print(asseser['subcategory']);
       if (asseser['subcategory'] == 'OL') {
         print(asseser['subcategory']);
+        myData.add(asseser);
         num++;
         rows.add(_buildDataRow(asseser,i));
       }
     }
     return Scaffold(
-      appBar: AppBar(title: const Text('SUPREME COURT DETAILS')),
-      body: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: Table(
-                border: TableBorder.all(width: 1.0, color: Colors.black),
-                columnWidths: const {
-                  0: FixedColumnWidth(70),
-                  1: FixedColumnWidth(300),
-                  2: FixedColumnWidth(180),
-                  3: FixedColumnWidth(300),
-                  4: FixedColumnWidth(150),
-                  5: FixedColumnWidth(120),
-                  6: FixedColumnWidth(180),
-                  7: FixedColumnWidth(180),
-                  8: FixedColumnWidth(180),
-                  9: FixedColumnWidth(180),
-                  10: FixedColumnWidth(180),
-                  11: FixedColumnWidth(350),
-                  12: FixedColumnWidth(350),
-                  13: FixedColumnWidth(250),
-                  14: FixedColumnWidth(180),
-                  15: FixedColumnWidth(180),
-                },
-                children: [
-                  // Header Row
-                  _buildHeaderRow(),
-                  ...rows
-                ],
+      appBar: AppBar(title: const Text('OL CASES')),
+      body: Expanded(
+        child: Column(
+          children: [
+             InkWell(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  height:40,
+                  width:150,
+                color:Colors.amber.withOpacity(0.3),
+                child:const Center(child:  Text("Download Excel"))
+                ),
               ),
+              onTap:(){
+                ExcelDonwloadOption().exportToExcel(myData,'OL CASES');
+              },
             ),
-          )),
+            SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: const EdgeInsets.all(18.0),
+                    child: Table(
+                      border: TableBorder.all(width: 1.0, color: Colors.black),
+                      columnWidths: const {
+                        0: FixedColumnWidth(70),
+                        1: FixedColumnWidth(300),
+                        2: FixedColumnWidth(180),
+                        3: FixedColumnWidth(300),
+                        4: FixedColumnWidth(150),
+                        5: FixedColumnWidth(120),
+                        6: FixedColumnWidth(180),
+                        7: FixedColumnWidth(180),
+                        8: FixedColumnWidth(180),
+                        9: FixedColumnWidth(180),
+                        10: FixedColumnWidth(180),
+                        11: FixedColumnWidth(350),
+                        12: FixedColumnWidth(350),
+                        13: FixedColumnWidth(250),
+                        14: FixedColumnWidth(180),
+                        15: FixedColumnWidth(180),
+                      },
+                      children: [
+                        // Header Row
+                        _buildHeaderRow(),
+                        ...rows
+                      ],
+                    ),
+                  ),
+                )),
+          ],
+        ),
+      ),
     );
   }
 
