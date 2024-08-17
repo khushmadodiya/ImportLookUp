@@ -29,7 +29,7 @@ class _CommApealCasesState extends State<CommApealCases> {
     });
   }
 
-  int num = 0;
+  int num = -1;
   @override
   Widget build(BuildContext context) {
     final asseserProvider = Provider.of<AsseserProvider>(context);
@@ -48,7 +48,7 @@ class _CommApealCasesState extends State<CommApealCases> {
       if (asseser['subcategory'] == 'Commissioner Appeal') {
         print(asseser['subcategory']);
         num++;
-        rows.add(_buildDataRow(asseser,i));
+        rows.add(_buildDataRow(asseser,num));
       }
     }
     return Scaffold(

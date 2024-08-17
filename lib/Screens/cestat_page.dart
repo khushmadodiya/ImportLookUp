@@ -29,7 +29,7 @@ class _CestatCasesState extends State<CestatCases> {
     });
   }
 
-  int num = 0;
+  int num = -1;
   @override
   Widget build(BuildContext context) {
     final asseserProvider = Provider.of<AsseserProvider>(context);
@@ -48,7 +48,7 @@ class _CestatCasesState extends State<CestatCases> {
       if (asseser['subcategory'] == 'CESTAT') {
         print(asseser['subcategory']);
         num++;
-        rows.add(_buildDataRow(asseser,i+1));
+        rows.add(_buildDataRow(asseser,num));
       }
     }
     return Scaffold(
