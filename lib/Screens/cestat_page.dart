@@ -48,11 +48,11 @@ class _CestatCasesState extends State<CestatCases> {
       if (asseser['subcategory'] == 'CESTAT') {
         print(asseser['subcategory']);
         num++;
-        rows.add(_buildDataRow(asseser,i+1));
+        rows.add(_buildDataRow(asseser,i));
       }
     }
     return Scaffold(
-      appBar: AppBar(title: const Text('CESTAT PAGE')),
+      appBar: AppBar(title: const Text('CESTAT CASES')),
       body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: SingleChildScrollView(

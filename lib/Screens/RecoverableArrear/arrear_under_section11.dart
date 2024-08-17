@@ -46,7 +46,7 @@ class _RecoverableArrearUnderSection11State extends State<RecoverableArrearUnder
       }
     }
     return Scaffold(
-      appBar: AppBar(title: const Text('SUPREME COURT DETAILS')),
+      appBar: AppBar(title: const Text('ARREAR UNDER SECTION -11 OF CENTRAL EXCISE ACT 1994')),
       body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: SingleChildScrollView(

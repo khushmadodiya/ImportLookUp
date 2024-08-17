@@ -46,7 +46,7 @@ class _RecoverableArrearUnder142State extends State<RecoverableArrearUnder142> {
       }
     }
     return Scaffold(
-      appBar: AppBar(title: const Text('SUPREME COURT DETAILS')),
+      appBar: AppBar(title: const Text('ARREAR UNDER SECTION 142')),
       body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: SingleChildScrollView(

@@ -46,7 +46,7 @@ class _RecoverableSattelmentCasesState extends State<RecoverableSattelmentCases>
       }
     }
     return Scaffold(
-      appBar: AppBar(title: const Text('SUPREME COURT DETAILS')),
+      appBar: AppBar(title: const Text('SETTLEMENT COMMISION CASES')),
       body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: SingleChildScrollView(

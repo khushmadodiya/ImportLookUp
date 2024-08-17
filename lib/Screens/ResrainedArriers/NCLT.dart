@@ -46,7 +46,7 @@ class _NCLTPageState extends State<NCLTPage> {
       }
     }
     return Scaffold(
-      appBar: AppBar(title: const Text('SUPREME COURT DETAILS')),
+      appBar: AppBar(title: const Text('NCLT CASES')),
       body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: SingleChildScrollView(

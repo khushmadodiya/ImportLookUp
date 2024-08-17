@@ -46,7 +46,7 @@ class _BIFRPageState extends State<BIFRPage> {
       }
     }
     return Scaffold(
-      appBar: AppBar(title: const Text('SUPREME COURT DETAILS')),
+      appBar: AppBar(title: const Text('BIFR CASES')),
       body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: SingleChildScrollView(

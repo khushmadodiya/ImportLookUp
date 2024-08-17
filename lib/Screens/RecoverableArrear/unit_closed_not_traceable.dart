@@ -47,7 +47,7 @@ class _RecoverableUnitCloseState extends State<RecoverableUnitClose> {
       }
     }
     return Scaffold(
-      appBar: AppBar(title: const Text('SUPREME COURT DETAILS')),
+      appBar: AppBar(title: const Text('UNIT CLOSED/DEFAULTER NOT TRACEABLE')),
       body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: SingleChildScrollView(

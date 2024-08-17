@@ -45,7 +45,7 @@ class _RecoverableWriteOffState extends State<RecoverableWriteOff> {
       }
     }
     return Scaffold(
-      appBar: AppBar(title: const Text('SUPREME COURT DETAILS')),
+      appBar: AppBar(title: const Text('ARREARS FIT FOR WRITE OFF')),
       body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: SingleChildScrollView(

@@ -52,7 +52,7 @@ class _SupremeCourtCasesState extends State<SupremeCourtCases> {
       }
     }
     return Scaffold(
-      appBar: AppBar(title: const Text('SUPREME COURT DETAILS')),
+      appBar: AppBar(title: const Text('SUPREME COURT CASES')),
       body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: SingleChildScrollView(

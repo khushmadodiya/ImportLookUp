@@ -46,7 +46,7 @@ class _RecoverableNoApealFiledState extends State<RecoverableNoApealFiled> {
       }
     }
     return Scaffold(
-      appBar: AppBar(title: const Text('SUPREME COURT DETAILS')),
+      appBar: AppBar(title: const Text('APEAL PERIOD OVER BUT APEAL FILED')),
       body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: SingleChildScrollView(

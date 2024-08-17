@@ -52,7 +52,7 @@ class _CommApealCasesState extends State<CommApealCases> {
       }
     }
     return Scaffold(
-      appBar: AppBar(title: const Text('Show Asseser Details')),
+      appBar: AppBar(title: const Text('COMMISSIONER APPEAL')),
       body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: SingleChildScrollView(
