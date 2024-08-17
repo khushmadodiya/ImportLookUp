@@ -45,7 +45,7 @@ class _RecoverableSattelmentCasesState extends State<RecoverableSattelmentCases>
         print(asseser['subcategory']);
         num++;
         myData.add(asseser);
-        rows.add(_buildDataRow(asseser,i));
+        rows.add(_buildDataRow(asseser,num,i));
       }
     }
     return Scaffold(
@@ -130,7 +130,7 @@ class _RecoverableSattelmentCasesState extends State<RecoverableSattelmentCases>
     );
   }
 
-  TableRow _buildDataRow(Map<String, dynamic> data,int i) {
+  TableRow _buildDataRow(Map<String, dynamic> data,int i,int index) {
     String day = _calculateDayCount(data['date']).toString();
     // print(data['uid']);
     print(data['penalty']);
@@ -151,7 +151,7 @@ class _RecoverableSattelmentCasesState extends State<RecoverableSattelmentCases>
         _multiLineText(data['status'] ?? 'N/A',13),
         _multiLineText(data['appeal_no'] ?? 'N/A',14),
         _multiLineText(data['stay_order_no_and_date'] ?? 'N/A',15),
-        _buildTransferButton(i),
+        _buildTransferButton(index),
       ],
     );
   }

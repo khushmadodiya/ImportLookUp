@@ -33,8 +33,7 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
     });
   }
 
-  int num = -1;
-  int index=0;
+  int num = 0;
   @override
   Widget build(BuildContext context) {
     final asseserProvider = Provider.of<AsseserProvider>(context);
@@ -54,7 +53,7 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
         myData.add(asseser);
         print(asseser['category']);
         num++;
-        rows.add(_buildDataRow(asseser,num));
+        rows.add(_buildDataRow(asseser,num,i));
       }
     }
     return Scaffold(
@@ -142,13 +141,11 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
     );
   }
 
-  TableRow _buildDataRow(Map<String, dynamic> data,int i) {
+  TableRow _buildDataRow(Map<String, dynamic> data,int i,int index) {
     String day = _calculateDayCount(data['date']).toString();
-    // print(data['uid']);
-    print(data['penalty']);
     return TableRow(
       children: [
-        _multiLineText((i+1).toString(),1),
+        _multiLineText((i).toString(),1),
         _multiLineText(data['name'] ?? 'N/A',2),
         _multiLineText(data['division_range'] ?? 'N/A',3),
         _multiLineText(data['oio'] ?? 'N/A',4),
@@ -163,7 +160,7 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
         _multiLineText(data['status'] ?? 'N/A',13),
         _multiLineText(data['appeal_no'] ?? 'N/A',14),
         _multiLineText(data['stay_order_no_and_date'] ?? 'N/A',15),
-        _buildTransferButton(i),
+        _buildTransferButton(index),
       ],
     );
   }
