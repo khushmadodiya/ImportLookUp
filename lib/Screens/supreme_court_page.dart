@@ -164,6 +164,7 @@ class _SupremeCourtCasesState extends State<SupremeCourtCases> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => UpdateUniversalDetails(index:i)));
+
           },
           child: const Text("Transfer Case"),
         ),

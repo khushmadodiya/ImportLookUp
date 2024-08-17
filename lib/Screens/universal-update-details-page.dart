@@ -169,7 +169,7 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('$res Details added successfully!')),
       );
-      Navigator.pop(context);
+      Navigator.pop(context,true);
     }
   }
 
@@ -334,7 +334,19 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
                 ),
                 ElevatedButton(
                   onPressed: addDetail,
-                  child: const Text('Submit'),
+                  child: const SizedBox(
+                    height: 50,
+                    width: 300,
+                    child: Center(
+                        child: Text(
+                          'Submit',
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.red,
+                              fontWeight: FontWeight.bold),
+                        ),
+                    ),
+                  ),
                 ),
               ],
             ),
