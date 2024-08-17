@@ -76,42 +76,44 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
                 ExcelDonwloadOption().exportToExcel(myData,'OIO DETAILS');
               },
             ),
-            SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Padding(
-                    padding: const EdgeInsets.all(18.0),
-                    child: Table(
-                      border: TableBorder.all(width: 1.0, color: Colors.black),
-                      columnWidths: const {
-                        0: FixedColumnWidth(70),
-                        1: FixedColumnWidth(300),
-                        2: FixedColumnWidth(180),
-                        3: FixedColumnWidth(300),
-                        4: FixedColumnWidth(150),
-                        5: FixedColumnWidth(120),
-                        6: FixedColumnWidth(180),
-                        7: FixedColumnWidth(180),
-                        8: FixedColumnWidth(180),
-                        9: FixedColumnWidth(180),
-                        10: FixedColumnWidth(180),
-                        11: FixedColumnWidth(350),
-                        12: FixedColumnWidth(350),
-                        13: FixedColumnWidth(250),
-                        14: FixedColumnWidth(180),
-                        15: FixedColumnWidth(180),
-                      },
-                      children: [
-                        // Header Row
-                        _buildHeaderRow(),
-                        // for(int i=0;i<asseserProvider.assesers().length;i++)
-                          // _buildDataRow(asseserProvider.assesers()[i],i)
-                           ...rows
-                      ],
+            Expanded(
+              child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Padding(
+                      padding: const EdgeInsets.all(18.0),
+                      child: Table(
+                        border: TableBorder.all(width: 1.0, color: Colors.black),
+                        columnWidths: const {
+                          0: FixedColumnWidth(70),
+                          1: FixedColumnWidth(300),
+                          2: FixedColumnWidth(180),
+                          3: FixedColumnWidth(300),
+                          4: FixedColumnWidth(150),
+                          5: FixedColumnWidth(120),
+                          6: FixedColumnWidth(180),
+                          7: FixedColumnWidth(180),
+                          8: FixedColumnWidth(180),
+                          9: FixedColumnWidth(180),
+                          10: FixedColumnWidth(180),
+                          11: FixedColumnWidth(350),
+                          12: FixedColumnWidth(350),
+                          13: FixedColumnWidth(250),
+                          14: FixedColumnWidth(180),
+                          15: FixedColumnWidth(180),
+                        },
+                        children: [
+                          // Header Row
+                          _buildHeaderRow(),
+                          // for(int i=0;i<asseserProvider.assesers().length;i++)
+                            // _buildDataRow(asseserProvider.assesers()[i],i)
+                             ...rows
+                        ],
+                      ),
                     ),
-                  ),
-                )),
+                  )),
+            ),
           ],
         ),
       ),
