@@ -37,13 +37,18 @@ class _SearchScreenState extends State<SearchScreen> {
 
     // Filter the list based on the search query
     final filteredAssesers = asseserProvider.assesers()!.where((asseser) {
+      final status = asseser['status']??'';
       final category = asseser['category'] ?? '';
       final subcategory = asseser['subcategory'] ?? '';
       final name = asseser['name'] ?? '';
+      final brief_facts = asseser['brief_facts'] ?? '';
 
       return category.toLowerCase().contains(_searchQuery.toLowerCase())
           ||subcategory.toLowerCase().contains(_searchQuery.toLowerCase())
-          ||name.toLowerCase().contains(_searchQuery.toLowerCase());
+          ||name.toLowerCase().contains(_searchQuery.toLowerCase())
+          ||status.toLowerCase().contains(_searchQuery.toLowerCase())
+          ||brief_facts.toLowerCase().contains(_searchQuery.toLowerCase())
+      ;
     }).toList();
 
     List<TableRow> rows = [];
