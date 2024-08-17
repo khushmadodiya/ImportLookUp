@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:import_lookup/Backend/AddUniversalDetails.dart';
+import 'package:flutter/widgets.dart';
+import 'package:import_lookup/Screens/Custom%20code/textfiled.dart';
+import 'package:import_lookup/global.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 import '../Backend/add_asessee_data.dart';
-import '../provider/provider.dart'; // Adjust import path as necessary
 
 class UpdateUniversalDetails extends StatefulWidget {
-  final int index;
-  const UpdateUniversalDetails({super.key, required this.index});
+  final index;
+  const UpdateUniversalDetails({super.key, this.index});
 
   @override
   State<UpdateUniversalDetails> createState() => _UpdateUniversalDetailsState();
@@ -38,58 +38,6 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
 
   String date = 'Select OIO Date';
 
-  String? selectedCategory;
-  String? selectedSubCategory;
-
-  final Map<String, List<String>> categorySubCategoryMap = {
-    "Arrear in Litigation/Appeal": [
-      "SC","HC",
-      "CESTAT",
-      "Commissioner Appeal",
-      // "Additional Secretary (Revision Application)"
-    ],
-    "Restrained Arrear": ["OL", "DRT", "BIFR", "NCLT"],
-    "Arrear where appeal period is not over": [],
-    "Recoverable Arrear": [
-      "Appeal period over but no appeal filed",
-      "Settlement Commission cases",
-      "Units closed/defaulters not traceable",
-      "Arrear under Section -11 of Central Excise Act 1944",
-      "Arrear under Section 142 (1)(c)(i) & (ii)",
-      "Arrears fit for Write-off"
-    ],
-  };
-  List<Map<String,dynamic>>? data;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    final asseserProvider = Provider.of<AsseserProvider>(context, listen: false);
-    data = asseserProvider.assesers();
-    print(data![widget.index].toString());
-    _assesseeNameController.text = data![widget.index]['name'].toString();
-    _divisionRangeController.text = data![widget.index]['division_range'].toString();
-    _oioNoDateController.text = data![widget.index]['oio'].toString();
-    date = data![widget.index]['date'].toString();  // Date value
-    _totalDutyOfArrearController.text = data![widget.index]['duty_or_arear'].toString();
-    _penaltyController.text = data![widget.index]['penalty'].toString();
-    _interestController.text = data![widget.index]['interest'].toString();
-    _amountRecoveredController.text = data![widget.index]['amount_recovered'].toString();
-    _preDepositController.text = data![widget.index]['pre_deposit'].toString();
-    _totalArrearsPendingController.text = data![widget.index]['total_arrears_pending'].toString();
-    _briefFactsController.text = data![widget.index]['brief_facts'].toString();
-    _presentStatusController.text = data![widget.index]['status'].toString();
-    _appealNoController.text = data![widget.index]['appeal_no'].toString();
-    _stayOrderNoDateController.text = data![widget.index]['stay_order_no_and_date'].toString();
-    _effortsMadeRemarksController.text = data![widget.index]['remark'].toString();
-    _IECController.text = data![widget.index]['iec'].toString();
-    _GSTINController.text = data![widget.index]['gstin'].toString();
-    _PANController.text = data![widget.index]['pan'].toString();
-    selectedCategory = data![widget.index]['category'].toString();
-    // selectedSubCategory = data![widget.index]['subcategory']?.toString();
-  }
-
   @override
   void dispose() {
     _assesseeNameController.dispose();
@@ -113,8 +61,7 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
   }
 
   void addDetail() async {
-    var uid = data![widget.index]['uid'];
-
+    var uid = Uuid().v1();
     Map<String, dynamic> asseserDetails = {
       'uid': uid,
       'name': _assesseeNameController.text,
@@ -134,23 +81,16 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
       'iec': _IECController.text,
       'gstin': _GSTINController.text,
       'pan': _PANController.text,
-      'complete_track': selectedCategory=="Arrear where appeal period is not over"?['${date} OIO is filed']:['${date} shifted to $selectedCategory : $selectedSubCategory'],
-      'category': selectedCategory ?? "None",
-      'subcategory':selectedSubCategory ?? "None",
-      'isshifted': selectedCategory=="Arrear where appeal period is not over"?0:1,
+      'complete_track': ['${date} OIO is filed'],
+      'category': selectedcategory,
+      'subcategory': '',
+      'isshifted': 0,
     };
-
-    String trackEntry = selectedCategory == "Arrear where appeal period is not over"
-        ? '${date} OIO is filed'
-        : '${date} shifted to $selectedCategory : $selectedSubCategory';
-
-    String res = await AddUniversalDetails().addDetails(asseserDetails,uid,trackEntry);
+    String res = await AddAsesse().addDetails(asseserDetails, uid);
     if (res == "s") {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Details added successfully!')),
-
+        SnackBar(content: Text('$res Details added successfully!')),
       );
-      Navigator.pop(context);
     }
   }
 
@@ -158,7 +98,7 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Appeal Period Not Over'),
+        title: const Text('Transfer Case'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -166,48 +106,6 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
           scrollDirection: Axis.vertical,
           child: Column(
             children: [
-              // Radio buttons for selecting the category
-              Column(
-                children: categorySubCategoryMap.keys.map((category) {
-                  return RadioListTile<String>(
-                    title: Text(category),
-                    value: category,
-                    groupValue: selectedCategory,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedCategory = value;
-                        selectedSubCategory = null; // Reset subcategory
-                      });
-                    },
-                  );
-                }).toList(),
-              ),
-
-              // Show dropdown for subcategories if the selected category has subcategories
-              if (selectedCategory != null &&
-                  categorySubCategoryMap[selectedCategory]!.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: DropdownButton<String>(
-                    value: selectedSubCategory,
-                    hint: Text('Select Subcategory'),
-                    isExpanded: true,
-                    items: categorySubCategoryMap[selectedCategory]!
-                        .map((subCategory) {
-                      return DropdownMenuItem<String>(
-                        value: subCategory,
-                        child: Text(subCategory),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        selectedSubCategory = value;
-                      });
-                    },
-                  ),
-                ),
-
-              // Other existing fields in the form
               buildRow(
                 _assesseeNameController,
                 _divisionRangeController,
@@ -220,8 +118,8 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
                   padding: const EdgeInsets.only(left: 8.0),
                   child: Row(
                     children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.24,
+                      Flexible(
+                        flex: 3,
                         child: TextField(
                           controller: _oioNoDateController,
                           decoration: const InputDecoration(
@@ -232,15 +130,15 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
                         ),
                       ),
                       const SizedBox(width: 20),
-                      SizedBox(
-                        height: 51,
-                        width: 300,
+                      Flexible(
+                        flex: 2,
                         child: InkWell(
                           onTap: () async {
                             DateTime? dat = await showDatePicker(
                               context: context,
                               firstDate: DateTime(1500),
                               lastDate: DateTime.now(),
+                              initialDate: DateTime.now(),
                             );
                             if (dat != null) {
                               date = DateFormat('dd-MM-yyyy').format(dat);
@@ -251,14 +149,13 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
                             decoration: BoxDecoration(
                               border: Border.all(color: Colors.grey),
                             ),
-                            width: MediaQuery.of(context).size.width * 0.3,
                             child: Center(child: Text(date)),
                           ),
                         ),
                       ),
                       const SizedBox(width: 20),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.518,
+                      Flexible(
+                        flex: 3,
                         child: TextField(
                           controller: _totalDutyOfArrearController,
                           decoration: const InputDecoration(
@@ -303,27 +200,41 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
                 'GSTIN',
               ),
               buildRow(
-                _presentStatusController,
                 _briefFactsController,
+                _presentStatusController,
                 'Present Status of the case',
                 'Brief facts of the case',
-                maxLines: 5,
+                maxLines: 10,
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
                   controller: _effortsMadeRemarksController,
-                  maxLines: 5,
                   decoration: const InputDecoration(
                     hintText: 'Effort Made/Remark',
-                    label: Text("Effort Made/Remark"),
                     border: OutlineInputBorder(),
                   ),
+                  maxLines: 10,
                 ),
               ),
               ElevatedButton(
-                onPressed: addDetail,
-                child: const Text('Submit'),
+                onPressed: () {
+                  addDetail();
+                },
+                child: const SizedBox(
+                  height: 50,
+                  width: 300,
+                  child: Center(
+                    child: Text(
+                      'Save Data',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
@@ -332,40 +243,51 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
     );
   }
 
-  Padding buildRow(
-      TextEditingController leftController,
-      TextEditingController rightController,
-      String leftLabel,
-      String rightLabel, {
-        int maxLines = 1,
-      }) {
+  Widget buildRow(TextEditingController controller1,
+      TextEditingController controller2, String label1, String label2,
+      {int? maxLines}) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.48,
-            child: TextField(
-              controller: leftController,
+          maxLines == null
+              ? Expanded(
+            child: CustomTextField(
+              controller: controller1,
+              hintText: label1,
+              labelText: label1,
+              width: 300,
+            ),
+          )
+              : Expanded(
+            child: CustomTextField(
+              controller: controller1,
+              hintText: label1,
+              labelText: label1,
+              width: 300,
+              height: 100,
               maxLines: maxLines,
-              decoration: InputDecoration(
-                hintText: leftLabel,
-                labelText: leftLabel,
-                border: const OutlineInputBorder(),
-              ),
             ),
           ),
-          const SizedBox(width: 20),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.48,
-            child: TextField(
-              controller: rightController,
+          const SizedBox(width: 8),
+          maxLines == null
+              ? Expanded(
+            child: CustomTextField(
+              controller: controller2,
+              hintText: label2,
+              labelText: label2,
+              width: 300,
+            ),
+          )
+              : Expanded(
+            child: CustomTextField(
+              controller: controller2,
+              hintText: label2,
+              labelText: label2,
+              width: 300,
+              height: 100,
               maxLines: maxLines,
-              decoration: InputDecoration(
-                hintText: rightLabel,
-                labelText: rightLabel,
-                border: const OutlineInputBorder(),
-              ),
             ),
           ),
         ],
