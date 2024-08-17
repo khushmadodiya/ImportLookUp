@@ -20,7 +20,7 @@ class _RecoverableArrearUnderSection11State
     final asseserProvider =
         Provider.of<AsseserProvider>(context, listen: false);
     asseserProvider.fetchAssesers(); // Fetch data on widget initialization
-    setState(() {});
+
   }
 
   int num = 0;

@@ -25,9 +25,6 @@ class _SupremeCourtCasesState extends State<SupremeCourtCases> {
     super.initState();
     final asseserProvider = Provider.of<AsseserProvider>(context, listen: false);
     asseserProvider.fetchAssesers(); // Fetch data on widget initialization
-    setState(() {
-
-    });
   }
 
   int num = 0;
