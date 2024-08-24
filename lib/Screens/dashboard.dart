@@ -94,9 +94,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final isWideScreen = screenWidth > 700;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Dashboard'),
-      ),
+
       drawer: isWideScreen ? null : _buildDrawer(),
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: isWideScreen ? _buildBottomBar() : null,

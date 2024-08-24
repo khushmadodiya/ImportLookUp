@@ -19,9 +19,6 @@ class _RecoverableSattelmentCasesState extends State<RecoverableSattelmentCases>
     super.initState();
     final asseserProvider = Provider.of<AsseserProvider>(context, listen: false);
     asseserProvider.fetchAssesers(); // Fetch data on widget initialization
-    setState(() {
-
-    });
   }
 
   int num = 0;
@@ -45,7 +42,7 @@ class _RecoverableSattelmentCasesState extends State<RecoverableSattelmentCases>
         print(asseser['subcategory']);
         num++;
         myData.add(asseser);
-        rows.add(_buildDataRow(asseser,i));
+        rows.add(_buildDataRow(asseser,num,i));
       }
     }
     return Scaffold(
@@ -130,7 +127,7 @@ class _RecoverableSattelmentCasesState extends State<RecoverableSattelmentCases>
     );
   }
 
-  TableRow _buildDataRow(Map<String, dynamic> data,int i) {
+  TableRow _buildDataRow(Map<String, dynamic> data,int i,int index) {
     String day = _calculateDayCount(data['date']).toString();
     // print(data['uid']);
     print(data['penalty']);
@@ -151,22 +148,30 @@ class _RecoverableSattelmentCasesState extends State<RecoverableSattelmentCases>
         _multiLineText(data['status'] ?? 'N/A',13),
         _multiLineText(data['appeal_no'] ?? 'N/A',14),
         _multiLineText(data['stay_order_no_and_date'] ?? 'N/A',15),
-        _buildTransferButton(i),
+        _buildTransferButton(index),
       ],
     );
   }
 
   Widget _buildTransferButton(int i) {
     return Container(
-      color:Colors.blue.withOpacity(0.2),
+      color: Colors.blue.withOpacity(0.2),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 15),
         child: ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => UpdateUniversalDetails(index:i)));
+          onPressed: () async {
+            bool? shouldRefresh = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => UpdateUniversalDetails(index: i),
+              ),
+            );
+
+            if (shouldRefresh == true) {
+              // Notify the provider to fetch data again
+              Provider.of<AsseserProvider>(context, listen: false)
+                  .fetchAssesers();
+            }
           },
           child: const Text("Transfer Case"),
         ),

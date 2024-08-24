@@ -25,12 +25,9 @@ class _HighCourtCasesState extends State<HighCourtCases> {
     super.initState();
     final asseserProvider = Provider.of<AsseserProvider>(context, listen: false);
     asseserProvider.fetchAssesers(); // Fetch data on widget initialization
-    setState(() {
-
-    });
   }
 
-  int num = -1;
+  int num = 0;
   List<Map<String,dynamic>>myData=[];
   @override
   Widget build(BuildContext context) {
@@ -51,7 +48,7 @@ class _HighCourtCasesState extends State<HighCourtCases> {
         print(asseser['subcategory']);
         myData.add(asseser);
         num++;
-        rows.add(_buildDataRow(asseser,num));
+        rows.add(_buildDataRow(asseser,num,i));
       }
     }
     return Scaffold(
@@ -136,13 +133,13 @@ class _HighCourtCasesState extends State<HighCourtCases> {
     );
   }
 
-  TableRow _buildDataRow(Map<String, dynamic> data,int i) {
+  TableRow _buildDataRow(Map<String, dynamic> data,int i,int index) {
     String day = _calculateDayCount(data['date']).toString();
     // print(data['uid']);
     print(data['penalty']);
     return TableRow(
       children: [
-        _multiLineText((i+1).toString(),1),
+        _multiLineText((i).toString(),1),
         _multiLineText(data['name'] ?? 'N/A',2),
         _multiLineText(data['division_range'] ?? 'N/A',3),
         _multiLineText(data['oio'] ?? 'N/A',4),
@@ -157,22 +154,30 @@ class _HighCourtCasesState extends State<HighCourtCases> {
         _multiLineText(data['status'] ?? 'N/A',13),
         _multiLineText(data['appeal_no'] ?? 'N/A',14),
         _multiLineText(data['stay_order_no_and_date'] ?? 'N/A',15),
-        _buildTransferButton(i),
+        _buildTransferButton(index),
       ],
     );
   }
 
   Widget _buildTransferButton(int i) {
     return Container(
-      color:Colors.blue.withOpacity(0.2),
+      color: Colors.blue.withOpacity(0.2),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 15),
         child: ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => UpdateUniversalDetails(index:i)));
+          onPressed: () async {
+            bool? shouldRefresh = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => UpdateUniversalDetails(index: i),
+              ),
+            );
+
+            if (shouldRefresh == true) {
+              // Notify the provider to fetch data again
+              Provider.of<AsseserProvider>(context, listen: false)
+                  .fetchAssesers();
+            }
           },
           child: const Text("Transfer Case"),
         ),

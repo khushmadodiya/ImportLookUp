@@ -25,12 +25,9 @@ class _SupremeCourtCasesState extends State<SupremeCourtCases> {
     super.initState();
     final asseserProvider = Provider.of<AsseserProvider>(context, listen: false);
     asseserProvider.fetchAssesers(); // Fetch data on widget initialization
-    setState(() {
-
-    });
   }
 
-  int num = -1;
+  int num = 0;
   @override
   Widget build(BuildContext context) {
     final asseserProvider = Provider.of<AsseserProvider>(context);
@@ -50,7 +47,7 @@ class _SupremeCourtCasesState extends State<SupremeCourtCases> {
       if (asseser['subcategory'] == 'SC') {
         print(asseser['subcategory']);
         num++;
-        rows.add(_buildDataRow(asseser,num));
+        rows.add(_buildDataRow(asseser,num,i));
       }
     }
     return Scaffold(
@@ -127,13 +124,13 @@ class _SupremeCourtCasesState extends State<SupremeCourtCases> {
     );
   }
 
-  TableRow _buildDataRow(Map<String, dynamic> data,int i) {
+  TableRow _buildDataRow(Map<String, dynamic> data,int i,int index) {
     String day = _calculateDayCount(data['date']).toString();
     // print(data['uid']);
     print(data['penalty']);
     return TableRow(
       children: [
-        _multiLineText((i+1).toString(),1),
+        _multiLineText((i).toString(),1),
         _multiLineText(data['name'] ?? 'N/A',2),
         _multiLineText(data['division_range'] ?? 'N/A',3),
         _multiLineText(data['oio'] ?? 'N/A',4),
@@ -148,7 +145,7 @@ class _SupremeCourtCasesState extends State<SupremeCourtCases> {
         _multiLineText(data['status'] ?? 'N/A',13),
         _multiLineText(data['appeal_no'] ?? 'N/A',14),
         _multiLineText(data['stay_order_no_and_date'] ?? 'N/A',15),
-        _buildTransferButton(i),
+        _buildTransferButton(index),
       ],
     );
   }
@@ -164,6 +161,7 @@ class _SupremeCourtCasesState extends State<SupremeCourtCases> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => UpdateUniversalDetails(index:i)));
+
           },
           child: const Text("Transfer Case"),
         ),
