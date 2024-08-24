@@ -94,6 +94,7 @@ class _AddAsseserDetailsState extends State<AddAsseserDetails> {
        ScaffoldMessenger.of(context).showSnackBar(
          SnackBar(content: Text('$res Details added successfully!')),
        );
+       Navigator.pop(context);
      }
   }
 

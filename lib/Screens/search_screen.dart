@@ -34,9 +34,13 @@ class _SearchScreenState extends State<SearchScreen> {
     if (asseserProvider.assesers == null || asseserProvider.assesers()!.isEmpty) {
       return Center(child: Text('No data found'));
     }
+    // for(int i=0;i<asseserProvider.assesers().length;i++){
+      
+      // filteredAssesers=list.s
+    // }
 
     // Filter the list based on the search query
-    final filteredAssesers = asseserProvider.assesers()!.where((asseser) {
+    var filteredAssesers = asseserProvider.assesers().where((asseser) {
       final status = asseser['status']??'';
       final category = asseser['category'] ?? '';
       final subcategory = asseser['subcategory'] ?? '';
@@ -58,11 +62,34 @@ class _SearchScreenState extends State<SearchScreen> {
         rows.add(_buildDataRow(asseser, i));
 
     }
+    void sortBasedofDate(){
+      filteredAssesers=asseserProvider.assesers();
+      filteredAssesers.sort((a,b)=> DateTime(
+        int.parse(a['date'].toString().substring(6,10)),
+        int.parse(a['date'].toString().substring(3,5)),
+        int.parse(a['date'].toString().substring(0,2))
+        ).compareTo(DateTime(
+          int.parse(b['date'].toString().substring(6,10)),
+        int.parse(b['date'].toString().substring(3,5)),
+        int.parse(b['date'].toString().substring(0,2))
+        )
+        ));
+        for(int i=0;i<filteredAssesers.length;i++){
+          print("sorted data ${filteredAssesers.toString()}");
+        }
+        setState(() {
+          
+        });
+    }
+
 
     return Scaffold(
       appBar: AppBar(title: const Text('Search Cases')),
       body: Column(
         children: [
+          ElevatedButton(onPressed:(){
+            sortBasedofDate();
+          }, child:const Text("Sort Based On Date")),
           Padding(
             padding: const EdgeInsets.all(14.0),
             child: TextField(
@@ -90,20 +117,23 @@ class _SearchScreenState extends State<SearchScreen> {
                     columnWidths: const {
                       0: FixedColumnWidth(70),
                       1: FixedColumnWidth(300),
-                      2: FixedColumnWidth(180),
-                      3: FixedColumnWidth(300),
-                      4: FixedColumnWidth(150),
-                      5: FixedColumnWidth(120),
-                      6: FixedColumnWidth(180),
-                      7: FixedColumnWidth(180),
+                      2:FixedColumnWidth(300),
+                      3:FixedColumnWidth(180),
+                      4: FixedColumnWidth(180),
+                      5: FixedColumnWidth(300),
+                      6: FixedColumnWidth(150),
+                      7: FixedColumnWidth(120),
                       8: FixedColumnWidth(180),
                       9: FixedColumnWidth(180),
                       10: FixedColumnWidth(180),
-                      11: FixedColumnWidth(350),
-                      12: FixedColumnWidth(350),
-                      13: FixedColumnWidth(250),
-                      14: FixedColumnWidth(180),
-                      15: FixedColumnWidth(180),
+                      11: FixedColumnWidth(180),
+                      12: FixedColumnWidth(180),
+                      13: FixedColumnWidth(350),
+                      14: FixedColumnWidth(350),
+                      15: FixedColumnWidth(250),
+                      16: FixedColumnWidth(180),
+                      17: FixedColumnWidth(180),
+
                     },
                     children: [
                       // Header Row
@@ -124,21 +154,23 @@ class _SearchScreenState extends State<SearchScreen> {
     return TableRow(
       children: [
         _buildHeaderCell('S No.', 1),
-        _buildHeaderCell('Name', 2),
-        _buildHeaderCell('Division/Range', 3),
-        _buildHeaderCell('OIO', 4),
-        _buildHeaderCell('Date', 5),
-        _buildHeaderCell('Day Count', 6),
-        _buildHeaderCell('Duty or Arrears', 7),
-        _buildHeaderCell('Penalty', 8),
-        _buildHeaderCell('Amount Recovered', 9),
-        _buildHeaderCell('Pre Deposit', 10),
-        _buildHeaderCell('Total Arrears Pending', 11),
-        _buildHeaderCell('Brief Facts', 12),
-        _buildHeaderCell('Status', 13),
-        _buildHeaderCell('Appeal No.', 14),
-        _buildHeaderCell('Stay Order No and Date', 15),
-        _buildHeaderCell('Change Data', 16),
+        _buildHeaderCell('category', 2),
+        _buildHeaderCell('subcategory', 3),
+        _buildHeaderCell('Name', 4),
+        _buildHeaderCell('Division/Range', 5),
+        _buildHeaderCell('OIO', 6),
+        _buildHeaderCell('Date', 7),
+        _buildHeaderCell('Day Count', 8),
+        _buildHeaderCell('Duty or Arrears', 9),
+        _buildHeaderCell('Penalty', 10),
+        _buildHeaderCell('Amount Recovered', 11),
+        _buildHeaderCell('Pre Deposit', 12),
+        _buildHeaderCell('Total Arrears Pending', 13),
+        _buildHeaderCell('Brief Facts', 14),
+        _buildHeaderCell('Status', 15),
+        _buildHeaderCell('Appeal No.', 16),
+        _buildHeaderCell('Stay Order No and Date', 17),
+        _buildHeaderCell('Change Data', 18),
       ],
     );
   }
@@ -148,20 +180,22 @@ class _SearchScreenState extends State<SearchScreen> {
     return TableRow(
       children: [
         _multiLineText((i + 1).toString(), 1),
-        _multiLineText(data['name'] ?? 'N/A', 2),
-        _multiLineText(data['division_range'] ?? 'N/A', 3),
-        _multiLineText(data['oio'] ?? 'N/A', 4),
-        _multiLineText(data['date'] ?? 'N/A', 5),
-        _multiLineText(day, 6),
-        _multiLineText(data['duty_or_arear'] ?? 'N/A', 7),
-        _multiLineText(data['penalty'] ?? 'N/A', 8),
-        _multiLineText(data['amount_recovered'] ?? 'N/A', 9),
-        _multiLineText(data['pre_deposit'] ?? 'N/A', 10),
-        _multiLineText(data['total_arrears_pending'] ?? 'N/A', 11),
-        _multiLineText(data['brief_facts'] ?? 'N/A', 12),
-        _multiLineText(data['status'] ?? 'N/A', 13),
-        _multiLineText(data['appeal_no'] ?? 'N/A', 14),
-        _multiLineText(data['stay_order_no_and_date'] ?? 'N/A', 15),
+        _multiLineText(data['category'], 2),
+        _multiLineText(data['subcategory'], 3),
+        _multiLineText(data['name'] ?? 'N/A', 4),
+        _multiLineText(data['division_range'] ?? 'N/A', 5),
+        _multiLineText(data['oio'] ?? 'N/A', 6),
+        _multiLineText(data['date'] ?? 'N/A', 7),
+        _multiLineText(day, 8),
+        _multiLineText(data['duty_or_arear'] ?? 'N/A', 9),
+        _multiLineText(data['penalty'] ?? 'N/A', 10),
+        _multiLineText(data['amount_recovered'] ?? 'N/A', 11),
+        _multiLineText(data['pre_deposit'] ?? 'N/A', 12),
+        _multiLineText(data['total_arrears_pending'] ?? 'N/A', 13),
+        _multiLineText(data['brief_facts'] ?? 'N/A', 14),
+        _multiLineText(data['status'] ?? 'N/A', 15),
+        _multiLineText(data['appeal_no'] ?? 'N/A', 16),
+        _multiLineText(data['stay_order_no_and_date'] ?? 'N/A', 17),
         _buildTransferButton(i),
       ],
     );
