@@ -34,9 +34,13 @@ class _SearchScreenState extends State<SearchScreen> {
     if (asseserProvider.assesers == null || asseserProvider.assesers()!.isEmpty) {
       return Center(child: Text('No data found'));
     }
+    // for(int i=0;i<asseserProvider.assesers().length;i++){
+      
+      // filteredAssesers=list.s
+    // }
 
     // Filter the list based on the search query
-    final filteredAssesers = asseserProvider.assesers()!.where((asseser) {
+    var filteredAssesers = asseserProvider.assesers().where((asseser) {
       final status = asseser['status']??'';
       final category = asseser['category'] ?? '';
       final subcategory = asseser['subcategory'] ?? '';
@@ -58,11 +62,34 @@ class _SearchScreenState extends State<SearchScreen> {
         rows.add(_buildDataRow(asseser, i));
 
     }
+    void sortBasedofDate(){
+      filteredAssesers=asseserProvider.assesers();
+      filteredAssesers.sort((a,b)=> DateTime(
+        int.parse(a['date'].toString().substring(6,10)),
+        int.parse(a['date'].toString().substring(3,5)),
+        int.parse(a['date'].toString().substring(0,2))
+        ).compareTo(DateTime(
+          int.parse(b['date'].toString().substring(6,10)),
+        int.parse(b['date'].toString().substring(3,5)),
+        int.parse(b['date'].toString().substring(0,2))
+        )
+        ));
+        for(int i=0;i<filteredAssesers.length;i++){
+          print("sorted data ${filteredAssesers.toString()}");
+        }
+        setState(() {
+          
+        });
+    }
+
 
     return Scaffold(
       appBar: AppBar(title: const Text('Search Cases')),
       body: Column(
         children: [
+          ElevatedButton(onPressed:(){
+            sortBasedofDate();
+          }, child:const Text("Sort Based On Date")),
           Padding(
             padding: const EdgeInsets.all(14.0),
             child: TextField(
