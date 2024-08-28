@@ -8,6 +8,7 @@ import 'package:import_lookup/Screens/ResrainedArriers/BIFR.dart';
 import 'package:import_lookup/Screens/ResrainedArriers/DRT.dart';
 import 'package:import_lookup/Screens/ResrainedArriers/NCLT.dart';
 import 'package:import_lookup/Screens/ResrainedArriers/OL.dart';
+import 'package:import_lookup/Screens/accept-request-page.dart';
 import 'package:import_lookup/Screens/arrear_fit_write_off.dart';
 import 'package:import_lookup/Screens/cestat_page.dart';
 import 'package:import_lookup/Screens/comm_page.dart';
@@ -43,6 +44,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     RecoverableArrearUnderSection11(),
     RecoverableArrearUnder142(),
     RecoverableWriteOff(),
+    AcceptRequests()
   ];
 
   void _onItemTapped(int index, String itemName) {
@@ -166,7 +168,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
               "Units closed/defaulters not traceable",
               'Arrear under section-11',
               'Arrear under section-142',
-              'Arrears fit for Write-off',
             ],
             indexMap: {
               'Appeal period not over but appeal filed': 11,
@@ -174,8 +175,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
               "Units closed/defaulters not traceable": 13,
               'Arrear under section-11': 14,
               'Arrear under section-142': 15,
-              'Arrears fit for Write-off': 16,
             },
+          ),
+          _buildDrawerItem(
+            icon: Icons.delete_outline,
+            text: 'Write-off',
+            index: 16,
           ),
         ],
       ),
@@ -210,12 +215,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
           icon: Icon(Icons.monetization_on),
           label: 'Recoverable',
         ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.delete_outline),
+          label: 'Write-off',
+        ),
+         BottomNavigationBarItem(
+          icon: Icon(Icons.delete_outline),
+          label: 'Update Requeted',
+        ),
       ],
       currentIndex: _getBottomNavIndex(),
       selectedItemColor: Colors.amber[800],
       onTap: (index) {
         if (index <= 2) {
           _onItemTapped(index, index == 0 ? 'Home' : index == 1 ? 'Search' : 'Add');
+        } else if (index == 6) {
+          _onItemTapped(16, 'Write-off');
+        }else if(index == 7){
+          _onItemTapped(17, 'Update Req');
         } else {
           _showBottomSheet(index);
         }
@@ -227,7 +244,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     if (_selectedIndex <= 2) return _selectedIndex;
     if (_selectedIndex >= 3 && _selectedIndex <= 6) return 3;
     if (_selectedIndex >= 7 && _selectedIndex <= 10) return 4;
-    if (_selectedIndex >= 11 && _selectedIndex <= 16) return 5;
+    if (_selectedIndex >= 11 && _selectedIndex <= 15) return 5;
+    if (_selectedIndex == 16) return 6;
+    if (_selectedIndex == 17) return 7;
     return 0;
   }
 
@@ -284,7 +303,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
           "Units closed/defaulters not traceable": 13,
           'Arrear under section-11': 14,
           'Arrear under section-142': 15,
-          'Arrears fit for Write-off': 16,
         };
       default:
         return {};
