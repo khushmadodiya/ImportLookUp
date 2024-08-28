@@ -105,7 +105,7 @@ Asseser {
       'gstin': gstin,
       'pan': pan,
       'age':age,
-      'complete_track':[],
+      'complete_track':complete_track,
       'isshifted':isshifted,
       'category':category,
       'subcategory':subcategory,
