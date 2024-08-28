@@ -19,6 +19,11 @@ import 'package:import_lookup/Screens/supreme_court_page.dart';
 import 'package:import_lookup/Screens/search_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
+  final bool isadmin;
+  const DashboardScreen({
+    required this.isadmin,
+});
+
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
 }
@@ -96,9 +101,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final isNarrowScreen = screenWidth < 300;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Dashboard'),
-      ),
+      // appBar: AppBar(
+      //   title: Text('Dashboard'),
+      // ),
       drawer: isNarrowScreen ? _buildDrawer() : null,
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: isNarrowScreen ? null : _buildBottomBar(),

@@ -157,28 +157,29 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
         _multiLineText(data['status'] ?? 'N/A', 13),
         _multiLineText(data['appeal_no'] ?? 'N/A', 14),
         _multiLineText(data['stay_order_no_and_date'] ?? 'N/A', 15),
-        _buildTransferButton(index),
+        _buildTransferButton(index,data),
       ],
     );
   }
 
-  Widget _buildTransferButton(int i) {
+  Widget _buildTransferButton(int i,Map<String, dynamic> data) {
     return Container(
       color: Colors.blue.withOpacity(0.2),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 15),
         child: ElevatedButton(
           onPressed: () async {
-            bool? shouldRefresh = await Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => UpdateUniversalDetails(index: i),
-              ),
-            );
+            print(data['complete_track']?.map<Widget>((track) => Text(track)).toList() ?? [Text('No track available')],);
+            // bool? shouldRefresh = await Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) => UpdateUniversalDetails(index: i),
+            //   ),
+            // );
 
-            if (shouldRefresh == true) {
-              Provider.of<AsseserProvider>(context, listen: false).fetchAssesers();
-            }
+            // if (shouldRefresh == true) {
+            //   Provider.of<AsseserProvider>(context, listen: false).fetchAssesers();
+            // }
           },
           child: const Text("Transfer Case"),
         ),
