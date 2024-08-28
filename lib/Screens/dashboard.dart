@@ -15,7 +15,7 @@ import 'package:import_lookup/Screens/high_court_page.dart';
 import 'package:import_lookup/Screens/oio-page.dart';
 import 'package:import_lookup/Screens/show-oio-details.dart';
 import 'package:import_lookup/Screens/supreme_court_page.dart';
-import 'package:import_lookup/Screens/search_screen.dart'; // Add the import for the search screen
+import 'package:import_lookup/Screens/search_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -25,24 +25,24 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   int _selectedIndex = 0;
 
-  final List<Widget> _widgetOptions = [
-    ShowAsserDetails(), // Index 0
-    SearchScreen(), // Index 1 - New Search Screen
-    AddAsseserDetails(), // Index 2
-    SupremeCourtCases(), // Index 3
-    HighCourtCases(), // Index 4
-    CestatCases(), // Index 5
-    CommApealCases(), // Index 6
-    OLPage(), // Index 7
-    DRTPage(), // Index 8
-    BIFRPage(), // Index 9
-    NCLTPage(), // Index 10
-    RecoverableNoApealFiled(), // Index 11
-    RecoverableSattelmentCases(), // Index 12
-    RecoverableUnitClose(), // Index 13
-    RecoverableArrearUnderSection11(), // Index 14
-    RecoverableArrearUnder142(), // Index 15
-    RecoverableWriteOff(), // Index 16
+  final List<Widget> _widgetOptions = const [
+    ShowAsserDetails(),
+    SearchScreen(),
+    AddAsseserDetails(),
+    SupremeCourtCases(),
+    HighCourtCases(),
+    CestatCases(),
+    CommApealCases(),
+    OLPage(),
+    DRTPage(),
+    BIFRPage(),
+    NCLTPage(),
+    RecoverableNoApealFiled(),
+    RecoverableSattelmentCases(),
+    RecoverableUnitClose(),
+    RecoverableArrearUnderSection11(),
+    RecoverableArrearUnder142(),
+    RecoverableWriteOff(),
   ];
 
   void _onItemTapped(int index, String itemName) {
@@ -57,7 +57,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Container(
-          width: MediaQuery.of(context).size.width * 0.5, // Adjust width
+          width: MediaQuery.of(context).size.width * 0.5,
           child: Row(
             children: [
               Icon(Icons.info_outline, color: Colors.white),
@@ -91,13 +91,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final isWideScreen = screenWidth > 700;
+    final isNarrowScreen = screenWidth < 300;
 
     return Scaffold(
-
-      drawer: isWideScreen ? null : _buildDrawer(),
+      appBar: AppBar(
+        title: Text('Dashboard'),
+      ),
+      drawer: isNarrowScreen ? _buildDrawer() : null,
       body: _widgetOptions.elementAt(_selectedIndex),
-      bottomNavigationBar: isWideScreen ? _buildBottomBar() : null,
+      bottomNavigationBar: isNarrowScreen ? null : _buildBottomBar(),
     );
   }
 
@@ -106,7 +108,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          const DrawerHeader(
+          DrawerHeader(
             decoration: BoxDecoration(color: Colors.blue),
             child: Text(
               'Custom Import',
@@ -124,7 +126,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           _buildDrawerItem(
             icon: Icons.search,
             text: 'Search',
-            index: 1, // Navigate to Search screen
+            index: 1,
           ),
           _buildDrawerItem(
             icon: Icons.person,
@@ -245,12 +247,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
               children: _getOptionsForParentIndex(parentIndex)
                   .entries
                   .map((entry) => ListTile(
-                title: Text(entry.key),
-                onTap: () {
-                  _onItemTapped(entry.value, entry.key);
-                  Navigator.pop(context);
-                },
-              ))
+                        title: Text(entry.key),
+                        onTap: () {
+                          _onItemTapped(entry.value, entry.key);
+                          Navigator.pop(context);
+                        },
+                      ))
                   .toList(),
             ),
           ),

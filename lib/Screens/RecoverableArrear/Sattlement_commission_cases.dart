@@ -19,9 +19,6 @@ class _RecoverableSattelmentCasesState extends State<RecoverableSattelmentCases>
     super.initState();
     final asseserProvider = Provider.of<AsseserProvider>(context, listen: false);
     asseserProvider.fetchAssesers(); // Fetch data on widget initialization
-    setState(() {
-
-    });
   }
 
   int num = 0;
@@ -158,15 +155,23 @@ class _RecoverableSattelmentCasesState extends State<RecoverableSattelmentCases>
 
   Widget _buildTransferButton(int i) {
     return Container(
-      color:Colors.blue.withOpacity(0.2),
+      color: Colors.blue.withOpacity(0.2),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 15),
         child: ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => UpdateUniversalDetails(index:i)));
+          onPressed: () async {
+            bool? shouldRefresh = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => UpdateUniversalDetails(index: i),
+              ),
+            );
+
+            if (shouldRefresh == true) {
+              // Notify the provider to fetch data again
+              Provider.of<AsseserProvider>(context, listen: false)
+                  .fetchAssesers();
+            }
           },
           child: const Text("Transfer Case"),
         ),
