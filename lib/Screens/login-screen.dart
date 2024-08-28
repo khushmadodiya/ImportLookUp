@@ -1,9 +1,11 @@
 
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:import_lookup/main.dart';
 import '../Backend/authmethos.dart';
 import '../Widgets/text_field.dart';
 import 'SignupScreen.dart';
@@ -37,9 +39,18 @@ class _LoginScreenState extends State<LoginScreen> {
         email: _emailController.text, password: _passwordController.text);
     if (res == 'success') {
       if (context.mounted) {
-
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>DashboardScreen()), (route) => false);
-
+         if(FirebaseAuth.instance.currentUser!.uid.toString() == 'pbOT4LLlFQgU11skcHVOva37vg32') {
+           print("this is admin");
+           isadmin = true;
+           Navigator.pushAndRemoveUntil(context,
+               MaterialPageRoute(builder: (context) => DashboardScreen(isadmin: true,)), (
+                   route) => false);
+         }
+         else{
+           Navigator.pushAndRemoveUntil(context,
+               MaterialPageRoute(builder: (context) => DashboardScreen(isadmin: false,)), (
+                   route) => false);
+         }
 
 
 

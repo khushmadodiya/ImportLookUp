@@ -3,7 +3,8 @@
 import 'dart:core';
 
 
-class Asseser {
+class
+Asseser {
   String? uid;
   String? name;
   String? division_range;
