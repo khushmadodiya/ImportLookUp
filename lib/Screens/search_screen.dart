@@ -47,8 +47,8 @@ class _SearchScreenState extends State<SearchScreen> {
           ||subcategory.toLowerCase().contains(_searchQuery.toLowerCase())
           ||name.toLowerCase().contains(_searchQuery.toLowerCase())
           ||status.toLowerCase().contains(_searchQuery.toLowerCase())
-          ||brief_facts.toLowerCase().contains(_searchQuery.toLowerCase())
-      ;
+          ||brief_facts.toLowerCase().contains(_searchQuery.toLowerCase());
+
     }).toList();
 
     List<TableRow> rows = [];
