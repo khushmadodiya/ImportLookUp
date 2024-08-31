@@ -99,9 +99,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final isNarrowScreen = screenWidth < 300;
 
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Dashboard'),
-      // ),
+      // title: Text('Dashboard'),
+      // ),appBar: AppBar(
+      //       //
       drawer: isNarrowScreen ? _buildDrawer() : null,
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: isNarrowScreen ? null : _buildBottomBar(),

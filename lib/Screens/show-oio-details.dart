@@ -170,16 +170,16 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
         child: ElevatedButton(
           onPressed: () async {
             print(data['complete_track']?.map<Widget>((track) => Text(track)).toList() ?? [Text('No track available')],);
-            // bool? shouldRefresh = await Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => UpdateUniversalDetails(index: i),
-            //   ),
-            // );
+            bool? shouldRefresh = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => UpdateUniversalDetails(index: i),
+              ),
+            );
 
-            // if (shouldRefresh == true) {
-            //   Provider.of<AsseserProvider>(context, listen: false).fetchAssesers();
-            // }
+            if (shouldRefresh == true) {
+              Provider.of<AsseserProvider>(context, listen: false).fetchAssesers();
+            }
           },
           child: const Text("Transfer Case"),
         ),
