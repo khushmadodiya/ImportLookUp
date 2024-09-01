@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AsseserProvider()),
+        ChangeNotifierProvider(create: (_) => RequestedAsseserProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -59,7 +60,7 @@ class MyApp extends StatelessWidget {
               );
             }
 
-            return const LoginScreen();
+            return const DashboardScreen(isadmin: false,);
           },
         ),
        

@@ -36,3 +36,38 @@ class AsseserProvider with ChangeNotifier {
 }
 
 }
+
+class RequestedAsseserProvider with ChangeNotifier {
+  List<Map<String,dynamic>>?_assesers;
+  bool _isLoading = false;
+
+  List<Map<String,dynamic>> assesers(){
+    print("lenght is heer ");
+    return _assesers!;
+    }
+
+  bool get isLoading => _isLoading;
+
+  Future<void> fetchAssesers() async {
+  _isLoading = true;
+  notifyListeners(); // Notify listeners that loading has started
+
+  try {
+    List<Map<String, dynamic>> fetchedAssesers = await AsseserService().fetchAssesers(isadmin: true);
+    if (fetchedAssesers.isNotEmpty) {
+      // print("heeelo ${fetchedAssesers.length}");
+      _assesers = fetchedAssesers;
+    } else {
+      print("No assesers fetched from the service.");
+    }
+    print("Fetched assesers count: ${_assesers!.length}");
+  } catch (e) {
+    print('Error fetching assesers: $e');
+    _assesers = [];
+  }
+
+  _isLoading = false;
+  notifyListeners(); // Notify listeners that loading has finished
+}
+
+}

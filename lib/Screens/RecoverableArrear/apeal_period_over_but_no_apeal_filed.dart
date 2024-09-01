@@ -18,7 +18,7 @@ class _RecoverableNoApealFiledState extends State<RecoverableNoApealFiled> {
   @override
   void initState() {
     super.initState();
-    final asseserProvider = Provider.of<AsseserProvider>(context, listen: false);
+    final asseserProvider = Provider.of<RequestedAsseserProvider>(context, listen: false);
     asseserProvider.fetchAssesers(); // Fetch data on widget initialization
 
   }
@@ -26,7 +26,7 @@ class _RecoverableNoApealFiledState extends State<RecoverableNoApealFiled> {
   int num = 0;
   @override
   Widget build(BuildContext context) {
-    final asseserProvider = Provider.of<AsseserProvider>(context);
+    final asseserProvider = Provider.of<RequestedAsseserProvider>(context);
 
     if (asseserProvider.isLoading) {
       return Center(child: CircularProgressIndicator());
@@ -170,7 +170,7 @@ class _RecoverableNoApealFiledState extends State<RecoverableNoApealFiled> {
 
             if (shouldRefresh == true) {
               // Notify the provider to fetch data again
-              Provider.of<AsseserProvider>(context, listen: false)
+              Provider.of<RequestedAsseserProvider>(context, listen: false)
                   .fetchAssesers();
             }
           },

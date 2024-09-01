@@ -18,7 +18,7 @@ class _RecoverableArrearUnderSection11State
   void initState() {
     super.initState();
     final asseserProvider =
-        Provider.of<AsseserProvider>(context, listen: false);
+        Provider.of<RequestedAsseserProvider>(context, listen: false);
     asseserProvider.fetchAssesers(); // Fetch data on widget initialization
 
   }
@@ -27,7 +27,7 @@ class _RecoverableArrearUnderSection11State
   List<Map<String, dynamic>> myData = [];
   @override
   Widget build(BuildContext context) {
-    final asseserProvider = Provider.of<AsseserProvider>(context);
+    final asseserProvider = Provider.of<RequestedAsseserProvider>(context);
 
     if (asseserProvider.isLoading) {
       return Center(child: CircularProgressIndicator());
@@ -175,7 +175,7 @@ class _RecoverableArrearUnderSection11State
 
             if (shouldRefresh == true) {
               // Notify the provider to fetch data again
-              Provider.of<AsseserProvider>(context, listen: false)
+              Provider.of<RequestedAsseserProvider>(context, listen: false)
                   .fetchAssesers();
             }
           },

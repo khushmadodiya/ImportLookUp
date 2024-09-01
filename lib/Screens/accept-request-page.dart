@@ -1,16 +1,10 @@
 // ignore_for_file: unused_element
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:import_lookup/Backend/fetchAsseserData.dart';
-import 'package:import_lookup/Screens/dashboard.dart';
-import 'package:import_lookup/Screens/universal-update-details-page.dart';
 import 'package:import_lookup/excael-download-option.dart';
 import 'package:provider/provider.dart';
 
-import '../models/oio_model.dart';
 import '../provider/provider.dart';
-
 
 class AcceptRequests extends StatefulWidget {
   const AcceptRequests({super.key});
@@ -24,57 +18,69 @@ class _AcceptRequestsState extends State<AcceptRequests> {
   void initState() {
     super.initState();
     final asseserProvider = Provider.of<AsseserProvider>(context, listen: false);
-    asseserProvider.fetchAssesers(); // Fetch data on widget initialization
+    asseserProvider.fetchAssesers();
+    final requestedasseserProvider = Provider.of<RequestedAsseserProvider>(context, listen: false);
+    requestedasseserProvider.fetchAssesers(); // Fetch data on widget initialization
   }
 
   int num = 0;
-  List<Map<String,dynamic>>myData=[];
+  List<Map<String, dynamic>> myData = [];
+
   @override
   Widget build(BuildContext context) {
     final asseserProvider = Provider.of<AsseserProvider>(context);
+    final requestedasseserProvider = Provider.of<RequestedAsseserProvider>(
+        context);
 
-    if (asseserProvider.isLoading) {
+    if (requestedasseserProvider.isLoading) {
       return Center(child: CircularProgressIndicator());
     }
 
-    if (asseserProvider.assesers == null || asseserProvider.assesers()!.isEmpty) {
+    if (requestedasseserProvider.assesers == null || requestedasseserProvider
+        .assesers()
+        .isEmpty) {
       return Center(child: Text('No data found'));
     }
+
     List<TableRow> rows = [];
-    List<TableRow> rowsupdate = [];
-    //  List<List<> rows = [];
-    for (int i = 0; i < asseserProvider.assesers()!.length; i++) {
-      final asseser = asseserProvider.assesers()![i];
-      print(asseser['subcategory']);
-      if (asseser['subcategory'] == 'CESTAT') {
-        print(asseser['subcategory']);
-        myData.add(asseser);
+    for (int i = 0; i < requestedasseserProvider.assesers().length; i++) {
+      final request = requestedasseserProvider.assesers()[i];
+
+      final asseser = asseserProvider.assesers().firstWhere(
+            (asseser) => asseser['uid'] == request['uid'],
+        orElse: () => {},
+      );
+
+      if (asseser != null) {
         num++;
-        rowsupdate.add(_buildDataRow(asseser,num,i,up:'up'));
-        rows.add(_buildDataRow(asseser,num,i));
+        rows.add(_buildDataRow(asseser, num, i, up: ''));
+        rows.add(_buildDataRow(request, num, i, up: 'up'));
+        myData.add(request);
+        myData.add(asseser);
       }
     }
-    
     return Scaffold(
       appBar: AppBar(title: const Text('CESTAT CASES')),
-      body: Expanded(
-        child: Column(
-          children: [
-             InkWell(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  height:40,
-                  width:150,
-                color:Colors.amber.withOpacity(0.3),
-                child:const Center(child:  Text("Download Excel"))
+      body: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            children: [
+              InkWell(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                      height: 40,
+                      width: 150,
+                      color: Colors.amber.withOpacity(0.3),
+                      child: const Center(child: Text("Download Excel"))),
                 ),
+                onTap: () {
+                  ExcelDonwloadOption().exportToExcel(myData, 'CESTAT CASES');
+                },
               ),
-              onTap:(){
-                ExcelDonwloadOption().exportToExcel(myData,'CESTAT CASES');
-              },
-            ),
-            SingleChildScrollView(
+              SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -101,88 +107,83 @@ class _AcceptRequestsState extends State<AcceptRequests> {
                         15: FixedColumnWidth(180),
                       },
                       children: [
-                        // Header Row
                         _buildHeaderRow(),
                         ...rows,
-                        ...rowsupdate,
-                        // List.generate(rows!.length, (index) =>)
                       ],
                     ),
                   ),
-                )),
-          ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-TableRow _buildHeaderRow() {
+  TableRow _buildHeaderRow() {
     return TableRow(
       children: [
-        _buildHeaderCell('S No.',1),
-        _buildHeaderCell('Name',2),
-        _buildHeaderCell('Division/Range',3),
-        _buildHeaderCell('OIO',4),
-        _buildHeaderCell('Date',5),
-        _buildHeaderCell('Day Count',6),
-        _buildHeaderCell('Duty or Arrears',7),
-        _buildHeaderCell('Penalty',8),
-        _buildHeaderCell('Amount Recovered',9),
-        _buildHeaderCell('Pre Deposit',10),
-        _buildHeaderCell('Total Arrears Pending',11),
-        _buildHeaderCell('Brief Facts',12),
-        _buildHeaderCell('Status',13),
-        _buildHeaderCell('Appeal No.',14),
-        _buildHeaderCell('Stay Order No and Date',15),
-        _buildHeaderCell('Change Data',16),
+        _buildHeaderCell('S No.', 1),
+        _buildHeaderCell('Name', 2),
+        _buildHeaderCell('Division/Range', 3),
+        _buildHeaderCell('OIO', 4),
+        _buildHeaderCell('Date', 5),
+        _buildHeaderCell('Day Count', 6),
+        _buildHeaderCell('Duty or Arrears', 7),
+        _buildHeaderCell('Penalty', 8),
+        _buildHeaderCell('Amount Recovered', 9),
+        _buildHeaderCell('Pre Deposit', 10),
+        _buildHeaderCell('Total Arrears Pending', 11),
+        _buildHeaderCell('Brief Facts', 12),
+        _buildHeaderCell('Status', 13),
+        _buildHeaderCell('Appeal No.', 14),
+        _buildHeaderCell('Stay Order No and Date', 15),
+        _buildHeaderCell('Change Data', 16),
       ],
     );
   }
 
-  TableRow _buildDataRow(Map<String, dynamic> data,int i,int index,{String up=''}) {
-    String day = _calculateDayCount(data['date']).toString();
-    // print(data['uid']);
-    print(data['penalty']);
+  TableRow _buildDataRow(Map<String, dynamic> data, int i, int index, {String up = ''}) {
+    String day = _calculateDayCount(data['date'] ?? '01-01-1970').toString();
     return TableRow(
       children: [
-        _multiLineText((i).toString()+up,1),
-        _multiLineText(data['name'] ?? 'N/A',2),
-        _multiLineText(data['division_range'] ?? 'N/A',3),
-        _multiLineText(data['oio'] ?? 'N/A',4),
-        _multiLineText(data['date'] ?? 'N/A',5),
-        _multiLineText(day,6),
-        _multiLineText(data['duty_or_arear'] ?? 'N/A',7),
-        _multiLineText(data['penalty'] ?? 'N/A',8),
-        _multiLineText(data['amount_recovered'] ?? 'N/A',9),
-        _multiLineText(data['pre_deposit'] ?? 'N/A',10),
-        _multiLineText(data['total_arrears_pending'] ?? 'N/A',11),
-        _multiLineText(data['brief_facts'] ?? 'N/A',12),
-        _multiLineText(data['status'] ?? 'N/A',13),
-        _multiLineText(data['appeal_no'] ?? 'N/A',14),
-        _multiLineText(data['stay_order_no_and_date'] ?? 'N/A',15),
-        up.length==0?
-        _buildTransferButton(index,(){},title:'Accept'):_buildTransferButton(index,(){},title:'Reject'),
+        _multiLineText((i).toString() + up, 1),
+        _multiLineText(data['uid'] ?? 'N/A', 2),
+        _multiLineText(data['division_range'] ?? 'N/A', 3),
+        _multiLineText(data['oio'] ?? 'N/A', 4),
+        _multiLineText(data['date'] ?? 'N/A', 5),
+        _multiLineText(day, 6),
+        _multiLineText(data['duty_or_arear'] ?? 'N/A', 7),
+        _multiLineText(data['penalty'] ?? 'N/A', 8),
+        _multiLineText(data['amount_recovered'] ?? 'N/A', 9),
+        _multiLineText(data['pre_deposit'] ?? 'N/A', 10),
+        _multiLineText(data['total_arrears_pending'] ?? 'N/A', 11),
+        _multiLineText(data['brief_facts'] ?? 'N/A', 12),
+        _multiLineText(data['status'] ?? 'N/A', 13),
+        _multiLineText(data['appeal_no'] ?? 'N/A', 14),
+        _multiLineText(data['stay_order_no_and_date'] ?? 'N/A', 15),
+        _buildTransferButton(index, () {}, title: up.isEmpty ? 'Accept' : 'Reject'),
       ],
     );
   }
 
-  Widget _buildTransferButton(int i,VoidCallback onPressed,{String title='Transfer Case'}) {
+  Widget _buildTransferButton(int i, VoidCallback onPressed, {String title = 'Transfer Case'}) {
     return Container(
       color: Colors.blue.withOpacity(0.2),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 15),
         child: ElevatedButton(
-          onPressed:onPressed,
-            
-          child:  Text(title),
+          onPressed: onPressed,
+          child: Text(title),
         ),
       ),
     );
   }
 
-   Widget _buildHeaderCell(String text,int i) {
+  Widget _buildHeaderCell(String text, int i) {
     return Container(
-      color:i%2==0?Colors.blue.withOpacity(0.2):Colors.blue.withOpacity(0.3),
+      color: i % 2 == 0 ? Colors.blue.withOpacity(0.2) : Colors.blue.withOpacity(0.3),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text(
@@ -193,10 +194,10 @@ TableRow _buildHeaderRow() {
     );
   }
 
-   Widget _multiLineText(String text,int i) {
+  Widget _multiLineText(String text, int i) {
     return Container(
       height: 70,
-     color:i%2==0?Colors.blue.withOpacity(0.2):Colors.blue.withOpacity(0.3),
+      color: i % 2 == 0 ? Colors.blue.withOpacity(0.2) : Colors.blue.withOpacity(0.3),
       padding: const EdgeInsets.all(8.0),
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,

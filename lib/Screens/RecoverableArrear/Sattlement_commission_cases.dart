@@ -17,14 +17,14 @@ class _RecoverableSattelmentCasesState extends State<RecoverableSattelmentCases>
   @override
   void initState() {
     super.initState();
-    final asseserProvider = Provider.of<AsseserProvider>(context, listen: false);
+    final asseserProvider = Provider.of<RequestedAsseserProvider>(context, listen: false);
     asseserProvider.fetchAssesers(); // Fetch data on widget initialization
   }
 
   int num = 0;
   @override
   Widget build(BuildContext context) {
-    final asseserProvider = Provider.of<AsseserProvider>(context);
+    final asseserProvider = Provider.of<RequestedAsseserProvider>(context);
 
     if (asseserProvider.isLoading) {
       return Center(child: CircularProgressIndicator());
@@ -169,7 +169,7 @@ class _RecoverableSattelmentCasesState extends State<RecoverableSattelmentCases>
 
             if (shouldRefresh == true) {
               // Notify the provider to fetch data again
-              Provider.of<AsseserProvider>(context, listen: false)
+              Provider.of<RequestedAsseserProvider>(context, listen: false)
                   .fetchAssesers();
             }
           },
