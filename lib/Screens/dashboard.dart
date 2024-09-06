@@ -31,7 +31,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   int _selectedIndex = 0;
 
-  final List<Widget> _widgetOptions = const [
+   List<Widget> _widgetOptions = const [
     ShowAsserDetails(),
     SearchScreen(),
     AddAsseserDetails(),
@@ -49,7 +49,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     RecoverableArrearUnderSection11(),
     RecoverableArrearUnder142(),
     RecoverableWriteOff(),
-    // AcceptRequests()
+    AcceptRequests()
     
   ];
 
@@ -95,13 +95,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
     );
   }
-  @override
-  void initState(){
-    super.initState();
-    if(widget.isadmin){
-      _widgetOptions.add(const AcceptRequests());
-    }
-  }
+  // @override
+  // void initState(){
+  //   super.initState();
+  //   // if(!widget.isadmin){
+  //   //   // _widgetOptions.removeLast();
+  //   // }
+  // }
 
   @override
   Widget build(BuildContext context) {

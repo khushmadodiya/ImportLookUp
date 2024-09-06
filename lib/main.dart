@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
               );
             }
 
-            return const DashboardScreen(isadmin: false,);
+            return const LoginScreen();
           },
         ),
        
