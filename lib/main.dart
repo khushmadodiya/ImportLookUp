@@ -6,8 +6,10 @@ import 'package:import_lookup/Screens/dashboard.dart';
 import 'package:import_lookup/Screens/login-screen.dart';
 import 'package:import_lookup/Screens/show-oio-details.dart';
 import 'package:import_lookup/add_json_data.dart';
+import 'package:import_lookup/global.dart';
 import 'package:import_lookup/provider/provider.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'firebase_options.dart';
 bool isadmin = false;
@@ -16,14 +18,21 @@ void main() async{
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+getitem()async{
+  var pref = await SharedPreferences.getInstance();
+  selecteditem = pref.get('value').toString();
+  print(selecteditem);
+}
 
   @override
   Widget build(BuildContext context) {
+  getitem();
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AsseserProvider()),
@@ -37,7 +46,8 @@ class MyApp extends StatelessWidget {
         ),
         home:  StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
+          builder: (context, snapshot){
+
             if (snapshot.connectionState == ConnectionState.active) {
 
               if (snapshot.hasData) {
@@ -60,7 +70,8 @@ class MyApp extends StatelessWidget {
               );
             }
 
-            return LoginScreen();
+            // return LoginScreen();
+            return DashboardScreen(isadmin: true);
           },
         ),
        

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 // import 'package:intl/intl.dart';
 import 'package:import_lookup/Screens/Custom%20code/textfiled.dart';
+import 'package:import_lookup/Widgets/dropdown.dart';
 import 'package:import_lookup/global.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
@@ -20,7 +21,6 @@ class AddAsseserDetails extends StatefulWidget {
 class _AddAsseserDetailsState extends State<AddAsseserDetails> {
   // Controllers for each text field
   final TextEditingController _assesseeNameController = TextEditingController();
-  final TextEditingController _divisionRangeController = TextEditingController();
   final TextEditingController _oioNoDateController = TextEditingController();
   final TextEditingController _totalDutyOfArrearController = TextEditingController();
   final TextEditingController _penaltyController = TextEditingController();
@@ -43,7 +43,7 @@ class _AddAsseserDetailsState extends State<AddAsseserDetails> {
   @override
   void dispose() {
     _assesseeNameController.dispose();
-    _divisionRangeController.dispose();
+
     _oioNoDateController.dispose();
     _totalDutyOfArrearController.dispose();
     _penaltyController.dispose();
@@ -68,7 +68,7 @@ class _AddAsseserDetailsState extends State<AddAsseserDetails> {
       Map<String, dynamic> asseserDetails = {
         'uid': uid,
         'name': _assesseeNameController.text,
-        'division_range': _divisionRangeController.text,
+        'division_range': selecteditem,
         'oio': _oioNoDateController.text,
         'date':date,
         'duty_or_arear': _totalDutyOfArrearController.text,
@@ -112,9 +112,9 @@ class _AddAsseserDetailsState extends State<AddAsseserDetails> {
             children: [
               buildRow(
                 _assesseeNameController,
-                _divisionRangeController,
+                _oioNoDateController,
                 'Name of the Assessee',
-                'Division / Range',
+                'OIO Number',
               ),
               // buildRow(
               //   _oioNoDateController,
@@ -132,14 +132,8 @@ class _AddAsseserDetailsState extends State<AddAsseserDetails> {
                       // TextField(),
                       SizedBox(
                           width: MediaQuery.of(context).size.width * 0.269,
-                          child: TextField(
-                            controller: _oioNoDateController,
-                            decoration:const InputDecoration(
-                              hintText:'OIO Number',
-                              labelText: 'OIO Number',
-                              border: OutlineInputBorder(),
-                            ),
-                          )
+                          child:  Dropdown(),
+
                           ),
                          const SizedBox(width:20,),
                           SizedBox(

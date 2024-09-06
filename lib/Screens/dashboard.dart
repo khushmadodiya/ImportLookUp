@@ -32,7 +32,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   int _selectedIndex = 0;
 
-  final List<Widget> _widgetOptions = const [
+   List<Widget> _widgetOptions = const [
     ShowAsserDetails(),
     SearchScreen(),
     AddAsseserDetails(),
@@ -51,6 +51,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     RecoverableArrearUnder142(),
     RecoverableWriteOff(),
     AcceptRequests()
+    
   ];
 
   void _onItemTapped(int index, String itemName) {
@@ -95,6 +96,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
     );
   }
+  // @override
+  // void initState(){
+  //   super.initState();
+  //   // if(!widget.isadmin){
+  //   //   // _widgetOptions.removeLast();
+  //   // }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -196,36 +204,37 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget _buildBottomBar() {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
+      items:  <BottomNavigationBarItem>[
+       const BottomNavigationBarItem(
           icon: Icon(Icons.home),
           label: 'Home',
         ),
-        BottomNavigationBarItem(
+       const BottomNavigationBarItem(
           icon: Icon(Icons.search),
           label: 'Search',
         ),
-        BottomNavigationBarItem(
+       const BottomNavigationBarItem(
           icon: Icon(Icons.person),
           label: 'Add',
         ),
-        BottomNavigationBarItem(
+       const BottomNavigationBarItem(
           icon: Icon(Icons.gavel),
           label: 'Litigation',
         ),
-        BottomNavigationBarItem(
+      const  BottomNavigationBarItem(
           icon: Icon(Icons.block),
           label: 'Restrained',
         ),
-        BottomNavigationBarItem(
+       const BottomNavigationBarItem(
           icon: Icon(Icons.monetization_on),
           label: 'Recoverable',
         ),
-        BottomNavigationBarItem(
+       const BottomNavigationBarItem(
           icon: Icon(Icons.delete_outline),
           label: 'Write-off',
         ),
-         BottomNavigationBarItem(
+      if(widget.isadmin)
+      const BottomNavigationBarItem(
           icon: Icon(Icons.delete_outline),
           label: 'Update Requeted',
         ),
@@ -237,7 +246,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           _onItemTapped(index, index == 0 ? 'Home' : index == 1 ? 'Search' : 'Add');
         } else if (index == 6) {
           _onItemTapped(16, 'Write-off');
-        }else if(index == 7){
+        }else if(index == 7 && widget.isadmin){
           _onItemTapped(17, 'Update Req');
         } else {
           _showBottomSheet(index);
@@ -252,7 +261,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     if (_selectedIndex >= 7 && _selectedIndex <= 10) return 4;
     if (_selectedIndex >= 11 && _selectedIndex <= 15) return 5;
     if (_selectedIndex == 16) return 6;
-    if (_selectedIndex == 17) return 7;
+    if(widget.isadmin)if (_selectedIndex == 17) return 7;
     return 0;
   }
 

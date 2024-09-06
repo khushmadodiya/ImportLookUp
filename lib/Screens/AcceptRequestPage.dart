@@ -11,37 +11,37 @@ import '../Backend/AddUniversalDetails.dart';
 import '../Backend/add_asessee_data.dart';
 import '../provider/provider.dart';
 
-class UpdateUniversalDetails extends StatefulWidget {
+class AcceptRequestPage extends StatefulWidget {
   final index;
-  const UpdateUniversalDetails({super.key, this.index});
+  const AcceptRequestPage({super.key, this.index});
 
   @override
-  State<UpdateUniversalDetails> createState() => _UpdateUniversalDetailsState();
+  State<AcceptRequestPage> createState() => _AcceptRequestPageState();
 }
 
-class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
+class _AcceptRequestPageState extends State<AcceptRequestPage> {
   // Controllers for each text field
   final TextEditingController _assesseeNameController = TextEditingController();
   final TextEditingController _divisionRangeController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _oioNoDateController = TextEditingController();
   final TextEditingController _totalDutyOfArrearController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _penaltyController = TextEditingController();
   final TextEditingController _interestController = TextEditingController();
   final TextEditingController _amountRecoveredController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _preDepositController = TextEditingController();
   final TextEditingController _totalArrearsPendingController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _briefFactsController = TextEditingController();
   final TextEditingController _presentStatusController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _appealNoController = TextEditingController();
   final TextEditingController _stayOrderNoDateController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _effortsMadeRemarksController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _IECController = TextEditingController();
   final TextEditingController _GSTINController = TextEditingController();
   final TextEditingController _PANController = TextEditingController();
@@ -74,7 +74,7 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    final asseserProvider = Provider.of<AsseserProvider>(context, listen: false);
+    final asseserProvider = Provider.of<RequestedAsseserProvider>(context, listen: false);
     data = asseserProvider.assesers();
     print(data![widget.index].toString());
     _assesseeNameController.text = data![widget.index]['name'].toString();
@@ -149,22 +149,29 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
       'gstin': _GSTINController.text,
       'pan': _PANController.text,
       'complete_track':
-          selectedCategory == "Arrear where appeal period is not over"
-              ? ['${date} OIO is filed']
-              : ['${date} shifted to $selectedCategory : $selectedSubCategory'],
+      selectedCategory == "Arrear where appeal period is not over"
+          ? ['${date} OIO is filed']
+          : ['${date} shifted to $selectedCategory : $selectedSubCategory'],
       'category': selectedCategory ?? "None",
       'subcategory': selectedSubCategory ?? "None",
       'isshifted':
-          selectedCategory == "Arrear where appeal period is not over" ? 0 : 1,
+      selectedCategory == "Arrear where appeal period is not over" ? 0 : 1,
     };
     String trackEntry =
-        selectedCategory == "Arrear where appeal period is not over"
-            ? '${date} OIO is filed'
-            : '${date} shifted to $selectedCategory : $selectedSubCategory';
+    selectedCategory == "Arrear where appeal period is not over"
+        ? '${date} OIO is filed'
+        : '${date} shifted to $selectedCategory : $selectedSubCategory';
 
     String res =
-        await AddUniversalDetails().addDetails(asseserDetails, uid, trackEntry);
+    await AddUniversalDetails().addDetails(asseserDetails, uid, trackEntry);
+
     if (res == "s") {
+      await  AddUniversalDetails().rejectRequest(uid);
+    Provider.of<AsseserProvider>(context, listen: false)
+        .fetchAssesers();
+    Provider.of<RequestedAsseserProvider>(context, listen: false)
+        .fetchAssesers();
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('$res Details added successfully!')),
       );
@@ -337,13 +344,13 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
                     height: 50,
                     width: 300,
                     child: Center(
-                        child: Text(
-                          'Submit',
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.red,
-                              fontWeight: FontWeight.bold),
-                        ),
+                      child: Text(
+                        'Submit',
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.red,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                 ),
@@ -363,43 +370,43 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
         children: [
           maxLines == null
               ? Expanded(
-                  child: CustomTextField(
-                    controller: controller1,
-                    hintText: label1,
-                    labelText: label1,
-                    width: 300,
-                  ),
-                )
+            child: CustomTextField(
+              controller: controller1,
+              hintText: label1,
+              labelText: label1,
+              width: 300,
+            ),
+          )
               : Expanded(
-                  child: CustomTextField(
-                    controller: controller1,
-                    hintText: label1,
-                    labelText: label1,
-                    width: 300,
-                    height: 100,
-                    maxLines: maxLines,
-                  ),
-                ),
+            child: CustomTextField(
+              controller: controller1,
+              hintText: label1,
+              labelText: label1,
+              width: 300,
+              height: 100,
+              maxLines: maxLines,
+            ),
+          ),
           const SizedBox(width: 8),
           maxLines == null
               ? Expanded(
-                  child: CustomTextField(
-                    controller: controller2,
-                    hintText: label2,
-                    labelText: label2,
-                    width: 300,
-                  ),
-                )
+            child: CustomTextField(
+              controller: controller2,
+              hintText: label2,
+              labelText: label2,
+              width: 300,
+            ),
+          )
               : Expanded(
-                  child: CustomTextField(
-                    controller: controller2,
-                    hintText: label2,
-                    labelText: label2,
-                    width: 300,
-                    height: 100,
-                    maxLines: maxLines,
-                  ),
-                ),
+            child: CustomTextField(
+              controller: controller2,
+              hintText: label2,
+              labelText: label2,
+              width: 300,
+              height: 100,
+              maxLines: maxLines,
+            ),
+          ),
         ],
       ),
     );

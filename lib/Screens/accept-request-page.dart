@@ -1,10 +1,13 @@
 // ignore_for_file: unused_element
 
 import 'package:flutter/material.dart';
+import 'package:import_lookup/Backend/AddUniversalDetails.dart';
+import 'package:import_lookup/Screens/universal-update-details-page.dart';
 import 'package:import_lookup/excael-download-option.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/provider.dart';
+import 'AcceptRequestPage.dart';
 
 class AcceptRequests extends StatefulWidget {
   const AcceptRequests({super.key});
@@ -60,26 +63,14 @@ class _AcceptRequestsState extends State<AcceptRequests> {
       }
     }
     return Scaffold(
-      appBar: AppBar(title: const Text('CESTAT CASES')),
+      appBar: AppBar(title: const Text('Accept Request')),
       body: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Column(
             children: [
-              InkWell(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                      height: 40,
-                      width: 150,
-                      color: Colors.amber.withOpacity(0.3),
-                      child: const Center(child: Text("Download Excel"))),
-                ),
-                onTap: () {
-                  ExcelDonwloadOption().exportToExcel(myData, 'CESTAT CASES');
-                },
-              ),
+
               SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: SingleChildScrollView(
@@ -163,19 +154,52 @@ class _AcceptRequestsState extends State<AcceptRequests> {
         _multiLineText(data['status'] ?? 'N/A', 13),
         _multiLineText(data['appeal_no'] ?? 'N/A', 14),
         _multiLineText(data['stay_order_no_and_date'] ?? 'N/A', 15),
-        _buildTransferButton(index, () {}, title: up.isEmpty ? 'Accept' : 'Reject'),
+        _buildTransferButton(index,data['uid']??'N/A', title: up.isEmpty ? 'Accept' : 'Reject'),
       ],
     );
   }
 
-  Widget _buildTransferButton(int i, VoidCallback onPressed, {String title = 'Transfer Case'}) {
-    return Container(
-      color: Colors.blue.withOpacity(0.2),
+  Widget _buildTransferButton(int i,String uid,{String title = 'Transfer Case'}) {
+    return Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 15),
-        child: ElevatedButton(
-          onPressed: onPressed,
-          child: Text(title),
+        padding: const EdgeInsets.symmetric(vertical: 15.0),
+        child: Container(
+          width: 100,
+          height: 40,
+          decoration: BoxDecoration(
+            border: Border.all(width: 1),
+            borderRadius: BorderRadius.circular(15),
+            color: title=="Accept"? Colors.green : Colors.redAccent
+          ),
+
+          child: InkWell(
+            onTap: ()async{
+              if(title=="Accept"){
+                bool? shouldRefresh = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AcceptRequestPage(index: i/2),
+                  ),
+                );
+
+                if (shouldRefresh == true) {
+                  // Notify the provider to fetch data again
+                  Provider.of<AsseserProvider>(context, listen: false)
+                      .fetchAssesers();
+                }
+              }
+              else{
+              await  AddUniversalDetails().rejectRequest(uid);
+              Provider.of<AsseserProvider>(context, listen: false)
+                  .fetchAssesers();
+              Provider.of<RequestedAsseserProvider>(context, listen: false)
+                  .fetchAssesers();
+
+              }
+
+            },
+            child: Center(child: Text(title,style: TextStyle(fontSize:15,color: Colors.black,fontWeight: FontWeight.bold),)),
+          ),
         ),
       ),
     );
