@@ -53,6 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
                    route) => false);
          }
          else{
+           isadmin= false;
            Navigator.pushAndRemoveUntil(context,
                MaterialPageRoute(builder: (context) => DashboardScreen(isadmin: false,)), (
                    route) => false);

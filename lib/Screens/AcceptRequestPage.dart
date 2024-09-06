@@ -164,9 +164,9 @@ class _AcceptRequestPageState extends State<AcceptRequestPage> {
 
     String res =
     await AddUniversalDetails().addDetails(asseserDetails, uid, trackEntry);
-
+    await  AddUniversalDetails().rejectRequest(uid);
     if (res == "s") {
-      await  AddUniversalDetails().rejectRequest(uid);
+
     Provider.of<AsseserProvider>(context, listen: false)
         .fetchAssesers();
     Provider.of<RequestedAsseserProvider>(context, listen: false)
