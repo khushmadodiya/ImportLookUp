@@ -29,6 +29,7 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+
   int _selectedIndex = 0;
 
   final List<Widget> _widgetOptions = const [
