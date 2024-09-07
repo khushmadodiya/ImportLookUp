@@ -55,9 +55,10 @@ class AddUniversalDetails {
     catch(e){
       res = "error: $e";
     }
+    
     return res;
   }
-
+  
 
 }
 
