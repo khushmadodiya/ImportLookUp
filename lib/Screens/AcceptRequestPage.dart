@@ -165,12 +165,8 @@ class _AcceptRequestPageState extends State<AcceptRequestPage> {
     String res =
     await AddUniversalDetails().addDetails(asseserDetails, uid, trackEntry);
     await  AddUniversalDetails().rejectRequest(uid);
-    if (res == "s") {
 
-    Provider.of<AsseserProvider>(context, listen: false)
-        .fetchAssesers();
-    Provider.of<RequestedAsseserProvider>(context, listen: false)
-        .fetchAssesers();
+    if (res == "s") {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('$res Details added successfully!')),

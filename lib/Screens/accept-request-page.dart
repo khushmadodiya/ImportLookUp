@@ -175,24 +175,22 @@ class _AcceptRequestsState extends State<AcceptRequests> {
           child: InkWell(
             onTap: ()async{
               if(title=="Accept"){
-                bool? shouldRefresh = await Navigator.push(
+                Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => AcceptRequestPage(index: i/2),
                   ),
                 );
-
-                if (shouldRefresh == true) {
-                  // Notify the provider to fetch data again
-                  Provider.of<AsseserProvider>(context, listen: false)
-                      .fetchAssesers();
-                }
+                Provider.of<AsseserProvider>(context, listen: true)
+                    .fetchAssesers();
+                Provider.of<RequestedAsseserProvider>(context, listen: true)
+                    .fetchAssesers();
               }
               else{
               await  AddUniversalDetails().rejectRequest(uid);
-              Provider.of<AsseserProvider>(context, listen: false)
+              Provider.of<AsseserProvider>(context, listen: true)
                   .fetchAssesers();
-              Provider.of<RequestedAsseserProvider>(context, listen: false)
+              Provider.of<RequestedAsseserProvider>(context, listen: true)
                   .fetchAssesers();
 
               }
