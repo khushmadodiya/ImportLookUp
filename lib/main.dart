@@ -40,24 +40,22 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home:  StreamBuilder(
+        home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot){
+            if(snapshot.connectionState==ConnectionState.active){
+              if(snapshot.hasData){
 
-            if (snapshot.connectionState == ConnectionState.active) {
-
-              if (snapshot.hasData) {
-                 if(FirebaseAuth.instance.currentUser!.uid.toString()=='pbOT4LLlFQgU11skcHVOva37vg32') {
-                   isadmin = true;
-                   DashboardScreen(isadmin: true,);
-                 }
-                 else{
-                   DashboardScreen(isadmin: false,);
-                 }
-              } else if (snapshot.hasError) {
-                return Center(
-                  child: Text('${snapshot.error}'),
-                );
+                if(FirebaseAuth.instance.currentUser!.uid.toString()=='pbOT4LLlFQgU11skcHVOva37vg32') {
+                  isadmin = true;
+                  DashboardScreen(isadmin: true,);
+                }
+                else{
+                  DashboardScreen(isadmin: false,);
+                }
+              }
+              else if(snapshot.hasError){
+                return Center(child: Text('some error occur'),);
               }
             }
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -65,11 +63,11 @@ class MyApp extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
             }
-
             return LoginScreen();
-            // return DashboardScreen(isadmin: true);
           },
         ),
+
+
        
       
       ),

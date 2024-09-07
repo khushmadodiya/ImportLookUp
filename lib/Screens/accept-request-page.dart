@@ -174,27 +174,25 @@ class _AcceptRequestsState extends State<AcceptRequests> {
 
           child: InkWell(
             onTap: ()async{
-              if(title=="Accept"){
+              final asseserProvider = Provider.of<AsseserProvider>(context, listen: false);
+              final requestedAsseserProvider = Provider.of<RequestedAsseserProvider>(context, listen: false);
+
+              if (title == "Accept") {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AcceptRequestPage(index: i/2),
+                    builder: (context) => AcceptRequestPage(index: i ~/ 2),
                   ),
-                );
-                Provider.of<AsseserProvider>(context, listen: true)
-                    .fetchAssesers();
-                Provider.of<RequestedAsseserProvider>(context, listen: true)
-                    .fetchAssesers();
-              }
-              else{
-              await  AddUniversalDetails().rejectRequest(uid);
-              Provider.of<AsseserProvider>(context, listen: true)
-                  .fetchAssesers();
-              Provider.of<RequestedAsseserProvider>(context, listen: true)
-                  .fetchAssesers();
+                ).then((_) {
 
+                  asseserProvider.fetchAssesers();
+                  requestedAsseserProvider.fetchAssesers();
+                });
+              } else {
+                await AddUniversalDetails().rejectRequest(uid);
+                asseserProvider.fetchAssesers(); // Trigger provider data refresh
+                requestedAsseserProvider.fetchAssesers();
               }
-
             },
             child: Center(child: Text(title,style: TextStyle(fontSize:15,color: Colors.black,fontWeight: FontWeight.bold),)),
           ),

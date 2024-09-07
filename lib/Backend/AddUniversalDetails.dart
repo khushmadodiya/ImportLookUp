@@ -6,6 +6,16 @@ import '../main.dart';
 
 
 class AddUniversalDetails {
+
+  Future<String> addRequest(Map<String, dynamic> requestDetails,String uid) async {
+    try {
+      FirebaseFirestore.instance.collection('requests').doc(uid).set(requestDetails);
+      return "s"; // Placeholder for success
+    } catch (e) {
+      print('Error adding request: $e');
+      return "f"; // Placeholder for failure
+    }
+  }
   Future<String> addDetails( Map<String , dynamic> asseserDetails,String uid,String trackEntry)async{
     String res = "error";
     try{

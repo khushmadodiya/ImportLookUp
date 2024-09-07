@@ -1,55 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:import_lookup/Screens/Custom%20code/textfiled.dart';
-import 'package:import_lookup/global.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
-
 import '../Backend/AddUniversalDetails.dart';
-import '../Backend/add_asessee_data.dart';
+import '../main.dart';
 import '../provider/provider.dart';
+import 'package:import_lookup/Screens/Custom%20code/textfiled.dart';
 
 class UpdateUniversalDetails extends StatefulWidget {
-  final index;
-  const UpdateUniversalDetails({super.key, this.index});
+  final int index;
+  const UpdateUniversalDetails({super.key, required this.index});
 
   @override
   State<UpdateUniversalDetails> createState() => _UpdateUniversalDetailsState();
 }
 
 class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
-  // Controllers for each text field
-  final TextEditingController _assesseeNameController = TextEditingController();
-  final TextEditingController _divisionRangeController =
-      TextEditingController();
-  final TextEditingController _oioNoDateController = TextEditingController();
-  final TextEditingController _totalDutyOfArrearController =
-      TextEditingController();
-  final TextEditingController _penaltyController = TextEditingController();
-  final TextEditingController _interestController = TextEditingController();
-  final TextEditingController _amountRecoveredController =
-      TextEditingController();
-  final TextEditingController _preDepositController = TextEditingController();
-  final TextEditingController _totalArrearsPendingController =
-      TextEditingController();
-  final TextEditingController _briefFactsController = TextEditingController();
-  final TextEditingController _presentStatusController =
-      TextEditingController();
-  final TextEditingController _appealNoController = TextEditingController();
-  final TextEditingController _stayOrderNoDateController =
-      TextEditingController();
-  final TextEditingController _effortsMadeRemarksController =
-      TextEditingController();
-  final TextEditingController _IECController = TextEditingController();
-  final TextEditingController _GSTINController = TextEditingController();
-  final TextEditingController _PANController = TextEditingController();
-
-  String date = 'Select OIO Date';
-  String? selectedCategory;
-  String? selectedSubCategory;
-
+  late Map<String, dynamic> details;
   final Map<String, List<String>> categorySubCategoryMap = {
     "Arrear in Litigation/Appeal": [
       "SC", "HC",
@@ -68,68 +35,64 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
       "Arrears fit for Write-off"
     ],
   };
-  List<Map<String, dynamic>>? data;
+
+  final TextEditingController _assesseeNameController = TextEditingController();
+  final TextEditingController _divisionRangeController = TextEditingController();
+  final TextEditingController _oioNoDateController = TextEditingController();
+  final TextEditingController _totalDutyOfArrearController = TextEditingController();
+  final TextEditingController _penaltyController = TextEditingController();
+  final TextEditingController _amountRecoveredController = TextEditingController();
+  final TextEditingController _preDepositController = TextEditingController();
+  final TextEditingController _totalArrearsPendingController = TextEditingController();
+  final TextEditingController _briefFactsController = TextEditingController();
+  final TextEditingController _presentStatusController = TextEditingController();
+  final TextEditingController _appealNoController = TextEditingController();
+  final TextEditingController _stayOrderNoDateController = TextEditingController();
+  final TextEditingController _effortsMadeRemarksController = TextEditingController();
+  final TextEditingController _iecController = TextEditingController();
+  final TextEditingController _gstinController = TextEditingController();
+  final TextEditingController _panController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
+  final TextEditingController _interestController = TextEditingController();
+
+  String? selectedCategory;
+  String? selectedSubCategory;
+  String? date;
+
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    final asseserProvider = Provider.of<AsseserProvider>(context, listen: false);
-    data = asseserProvider.assesers();
-    print(data![widget.index].toString());
-    _assesseeNameController.text = data![widget.index]['name'].toString();
-    _divisionRangeController.text =
-        data![widget.index]['division_range'].toString();
-    _oioNoDateController.text = data![widget.index]['oio'].toString();
-    date = data![widget.index]['date'].toString(); // Date value
-    _totalDutyOfArrearController.text =
-        data![widget.index]['duty_or_arear'].toString();
-    _penaltyController.text = data![widget.index]['penalty'].toString();
-    _interestController.text = data![widget.index]['interest'].toString();
-    _amountRecoveredController.text =
-        data![widget.index]['amount_recovered'].toString();
-    _preDepositController.text = data![widget.index]['pre_deposit'].toString();
-    _totalArrearsPendingController.text =
-        data![widget.index]['total_arrears_pending'].toString();
-    _briefFactsController.text = data![widget.index]['brief_facts'].toString();
-    _presentStatusController.text = data![widget.index]['status'].toString();
-    _appealNoController.text = data![widget.index]['appeal_no'].toString();
-    _stayOrderNoDateController.text =
-        data![widget.index]['stay_order_no_and_date'].toString();
-    _effortsMadeRemarksController.text =
-        data![widget.index]['remark'].toString();
-    _IECController.text = data![widget.index]['iec'].toString();
-    _GSTINController.text = data![widget.index]['gstin'].toString();
-    _PANController.text = data![widget.index]['pan'].toString();
-    selectedCategory = data![widget.index]['category'].toString();
-    selectedSubCategory = data![widget.index]['subcategory']?.toString();
-  }
+    final provider = Provider.of<AsseserProvider>(context, listen: false);
+    details = provider.assesers()[widget.index];
 
-  @override
-  void dispose() {
-    _assesseeNameController.dispose();
-    _divisionRangeController.dispose();
-    _oioNoDateController.dispose();
-    _totalDutyOfArrearController.dispose();
-    _penaltyController.dispose();
-    _interestController.dispose();
-    _amountRecoveredController.dispose();
-    _preDepositController.dispose();
-    _totalArrearsPendingController.dispose();
-    _briefFactsController.dispose();
-    _presentStatusController.dispose();
-    _appealNoController.dispose();
-    _stayOrderNoDateController.dispose();
-    _effortsMadeRemarksController.dispose();
-    _IECController.dispose();
-    _GSTINController.dispose();
-    _PANController.dispose();
-    super.dispose();
+    _assesseeNameController.text = details['name'] ?? '';
+    _divisionRangeController.text = details['division_range'] ?? '';
+    _oioNoDateController.text = details['oio'] ?? '';
+    _totalDutyOfArrearController.text = details['duty_or_arear'] ?? '';
+    _penaltyController.text = details['penalty'] ?? '';
+    _amountRecoveredController.text = details['amount_recovered'] ?? '';
+    _preDepositController.text = details['pre_deposit'] ?? '';
+    _totalArrearsPendingController.text = details['total_arrears_pending'] ?? '';
+    _briefFactsController.text = details['brief_facts'] ?? '';
+    _presentStatusController.text = details['status'] ?? '';
+    _appealNoController.text = details['appeal_no'] ?? '';
+    _stayOrderNoDateController.text = details['stay_order_no_and_date'] ?? '';
+    _effortsMadeRemarksController.text = details['remark'] ?? '';
+    _iecController.text = details['iec'] ?? '';
+    _gstinController.text = details['gstin'] ?? '';
+    _panController.text = details['pan'] ?? '';
+    _ageController.text = details['age']?.toString() ?? '';
+    selectedCategory = details['category'];
+    selectedSubCategory = details['subcategory'];
+    date = details['date'];
   }
 
   void addDetail() async {
-    var uid = data![widget.index]['uid'];
-    Map<String, dynamic> asseserDetails = {
+
+    var uid = details['uid'];
+
+    Map<String, dynamic> assesseeDetails = {
       'uid': uid,
       'name': _assesseeNameController.text,
       'division_range': _divisionRangeController.text,
@@ -144,31 +107,81 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
       'status': _presentStatusController.text,
       'appeal_no': _appealNoController.text,
       'stay_order_no_and_date': _stayOrderNoDateController.text,
-      'remark': _amountRecoveredController.text,
-      'iec': _IECController.text,
-      'gstin': _GSTINController.text,
-      'pan': _PANController.text,
-      'complete_track':
-          selectedCategory == "Arrear where appeal period is not over"
-              ? ['${date} OIO is filed']
-              : ['${date} shifted to $selectedCategory : $selectedSubCategory'],
+      'remark': _effortsMadeRemarksController.text,
+      'iec': _iecController.text,
+      'gstin': _gstinController.text,
+      'pan': _panController.text,
+      'age': double.tryParse(_ageController.text),
+      'complete_track': selectedCategory == "Arrear where appeal period is not over"
+          ? ['${date} OIO is filed']
+          : ['${date} shifted to $selectedCategory : $selectedSubCategory'],
       'category': selectedCategory ?? "None",
       'subcategory': selectedSubCategory ?? "None",
-      'isshifted':
-          selectedCategory == "Arrear where appeal period is not over" ? 0 : 1,
+      'isshifted': selectedCategory == "Arrear where appeal period is not over" ? 0 : 1,
     };
     String trackEntry =
-        selectedCategory == "Arrear where appeal period is not over"
-            ? '${date} OIO is filed'
-            : '${date} shifted to $selectedCategory : $selectedSubCategory';
+    selectedCategory == "Arrear where appeal period is not over"
+        ? '${date} OIO is filed'
+        : '${date} shifted to $selectedCategory : $selectedSubCategory';
 
-    String res =
-        await AddUniversalDetails().addDetails(asseserDetails, uid, trackEntry);
-    if (res == "s") {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('$res Details added successfully!')),
-      );
-      Navigator.pop(context,true);
+    if (isadmin) {
+
+      String res = await AddUniversalDetails().addDetails(assesseeDetails, uid,trackEntry);
+      if (res == "s") {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Details updated successfully!')),
+        );
+        Navigator.pop(context, true);
+      }
+    } else {
+      // If the user is not an admin, create a request in the requests collection
+      Map<String, dynamic> requestDetails = {
+        'uid': uid,
+        'name': details['name'], // Original value
+        'upname': _assesseeNameController.text, // Updated value
+        'division_range': details['division_range'],
+        'updivision_range': _divisionRangeController.text, // Updated value
+        'oio': details['oio'],
+        'upoio': _oioNoDateController.text, // Updated value
+        'duty_or_arear': details['duty_or_arear'],
+        'upduty_or_arear': _totalDutyOfArrearController.text, // Updated value
+        'penalty': details['penalty'],
+        'uppenalty': _penaltyController.text, // Updated value
+        'amount_recovered': details['amount_recovered'],
+        'upamount_recovered': _amountRecoveredController.text, // Updated value
+        'pre_deposit': details['pre_deposit'],
+        'uppre_deposit': _preDepositController.text, // Updated value
+        'total_arrears_pending': details['total_arrears_pending'],
+        'uptotal_arrears_pending': _totalArrearsPendingController.text, // Updated value
+        'brief_facts': details['brief_facts'],
+        'upbrief_facts': _briefFactsController.text, // Updated value
+        'status': details['status'],
+        'upstatus': _presentStatusController.text, // Updated value
+        'appeal_no': details['appeal_no'],
+        'upappeal_no': _appealNoController.text, // Updated value
+        'stay_order_no_and_date': details['stay_order_no_and_date'],
+        'upstay_order_no_and_date': _stayOrderNoDateController.text, // Updated value
+        'iec': details['iec'],
+        'upiec': _iecController.text, // Updated value
+        'gstin': details['gstin'],
+        'upgstin': _gstinController.text, // Updated value
+        'pan': details['pan'],
+        'uppan': _panController.text, // Updated value
+        'age': details['age'],
+        'upage': double.tryParse(_ageController.text), // Updated value
+        'complete_track': details['complete_track'],
+        'upcomplete_track': selectedCategory == "Arrear where appeal period is not over"
+            ? ['${date} OIO is filed']
+            : ['${date} shifted to $selectedCategory : $selectedSubCategory'],
+      };
+
+      String res = await AddUniversalDetails().addRequest(requestDetails,uid);
+      if (res == "s") {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Update request submitted successfully!')),
+        );
+        Navigator.pop(context, true);
+      }
     }
   }
 
@@ -263,7 +276,7 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
                               decoration: BoxDecoration(
                                 border: Border.all(color: Colors.grey),
                               ),
-                              child: Center(child: Text(date)),
+                              child: Center(child: Text(date.toString())),
                             ),
                           ),
                         ),
@@ -303,13 +316,13 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
                 ),
                 buildRow(
                   _stayOrderNoDateController,
-                  _PANController,
+                  _panController,
                   'Stay order no. & date',
                   'PAN',
                 ),
                 buildRow(
-                  _IECController,
-                  _GSTINController,
+                  _iecController,
+                  _gstinController,
                   'IEC',
                   'GSTIN',
                 ),
@@ -337,13 +350,13 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
                     height: 50,
                     width: 300,
                     child: Center(
-                        child: Text(
-                          'Submit',
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.red,
-                              fontWeight: FontWeight.bold),
-                        ),
+                      child: Text(
+                        'Submit',
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.red,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                 ),
@@ -363,43 +376,43 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
         children: [
           maxLines == null
               ? Expanded(
-                  child: CustomTextField(
-                    controller: controller1,
-                    hintText: label1,
-                    labelText: label1,
-                    width: 300,
-                  ),
-                )
+            child: CustomTextField(
+              controller: controller1,
+              hintText: label1,
+              labelText: label1,
+              width: 300,
+            ),
+          )
               : Expanded(
-                  child: CustomTextField(
-                    controller: controller1,
-                    hintText: label1,
-                    labelText: label1,
-                    width: 300,
-                    height: 100,
-                    maxLines: maxLines,
-                  ),
-                ),
+            child: CustomTextField(
+              controller: controller1,
+              hintText: label1,
+              labelText: label1,
+              width: 300,
+              height: 100,
+              maxLines: maxLines,
+            ),
+          ),
           const SizedBox(width: 8),
           maxLines == null
               ? Expanded(
-                  child: CustomTextField(
-                    controller: controller2,
-                    hintText: label2,
-                    labelText: label2,
-                    width: 300,
-                  ),
-                )
+            child: CustomTextField(
+              controller: controller2,
+              hintText: label2,
+              labelText: label2,
+              width: 300,
+            ),
+          )
               : Expanded(
-                  child: CustomTextField(
-                    controller: controller2,
-                    hintText: label2,
-                    labelText: label2,
-                    width: 300,
-                    height: 100,
-                    maxLines: maxLines,
-                  ),
-                ),
+            child: CustomTextField(
+              controller: controller2,
+              hintText: label2,
+              labelText: label2,
+              width: 300,
+              height: 100,
+              maxLines: maxLines,
+            ),
+          ),
         ],
       ),
     );
