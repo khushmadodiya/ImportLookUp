@@ -24,15 +24,11 @@ void main() async{
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-getitem()async{
-  var pref = await SharedPreferences.getInstance();
-  selecteditem = pref.get('value').toString();
-  print(selecteditem);
-}
+
 
   @override
   Widget build(BuildContext context) {
-  getitem();
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AsseserProvider()),

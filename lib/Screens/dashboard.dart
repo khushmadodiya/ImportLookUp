@@ -17,6 +17,9 @@ import 'package:import_lookup/Screens/oio-page.dart';
 import 'package:import_lookup/Screens/show-oio-details.dart';
 import 'package:import_lookup/Screens/supreme_court_page.dart';
 import 'package:import_lookup/Screens/search_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../global.dart';
 
 class DashboardScreen extends StatefulWidget {
   final bool isadmin;
@@ -29,7 +32,17 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getitem();
+  }
+  getitem()async{
+    var pref = await SharedPreferences.getInstance();
+    selecteditem = pref.get('value').toString();
+    print(selecteditem);
+  }
   int _selectedIndex = 0;
 
    List<Widget> _widgetOptions = const [
