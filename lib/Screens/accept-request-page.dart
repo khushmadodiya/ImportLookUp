@@ -20,10 +20,21 @@ class _AcceptRequestsState extends State<AcceptRequests> {
   @override
   void initState() {
     super.initState();
+    print("heeeli if i am callled ");
     final asseserProvider = Provider.of<AsseserProvider>(context, listen: false);
     asseserProvider.fetchAssesers();
     final requestedasseserProvider = Provider.of<RequestedAsseserProvider>(context, listen: false);
-    requestedasseserProvider.fetchAssesers(); // Fetch data on widget initialization
+    getData();
+    requestedasseserProvider.fetchAssesers();
+     // Fetch data on widget initialization
+  }
+
+  //getdata is here
+  void getData()async{
+      print("i am dipuuuuu");
+    final requestedasseserProvider = Provider.of<RequestedAsseserProvider>(context, listen: false);
+     await requestedasseserProvider.fetchAssesers();
+   print("khushwant madarchod uskii ${await requestedasseserProvider.assesers()}");
   }
 
   int num = 0;
@@ -31,7 +42,7 @@ class _AcceptRequestsState extends State<AcceptRequests> {
 
   @override
   Widget build(BuildContext context) {
-    final asseserProvider = Provider.of<AsseserProvider>(context);
+    // final asseserProvider = Provider.of<AsseserProvider>(context);
     final requestedasseserProvider = Provider.of<RequestedAsseserProvider>(
         context);
 
@@ -46,22 +57,35 @@ class _AcceptRequestsState extends State<AcceptRequests> {
     }
 
     List<TableRow> rows = [];
-    for (int i = 0; i < requestedasseserProvider.assesers().length; i++) {
-      final request = requestedasseserProvider.assesers()[i];
+ for (int i = 0; i < requestedasseserProvider.assesers().length; i++) {
+  final request = requestedasseserProvider.assesers()[i];
 
-      final asseser = asseserProvider.assesers().firstWhere(
-            (asseser) => asseser['uid'] == request['uid'],
-        orElse: () => {},
-      );
+  // Print the request data for debugging
+  num++;
+  print("Request data is here: ${request.toString()}");
 
-      if (asseser != null) {
-        num++;
-        rows.add(_buildDataRow(asseser, num, i, up: ''));
-        rows.add(_buildDataRow(request, num, i, up: 'up'));
-        myData.add(request);
-        myData.add(asseser);
-      }
-    }
+  // Separate fields that start with 'up'
+  final requestUpFields = Map<String, dynamic>.fromEntries(
+    request.entries.where((entry) => entry.key.startsWith('up'))
+  );
+  // print("heeelo re")
+  // Separate fields that do not start with 'up'
+  final requestNonUpFields = Map<String, dynamic>.fromEntries(
+    request.entries.where((entry) => !entry.key.startsWith('up'))
+  );
+
+  // Add rows with non-'up' fields
+  rows.add(_buildDataRow(requestNonUpFields, num, i, up: ''));
+
+  // Add rows with 'up' fields
+  if (requestUpFields.isNotEmpty) {
+    rows.add(_buildDataRow(requestUpFields, num, i, up: 'up'));
+  }
+
+  // Increment num if needed (you can uncomment this line if num is used elsewhere)
+  // num++;
+}
+
     return Scaffold(
       appBar: AppBar(title: const Text('Accept Request')),
       body: SingleChildScrollView(
@@ -140,20 +164,20 @@ class _AcceptRequestsState extends State<AcceptRequests> {
     return TableRow(
       children: [
         _multiLineText((i).toString() + up, 1),
-        _multiLineText(data['uid'] ?? 'N/A', 2),
-        _multiLineText(data['division_range'] ?? 'N/A', 3),
-        _multiLineText(data['oio'] ?? 'N/A', 4),
-        _multiLineText(data['date'] ?? 'N/A', 5),
+        _multiLineText(data['${up}name'] ?? 'N/A', 2),
+        _multiLineText(data['${up}division_range'] ?? 'N/A', 3),
+        _multiLineText(data['${up}oio'] ?? 'N/A', 4),
+        _multiLineText(data['${up}date'] ?? 'N/A', 5),
         _multiLineText(day, 6),
-        _multiLineText(data['duty_or_arear'] ?? 'N/A', 7),
-        _multiLineText(data['penalty'] ?? 'N/A', 8),
-        _multiLineText(data['amount_recovered'] ?? 'N/A', 9),
-        _multiLineText(data['pre_deposit'] ?? 'N/A', 10),
-        _multiLineText(data['total_arrears_pending'] ?? 'N/A', 11),
-        _multiLineText(data['brief_facts'] ?? 'N/A', 12),
-        _multiLineText(data['status'] ?? 'N/A', 13),
-        _multiLineText(data['appeal_no'] ?? 'N/A', 14),
-        _multiLineText(data['stay_order_no_and_date'] ?? 'N/A', 15),
+        _multiLineText(data['${up}duty_or_arear'] ?? 'N/A', 7),
+        _multiLineText(data['${up}penalty'] ?? 'N/A', 8),
+        _multiLineText(data['${up}amount_recovered'] ?? 'N/A', 9),
+        _multiLineText(data['${up}pre_deposit'] ?? 'N/A', 10),
+        _multiLineText(data['${up}total_arrears_pending'] ?? 'N/A', 11),
+        _multiLineText(data['${up}brief_facts'] ?? 'N/A', 12),
+        _multiLineText(data['${up}status'] ?? 'N/A', 13),
+        _multiLineText(data['${up}appeal_no'] ?? 'N/A', 14),
+        _multiLineText(data['${up}stay_order_no_and_date'] ?? 'N/A', 15),
         _buildTransferButton(index,data['uid']??'N/A', title: up.isEmpty ? 'Accept' : 'Reject'),
       ],
     );

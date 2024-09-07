@@ -45,9 +45,17 @@ class DefaultFirebaseOptions {
     appId: '1:986338689170:web:6cd74c168758c10164a64b',
     messagingSenderId: '986338689170',
     projectId: 'importlookup',
-    authDomain: 'importlookup.firebaseapp.com',
-    storageBucket: 'importlookup.appspot.com',
-    measurementId: 'G-4KS26HTW2H',
+    authDomain: 'importlookup.firebaseapp.com'
+    // storageBucket: 'importlookup.appspot.com',
+    // measurementId: 'G-4KS26HTW2H',
+
+
+    //
+    // apiKey: "AIzaSyDFtsZIVS4asgY3SfQmuWPRRoDCUNS_EUA",
+    //         appId: "1:161776174529:web:4e51a68603beacf1425b40",
+    //         messagingSenderId: "161776174529",
+    //         storageBucket: "major-lms.appspot.com",
+    //         projectId: "major-lms"
   );
 
   static const FirebaseOptions android = FirebaseOptions(

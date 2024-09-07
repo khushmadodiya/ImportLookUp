@@ -4,6 +4,7 @@ import '../Backend/fetchAsseserData.dart';
 
 class AsseserProvider with ChangeNotifier {
   List<Map<String,dynamic>>?_assesers;
+  // List<Map<String,dynamic>>?_re;
   bool _isLoading = false;
 
   List<Map<String,dynamic>> assesers(){
@@ -42,7 +43,7 @@ class RequestedAsseserProvider with ChangeNotifier {
   bool _isLoading = false;
 
   List<Map<String,dynamic>> assesers(){
-    print("lenght is heer ");
+    // print("lenght is heer ");
     return _assesers!;
     }
 
@@ -53,7 +54,7 @@ class RequestedAsseserProvider with ChangeNotifier {
   notifyListeners(); // Notify listeners that loading has started
 
   try {
-    List<Map<String, dynamic>> fetchedAssesers = await AsseserService().fetchAssesers(isadmin: true);
+    List<Map<String, dynamic>> fetchedAssesers = await AsseserService().featchRequestData(isadmin: true);
     if (fetchedAssesers.isNotEmpty) {
       // print("heeelo ${fetchedAssesers.length}");
       _assesers = fetchedAssesers;
