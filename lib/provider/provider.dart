@@ -55,23 +55,26 @@ class RequestedAsseserProvider with ChangeNotifier {
 
   try {
     List<Map<String, dynamic>> fetchedAssesers = await AsseserService().featchRequestData(isadmin: true);
-    if (fetchedAssesers.isNotEmpty) {
+    // if (fetchedAssesers.isNotEmpty) {
       // print("heeelo ${fetchedAssesers.length}");
       _assesers = fetchedAssesers;
-    } else {
-      print("No assesers fetched from the service.");
-    }
-    print("Fetched assesers count: ${_assesers!.length}");
+    // } else {
+      // print("No assesers fetched from the service.");
+    // }
+    // print("Fetched assesers count: ${_assesers!.length}");
   } catch (e) {
     print('Error fetching assesers: $e');
     _assesers = [];
   }
 
   _isLoading = false;
-  notifyListeners(); // Notify listeners that loading has finished
+  notifyListeners(); 
 }
   Future<void> refreshData() async {
+
+    print("now dipu is here for refereshing shsshuushn");
     await fetchAssesers();
+    notifyListeners();
   }
 
 }

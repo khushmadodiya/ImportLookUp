@@ -1,138 +1,121 @@
-// ignore_for_file: unused_element
-
 import 'package:flutter/material.dart';
 import 'package:import_lookup/Backend/AddUniversalDetails.dart';
-import 'package:import_lookup/Screens/universal-update-details-page.dart';
-import 'package:import_lookup/excael-download-option.dart';
 import 'package:provider/provider.dart';
-
 import '../provider/provider.dart';
 import 'AcceptRequestPage.dart';
 
 class AcceptRequests extends StatefulWidget {
-  const AcceptRequests({super.key});
+  const AcceptRequests({Key? key}) : super(key: key);
 
   @override
   State<AcceptRequests> createState() => _AcceptRequestsState();
 }
 
 class _AcceptRequestsState extends State<AcceptRequests> {
-  List<Map<String,dynamic>> updateupvlaues=[];
+  List<Map<String, dynamic>> updateupvlaues = [];
+  int num = 0;
+
   @override
   void initState() {
     super.initState();
-    print("heeeli if i am callled ");
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      refreshData();
+    });
+  }
+
+  Future<void> refreshData() async {
     final asseserProvider = Provider.of<AsseserProvider>(context, listen: false);
-    asseserProvider.fetchAssesers();
     final requestedasseserProvider = Provider.of<RequestedAsseserProvider>(context, listen: false);
-    getData();
-    requestedasseserProvider.fetchAssesers();
-     // Fetch data on widget initialization
+    
+    await asseserProvider.fetchAssesers();
+    await requestedasseserProvider.fetchAssesers();
+    
+    setState(() {
+      num = 0;
+      updateupvlaues.clear();
+    });
   }
-
-  //getdata is here
-  void getData()async{
-      print("i am dipuuuuu");
-    final requestedasseserProvider = Provider.of<RequestedAsseserProvider>(context, listen: false);
-     await requestedasseserProvider.fetchAssesers();
-   print("khushwant madarchod uskii ${await requestedasseserProvider.assesers()}");
-  }
-
-  int num = 0;
-  List<Map<String, dynamic>> myData = [];
 
   @override
   Widget build(BuildContext context) {
-    // final asseserProvider = Provider.of<AsseserProvider>(context);
-    final requestedasseserProvider = Provider.of<RequestedAsseserProvider>(
-        context);
+    final requestedasseserProvider = Provider.of<RequestedAsseserProvider>(context);
 
     if (requestedasseserProvider.isLoading) {
-      return Center(child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator());
     }
 
-    if (requestedasseserProvider.assesers == null || requestedasseserProvider
-        .assesers()
-        .isEmpty) {
-      return Center(child: Text('No data found'));
+    if (requestedasseserProvider.assesers == null || requestedasseserProvider.assesers().isEmpty) {
+      return const Center(child: Text('No data found'));
     }
 
     List<TableRow> rows = [];
- for (int i = 0; i < requestedasseserProvider.assesers().length; i++) {
-  final request = requestedasseserProvider.assesers()[i];
+    for (int i = 0; i < requestedasseserProvider.assesers().length; i++) {
+      final request = requestedasseserProvider.assesers()[i];
+      num++;
 
-  // Print the request data for debugging
-  num++;
-  print("Request data is here: ${request.toString()}");
+      Map<String, dynamic> requestUpFields = Map<String, dynamic>.fromEntries(
+        request.entries.where((entry) => entry.key.startsWith('up'))
+      );
 
-  // Separate fields that start with 'up'
-  Map<String,dynamic> requestUpFields = Map<String, dynamic>.fromEntries(
-    request.entries.where((entry) => entry.key.startsWith('up'))
-  );
+      updateupvlaues.add(requestUpFields);
 
-  updateupvlaues.add(requestUpFields);
-  // print("heeelo re")
-  // Separate fields that do not start with 'up'
-  final requestNonUpFields = Map<String, dynamic>.fromEntries(
-    request.entries.where((entry) => !entry.key.startsWith('up'))
-  );
+      final requestNonUpFields = Map<String, dynamic>.fromEntries(
+        request.entries.where((entry) => !entry.key.startsWith('up'))
+      );
 
-  // Add rows with non-'up' fields
-  rows.add(_buildDataRow(requestNonUpFields, num, i, up: ''));
+      rows.add(_buildDataRow(requestNonUpFields, num, i, up: ''));
 
-  // Add rows with 'up' fields
-  if (requestUpFields.isNotEmpty) {
-    rows.add(_buildDataRow(requestUpFields, num, i, up: 'up'));
-  }
-
-  // Increment num if needed (you can uncomment this line if num is used elsewhere)
-  // num++;
-}
+      if (requestUpFields.isNotEmpty) {
+        rows.add(_buildDataRow(requestUpFields, num, i, up: 'up'));
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(title: const Text('Accept Request')),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
+      body: RefreshIndicator(
+        onRefresh: refreshData,
         child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            children: [
-
-              SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Padding(
-                    padding: const EdgeInsets.all(18.0),
-                    child: Table(
-                      border: TableBorder.all(width: 1.0, color: Colors.black),
-                      columnWidths: const {
-                        0: FixedColumnWidth(70),
-                        1: FixedColumnWidth(300),
-                        2: FixedColumnWidth(180),
-                        3: FixedColumnWidth(300),
-                        4: FixedColumnWidth(150),
-                        5: FixedColumnWidth(120),
-                        6: FixedColumnWidth(180),
-                        7: FixedColumnWidth(180),
-                        8: FixedColumnWidth(180),
-                        9: FixedColumnWidth(180),
-                        10: FixedColumnWidth(180),
-                        11: FixedColumnWidth(350),
-                        12: FixedColumnWidth(350),
-                        13: FixedColumnWidth(250),
-                        14: FixedColumnWidth(180),
-                        15: FixedColumnWidth(180),
-                      },
-                      children: [
-                        _buildHeaderRow(),
-                        ...rows,
-                      ],
+          scrollDirection: Axis.horizontal,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Padding(
+                      padding: const EdgeInsets.all(18.0),
+                      child: Table(
+                        border: TableBorder.all(width: 1.0, color: Colors.black),
+                        columnWidths: const {
+                          0: FixedColumnWidth(70),
+                          1: FixedColumnWidth(300),
+                          2: FixedColumnWidth(180),
+                          3: FixedColumnWidth(300),
+                          4: FixedColumnWidth(150),
+                          5: FixedColumnWidth(120),
+                          6: FixedColumnWidth(180),
+                          7: FixedColumnWidth(180),
+                          8: FixedColumnWidth(180),
+                          9: FixedColumnWidth(180),
+                          10: FixedColumnWidth(180),
+                          11: FixedColumnWidth(350),
+                          12: FixedColumnWidth(350),
+                          13: FixedColumnWidth(250),
+                          14: FixedColumnWidth(180),
+                          15: FixedColumnWidth(180),
+                        },
+                        children: [
+                          _buildHeaderRow(),
+                          ...rows,
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -163,7 +146,7 @@ class _AcceptRequestsState extends State<AcceptRequests> {
   }
 
   TableRow _buildDataRow(Map<String, dynamic> data, int i, int index, {String up = ''}) {
-    String day = _calculateDayCount(data['date'] ?? '01-01-1970').toString();
+    String day = _calculateDayCount(data['${up}date'] ?? '01-01-1970').toString();
     return TableRow(
       children: [
         _multiLineText((i).toString() + up, 1),
@@ -181,12 +164,12 @@ class _AcceptRequestsState extends State<AcceptRequests> {
         _multiLineText(data['${up}status'] ?? 'N/A', 13),
         _multiLineText(data['${up}appeal_no'] ?? 'N/A', 14),
         _multiLineText(data['${up}stay_order_no_and_date'] ?? 'N/A', 15),
-        _buildTransferButton(index,data['uid']??'N/A', title: up.isEmpty ? 'Accept' : 'Reject'),
+        _buildTransferButton(index, data['uid'] ?? 'N/A', title: up.isEmpty ?'Reject':'Accept' ),
       ],
     );
   }
 
-  Widget _buildTransferButton(int i,String uid,{String title = 'Transfer Case'}) {
+  Widget _buildTransferButton(int i, String uid, {String title = 'Transfer Case'}) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 15.0),
@@ -196,32 +179,23 @@ class _AcceptRequestsState extends State<AcceptRequests> {
           decoration: BoxDecoration(
             border: Border.all(width: 1),
             borderRadius: BorderRadius.circular(15),
-            color: title=="Accept"? Colors.green : Colors.redAccent
+            color: title == "Accept" ? Colors.green : Colors.redAccent
           ),
-
           child: InkWell(
-            onTap: ()async{
-              final asseserProvider = Provider.of<AsseserProvider>(context, listen: false);
-              final requestedAsseserProvider = Provider.of<RequestedAsseserProvider>(context, listen: false);
-
+            onTap: () async {
               if (title == "Accept") {
                 await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AcceptRequestPage(index: i,updatedupvalue: updateupvlaues),
+                    builder: (context) => AcceptRequestPage(index: i, updatedupvalue: updateupvlaues),
                   ),
                 );
-                await asseserProvider.fetchAssesers();
-                await requestedAsseserProvider.fetchAssesers();
-                setState(() {});
-
               } else {
                 await AddUniversalDetails().rejectRequest(uid);
-                asseserProvider.fetchAssesers(); // Trigger provider data refresh
-                requestedAsseserProvider.fetchAssesers();
               }
+              await refreshData();
             },
-            child: Center(child: Text(title,style: TextStyle(fontSize:15,color: Colors.black,fontWeight: FontWeight.bold),)),
+            child: Center(child: Text(title, style: TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.bold))),
           ),
         ),
       ),

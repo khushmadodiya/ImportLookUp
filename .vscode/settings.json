@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "E:/timepass/ImportLookUp/linux"
+    "cmake.sourceDirectory": "E:/timepass/ImportLookUp/linux",
+    "cmake.ignoreCMakeListsMissing": true
 }

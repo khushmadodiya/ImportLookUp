@@ -49,6 +49,7 @@ class AddUniversalDetails {
   Future<String> rejectRequest(String uid)async{
     String res = "error";
     try{
+      print("Uiiiiiiiiiiiiiiiiiiiid is heree $uid");
       await FirebaseFirestore.instance.collection('requests').doc(uid).delete();
       return res ='s';
     }
