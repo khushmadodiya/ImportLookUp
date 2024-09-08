@@ -173,6 +173,11 @@ class _UpdateUniversalDetailsState extends State<UpdateUniversalDetails> {
         'upcomplete_track': selectedCategory == "Arrear where appeal period is not over"
             ? ['${date} OIO is filed']
             : ['${date} shifted to $selectedCategory : $selectedSubCategory'],
+        'category': details['category'],
+        'upcategory':selectedCategory??"None",
+        'subcategory': details['subcategory'],
+        'upsubcategory': selectedSubCategory ?? "None",
+
       };
 
       String res = await AddUniversalDetails().addRequest(requestDetails,uid);

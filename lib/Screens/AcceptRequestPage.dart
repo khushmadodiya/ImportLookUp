@@ -13,7 +13,8 @@ import '../provider/provider.dart';
 
 class AcceptRequestPage extends StatefulWidget {
   final index;
-  const AcceptRequestPage({super.key, this.index});
+  final updatedupvalue;
+  const AcceptRequestPage({super.key, this.index, this.updatedupvalue});
 
   @override
   State<AcceptRequestPage> createState() => _AcceptRequestPageState();
@@ -74,37 +75,42 @@ class _AcceptRequestPageState extends State<AcceptRequestPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    final asseserProvider = Provider.of<RequestedAsseserProvider>(context, listen: false);
-    data = asseserProvider.assesers();
-    print(data![widget.index].toString());
-    _assesseeNameController.text = data![widget.index]['name'].toString();
-    _divisionRangeController.text =
-        data![widget.index]['division_range'].toString();
-    _oioNoDateController.text = data![widget.index]['oio'].toString();
-    date = data![widget.index]['date'].toString(); // Date value
-    _totalDutyOfArrearController.text =
-        data![widget.index]['duty_or_arear'].toString();
-    _penaltyController.text = data![widget.index]['penalty'].toString();
-    _interestController.text = data![widget.index]['interest'].toString();
-    _amountRecoveredController.text =
-        data![widget.index]['amount_recovered'].toString();
-    _preDepositController.text = data![widget.index]['pre_deposit'].toString();
-    _totalArrearsPendingController.text =
-        data![widget.index]['total_arrears_pending'].toString();
-    _briefFactsController.text = data![widget.index]['brief_facts'].toString();
-    _presentStatusController.text = data![widget.index]['status'].toString();
-    _appealNoController.text = data![widget.index]['appeal_no'].toString();
-    _stayOrderNoDateController.text =
-        data![widget.index]['stay_order_no_and_date'].toString();
-    _effortsMadeRemarksController.text =
-        data![widget.index]['remark'].toString();
-    _IECController.text = data![widget.index]['iec'].toString();
-    _GSTINController.text = data![widget.index]['gstin'].toString();
-    _PANController.text = data![widget.index]['pan'].toString();
-    selectedCategory = data![widget.index]['category'].toString();
-    selectedSubCategory = data![widget.index]['subcategory']?.toString();
-  }
+    getdata();
 
+  }
+getdata()async{
+  final requestedasseserProvider = Provider.of<RequestedAsseserProvider>(context,listen: false);
+  data = requestedasseserProvider.assesers();
+  // data = widget.updatedupvalue;
+  print("thiejohjjheargj kdheh4w khushvant khushvant");
+  print(data!);
+  _assesseeNameController.text = data![widget.index]['upname'].toString()??"NA";
+  _divisionRangeController.text =
+      data![widget.index]['updivision_range'].toString()??"NA";
+  _oioNoDateController.text = data![widget.index]['upoio'].toString()??"NA";
+  date = data![widget.index]['update'].toString()??"NA"; // Date value
+  _totalDutyOfArrearController.text =
+      data![widget.index]['upduty_or_arear'].toString()??"NA";
+  _penaltyController.text = data![widget.index]['uppenalty'].toString()??"NA";
+  _interestController.text = data![widget.index]['upinterest'].toString()??"NA";
+  _amountRecoveredController.text =
+      data![widget.index]['upamount_recovered'].toString()??"NA";
+  _preDepositController.text = data![widget.index]['uppre_deposit'].toString()??"NA";
+  _totalArrearsPendingController.text =
+      data![widget.index]['uptotal_arrears_pending'].toString()??"NA";
+  _briefFactsController.text = data![widget.index]['upbrief_facts'].toString()??"NA";
+  _presentStatusController.text = data![widget.index]['upstatus'].toString()??"NA";
+  _appealNoController.text = data![widget.index]['upappeal_no'].toString()??"NA";
+  _stayOrderNoDateController.text =
+      data![widget.index]['upstay_order_no_and_date'].toString()??"NA";
+  _effortsMadeRemarksController.text =
+      data![widget.index]['upremark'].toString()??"NA";
+  _IECController.text = data![widget.index]['upiec'].toString()??"NA";
+  _GSTINController.text = data![widget.index]['upgstin'].toString()??"NA";
+  _PANController.text = data![widget.index]['uppan'].toString()??"NA";
+  selectedCategory = data![widget.index]['upcategory'].toString()??"NA";
+  selectedSubCategory = data![widget.index]['upsubcategory']?.toString()??"NA";
+}
   @override
   void dispose() {
     _assesseeNameController.dispose();
@@ -165,14 +171,18 @@ class _AcceptRequestPageState extends State<AcceptRequestPage> {
     String res =
     await AddUniversalDetails().addDetails(asseserDetails, uid, trackEntry);
     await  AddUniversalDetails().rejectRequest(uid);
+      if (res == "s") {
+        final requestedasseserProvider =
+        Provider.of<RequestedAsseserProvider>(context, listen: false);
+        await requestedasseserProvider.refreshData();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('$res Details added successfully!')),
+        );
+        Navigator.pop(context,true);
+      }
 
-    if (res == "s") {
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('$res Details added successfully!')),
-      );
-      Navigator.pop(context,true);
-    }
+
   }
 
   @override

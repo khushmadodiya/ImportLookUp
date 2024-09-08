@@ -17,6 +17,7 @@ class AcceptRequests extends StatefulWidget {
 }
 
 class _AcceptRequestsState extends State<AcceptRequests> {
+  List<Map<String,dynamic>> updateupvlaues=[];
   @override
   void initState() {
     super.initState();
@@ -65,9 +66,11 @@ class _AcceptRequestsState extends State<AcceptRequests> {
   print("Request data is here: ${request.toString()}");
 
   // Separate fields that start with 'up'
-  final requestUpFields = Map<String, dynamic>.fromEntries(
+  Map<String,dynamic> requestUpFields = Map<String, dynamic>.fromEntries(
     request.entries.where((entry) => entry.key.startsWith('up'))
   );
+
+  updateupvlaues.add(requestUpFields);
   // print("heeelo re")
   // Separate fields that do not start with 'up'
   final requestNonUpFields = Map<String, dynamic>.fromEntries(
@@ -202,16 +205,16 @@ class _AcceptRequestsState extends State<AcceptRequests> {
               final requestedAsseserProvider = Provider.of<RequestedAsseserProvider>(context, listen: false);
 
               if (title == "Accept") {
-                Navigator.push(
+                await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AcceptRequestPage(index: i ~/ 2),
+                    builder: (context) => AcceptRequestPage(index: i,updatedupvalue: updateupvlaues),
                   ),
-                ).then((_) {
+                );
+                await asseserProvider.fetchAssesers();
+                await requestedAsseserProvider.fetchAssesers();
+                setState(() {});
 
-                  asseserProvider.fetchAssesers();
-                  requestedAsseserProvider.fetchAssesers();
-                });
               } else {
                 await AddUniversalDetails().rejectRequest(uid);
                 asseserProvider.fetchAssesers(); // Trigger provider data refresh

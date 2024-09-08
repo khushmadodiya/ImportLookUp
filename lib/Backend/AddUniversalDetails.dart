@@ -38,7 +38,7 @@ class AddUniversalDetails {
     String res = "error";
     try{
       await FirebaseFirestore.instance.collection('assesers').doc(uid).update({...asseserDetails,'complete_track': FieldValue.arrayUnion([trackEntry])});
-      await FirebaseFirestore.instance.collection('request').doc(uid).delete();
+      await FirebaseFirestore.instance.collection('requests').doc(uid).delete();
       return res ='s';
     }
     catch(e){
@@ -49,7 +49,7 @@ class AddUniversalDetails {
   Future<String> rejectRequest(String uid)async{
     String res = "error";
     try{
-      await FirebaseFirestore.instance.collection('request').doc(uid).delete();
+      await FirebaseFirestore.instance.collection('requests').doc(uid).delete();
       return res ='s';
     }
     catch(e){

@@ -48,7 +48,9 @@ class _HighCourtCasesState extends State<HighCourtCases> {
       print(asseser['subcategory']);
       print(asseser['division_range']);
       print('selected item : $selecteditem');
-      if (asseser['subcategory'] == 'HC' && asseser['division_range']==selecteditem) {
+      if (asseser['subcategory'] == 'HC'
+          // && asseser['division_range']==selecteditem
+      ) {
         print(asseser['subcategory']);
 
         myData.add(asseser);

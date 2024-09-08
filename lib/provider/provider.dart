@@ -36,7 +36,7 @@ class AsseserProvider with ChangeNotifier {
   notifyListeners(); // Notify listeners that loading has finished
 }
 
-}
+ }
 
 class RequestedAsseserProvider with ChangeNotifier {
   List<Map<String,dynamic>>?_assesers;
@@ -70,5 +70,8 @@ class RequestedAsseserProvider with ChangeNotifier {
   _isLoading = false;
   notifyListeners(); // Notify listeners that loading has finished
 }
+  Future<void> refreshData() async {
+    await fetchAssesers();
+  }
 
 }
