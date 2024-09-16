@@ -5,6 +5,7 @@ import 'package:import_lookup/Screens/dashboard.dart';
 import 'package:import_lookup/Screens/show-oio-details.dart';
 import 'package:import_lookup/add_json_data.dart';
 import 'package:import_lookup/provider/provider.dart';
+import 'package:import_lookup/test.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: DashboardScreen(),
+        home: Test(),
        
       
       ),
