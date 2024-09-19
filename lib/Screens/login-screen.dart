@@ -1,9 +1,14 @@
 
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:import_lookup/Widgets/dropdown.dart';
+import 'package:import_lookup/global.dart';
+import 'package:import_lookup/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../Backend/authmethos.dart';
 import '../Widgets/text_field.dart';
 import 'SignupScreen.dart';
@@ -36,10 +41,23 @@ class _LoginScreenState extends State<LoginScreen> {
     String res = await AuthMethods().loginUser(
         email: _emailController.text, password: _passwordController.text);
     if (res == 'success') {
+      var pre = await SharedPreferences.getInstance();
+      await pre.setString('value', selecteditem);
+      selecteditem = pre.get('value').toString();
       if (context.mounted) {
-
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>DashboardScreen()), (route) => false);
-
+         if(FirebaseAuth.instance.currentUser!.uid.toString() == 'pbOT4LLlFQgU11skcHVOva37vg32') {
+           print("this is admin");
+           isadmin = true;
+           Navigator.pushAndRemoveUntil(context,
+               MaterialPageRoute(builder: (context) => DashboardScreen(isadmin: true,)), (
+                   route) => false);
+         }
+         else{
+           isadmin= false;
+           Navigator.pushAndRemoveUntil(context,
+               MaterialPageRoute(builder: (context) => DashboardScreen(isadmin: false,)), (
+                   route) => false);
+         }
 
 
 
@@ -65,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Container(
           padding: MediaQuery.of(context).size.width > 600
               ? EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width / 3)
+              horizontal: MediaQuery.of(context).size.width / 3.3)
               : const EdgeInsets.symmetric(horizontal: 32),
           width: double.infinity,
           height:MediaQuery.of(context).size.height,
@@ -79,11 +97,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // Icon(Icons.person_outline,size: 150,color: Colors.grey[800],),
+                  
                   const SizedBox(
                     height: 24,
                   ),
                  const Text('Import LookUp',style: TextStyle(fontWeight: FontWeight.w600,fontSize: 30,color: Colors.deepPurple),),
                  const SizedBox(height: 20,),
+                  Dropdown(),
+                  const SizedBox(height: 20,),
                   TextFieldInput(
                     hintText: 'Enter your email',
                     textInputType: TextInputType.emailAddress,

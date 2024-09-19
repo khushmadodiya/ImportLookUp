@@ -175,7 +175,7 @@ class _RecoverableArrearUnderSection11State
 
             if (shouldRefresh == true) {
               // Notify the provider to fetch data again
-              Provider.of<AsseserProvider>(context, listen: false)
+              Provider.of<RequestedAsseserProvider>(context, listen: false)
                   .fetchAssesers();
             }
           },

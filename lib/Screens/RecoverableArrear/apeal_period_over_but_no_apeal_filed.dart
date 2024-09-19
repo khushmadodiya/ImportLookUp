@@ -170,7 +170,7 @@ class _RecoverableNoApealFiledState extends State<RecoverableNoApealFiled> {
 
             if (shouldRefresh == true) {
               // Notify the provider to fetch data again
-              Provider.of<AsseserProvider>(context, listen: false)
+              Provider.of<RequestedAsseserProvider>(context, listen: false)
                   .fetchAssesers();
             }
           },

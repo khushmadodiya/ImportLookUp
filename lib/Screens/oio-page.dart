@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 // import 'package:intl/intl.dart';
 import 'package:import_lookup/Screens/Custom%20code/textfiled.dart';
+import 'package:import_lookup/Widgets/dropdown.dart';
 import 'package:import_lookup/global.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 import '../Backend/add_asessee_data.dart';
+import '../main.dart';
 // Adjust import path as necessary
 
 class AddAsseserDetails extends StatefulWidget {
@@ -20,7 +22,6 @@ class AddAsseserDetails extends StatefulWidget {
 class _AddAsseserDetailsState extends State<AddAsseserDetails> {
   // Controllers for each text field
   final TextEditingController _assesseeNameController = TextEditingController();
-  final TextEditingController _divisionRangeController = TextEditingController();
   final TextEditingController _oioNoDateController = TextEditingController();
   final TextEditingController _totalDutyOfArrearController = TextEditingController();
   final TextEditingController _penaltyController = TextEditingController();
@@ -43,7 +44,7 @@ class _AddAsseserDetailsState extends State<AddAsseserDetails> {
   @override
   void dispose() {
     _assesseeNameController.dispose();
-    _divisionRangeController.dispose();
+
     _oioNoDateController.dispose();
     _totalDutyOfArrearController.dispose();
     _penaltyController.dispose();
@@ -65,36 +66,96 @@ class _AddAsseserDetailsState extends State<AddAsseserDetails> {
 
   void adddetail() async {
      var uid = Uuid().v1();
-      Map<String, dynamic> asseserDetails = {
-        'uid': uid,
-        'name': _assesseeNameController.text,
-        'division_range': _divisionRangeController.text,
-        'oio': _oioNoDateController.text,
-        'date':date,
-        'duty_or_arear': _totalDutyOfArrearController.text,
-        'penalty': _penaltyController.text,
-        'amount_recovered': _amountRecoveredController.text,
-        'pre_deposit': _preDepositController.text,
-        'total_arrears_pending': _totalArrearsPendingController.text,
-        'brief_facts': _briefFactsController.text,
-        'status': _presentStatusController.text,
-        'appeal_no': _appealNoController.text,
-        'stay_order_no_and_date': _stayOrderNoDateController.text,
-        'remark': _amountRecoveredController.text,
-        'iec':_IECController.text,
-        'gstin':_GSTINController.text,
-        'pan':_PANController.text,
-        'complete_track': ['${date} OIO is filed'],
-        'category':selectedcategory,
-        'subcategory':'',
-        'isshifted':0,
-      };
-      String res=  await AddAsesse().addDetails(asseserDetails,uid);
-     if(res=="s") {
-       ScaffoldMessenger.of(context).showSnackBar(
-         SnackBar(content: Text('$res Details added successfully!')),
-       );
-       Navigator.pop(context);
+     if(isadmin){
+       Map<String, dynamic> asseserDetails = {
+         'uid': uid,
+         'name': _assesseeNameController.text,
+         'division_range': selecteditem,
+         'oio': _oioNoDateController.text,
+         'date':date,
+         'duty_or_arear': _totalDutyOfArrearController.text,
+         'penalty': _penaltyController.text,
+         'amount_recovered': _amountRecoveredController.text,
+         'pre_deposit': _preDepositController.text,
+         'total_arrears_pending': _totalArrearsPendingController.text,
+         'brief_facts': _briefFactsController.text,
+         'status': _presentStatusController.text,
+         'appeal_no': _appealNoController.text,
+         'stay_order_no_and_date': _stayOrderNoDateController.text,
+         'remark': _amountRecoveredController.text,
+         'iec':_IECController.text,
+         'gstin':_GSTINController.text,
+         'pan':_PANController.text,
+         'complete_track': ['${date} OIO is filed'],
+         'category':selectedcategory,
+         'subcategory':'',
+         'isshifted':0,
+       };
+       String res=  await AddAsesse().addDetails(asseserDetails,uid);
+       if(res=="s") {
+         ScaffoldMessenger.of(context).showSnackBar(
+           SnackBar(content: Text('$res Details added successfully!')),
+         );
+         clearAllControllers();
+
+       }
+     }
+     else{
+       Map<String, dynamic> asseserReqDetails = {
+         'uid': uid,
+         'name': 'NA',
+         'division_range': "NA",
+         'oio': 'NA',
+         'date':"NA",
+         'duty_or_arear': 'NA',
+         'penalty': 'NA',
+         'amount_recovered': 'NA',
+         'pre_deposit': 'NA',
+         'total_arrears_pending': 'NA',
+         'brief_facts': 'NA',
+         'status': 'NA',
+         'appeal_no': 'NA',
+         'stay_order_no_and_date': 'NA',
+         'remark': 'NA',
+         'iec':'NA',
+         'gstin':'NA',
+         'pan':'NA',
+         'complete_track': [],
+         'category':'NA',
+         'subcategory':'',
+         'isshifted':0,
+         'upname': _assesseeNameController.text,
+         'updivision_range': selecteditem,
+         'upoio': _oioNoDateController.text,
+         'update':date,
+         'upduty_or_arear': _totalDutyOfArrearController.text,
+         'uppenalty': _penaltyController.text,
+         'upamount_recovered': _amountRecoveredController.text,
+         'uppre_deposit': _preDepositController.text,
+         'uptotal_arrears_pending': _totalArrearsPendingController.text,
+         'upbrief_facts': _briefFactsController.text,
+         'upstatus': _presentStatusController.text,
+         'upappeal_no': _appealNoController.text,
+         'upstay_order_no_and_date': _stayOrderNoDateController.text,
+         'upremark': _amountRecoveredController.text,
+         'upiec':_IECController.text,
+         'upgstin':_GSTINController.text,
+         'uppan':_PANController.text,
+         'upcomplete_track': ['${date} OIO is filed'],
+         'upcategory':selectedcategory,
+         'upsubcategory':'',
+         'upisshifted':0,
+       };
+       print('khuusuuususuususuu');
+       String res=  await AddAsesse().addRequestDetails(asseserReqDetails,uid);
+       print('dipuuuuuuuuuuuuuuu');
+       print(res);
+       if(res=="s") {
+         ScaffoldMessenger.of(context).showSnackBar(
+           SnackBar(content: Text('$res Details added successfully!')),
+         );
+         clearAllControllers();
+       }
      }
   }
 
@@ -112,9 +173,9 @@ class _AddAsseserDetailsState extends State<AddAsseserDetails> {
             children: [
               buildRow(
                 _assesseeNameController,
-                _divisionRangeController,
+                _oioNoDateController,
                 'Name of the Assessee',
-                'Division / Range',
+                'OIO Number',
               ),
               // buildRow(
               //   _oioNoDateController,
@@ -132,14 +193,8 @@ class _AddAsseserDetailsState extends State<AddAsseserDetails> {
                       // TextField(),
                       SizedBox(
                           width: MediaQuery.of(context).size.width * 0.269,
-                          child: TextField(
-                            controller: _oioNoDateController,
-                            decoration:const InputDecoration(
-                              hintText:'OIO Number',
-                              labelText: 'OIO Number',
-                              border: OutlineInputBorder(),
-                            ),
-                          )
+                          child:  Dropdown(),
+
                           ),
                          const SizedBox(width:20,),
                           SizedBox(
@@ -305,5 +360,24 @@ class _AddAsseserDetailsState extends State<AddAsseserDetails> {
         ],
       ),
     );
+  }
+
+  void clearAllControllers() {
+    _assesseeNameController.clear();
+    _oioNoDateController.clear();
+    _totalDutyOfArrearController.clear();
+    _penaltyController.clear();
+    _interestController.clear();
+    _amountRecoveredController.clear();
+    _preDepositController.clear();
+    _totalArrearsPendingController.clear();
+    _briefFactsController.clear();
+    _presentStatusController.clear();
+    _appealNoController.clear();
+    _stayOrderNoDateController.clear();
+    _effortsMadeRemarksController.clear();
+    _IECController.clear();
+    _GSTINController.clear();
+    _PANController.clear();
   }
 }

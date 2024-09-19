@@ -6,6 +6,7 @@ import 'package:import_lookup/Backend/fetchAsseserData.dart';
 import 'package:import_lookup/Screens/dashboard.dart';
 import 'package:import_lookup/Screens/universal-update-details-page.dart';
 import 'package:import_lookup/excael-download-option.dart';
+import 'package:import_lookup/global.dart';
 import 'package:provider/provider.dart';
 
 import '../models/oio_model.dart';
@@ -22,6 +23,7 @@ class HighCourtCases extends StatefulWidget {
 class _HighCourtCasesState extends State<HighCourtCases> {
   @override
   void initState() {
+    print('selected item : $selecteditem');
     super.initState();
     final asseserProvider = Provider.of<AsseserProvider>(context, listen: false);
     asseserProvider.fetchAssesers(); // Fetch data on widget initialization
@@ -44,8 +46,13 @@ class _HighCourtCasesState extends State<HighCourtCases> {
     for (int i = 0; i < asseserProvider.assesers()!.length; i++) {
       final asseser = asseserProvider.assesers()![i];
       print(asseser['subcategory']);
-      if (asseser['subcategory'] == 'HC') {
+      print(asseser['division_range']);
+      print('selected item : $selecteditem');
+      if (asseser['subcategory'] == 'HC'
+          // && asseser['division_range']==selecteditem
+      ) {
         print(asseser['subcategory']);
+
         myData.add(asseser);
         num++;
         rows.add(_buildDataRow(asseser,num,i));

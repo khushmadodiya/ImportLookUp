@@ -1,39 +1,21 @@
 
-
 import 'dart:core';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:import_lookup/provider/provider.dart';
-import 'package:provider/provider.dart';
-
-import 'Screens/universal-update-details-page.dart';
-
 String selectedcategory = "Arrear where appeal period is not over";
-// String selectedsubcategory =
+String value1 = "Air Cargo Complex Indore";
+String value2 = "Customs Circle Bhopal";
+String value3 = "Customs Circle Indore";
+String value4 = "Customs Circle Raipur";
+String value5 = "Customs Circle Ujjain";
+String value6 = "Customs Circle Jabalpur";
+String value7 = "Customs Hqrs Indore";
+String value8 = "DABH International Airport Indore";
+String value9 = "ICD Kheda";
+String value10 = "ICD Malanpur";
+String value11= "ICD Mandideep ";
+String value12= "ICD Powerkheda ";
+String value13 = "ICD Raipur";
+String value14  = "ICD Tihi";
+//
+String selecteditem = value1;
 
-Widget _buildTransferButton(int i,BuildContext context) {
-  return Container(
-    color: Colors.blue.withOpacity(0.2),
-    child: Padding(
-      padding: const EdgeInsets.symmetric(vertical: 15),
-      child: ElevatedButton(
-        onPressed: () async {
-          bool? shouldRefresh = await Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => UpdateUniversalDetails(index: i),
-            ),
-          );
-
-          if (shouldRefresh == true) {
-            // Notify the provider to fetch data again
-            Provider.of<AsseserProvider>(context, listen: false)
-                .fetchAssesers();
-          }
-        },
-        child: const Text("Transfer Case"),
-      ),
-    ),
-  );
-}

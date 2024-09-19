@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:import_lookup/Backend/authmethos.dart';
 import 'package:provider/provider.dart';
 import 'package:import_lookup/Backend/fetchAsseserData.dart';
 import 'package:import_lookup/Screens/universal-update-details-page.dart';
@@ -50,7 +52,17 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
         }
 
         return Scaffold(
-          appBar: AppBar(title: const Text('SHOW OIO DETAILS')),
+          appBar: AppBar(
+              title: const Text('SHOW OIO DETAILS'),
+              actions: [
+                IconButton(onPressed: (){
+                  AuthMethods().signOut(context);
+                  setState(() {
+
+                  });
+                }, icon: Icon(Icons.logout))
+              ],
+          ),
           body: Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -157,18 +169,19 @@ class _ShowAsserDetailsState extends State<ShowAsserDetails> {
         _multiLineText(data['status'] ?? 'N/A', 13),
         _multiLineText(data['appeal_no'] ?? 'N/A', 14),
         _multiLineText(data['stay_order_no_and_date'] ?? 'N/A', 15),
-        _buildTransferButton(index),
+        _buildTransferButton(index,data),
       ],
     );
   }
 
-  Widget _buildTransferButton(int i) {
+  Widget _buildTransferButton(int i,Map<String, dynamic> data) {
     return Container(
       color: Colors.blue.withOpacity(0.2),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 15),
         child: ElevatedButton(
           onPressed: () async {
+            print(data['complete_track']?.map<Widget>((track) => Text(track)).toList() ?? [Text('No track available')],);
             bool? shouldRefresh = await Navigator.push(
               context,
               MaterialPageRoute(

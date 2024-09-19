@@ -8,6 +8,7 @@ import 'package:import_lookup/Screens/ResrainedArriers/BIFR.dart';
 import 'package:import_lookup/Screens/ResrainedArriers/DRT.dart';
 import 'package:import_lookup/Screens/ResrainedArriers/NCLT.dart';
 import 'package:import_lookup/Screens/ResrainedArriers/OL.dart';
+import 'package:import_lookup/Screens/accept-request-page.dart';
 import 'package:import_lookup/Screens/arrear_fit_write_off.dart';
 import 'package:import_lookup/Screens/cestat_page.dart';
 import 'package:import_lookup/Screens/comm_page.dart';
@@ -16,16 +17,35 @@ import 'package:import_lookup/Screens/oio-page.dart';
 import 'package:import_lookup/Screens/show-oio-details.dart';
 import 'package:import_lookup/Screens/supreme_court_page.dart';
 import 'package:import_lookup/Screens/search_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../global.dart';
 
 class DashboardScreen extends StatefulWidget {
+  final bool isadmin;
+  const DashboardScreen({
+    required this.isadmin,
+});
+
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getitem();
+  }
+  getitem()async{
+    var pref = await SharedPreferences.getInstance();
+    selecteditem = pref.get('value').toString();
+    print(selecteditem);
+  }
   int _selectedIndex = 0;
 
-  final List<Widget> _widgetOptions = const [
+   List<Widget> _widgetOptions = const [
     ShowAsserDetails(),
     SearchScreen(),
     AddAsseserDetails(),
@@ -43,6 +63,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     RecoverableArrearUnderSection11(),
     RecoverableArrearUnder142(),
     RecoverableWriteOff(),
+    AcceptRequests()
+    
   ];
 
   void _onItemTapped(int index, String itemName) {
@@ -87,6 +109,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
     );
   }
+  // @override
+  // void initState(){
+  //   super.initState();
+  //   // if(!widget.isadmin){
+  //   //   // _widgetOptions.removeLast();
+  //   // }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -94,9 +123,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final isNarrowScreen = screenWidth < 300;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Dashboard'),
-      ),
+      // title: Text('Dashboard'),
+      // ),appBar: AppBar(
+      //       //
       drawer: isNarrowScreen ? _buildDrawer() : null,
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: isNarrowScreen ? null : _buildBottomBar(),
@@ -166,7 +195,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
               "Units closed/defaulters not traceable",
               'Arrear under section-11',
               'Arrear under section-142',
-              'Arrears fit for Write-off',
             ],
             indexMap: {
               'Appeal period not over but appeal filed': 11,
@@ -174,8 +202,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
               "Units closed/defaulters not traceable": 13,
               'Arrear under section-11': 14,
               'Arrear under section-142': 15,
-              'Arrears fit for Write-off': 16,
             },
+          ),
+          _buildDrawerItem(
+            icon: Icons.delete_outline,
+            text: 'Write-off',
+            index: 16,
           ),
         ],
       ),
@@ -185,30 +217,39 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget _buildBottomBar() {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
+      items:  <BottomNavigationBarItem>[
+       const BottomNavigationBarItem(
           icon: Icon(Icons.home),
           label: 'Home',
         ),
-        BottomNavigationBarItem(
+       const BottomNavigationBarItem(
           icon: Icon(Icons.search),
           label: 'Search',
         ),
-        BottomNavigationBarItem(
+       const BottomNavigationBarItem(
           icon: Icon(Icons.person),
           label: 'Add',
         ),
-        BottomNavigationBarItem(
+       const BottomNavigationBarItem(
           icon: Icon(Icons.gavel),
           label: 'Litigation',
         ),
-        BottomNavigationBarItem(
+      const  BottomNavigationBarItem(
           icon: Icon(Icons.block),
           label: 'Restrained',
         ),
-        BottomNavigationBarItem(
+       const BottomNavigationBarItem(
           icon: Icon(Icons.monetization_on),
           label: 'Recoverable',
+        ),
+       const BottomNavigationBarItem(
+          icon: Icon(Icons.delete_outline),
+          label: 'Write-off',
+        ),
+      if(widget.isadmin)
+      const BottomNavigationBarItem(
+          icon: Icon(Icons.delete_outline),
+          label: 'Update Requeted',
         ),
       ],
       currentIndex: _getBottomNavIndex(),
@@ -216,6 +257,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
       onTap: (index) {
         if (index <= 2) {
           _onItemTapped(index, index == 0 ? 'Home' : index == 1 ? 'Search' : 'Add');
+        } else if (index == 6) {
+          _onItemTapped(16, 'Write-off');
+        }else if(index == 7 && widget.isadmin){
+          _onItemTapped(17, 'Update Req');
         } else {
           _showBottomSheet(index);
         }
@@ -227,7 +272,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     if (_selectedIndex <= 2) return _selectedIndex;
     if (_selectedIndex >= 3 && _selectedIndex <= 6) return 3;
     if (_selectedIndex >= 7 && _selectedIndex <= 10) return 4;
-    if (_selectedIndex >= 11 && _selectedIndex <= 16) return 5;
+    if (_selectedIndex >= 11 && _selectedIndex <= 15) return 5;
+    if (_selectedIndex == 16) return 6;
+    if(widget.isadmin)if (_selectedIndex == 17) return 7;
     return 0;
   }
 
@@ -284,7 +331,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
           "Units closed/defaulters not traceable": 13,
           'Arrear under section-11': 14,
           'Arrear under section-142': 15,
-          'Arrears fit for Write-off': 16,
         };
       default:
         return {};

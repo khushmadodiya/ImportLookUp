@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:import_lookup/Screens/complete-track.dart';
 import 'package:import_lookup/Screens/universal-update-details-page.dart';
 import 'package:provider/provider.dart';
 
@@ -13,7 +14,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   String _searchQuery = ''; // Add a variable to store the search query
-
+  var asseserProvider;
   @override
   void initState() {
     super.initState();
@@ -26,7 +27,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     final asseserProvider = Provider.of<AsseserProvider>(context);
-
+    
     if (asseserProvider.isLoading) {
       return Center(child: CircularProgressIndicator());
     }
@@ -51,13 +52,14 @@ class _SearchScreenState extends State<SearchScreen> {
           ||subcategory.toLowerCase().contains(_searchQuery.toLowerCase())
           ||name.toLowerCase().contains(_searchQuery.toLowerCase())
           ||status.toLowerCase().contains(_searchQuery.toLowerCase())
-          ||brief_facts.toLowerCase().contains(_searchQuery.toLowerCase())
-      ;
+          ||brief_facts.toLowerCase().contains(_searchQuery.toLowerCase());
+
     }).toList();
 
     List<TableRow> rows = [];
     for (int i = 0; i < filteredAssesers.length; i++) {
       final asseser = filteredAssesers[i];
+      // print("here data of complere ${asseser['complete_track'].length}");
         num++;
         rows.add(_buildDataRow(asseser, i));
 
@@ -74,22 +76,40 @@ class _SearchScreenState extends State<SearchScreen> {
         int.parse(b['date'].toString().substring(0,2))
         )
         ));
-        for(int i=0;i<filteredAssesers.length;i++){
-          print("sorted data ${filteredAssesers.toString()}");
-        }
         setState(() {
           
         });
+       
     }
+    void sortBasedofToatlArrearsPending(){
+      filteredAssesers=asseserProvider.assesers();
+      filteredAssesers.sort((a,b){
+        if(int.parse(a['total_arrears_pending'])>int.parse(b['total_arrears_pending'])){
+          return 1;
+        }
+        return 0;
+      }
+        );
+        setState(() {
+          
+        });
+       
+    }
+
 
 
     return Scaffold(
       appBar: AppBar(title: const Text('Search Cases')),
       body: Column(
         children: [
-          ElevatedButton(onPressed:(){
+          Row(children: [
+            ElevatedButton(onPressed:(){
             sortBasedofDate();
           }, child:const Text("Sort Based On Date")),
+           ElevatedButton(onPressed:(){
+            sortBasedofToatlArrearsPending();
+          }, child:const Text("Sort Based On arrears pending")),
+          ],),
           Padding(
             padding: const EdgeInsets.all(14.0),
             child: TextField(
@@ -133,6 +153,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       15: FixedColumnWidth(250),
                       16: FixedColumnWidth(180),
                       17: FixedColumnWidth(180),
+                      18: FixedColumnWidth(180),
 
                     },
                     children: [
@@ -171,6 +192,7 @@ class _SearchScreenState extends State<SearchScreen> {
         _buildHeaderCell('Appeal No.', 16),
         _buildHeaderCell('Stay Order No and Date', 17),
         _buildHeaderCell('Change Data', 18),
+        _buildHeaderCell('Complete Track', 18),
       ],
     );
   }
@@ -196,24 +218,38 @@ class _SearchScreenState extends State<SearchScreen> {
         _multiLineText(data['status'] ?? 'N/A', 15),
         _multiLineText(data['appeal_no'] ?? 'N/A', 16),
         _multiLineText(data['stay_order_no_and_date'] ?? 'N/A', 17),
-        _buildTransferButton(i),
-      ],
-    );
-  }
-
-  Widget _buildTransferButton(int i) {
-    return Container(
-      color: Colors.blue.withOpacity(0.2),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 15),
-        child: ElevatedButton(
-          onPressed: () {
+        _buildTransferButton(i,'Transfer Case', () {
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => UpdateUniversalDetails(index: i)));
           },
-          child: const Text("Transfer Case"),
+          ),
+          // ElevatedButton(onPressed:(){
+          //   // print("dipu is here ${data['complete_track'].length}");
+          // }, child:Text('Dipu'))
+        _buildTransferButton(i,'Complete Track',
+         () {
+          // print("divuansh ${data['complete_track'].lenght}");
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CompleteTrackScreen(complete_track:data['complete_track'],)));
+          },
+          // complete_track:data['complete_track'],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTransferButton(int i,String title,VoidCallback ontap,{List<String>complete_track=const []}) {
+    return Container(
+      color: Colors.blue.withOpacity(0.2),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 15),
+        child: ElevatedButton(
+          onPressed:ontap,
+          child: Text(title),
         ),
       ),
     );
