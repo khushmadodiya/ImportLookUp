@@ -5,6 +5,7 @@ import 'package:import_lookup/Backend-New/main-cases-details.dart';
 import 'package:import_lookup/Model-New/main-case-model.dart';
 
 import 'package:import_lookup/Model-New/request-case-model.dart';
+import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 class RequestCasesInformation {
@@ -34,14 +35,18 @@ class RequestCasesInformation {
       required String category,
       required String remark,
       required String subcategory,
-      required String effortMade}) async {
+      required String effortMade,
+      required bool isShifted,
+      }) async {
     if (uid.isEmpty) {
       uid = const Uuid().v1();
     }
     if (oldData.isNotEmpty) {
       List<String> addNewTrack = List<String>.from(oldData['completeTrack']);
       addNewTrack.add(completeTrack);
+      if(isShifted){
       oldData['completeTrack'] = addNewTrack;
+      }
     }
     RequestCaseModel model = RequestCaseModel(
       oldData: oldData,
@@ -102,6 +107,7 @@ class RequestCasesInformation {
       return {"res": e.toString()};
     }
   }
+
   //get all request dettails
     Future getAllReuqestCasesDetails() async {
     List<Map<String, dynamic>> allCases = [];
@@ -163,7 +169,7 @@ class RequestCasesInformation {
       required String category,
       required String remark,
       required String subcategory,
-      required String effortMade}) async {
+      required String effortMade,required bool isShifted}) async {
     if (uid.isEmpty) {
       // uid = const Uuid().v1();
       return {"res": "Uid cannot be empty"};
@@ -176,10 +182,16 @@ class RequestCasesInformation {
         .doc(uid)
         .get();
     if (documentSnapshot.exists) {
+      //if admin is updating the category or subgatory then the last entery of complete request will be deleted
+      List<String>trackComplete=List<String>.from(documentSnapshot['upcompleteTrack']);
+      if(isShifted){
+          trackComplete.removeLast();
+          trackComplete.add("On Date ${DateFormat('dd/mm/yyyy').format(DateTime.now())} case is in $category  $subcategory");
+      }
       RequestCaseModel model = RequestCaseModel(
         oldData: documentSnapshot['oldData'],
         upcategory: category,
-        upcompleteTrack: List<String>.from(documentSnapshot['upcompleteTrack']),
+        upcompleteTrack:trackComplete,
         uid: uid,
         upname: name,
         upformation: formation,
@@ -214,6 +226,7 @@ class RequestCasesInformation {
       return {"res": "some error occured or request is not present"};
     }
   }
+  
   //get all requets case by using formation
     Future getFormationRequestedCaseInformation(String formation)async{
     try{

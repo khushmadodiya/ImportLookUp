@@ -41,37 +41,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-<<<<<<< Updated upstream
         home: Test(),
-=======
-        home: StreamBuilder<User?>(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.active) {
-              if (snapshot.hasData) {
-                if (FirebaseAuth.instance.currentUser!.uid == 'pbOT4LLlFQgU11skcHVOva37vg32') {
-                  isadmin = true;
-                } else {
-                  isadmin = false;
-                }
-                return DashboardScreen(isadmin: isadmin);
-              } else if (snapshot.hasError) {
-                return Center(child: Text('An error occurred'));
-              }
-            }
-
-            if (snapshot.connectionState == ConnectionState.waiting ) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-
-            return LoginScreen();
-          },
-        ),
-
-
->>>>>>> Stashed changes
        
       
       ),

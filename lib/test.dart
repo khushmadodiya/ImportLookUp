@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:import_lookup/Backend-New/authentication.dart';
+import 'package:import_lookup/Backend-New/financial-year.dart';
 import 'package:import_lookup/Backend-New/main-cases-details.dart';
-import 'package:import_lookup/Backend-New/request-cases-details.dart';
+
 import 'package:import_lookup/Backend-New/tar-report.dart';
+
 
 class Test extends StatefulWidget {
   const Test({super.key});
@@ -17,10 +18,19 @@ class _TestState extends State<Test> {
     // TODO: implement initState
     super.initState();
     getData();
+
+    // print("dipu you are here ${SUBCATEGORY["arrear in litigation"]![0]}");
   }
 
   void getData()async{
+    await MainCasesInformation().addCases(uid:'', name: 'Divaysnh', formation: 'Divyansh Fomration', oio: 'oio', date: 'date', dutyOfArrear: 'dutyOfArrear', penalty: 'penalty', amountRecovered: 'amountRecovered', preDeposit:'predepost', intrest: 'intrest', totalArrearPending: '1000', briefFact: 'briefFact', status: 'status', apealNo: 'apealNo', stayOrderNumberAndDate: 'stayOrderNumberAndDate', iec: 'iec', gstin: 'gstin', pan: 'pan', completeTrack:["case is added"], category: 'category', remark: 'remark', subcategory: 'subcategory', effortMade: 'effortMade');
+  }
 
+  // void getData()async{
+    // print("date is here ${"dipu".substring(start)}");
+
+    // await FinancialYear().financialYear(currentMonth:'September',year:'2025',isUpdate:true);
+    //  print("date is here ${int.parse(DateFormat('yyyy').format(DateTime.now().subtract(Duration(days:150+30))))+1)}");
   //  print(await Authentication().signUp(email:"knownpatidar@gmail.com", userType: 'Admin', userId: 'divyansh', formation: 'Icd Indore', password: '123456'));
   //  await Authentication().forgotPassword(email:"knownpatidar@gmail.com");
     // await MainCasesInformation().updateCaseDetails(uid:"06cbc580-70f9-11ef-94b7-2fda55392be8", name:'Divyansh', formation:'Icd Tihi', oio:'', date:'dd/mm/yyyy', dutyOfArrear:'', penalty: '', amountRecovered:'', preDeposit: '', intrest: '', totalArrearPending: '', briefFact:'Testing is performing' , status: 'Staus', apealNo:'', stayOrderNumberAndDate: '', iec: '', gstin: '', pan: '', completeTrack:["case is added"], category:'RC', remark: 'NA', subcategory:'NA', effortMade:'NA');
@@ -90,21 +100,17 @@ class _TestState extends State<Test> {
 // print("i am calle d");
 // await RequestCasesInformation().getFormationRequestedCaseInformation('formation');
 
-await TarReportInformation().transferCasesUpTheMonth(category:"arrear under litigation" , docName:"disposal transfered formation category", subcategory:'High court');
+// await TarReportInformation().transferCasesUpTheMonth(category:"arrear under litigation" , docName:"disposal transfered formation category", subcategory:'High court');
 
-// print(await TarReportInformation().updateDataOfTarReport(category:"arrear under litigation", subcategory: "High court", docName: "disposal transfered formation category", noOfCasesOfTheMonth:1, noOfCasesUpToTheMonth: 0, amountOfTheMonth: 1, amountUpTotheMonth: 0));
-  print("success");
+// // print(await TarReportInformation().updateDataOfTarReport(category:"arrear under litigation", subcategory: "High court", docName: "disposal transfered formation category", noOfCasesOfTheMonth:1, noOfCasesUpToTheMonth: 0, amountOfTheMonth: 1, amountUpTotheMonth: 0));
+//   print("success");
 
-  }
+//   }
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
       body:Center(
-        child: Column(
-          children: [
-            Text('TEst Project')
-          ],
-        ),
+        child: Text("Heeelo i am dipu00")
       ),
     );
   }
