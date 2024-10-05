@@ -3,12 +3,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:import_lookup/Provider-New/general-pusrpose.dart';
 import 'package:import_lookup/Screens-New/Auth-Screens/login-screen.dart';
 import 'package:import_lookup/Screens/dashboard.dart';
 import 'package:import_lookup/provider/provider.dart';
 import 'package:provider/provider.dart';
 
 import 'Provider-New/add-new-cases.dart';
+import 'Provider-New/get-user-deatils.dart';
 import 'firebase_options.dart';
 bool isadmin = false;
 void main() async{
@@ -17,34 +19,53 @@ void main() async{
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-
-  @override
-  Widget build(BuildContext context) {
-
-    return MultiProvider(
+  runApp(MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AsseserProvider()),
         ChangeNotifierProvider(create: (_) => RequestedAsseserProvider()),
         ChangeNotifierProvider(create: (_) => AddNewCase()),
+        ChangeNotifierProvider(create: (_) => UserInformation()),
+        ChangeNotifierProvider(create: (_) => GeneralPurposeProvider()),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        home: StreamBuilder<User?>(
+      child: const MyApp()));
+
+
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getData();
+  }
+  @override
+  Widget build(BuildContext context) {
+
+
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: Consumer<UserInformation>(
+        builder: (context,pro,child)=>
+         StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.active) {
               if (snapshot.hasData) {
+                if(pro.email.isNotEmpty)
                 return DashboardScreen(isadmin: false);
+                // return LoginPage();
               } else if (snapshot.hasError) {
                 return Center(child: Text('An error occurred'));
               }
@@ -58,10 +79,19 @@ class MyApp extends StatelessWidget {
             return LoginPage();
           },
         ),
-       
-      
       ),
+
+
     );
+  }
+
+  void getData() async{
+
+   var pro = await (Provider.of<UserInformation>(context,listen: false));
+   var p = await pro.getUserData();
+    // await UserInformation().getUserData()
+    print('${pro.userId}  ${pro.userType}  ${pro.email}  ${pro.formation} ');
+
   }
 }
 

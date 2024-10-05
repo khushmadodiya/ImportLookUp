@@ -1,5 +1,284 @@
+// import 'dart:core';
+//
+// import 'package:flutter/material.dart';
+// import 'package:import_lookup/Backend-New/main-cases-details.dart';
+// import 'package:import_lookup/Backend-New/request-cases-details.dart';
+// import 'package:import_lookup/Model-New/main-case-model.dart';
+// import 'package:import_lookup/Model-New/request-case-model.dart';
+// import 'package:intl/intl.dart';
+// // import 'package:provider/provider.dart';
+//
+// class AddNewCase with ChangeNotifier {
+//   // Define controllers
+//   final TextEditingController _nameController = TextEditingController();
+//   final TextEditingController _formationController = TextEditingController();
+//   final TextEditingController _oioController = TextEditingController();
+//   final TextEditingController _dateController = TextEditingController();
+//   final TextEditingController _dutyOfArrearController = TextEditingController();
+//   final TextEditingController _penaltyController = TextEditingController();
+//   final TextEditingController _amountRecoveredController = TextEditingController();
+//   final TextEditingController _preDepositController = TextEditingController();
+//   final TextEditingController _interestController = TextEditingController();
+//   final TextEditingController _totalArrearPendingController = TextEditingController();
+//   final TextEditingController _briefFactController = TextEditingController();
+//   final TextEditingController _statusController = TextEditingController();
+//   final TextEditingController _appealNoController = TextEditingController();
+//   final TextEditingController _stayOrderNumberAndDateController = TextEditingController();
+//   final TextEditingController _iecController = TextEditingController();
+//   final TextEditingController _gstinController = TextEditingController();
+//   final TextEditingController _panController = TextEditingController();
+//   final TextEditingController _ageController = TextEditingController();
+//   final TextEditingController _completeTrackController = TextEditingController();
+//
+// _  final TextEditingController _categoryController = TextEditingController();
+//   final TextEditingController _effortMadeController = TextEditingController();
+//   final TextEditingController _remarkController = TextEditingController();
+//   final TextEditingController _subcategoryController = TextEditingController();
+//
+//
+//
+//   // Getters for each controller
+//   TextEditingController get name => nameController;
+//   TextEditingController get formation => formationController;
+//   TextEditingController get oio => oioController;
+//   TextEditingController get date => dateController;
+//   TextEditingController get dutyOfArrear => dutyOfArrearController;
+//   TextEditingController get penalty => penaltyController;
+//   TextEditingController get amountRecovered => amountRecoveredController;
+//   TextEditingController get preDeposit => preDepositController;
+//   TextEditingController get interest => interestController;
+//   TextEditingController get totalArrearPending => totalArrearPendingController;
+//   TextEditingController get briefFact => briefFactController;
+//   TextEditingController get status => statusController;
+//   TextEditingController get appealNo => appealNoController;
+//   TextEditingController get stayOrderNumberAndDate => stayOrderNumberAndDateController;
+//   TextEditingController get iec => iecController;
+//   TextEditingController get gstin => gstinController;
+//   TextEditingController get pan => panController;
+//   TextEditingController get age => ageController;
+//   TextEditingController get completeTrack => completeTrackController;
+//   TextEditingController get category => categoryController;
+//   TextEditingController get effortMade => effortMadeController;
+//   TextEditingController get remark => remarkController;
+//   TextEditingController get subcategory => subcategoryController;
+//
+//
+//   //this or data
+//   List<MainCaseModel>_mainCaseData=[];
+//   List<RequestCaseModel>_requestCaseData=[];
+//
+//   List<MainCaseModel> get mainCaseData=>_mainCaseData;
+//   List<RequestCaseModel> get requestCaseData=>_requestCaseData;
+//
+//
+//   Future getMainCasesInformation({required String formation,required isAdmin})async{
+//     if(!isAdmin){
+//     _mainCaseData=(await MainCasesInformation().getFormationMainCaseInformation(formation))["res"];
+//     }else{
+//       _mainCaseData=(await MainCasesInformation().getAllMainCasesDetails())["res"];
+//     }
+//     notifyListeners();
+//   }
+//   Future getRequestCasesInformation({required formation,required isAdmin})async{
+//     if(isAdmin){
+//       _requestCaseData=(await RequestCasesInformation().getFormationRequestedCaseInformation(formation))["res"];
+//     }else{
+//       _requestCaseData=(await RequestCasesInformation().getAllReuqestCasesDetails())["res"];
+//     }
+//     notifyListeners();
+//   }
+//   Future<void> addMainCase(bool isAdmin) async {
+//     await MainCasesInformation().addCases(
+//       uid: '',
+//       name: nameController.text, // Use the controller's text directly
+//       formation: formationController.text,
+//       oio: oioController.text,
+//       date: dateController.text,
+//       dutyOfArrear: dutyOfArrearController.text,
+//       penalty: penaltyController.text,
+//       amountRecovered: amountRecoveredController.text,
+//       preDeposit: preDepositController.text,
+//       // interest: intestController.text,
+//       totalArrearPending: totalArrearPendingController.text,
+//       briefFact: briefFactController.text,
+//       status: statusController.text,
+//       // appealNo: appealNoController.text,
+//       stayOrderNumberAndDate: stayOrderNumberAndDateController.text,
+//       iec: iecController.text,
+//       gstin: gstinController.text,
+//       pan: panController.text,
+//       completeTrack:["On Date ${DateFormat('dd/mm/yyyy').format(DateTime.now())} case is in ${categoryController.text}  ${subcategoryController.text}"],
+//       category: categoryController.text,
+//       remark: remarkController.text,
+//       subcategory: subcategoryController.text,
+//       effortMade: effortMadeController.text,
+//       intrest: interestController.text,
+//       apealNo: appealNoController.text,
+//
+//     );
+//   }
+//
+//
+//   //upadte maincase deatils
+//     Future<void> updataMainCaseDetails(bool isAdmin,{required String uid,required bool isShifted}) async {
+//     await MainCasesInformation().updateCaseDetails(
+//       uid:uid,
+//       name: nameController.text, // Use the controller's text directly
+//       formation: formationController.text,
+//       oio: oioController.text,
+//       date: dateController.text,
+//       dutyOfArrear: dutyOfArrearController.text,
+//       penalty: penaltyController.text,
+//       amountRecovered: amountRecoveredController.text,
+//       preDeposit: preDepositController.text,
+//       // interest: intestController.text,
+//       totalArrearPending: totalArrearPendingController.text,
+//       briefFact: briefFactController.text,
+//       status: statusController.text,
+//       // appealNo: appealNoController.text,
+//       stayOrderNumberAndDate: stayOrderNumberAndDateController.text,
+//       iec: iecController.text,
+//       gstin: gstinController.text,
+//       pan: panController.text,
+//       completeTrack:"On date ${DateFormat('dd/mm/yyyy').format(DateTime.now())} case is in $category $subcategory",
+//       category: categoryController.text,
+//       remark: remarkController.text,
+//       subcategory: subcategoryController.text,
+//       effortMade: effortMadeController.text,
+//       intrest: interestController.text,
+//       apealNo: appealNoController.text,
+//       isShifted:isShifted,
+//       // isTotalArrearPendingUpadte:isToatalArrearPendingUpadte
+//
+//     );
+//   }
+//
+//   //add case request
+//   // pass old data and uid as empty if new case request if you are requesting to update old case data then pass old data + uid
+//     Future<void> addRequestCase(bool isAdmin,{required String uid,required Map<String,dynamic>oldData,required bool isShifted}) async {
+//     await RequestCasesInformation().addCases(
+//       uid:uid,
+//       oldData:oldData,
+//       name: nameController.text,
+//       formation: formationController.text,
+//       oio: oioController.text,
+//       date: dateController.text,
+//       dutyOfArrear: dutyOfArrearController.text,
+//       penalty: penaltyController.text,
+//       amountRecovered: amountRecoveredController.text,
+//       preDeposit: preDepositController.text,
+//       // interest: intestController.text,
+//       totalArrearPending: totalArrearPendingController.text,
+//       briefFact: briefFactController.text,
+//       status: statusController.text,
+//       // appealNo: appealNoController.text,
+//       stayOrderNumberAndDate: stayOrderNumberAndDateController.text,
+//       iec: iecController.text,
+//       gstin: gstinController.text,
+//       pan: panController.text,
+//       completeTrack:"On Date ${DateFormat('dd/mm/yyyy').format(DateTime.now())} case is in ${categoryController.text}  ${subcategoryController.text}",
+//       category: categoryController.text,
+//       remark: remarkController.text,
+//       subcategory: subcategoryController.text,
+//       effortMade: effortMadeController.text,
+//       intrest: interestController.text,
+//       apealNo: appealNoController.text,
+//       isShifted:isShifted
+//
+//     );
+//   }
+//
+//   // update data of requested cases
+//    Future<void> updateRequestCase(bool isAdmin,{required String uid,required Map<String,dynamic>oldData,required bool isShifted}) async {
+//     await RequestCasesInformation().addCases(
+//       uid:uid,
+//       oldData:oldData,
+//       name: nameController.text,
+//       formation: formationController.text,
+//       oio: oioController.text,
+//       date: dateController.text,
+//       dutyOfArrear: dutyOfArrearController.text,
+//       penalty: penaltyController.text,
+//       amountRecovered: amountRecoveredController.text,
+//       preDeposit: preDepositController.text,
+//       // interest: intestController.text,
+//       totalArrearPending: totalArrearPendingController.text,
+//       briefFact: briefFactController.text,
+//       status: statusController.text,
+//       // appealNo: appealNoController.text,
+//       stayOrderNumberAndDate: stayOrderNumberAndDateController.text,
+//       iec: iecController.text,
+//       gstin: gstinController.text,
+//       pan: panController.text,
+//       completeTrack:"On Date ${DateFormat('dd/mm/yyyy').format(DateTime.now())} case is in ${categoryController.text}  ${subcategoryController.text}",
+//       category: categoryController.text,
+//       remark: remarkController.text,
+//       subcategory: subcategoryController.text,
+//       effortMade: effortMadeController.text,
+//       intrest: interestController.text,
+//       apealNo: appealNoController.text,
+//       isShifted:isShifted
+//
+//     );
+//   }
+//
+//   // Dispose controllers when no longer needed
+//   @override
+//   void dispose() {
+//     nameController.dispose();
+//     formationController.dispose();
+//     oioController.dispose();
+//     dateController.dispose();
+//     dutyOfArrearController.dispose();
+//     penaltyController.dispose();
+//     amountRecoveredController.dispose();
+//     preDepositController.dispose();
+//     interestController.dispose();
+//     totalArrearPendingController.dispose();
+//     briefFactController.dispose();
+//     statusController.dispose();
+//     appealNoController.dispose();
+//     stayOrderNumberAndDateController.dispose();
+//     iecController.dispose();
+//     gstinController.dispose();
+//     panController.dispose();
+//     ageController.dispose();
+//     completeTrackController.dispose();
+//     categoryController.dispose();
+//     effortMadeController.dispose();
+//     remarkController.dispose();
+//     subcategoryController.dispose();
+//     super.dispose();
+//   }
+//
+//   void clear() {
+//     nameController.clear();
+//     formationController.clear();
+//     oioController.clear();
+//     dateController.clear();
+//     dutyOfArrearController.clear();
+//     penaltyController.clear();
+//     amountRecoveredController.clear();
+//     preDepositController.clear();
+//     interestController.clear();
+//     totalArrearPendingController.clear();
+//     briefFactController.clear();
+//     statusController.clear();
+//     appealNoController.clear();
+//     stayOrderNumberAndDateController.clear();
+//     iecController.clear();
+//     gstinController.clear();
+//     panController.clear();
+//     ageController.clear();
+//     completeTrackController.clear();
+//     categoryController.clear();
+//     effortMadeController.clear();
+//     remarkController.clear();
+//     subcategoryController.clear();
+//     // super.clear();
+//   }
+// }
 import 'dart:core';
-
 import 'package:flutter/material.dart';
 import 'package:import_lookup/Backend-New/main-cases-details.dart';
 import 'package:import_lookup/Backend-New/request-cases-details.dart';
@@ -9,272 +288,269 @@ import 'package:intl/intl.dart';
 // import 'package:provider/provider.dart';
 
 class AddNewCase with ChangeNotifier {
-  // Define controllers
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController formationController = TextEditingController();
-  final TextEditingController oioController = TextEditingController();
-  final TextEditingController dateController = TextEditingController();
-  final TextEditingController dutyOfArrearController = TextEditingController();
-  final TextEditingController penaltyController = TextEditingController();
-  final TextEditingController amountRecoveredController = TextEditingController();
-  final TextEditingController preDepositController = TextEditingController();
-  final TextEditingController interestController = TextEditingController();
-  final TextEditingController totalArrearPendingController = TextEditingController();
-  final TextEditingController briefFactController = TextEditingController();
-  final TextEditingController statusController = TextEditingController();
-  final TextEditingController appealNoController = TextEditingController();
-  final TextEditingController stayOrderNumberAndDateController = TextEditingController();
-  final TextEditingController iecController = TextEditingController();
-  final TextEditingController gstinController = TextEditingController();
-  final TextEditingController panController = TextEditingController();
-  final TextEditingController ageController = TextEditingController();
-  final TextEditingController completeTrackController = TextEditingController();
-
-  final TextEditingController categoryController = TextEditingController();
-  final TextEditingController effortMadeController = TextEditingController();
-  final TextEditingController remarkController = TextEditingController();
-  final TextEditingController subcategoryController = TextEditingController();
-
-
+  // Define controllers as private
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _formationController = TextEditingController();
+  final TextEditingController _oioController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _dutyOfArrearController = TextEditingController();
+  final TextEditingController _penaltyController = TextEditingController();
+  final TextEditingController _amountRecoveredController = TextEditingController();
+  final TextEditingController _preDepositController = TextEditingController();
+  final TextEditingController _interestController = TextEditingController();
+  final TextEditingController _totalArrearPendingController = TextEditingController();
+  final TextEditingController _briefFactController = TextEditingController();
+  final TextEditingController _statusController = TextEditingController();
+  final TextEditingController _appealNoController = TextEditingController();
+  final TextEditingController _stayOrderNumberAndDateController = TextEditingController();
+  final TextEditingController _iecController = TextEditingController();
+  final TextEditingController _gstinController = TextEditingController();
+  final TextEditingController _panController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
+  final TextEditingController _completeTrackController = TextEditingController();
+  final TextEditingController _categoryController = TextEditingController();
+  final TextEditingController _effortMadeController = TextEditingController();
+  final TextEditingController _remarkController = TextEditingController();
+  final TextEditingController _subcategoryController = TextEditingController();
+  bool _isLoading = false;
 
   // Getters for each controller
-  TextEditingController get name => nameController;
-  TextEditingController get formation => formationController;
-  TextEditingController get oio => oioController;
-  TextEditingController get date => dateController;
-  TextEditingController get dutyOfArrear => dutyOfArrearController;
-  TextEditingController get penalty => penaltyController;
-  TextEditingController get amountRecovered => amountRecoveredController;
-  TextEditingController get preDeposit => preDepositController;
-  TextEditingController get interest => interestController;
-  TextEditingController get totalArrearPending => totalArrearPendingController;
-  TextEditingController get briefFact => briefFactController;
-  TextEditingController get status => statusController;
-  TextEditingController get appealNo => appealNoController;
-  TextEditingController get stayOrderNumberAndDate => stayOrderNumberAndDateController;
-  TextEditingController get iec => iecController;
-  TextEditingController get gstin => gstinController;
-  TextEditingController get pan => panController;
-  TextEditingController get age => ageController;
-  TextEditingController get completeTrack => completeTrackController;
-  TextEditingController get category => categoryController;
-  TextEditingController get effortMade => effortMadeController;
-  TextEditingController get remark => remarkController;
-  TextEditingController get subcategory => subcategoryController;
-
+  bool get isLoading => _isLoading;
+  TextEditingController get name => _nameController;
+  TextEditingController get formation => _formationController;
+  TextEditingController get oio => _oioController;
+  TextEditingController get date => _dateController;
+  TextEditingController get dutyOfArrear => _dutyOfArrearController;
+  TextEditingController get penalty => _penaltyController;
+  TextEditingController get amountRecovered => _amountRecoveredController;
+  TextEditingController get preDeposit => _preDepositController;
+  TextEditingController get interest => _interestController;
+  TextEditingController get totalArrearPending => _totalArrearPendingController;
+  TextEditingController get briefFact => _briefFactController;
+  TextEditingController get status => _statusController;
+  TextEditingController get appealNo => _appealNoController;
+  TextEditingController get stayOrderNumberAndDate => _stayOrderNumberAndDateController;
+  TextEditingController get iec => _iecController;
+  TextEditingController get gstin => _gstinController;
+  TextEditingController get pan => _panController;
+  TextEditingController get age => _ageController;
+  TextEditingController get completeTrack => _completeTrackController;
+  TextEditingController get category => _categoryController;
+  TextEditingController get effortMade => _effortMadeController;
+  TextEditingController get remark => _remarkController;
+  TextEditingController get subcategory => _subcategoryController;
 
   //this or data
-  List<MainCaseModel>_mainCaseData=[];
-  List<RequestCaseModel>_requestCaseData=[];
+  List<MainCaseModel> _mainCaseData = [];
+  List<RequestCaseModel> _requestCaseData = [];
 
-  List<MainCaseModel> get mainCaseData=>_mainCaseData;
-  List<RequestCaseModel> get requestCaseData=>_requestCaseData;
+  List<MainCaseModel> get mainCaseData => _mainCaseData;
+  List<RequestCaseModel> get requestCaseData => _requestCaseData;
+  void updateSubcategory(String subCatregory){
+    subcategory.text=subCatregory;
+  }
+
+  //update loader
+  void updateLoader(){
+    _isLoading=!_isLoading;
+    notifyListeners();
+  }
 
 
-  Future getMainCasesInformation({required String formation,required isAdmin})async{
-    if(!isAdmin){
-    _mainCaseData=(await MainCasesInformation().getFormationMainCaseInformation(formation))["res"];
-    }else{
-      _mainCaseData=(await MainCasesInformation().getAllMainCasesDetails())["res"];
+  Future getMainCasesInformation({required String formation, required bool isAdmin}) async {
+    if (!isAdmin) {
+      _mainCaseData = (await MainCasesInformation().getFormationMainCaseInformation(formation))["res"];
+    } else {
+      _mainCaseData = (await MainCasesInformation().getAllMainCasesDetails())["res"];
     }
     notifyListeners();
   }
-  Future getRequestCasesInformation({required formation,required isAdmin})async{
-    if(isAdmin){
-      _requestCaseData=(await RequestCasesInformation().getFormationRequestedCaseInformation(formation))["res"];
-    }else{
-      _requestCaseData=(await RequestCasesInformation().getAllReuqestCasesDetails())["res"];
+
+  Future getRequestCasesInformation({required String formation, required bool isAdmin}) async {
+    if (isAdmin) {
+      _requestCaseData = (await RequestCasesInformation().getFormationRequestedCaseInformation(formation))["res"];
+    } else {
+      _requestCaseData = (await RequestCasesInformation().getAllReuqestCasesDetails())["res"];
     }
     notifyListeners();
   }
-  Future<void> addMainCase(bool isAdmin) async {
-    await MainCasesInformation().addCases(
+
+  Future addMainCase(bool isAdmin) async {
+    var res=await MainCasesInformation().addCases(
       uid: '',
-      name: nameController.text, // Use the controller's text directly
-      formation: formationController.text,
-      oio: oioController.text,
-      date: dateController.text,
-      dutyOfArrear: dutyOfArrearController.text,
-      penalty: penaltyController.text,
-      amountRecovered: amountRecoveredController.text,
-      preDeposit: preDepositController.text,
-      // interest: intestController.text,
-      totalArrearPending: totalArrearPendingController.text,
-      briefFact: briefFactController.text,
-      status: statusController.text,
-      // appealNo: appealNoController.text,
-      stayOrderNumberAndDate: stayOrderNumberAndDateController.text,
-      iec: iecController.text,
-      gstin: gstinController.text,
-      pan: panController.text,
-      completeTrack:["On Date ${DateFormat('dd/mm/yyyy').format(DateTime.now())} case is in ${categoryController.text}  ${subcategoryController.text}"],
-      category: categoryController.text,
-      remark: remarkController.text,
-      subcategory: subcategoryController.text,
-      effortMade: effortMadeController.text,
-      intrest: interestController.text,
-      apealNo: appealNoController.text,
-
+      name: _nameController.text, // Use the controller's text directly
+      formation: _formationController.text,
+      oio: _oioController.text,
+      date: _dateController.text,
+      dutyOfArrear: _dutyOfArrearController.text,
+      penalty: _penaltyController.text,
+      amountRecovered: _amountRecoveredController.text,
+      preDeposit: _preDepositController.text,
+      totalArrearPending: _totalArrearPendingController.text,
+      briefFact: _briefFactController.text,
+      status: _statusController.text,
+      stayOrderNumberAndDate: _stayOrderNumberAndDateController.text,
+      iec: _iecController.text,
+      gstin: _gstinController.text,
+      pan: _panController.text,
+      completeTrack: [
+        "On Date ${DateFormat('dd/MM/yyyy').format(DateTime.now())} case is in ${_categoryController.text}  ${_subcategoryController.text}"
+      ],
+      category: _categoryController.text,
+      remark: _remarkController.text,
+      subcategory: _subcategoryController.text,
+      effortMade: _effortMadeController.text,
+      intrest: _interestController.text,
+      apealNo: _appealNoController.text,
     );
+    return res;
   }
 
-
-  //upadte maincase deatils
-    Future<void> updataMainCaseDetails(bool isAdmin,{required String uid,required bool isShifted}) async {
+  // Update main case details
+  Future<void> updateMainCaseDetails(bool isAdmin, {required String uid, required bool isShifted}) async {
     await MainCasesInformation().updateCaseDetails(
-      uid:uid,
-      name: nameController.text, // Use the controller's text directly
-      formation: formationController.text,
-      oio: oioController.text,
-      date: dateController.text,
-      dutyOfArrear: dutyOfArrearController.text,
-      penalty: penaltyController.text,
-      amountRecovered: amountRecoveredController.text,
-      preDeposit: preDepositController.text,
-      // interest: intestController.text,
-      totalArrearPending: totalArrearPendingController.text,
-      briefFact: briefFactController.text,
-      status: statusController.text,
-      // appealNo: appealNoController.text,
-      stayOrderNumberAndDate: stayOrderNumberAndDateController.text,
-      iec: iecController.text,
-      gstin: gstinController.text,
-      pan: panController.text,
-      completeTrack:"On date ${DateFormat('dd/mm/yyyy').format(DateTime.now())} case is in $category $subcategory",
-      category: categoryController.text,
-      remark: remarkController.text,
-      subcategory: subcategoryController.text,
-      effortMade: effortMadeController.text,
-      intrest: interestController.text,
-      apealNo: appealNoController.text,
-      isShifted:isShifted,
-      // isTotalArrearPendingUpadte:isToatalArrearPendingUpadte
-
+      uid: uid,
+      name: _nameController.text, // Use the controller's text directly
+      formation: _formationController.text,
+      oio: _oioController.text,
+      date: _dateController.text,
+      dutyOfArrear: _dutyOfArrearController.text,
+      penalty: _penaltyController.text,
+      amountRecovered: _amountRecoveredController.text,
+      preDeposit: _preDepositController.text,
+      totalArrearPending: _totalArrearPendingController.text,
+      briefFact: _briefFactController.text,
+      status: _statusController.text,
+      stayOrderNumberAndDate: _stayOrderNumberAndDateController.text,
+      iec: _iecController.text,
+      gstin: _gstinController.text,
+      pan: _panController.text,
+      completeTrack: "On date ${DateFormat('dd/MM/yyyy').format(DateTime.now())} case is in ${_categoryController.text} ${_subcategoryController.text}",
+      category: _categoryController.text,
+      remark: _remarkController.text,
+      subcategory: _subcategoryController.text,
+      effortMade: _effortMadeController.text,
+      intrest: _interestController.text,
+      apealNo: _appealNoController.text,
+      isShifted: isShifted,
     );
   }
 
-  //add case request
-  // pass old data and uid as empty if new case request if you are requesting to update old case data then pass old data + uid
-    Future<void> addRequestCase(bool isAdmin,{required String uid,required Map<String,dynamic>oldData,required bool isShifted}) async {
-    await RequestCasesInformation().addCases(
-      uid:uid,
-      oldData:oldData,
-      name: nameController.text,
-      formation: formationController.text,
-      oio: oioController.text,
-      date: dateController.text,
-      dutyOfArrear: dutyOfArrearController.text,
-      penalty: penaltyController.text,
-      amountRecovered: amountRecoveredController.text,
-      preDeposit: preDepositController.text,
-      // interest: intestController.text,
-      totalArrearPending: totalArrearPendingController.text,
-      briefFact: briefFactController.text,
-      status: statusController.text,
-      // appealNo: appealNoController.text,
-      stayOrderNumberAndDate: stayOrderNumberAndDateController.text,
-      iec: iecController.text,
-      gstin: gstinController.text,
-      pan: panController.text,
-      completeTrack:"On Date ${DateFormat('dd/mm/yyyy').format(DateTime.now())} case is in ${categoryController.text}  ${subcategoryController.text}",
-      category: categoryController.text,
-      remark: remarkController.text,
-      subcategory: subcategoryController.text,
-      effortMade: effortMadeController.text,
-      intrest: interestController.text,
-      apealNo: appealNoController.text,
-      isShifted:isShifted
-
+  // Add case request
+  Future addRequestCase(bool isAdmin, {required String uid, required Map<String, dynamic> oldData, required bool isShifted}) async {
+  var res=  await RequestCasesInformation().addCases(
+      uid: uid,
+      oldData: oldData,
+      name: _nameController.text,
+      formation: _formationController.text,
+      oio: _oioController.text,
+      date: _dateController.text,
+      dutyOfArrear: _dutyOfArrearController.text,
+      penalty: _penaltyController.text,
+      amountRecovered: _amountRecoveredController.text,
+      preDeposit: _preDepositController.text,
+      totalArrearPending: _totalArrearPendingController.text,
+      briefFact: _briefFactController.text,
+      status: _statusController.text,
+      stayOrderNumberAndDate: _stayOrderNumberAndDateController.text,
+      iec: _iecController.text,
+      gstin: _gstinController.text,
+      pan: _panController.text,
+      completeTrack: "On Date ${DateFormat('dd/MM/yyyy').format(DateTime.now())} case is in ${_categoryController.text}  ${_subcategoryController.text}",
+      category: _categoryController.text,
+      remark: _remarkController.text,
+      subcategory: _subcategoryController.text,
+      effortMade: _effortMadeController.text,
+      intrest: _interestController.text,
+      apealNo: _appealNoController.text,
+      isShifted: isShifted,
     );
+    return res;
   }
 
-  // update data of requested cases
-   Future<void> updateRequestCase(bool isAdmin,{required String uid,required Map<String,dynamic>oldData,required bool isShifted}) async {
+  // Update data of requested cases
+  Future<void> updateRequestCase(bool isAdmin, {required String uid, required Map<String, dynamic> oldData, required bool isShifted}) async {
     await RequestCasesInformation().addCases(
-      uid:uid,
-      oldData:oldData,
-      name: nameController.text,
-      formation: formationController.text,
-      oio: oioController.text,
-      date: dateController.text,
-      dutyOfArrear: dutyOfArrearController.text,
-      penalty: penaltyController.text,
-      amountRecovered: amountRecoveredController.text,
-      preDeposit: preDepositController.text,
-      // interest: intestController.text,
-      totalArrearPending: totalArrearPendingController.text,
-      briefFact: briefFactController.text,
-      status: statusController.text,
-      // appealNo: appealNoController.text,
-      stayOrderNumberAndDate: stayOrderNumberAndDateController.text,
-      iec: iecController.text,
-      gstin: gstinController.text,
-      pan: panController.text,
-      completeTrack:"On Date ${DateFormat('dd/mm/yyyy').format(DateTime.now())} case is in ${categoryController.text}  ${subcategoryController.text}",
-      category: categoryController.text,
-      remark: remarkController.text,
-      subcategory: subcategoryController.text,
-      effortMade: effortMadeController.text,
-      intrest: interestController.text,
-      apealNo: appealNoController.text,
-      isShifted:isShifted
-
+      uid: uid,
+      oldData: oldData,
+      name: _nameController.text,
+      formation: _formationController.text,
+      oio: _oioController.text,
+      date: _dateController.text,
+      dutyOfArrear: _dutyOfArrearController.text,
+      penalty: _penaltyController.text,
+      amountRecovered: _amountRecoveredController.text,
+      preDeposit: _preDepositController.text,
+      totalArrearPending: _totalArrearPendingController.text,
+      briefFact: _briefFactController.text,
+      status: _statusController.text,
+      stayOrderNumberAndDate: _stayOrderNumberAndDateController.text,
+      iec: _iecController.text,
+      gstin: _gstinController.text,
+      pan: _panController.text,
+      completeTrack: "On Date ${DateFormat('dd/MM/yyyy').format(DateTime.now())} case is in ${_categoryController.text}  ${_subcategoryController.text}",
+      category: _categoryController.text,
+      remark: _remarkController.text,
+      subcategory: _subcategoryController.text,
+      effortMade: _effortMadeController.text,
+      intrest: _interestController.text,
+      apealNo: _appealNoController.text,
+      isShifted: isShifted,
     );
   }
 
   // Dispose controllers when no longer needed
   @override
   void dispose() {
-    nameController.dispose();
-    formationController.dispose();
-    oioController.dispose();
-    dateController.dispose();
-    dutyOfArrearController.dispose();
-    penaltyController.dispose();
-    amountRecoveredController.dispose();
-    preDepositController.dispose();
-    interestController.dispose();
-    totalArrearPendingController.dispose();
-    briefFactController.dispose();
-    statusController.dispose();
-    appealNoController.dispose();
-    stayOrderNumberAndDateController.dispose();
-    iecController.dispose();
-    gstinController.dispose();
-    panController.dispose();
-    ageController.dispose();
-    completeTrackController.dispose();
-    categoryController.dispose();
-    effortMadeController.dispose();
-    remarkController.dispose();
-    subcategoryController.dispose();
+    _nameController.dispose();
+    _formationController.dispose();
+    _oioController.dispose();
+    _dateController.dispose();
+    _dutyOfArrearController.dispose();
+    _penaltyController.dispose();
+    _amountRecoveredController.dispose();
+    _preDepositController.dispose();
+    _interestController.dispose();
+    _totalArrearPendingController.dispose();
+    _briefFactController.dispose();
+    _statusController.dispose();
+    _appealNoController.dispose();
+    _stayOrderNumberAndDateController.dispose();
+    _iecController.dispose();
+    _gstinController.dispose();
+    _panController.dispose();
+    _ageController.dispose();
+    _completeTrackController.dispose();
+    _categoryController.dispose();
+    _effortMadeController.dispose();
+    _remarkController.dispose();
+    _subcategoryController.dispose();
     super.dispose();
   }
 
   void clear() {
-    nameController.clear();
-    formationController.clear();
-    oioController.clear();
-    dateController.clear();
-    dutyOfArrearController.clear();
-    penaltyController.clear();
-    amountRecoveredController.clear();
-    preDepositController.clear();
-    interestController.clear();
-    totalArrearPendingController.clear();
-    briefFactController.clear();
-    statusController.clear();
-    appealNoController.clear();
-    stayOrderNumberAndDateController.clear();
-    iecController.clear();
-    gstinController.clear();
-    panController.clear();
-    ageController.clear();
-    completeTrackController.clear();
-    categoryController.clear();
-    effortMadeController.clear();
-    remarkController.clear();
-    subcategoryController.clear();
-    // super.clear();
+    _nameController.clear();
+    _formationController.clear();
+    _oioController.clear();
+    _dateController.clear();
+    _dutyOfArrearController.clear();
+    _penaltyController.clear();
+    _amountRecoveredController.clear();
+    _preDepositController.clear();
+    _interestController.clear();
+    _totalArrearPendingController.clear();
+    _briefFactController.clear();
+    _statusController.clear();
+    _appealNoController.clear();
+    _stayOrderNumberAndDateController.clear();
+    _iecController.clear();
+    _gstinController.clear();
+    _panController.clear();
+    _ageController.clear();
+    _completeTrackController.clear();
+    _categoryController.clear();
+    _effortMadeController.clear();
+    _remarkController.clear();
+    _subcategoryController.clear();
   }
 }

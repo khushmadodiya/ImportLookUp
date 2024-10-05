@@ -83,7 +83,7 @@ class MainCasesInformation {
       DocumentReference ref = _fireStore
           .collection("MP")
           .doc(formation)
-          .collection('cases')
+          .collection(subcategory)
           .doc(uuid);
       batch.set(ref, model.toJson());
       // _fireStore
