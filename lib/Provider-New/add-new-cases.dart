@@ -25,13 +25,15 @@ class AddNewCase with ChangeNotifier {
   final TextEditingController iecController = TextEditingController();
   final TextEditingController gstinController = TextEditingController();
   final TextEditingController panController = TextEditingController();
-  final TextEditingController ageController = TextEditingController(); 
+  final TextEditingController ageController = TextEditingController();
   final TextEditingController completeTrackController = TextEditingController();
-  
+
   final TextEditingController categoryController = TextEditingController();
   final TextEditingController effortMadeController = TextEditingController();
   final TextEditingController remarkController = TextEditingController();
   final TextEditingController subcategoryController = TextEditingController();
+
+
 
   // Getters for each controller
   TextEditingController get name => nameController;
@@ -82,10 +84,10 @@ class AddNewCase with ChangeNotifier {
       category: categoryController.text,
       remark: remarkController.text,
       subcategory: subcategoryController.text,
-      effortMade: effortMadeController.text, 
-      intrest: interestController.text, 
+      effortMade: effortMadeController.text,
+      intrest: interestController.text,
       apealNo: appealNoController.text,
-      
+
     );
   }
 
@@ -115,12 +117,12 @@ class AddNewCase with ChangeNotifier {
       category: categoryController.text,
       remark: remarkController.text,
       subcategory: subcategoryController.text,
-      effortMade: effortMadeController.text, 
-      intrest: interestController.text, 
+      effortMade: effortMadeController.text,
+      intrest: interestController.text,
       apealNo: appealNoController.text,
       isShifted:isShifted,
       // isTotalArrearPendingUpadte:isToatalArrearPendingUpadte
-      
+
     );
   }
 
@@ -130,7 +132,7 @@ class AddNewCase with ChangeNotifier {
     await RequestCasesInformation().addCases(
       uid:uid,
       oldData:oldData,
-      name: nameController.text, 
+      name: nameController.text,
       formation: formationController.text,
       oio: oioController.text,
       date: dateController.text,
@@ -151,11 +153,11 @@ class AddNewCase with ChangeNotifier {
       category: categoryController.text,
       remark: remarkController.text,
       subcategory: subcategoryController.text,
-      effortMade: effortMadeController.text, 
-      intrest: interestController.text, 
+      effortMade: effortMadeController.text,
+      intrest: interestController.text,
       apealNo: appealNoController.text,
       isShifted:isShifted
-      
+
     );
   }
 
@@ -164,7 +166,7 @@ class AddNewCase with ChangeNotifier {
     await RequestCasesInformation().addCases(
       uid:uid,
       oldData:oldData,
-      name: nameController.text, 
+      name: nameController.text,
       formation: formationController.text,
       oio: oioController.text,
       date: dateController.text,
@@ -185,11 +187,11 @@ class AddNewCase with ChangeNotifier {
       category: categoryController.text,
       remark: remarkController.text,
       subcategory: subcategoryController.text,
-      effortMade: effortMadeController.text, 
-      intrest: interestController.text, 
+      effortMade: effortMadeController.text,
+      intrest: interestController.text,
       apealNo: appealNoController.text,
       isShifted:isShifted
-      
+
     );
   }
 

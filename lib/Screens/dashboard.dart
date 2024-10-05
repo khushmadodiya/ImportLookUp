@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:import_lookup/Backend-New/authentication.dart';
+import 'package:import_lookup/Screens-New/Auth-Screens/login-screen.dart';
 import 'package:import_lookup/Screens/RecoverableArrear/Sattlement_commission_cases.dart';
 import 'package:import_lookup/Screens/RecoverableArrear/apeal_period_over_but_no_apeal_filed.dart';
 import 'package:import_lookup/Screens/RecoverableArrear/arrear_under_section11.dart';
@@ -123,9 +125,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final isNarrowScreen = screenWidth < 300;
 
     return Scaffold(
-      // title: Text('Dashboard'),
-      // ),appBar: AppBar(
-      //       //
+      appBar: AppBar(
+        actions: [
+          IconButton(onPressed: ()async{
+            var res = await Authentication().logOut();
+            if(res=='sucess'){
+              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>LoginPage()), (route) => false);
+            }
+          }, icon: Icon(Icons.logout))
+        ],
+      ),
       drawer: isNarrowScreen ? _buildDrawer() : null,
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: isNarrowScreen ? null : _buildBottomBar(),

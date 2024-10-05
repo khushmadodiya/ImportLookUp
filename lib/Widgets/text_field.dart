@@ -48,7 +48,7 @@ class _TextFieldInputState extends State<TextFieldInput> {
           ),
           label: Text(widget.hintText),
           labelStyle: TextStyle(
-            fontWeight: FontWeight.w600
+            fontWeight: FontWeight.w500
           ),
           filled: true,
           contentPadding: const EdgeInsets.symmetric(horizontal: 30),

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Authentication {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -27,6 +28,12 @@ class Authentication {
   }
   Future forgotPassword({required String email})async{
    await _auth.sendPasswordResetEmail(email: email);
+  }
+  Future logOut()async{
+    await _auth.signOut();
+    var pref= await SharedPreferences.getInstance();
+    pref.clear();
+    return 'success';
   }
 
   Future<String> login(
