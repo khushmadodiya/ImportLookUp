@@ -23,7 +23,7 @@ class _TestState extends State<Test> {
   }
 
   void getData()async{
-    await MainCasesInformation().addCases(uid:'', name: 'Divaysnh', formation: 'Divyansh Fomration', oio: 'oio', date: 'date', dutyOfArrear: 'dutyOfArrear', penalty: 'penalty', amountRecovered: 'amountRecovered', preDeposit:'predepost', intrest: 'intrest', totalArrearPending: '1000', briefFact: 'briefFact', status: 'status', apealNo: 'apealNo', stayOrderNumberAndDate: 'stayOrderNumberAndDate', iec: 'iec', gstin: 'gstin', pan: 'pan', completeTrack:["case is added"], category: 'category', remark: 'remark', subcategory: 'subcategory', effortMade: 'effortMade');
+    await MainCasesInformation().addCases(uid:'', name: 'Harsh Patidar', formation: 'Dipu Fomration', oio: 'oio', date: 'date', dutyOfArrear: 'dutyOfArrear', penalty: 'penalty', amountRecovered: 'amountRecovered', preDeposit:'predepost', intrest: 'intrest', totalArrearPending: '1000', briefFact: 'briefFact', status: 'status', apealNo: 'apealNo', stayOrderNumberAndDate: 'stayOrderNumberAndDate', iec: 'iec', gstin: 'gstin', pan: 'pan', completeTrack:["case is added"], category: 'dipu category', remark: 'remark', subcategory: 'dipu subcategory', effortMade: 'effortMade');
   }
 
   // void getData()async{

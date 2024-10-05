@@ -6,6 +6,7 @@ import 'package:uuid/uuid.dart';
 class TarReportInformation {
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
   Future updateDataOfTarReport({
+    required WriteBatch batch,
     required String category,
     required String subcategory,
     required String docName,
@@ -16,6 +17,7 @@ class TarReportInformation {
     required double openingBalance,
     required double closingBalance,
   }) async {
+    print("heloooo i am fff");
     try {
       DocumentSnapshot docsnap =
           await firebaseFirestore.collection("MP").doc(category).get();
@@ -28,13 +30,16 @@ class TarReportInformation {
           openingBalance:0,
           closingBalance: amountOfTheMonth);
       if (docsnap.exists) {
+        print("heloooo i am a");
         docsnap = await firebaseFirestore
             .collection("MP")
             .doc(category)
             .collection(subcategory)
             .doc(docName)
             .get();
+            
         if (docsnap.exists) {
+          print("heloooo i am fff b");
           final data = docsnap.data() as Map<String, dynamic>;
           model = TarReportModel(
               amountOfTheMonth: data['amountOfTheMonth'] + amountOfTheMonth,
@@ -45,32 +50,49 @@ class TarReportInformation {
               openingBalance: data['openingBalance'],
               closingBalance: data['closingBalance'] + amountOfTheMonth
               );
-          await firebaseFirestore
+          DocumentReference ref= firebaseFirestore
               .collection("MP")
               .doc(category)
               .collection(subcategory)
-              .doc(docName)
-              .update(model.toJson());
+              .doc(docName);
+          batch.update(ref,model.toJson());
+          // await firebaseFirestore
+          //     .collection("MP")
+          //     .doc(category)
+          //     .collection(subcategory)
+          //     .doc(docName)
+          //     .update(model.toJson());
         } else {
-          await firebaseFirestore
+          print("heloooo i am fff c");
+          DocumentReference ref= firebaseFirestore
               .collection("MP")
               .doc(category)
               .collection(subcategory)
-              .doc(docName)
-              .set(model.toJson());
+              .doc(docName);
+            batch.set(ref,model.toJson());
+          // await firebaseFirestore
+          //     .collection("MP")
+          //     .doc(category)
+          //     .collection(subcategory)
+          //     .doc(docName)
+          //     .set(model.toJson());
         }
       } else {
+        print("heloooo i am fff D");
         await firebaseFirestore
             .collection("MP")
             .doc(category)
             .set({}, SetOptions(merge: true));
-        await firebaseFirestore
-            .collection("MP")
-            .doc(category)
-            .collection(subcategory)
-            .doc(docName)
-            .set(model.toJson());
+
+        DocumentReference ref= firebaseFirestore
+              .collection("MP")
+              .doc(category)
+              .collection(subcategory)
+              .doc(docName);
+            batch.set(ref,model.toJson());
+         
       }
+      
       return {"res": "success"};
     } catch (e) {
       return {"res": "some error occured ${e.toString()}"};

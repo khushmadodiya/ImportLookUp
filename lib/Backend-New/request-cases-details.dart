@@ -110,7 +110,7 @@ class RequestCasesInformation {
 
   //get all request dettails
     Future getAllReuqestCasesDetails() async {
-    List<Map<String, dynamic>> allCases = [];
+    List<RequestCaseModel> allCases = [];
     try {
       QuerySnapshot querySnapshot = await fireStore.collection('MP').get();
       final Completer<String> completer = Completer<String>();
@@ -125,7 +125,7 @@ class RequestCasesInformation {
               .collection("requested cases")
               .get();
           for (var val in qsnap.docs) {
-            allCases.add(val.data() as Map<String, dynamic>);
+            allCases.add(RequestCaseModel.fromJson(val.data() as Map<String, dynamic>));
           }
           completer.complete("Success");
         });
@@ -231,10 +231,11 @@ class RequestCasesInformation {
     Future getFormationRequestedCaseInformation(String formation)async{
     try{
       QuerySnapshot snap=await fireStore.collection("MP").doc(formation).collection("requested cases").get();
-      List<Map<String,dynamic>>fomrationCases=[];
+      List<RequestCaseModel>fomrationCases=[];
      
       for(var doc in snap.docs){
-        fomrationCases.add(doc.data() as Map<String,dynamic>);
+        // fomrationCases.add(doc.data() as Map<String,dynamic>);
+        fomrationCases.add(RequestCaseModel.fromJson(doc.data() as Map<String,dynamic>));
       
       }
     // for(var form in fomrationCases){
@@ -252,6 +253,7 @@ class RequestCasesInformation {
   Future rejectRequest({
     required String uid,
     required String formation,
+    WriteBatch? batch
   }) async {
     if (uid.isEmpty) {
       return {"res": "Uid cannot be empty"};
@@ -260,12 +262,22 @@ class RequestCasesInformation {
     }
 
     try {
-      await fireStore
+      if(batch!=null){
+        DocumentReference ref= fireStore
+          .collection("MP")
+          .doc(formation)
+          .collection('requested cases')
+          .doc(uid);
+          batch.delete(ref);
+      }else{
+        await fireStore
           .collection("MP")
           .doc(formation)
           .collection('requested cases')
           .doc(uid)
           .delete();
+      }
+      
 
       return {"res": "success"};
     } catch (e) {
@@ -329,9 +341,8 @@ class RequestCasesInformation {
       pan: pan,
       subcategory: subcategory,
     );
-    Map<String,dynamic>res= await MainCasesInformation().updateMainCaseDetails(model:model,uid:uid,formation:formation);
+    Map<String,dynamic>res= await MainCasesInformation().updateMainCaseDetails(model:model,uid:uid,formation:formation,request:true);
     if(res["res"]=="success"){
-    await fireStore.collection("MP").doc(formation).collection("requested cases").doc(uid).delete();
     return {"res":"success"};
     }else{
       return {"res":"some error occured"};

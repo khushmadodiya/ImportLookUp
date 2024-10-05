@@ -2,10 +2,13 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:js_interop';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:import_lookup/Backend-New/request-cases-details.dart';
 import 'package:import_lookup/Backend-New/tar-report.dart';
 import 'package:import_lookup/Model-New/main-case-model.dart';
+import 'package:universal_html/html.dart';
 import 'package:uuid/uuid.dart';
 
 class MainCasesInformation {
@@ -36,8 +39,8 @@ class MainCasesInformation {
       required String remark,
       required String subcategory,
       required String effortMade}) async {
-    String uuid = const Uuid().v1();
-    MainCaseModel model = MainCaseModel(
+      String uuid = const Uuid().v1();
+      MainCaseModel model = MainCaseModel(
       category: category,
       completeTrack: completeTrack,
       uid: uuid,
@@ -63,7 +66,9 @@ class MainCasesInformation {
       pan: pan,
       subcategory: subcategory,
     );
+    WriteBatch batch=_fireStore.batch();
     try {
+      
       DocumentReference formationDocRef =
           _fireStore.collection("MP").doc(formation);
       DocumentSnapshot docSnapshot = await formationDocRef.get();
@@ -75,14 +80,21 @@ class MainCasesInformation {
             .set({}, SetOptions(merge: true));
       }
 
-      _fireStore
+      //
+      DocumentReference ref=_fireStore
           .collection("MP")
           .doc(formation)
           .collection('cases')
-          .doc(uuid)
-          .set(model.toJson());
-      TarReportInformation().updateDataOfTarReport(category: category, subcategory: subcategory, docName:"receipts", noOfCasesOfTheMonth:1, noOfCasesUpToTheMonth:0, amountOfTheMonth:double.parse(totalArrearPending), amountUpTotheMonth:0, openingBalance:double.parse(totalArrearPending), closingBalance: 0);
-      // _fireStore.collection("MP").doc(category).collection(subcategory).doc("receipts").set({data})
+          .doc(uuid);
+      batch.set(ref,model.toJson());
+      // _fireStore
+      //     .collection("MP")
+      //     .doc(formation)
+      //     .collection('cases')
+      //     .doc(uuid)
+      //     .set(model.toJson());
+     await TarReportInformation().updateDataOfTarReport(batch:batch, category: category, subcategory: subcategory, docName:"receipts", noOfCasesOfTheMonth:1, noOfCasesUpToTheMonth:0, amountOfTheMonth:double.parse(totalArrearPending), amountUpTotheMonth:0, openingBalance:double.parse(totalArrearPending), closingBalance: 0);
+      batch.commit();
       return {"res": "success"};
     } catch (e) {
       return {"res": e.toString()};
@@ -91,7 +103,7 @@ class MainCasesInformation {
 
   //get all maincases details
   Future getAllMainCasesDetails() async {
-    List<Map<String, dynamic>> allCases = [];
+    List<MainCaseModel> allCases = [];
     try {
       QuerySnapshot querySnapshot = await _fireStore.collection('MP').get();
       final Completer<String> completer = Completer<String>();
@@ -106,7 +118,8 @@ class MainCasesInformation {
               .collection("cases")
               .get();
           for (var val in qsnap.docs) {
-            allCases.add(val.data() as Map<String, dynamic>);
+            // allCases.add(val.data() as Map<String, dynamic>);
+            allCases.add(MainCaseModel.fromJson(val.data() as Map<String, dynamic>));
           }
           completer.complete("Success");
         });
@@ -153,6 +166,7 @@ class MainCasesInformation {
       required bool isShifted,
       }
       ) async {
+        WriteBatch batch=_fireStore.batch();
  DocumentSnapshot _snap=await _fireStore
           .collection("MP")
           .doc(formation)
@@ -165,7 +179,7 @@ class MainCasesInformation {
       trac.add(completeTrack);
       }
       if((_snap.data() as Map<String,dynamic>)['totalArrearPending'].toString()!=totalArrearPending){
-        TarReportInformation().updateDataOfTarReport(category: category, subcategory: subcategory, docName:"receipts", noOfCasesOfTheMonth:0, noOfCasesUpToTheMonth:0, amountOfTheMonth:double.parse(totalArrearPending), amountUpTotheMonth:0, openingBalance:double.parse(totalArrearPending), closingBalance: 0);
+        await TarReportInformation().updateDataOfTarReport(batch:batch, category: category, subcategory: subcategory, docName:"receipts", noOfCasesOfTheMonth:0, noOfCasesUpToTheMonth:0, amountOfTheMonth:double.parse(totalArrearPending), amountUpTotheMonth:0, openingBalance:double.parse(totalArrearPending), closingBalance: 0);
       }
       
     
@@ -196,12 +210,19 @@ class MainCasesInformation {
       subcategory: subcategory,
     );
     try {
-      _fireStore
+      DocumentReference ref=_fireStore
           .collection("MP")
           .doc(formation)
           .collection('cases')
-          .doc(uid)
-          .update(model.toJson());
+          .doc(uid);
+          batch.update(ref,model.toJson());
+          batch.commit();
+      // _fireStore
+      //     .collection("MP")
+      //     .doc(formation)
+      //     .collection('cases')
+      //     .doc(uid)
+      //     .update(model.toJson());
       return {"res": "success"};
     } catch (e) {
       return {"res": e.toString()};
@@ -215,7 +236,10 @@ class MainCasesInformation {
   Future updateMainCaseDetails(
       {required MainCaseModel model,
       required String formation,
-      required String uid}) async {
+      required String uid,
+      bool request=false
+      }) async {
+      WriteBatch batch=_fireStore.batch();
     try {
        Map<String,dynamic>modelData=model.toJson();
       DocumentSnapshot docSnapshot = await _fireStore
@@ -225,14 +249,18 @@ class MainCasesInformation {
           .doc(uid)
           .get();
       if (!docSnapshot.exists) {
+        DocumentReference ref=
         _fireStore
             .collection("MP")
             .doc(formation)
             .collection("cases")
-            .doc(uid)
-            .set(model.toJson());
+            .doc(uid);
+          batch.set(ref, model.toJson());
+            // .set(model.toJson());
             //updating tarreport if this request is not present in database
-            TarReportInformation().updateDataOfTarReport(
+           await TarReportInformation().updateDataOfTarReport(
+              // batch:_fireStore.batch(),
+              batch:batch,
            category:modelData['category'],
            subcategory:modelData['subcategory'], 
            docName:"receipts",
@@ -242,13 +270,18 @@ class MainCasesInformation {
             amountUpTotheMonth:0, 
             openingBalance:double.parse(modelData['totalArrearPending']), 
             closingBalance: 0);
+        if(request){
+         await RequestCasesInformation().rejectRequest(uid:uid, formation:formation,batch:batch);
+        }
+        batch.commit();
         return {"res": "success"};
       }
 
       //tar report updating if total arrear pending is changed
      
        if((docSnapshot.data() as Map<String,dynamic>)['totalArrearPending'].toString()!=modelData['totalArrearPending']){
-        TarReportInformation().updateDataOfTarReport(
+       await TarReportInformation().updateDataOfTarReport(
+          batch:batch,
           category:modelData['category'],
            subcategory:modelData['subcategory'], 
            docName:"receipts",
@@ -259,13 +292,20 @@ class MainCasesInformation {
              openingBalance:double.parse(modelData['totalArrearPending']), 
              closingBalance: 0);
       }
-
-      _fireStore
+      DocumentReference ref=  _fireStore
           .collection("MP")
           .doc(formation)
           .collection("cases")
-          .doc(uid)
-          .update(model.toJson());
+          .doc(uid);
+      batch.update(ref, model.toJson());
+      batch.commit();
+      
+      // _fireStore
+      //     .collection("MP")
+      //     .doc(formation)
+      //     .collection("cases")
+      //     .doc(uid)
+      //     .update(model.toJson());
       return {"res": "success"};
     } catch (e) {
       return {"res": "some error occured ${e.toString()}"};
@@ -276,15 +316,16 @@ class MainCasesInformation {
   Future getFormationMainCaseInformation(String formation)async{
     try{
       QuerySnapshot snap=await _fireStore.collection("MP").doc(formation).collection("cases").get();
-      List<Map<String,dynamic>>fomrationCases=[];
+      List<MainCaseModel>formationCases=[];
      
       for(var doc in snap.docs){
-        fomrationCases.add(doc.data() as Map<String,dynamic>);
+        // fomrationCases.add(doc.data() as Map<String,dynamic>);
+        formationCases.add(MainCaseModel.fromJson(doc.data() as Map<String,dynamic>));
       
       }
     
       
-      return {"res":fomrationCases};
+      return {"res":formationCases};
     }catch(e){
       return {"res":"Some error occured ${e.toString()}"};
     }
