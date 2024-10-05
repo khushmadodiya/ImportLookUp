@@ -30,23 +30,35 @@ class _TextFieldInputState extends State<TextFieldInput> {
   Widget build(BuildContext context) {
 
 
-    return TextFormField(
-
-      maxLines: widget.maxlines,
-      decoration: InputDecoration(
-        fillColor: Colors.grey[200],
-        hintText: widget.hintText,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+    return Card(
+      elevation: 8,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
         ),
-        filled: true,
-        contentPadding: const EdgeInsets.all(8),
+      child: TextFormField(
+
+        maxLines: widget.maxlines,
+
+        decoration: InputDecoration(
+          fillColor: Colors.blue[50],
+          hintText: widget.hintText,
+          border:OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(15.0)),
+            borderSide: BorderSide.none,
+          ),
+          label: Text(widget.hintText),
+          labelStyle: TextStyle(
+            fontWeight: FontWeight.w600
+          ),
+          filled: true,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 30),
+        ),
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        onChanged: (text)=>setState(() {
+          widget.textEditingController.text =text;
+        }),
+        obscureText: widget.ispass ? true : false,
       ),
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      onChanged: (text)=>setState(() {
-        widget.textEditingController.text =text;
-      }),
-      obscureText: widget.ispass ? true : false,
     );
   }
 }
