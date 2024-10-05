@@ -39,8 +39,8 @@ class MainCasesInformation {
       required String remark,
       required String subcategory,
       required String effortMade}) async {
-      String uuid = const Uuid().v1();
-      MainCaseModel model = MainCaseModel(
+    String uuid = const Uuid().v1();
+    MainCaseModel model = MainCaseModel(
       category: category,
       completeTrack: completeTrack,
       uid: uuid,
@@ -66,9 +66,8 @@ class MainCasesInformation {
       pan: pan,
       subcategory: subcategory,
     );
-    WriteBatch batch=_fireStore.batch();
+    WriteBatch batch = _fireStore.batch();
     try {
-      
       DocumentReference formationDocRef =
           _fireStore.collection("MP").doc(formation);
       DocumentSnapshot docSnapshot = await formationDocRef.get();
@@ -81,19 +80,29 @@ class MainCasesInformation {
       }
 
       //
-      DocumentReference ref=_fireStore
+      DocumentReference ref = _fireStore
           .collection("MP")
           .doc(formation)
           .collection('cases')
           .doc(uuid);
-      batch.set(ref,model.toJson());
+      batch.set(ref, model.toJson());
       // _fireStore
       //     .collection("MP")
       //     .doc(formation)
       //     .collection('cases')
       //     .doc(uuid)
       //     .set(model.toJson());
-     await TarReportInformation().updateDataOfTarReport(batch:batch, category: category, subcategory: subcategory, docName:"receipts", noOfCasesOfTheMonth:1, noOfCasesUpToTheMonth:0, amountOfTheMonth:double.parse(totalArrearPending), amountUpTotheMonth:0, openingBalance:double.parse(totalArrearPending), closingBalance: 0);
+      await TarReportInformation().updateDataOfTarReport(
+          batch: batch,
+          category: category,
+          subcategory: subcategory,
+          docName: "receipts",
+          noOfCasesOfTheMonth: 1,
+          noOfCasesUpToTheMonth: 0,
+          amountOfTheMonth: double.parse(totalArrearPending),
+          amountUpTotheMonth: 0,
+          openingBalance: double.parse(totalArrearPending),
+          closingBalance: 0);
       batch.commit();
       return {"res": "success"};
     } catch (e) {
@@ -119,13 +128,14 @@ class MainCasesInformation {
               .get();
           for (var val in qsnap.docs) {
             // allCases.add(val.data() as Map<String, dynamic>);
-            allCases.add(MainCaseModel.fromJson(val.data() as Map<String, dynamic>));
+            allCases.add(
+                MainCaseModel.fromJson(val.data() as Map<String, dynamic>));
           }
           completer.complete("Success");
         });
         await completer.future;
 
-        return {"res":allCases};
+        return {"res": allCases};
       }
     } catch (e) {
       print("i am in errro");
@@ -137,99 +147,110 @@ class MainCasesInformation {
 
   //this is form main cases
 
-  Future updateCaseDetails(
-      {required String uid,
-      required String name,
-      required String formation,
-      required String oio,
-      required String date,
-      required String dutyOfArrear,
-      required String penalty,
-      required String amountRecovered,
-      required String preDeposit,
-      required String intrest,
-      required String totalArrearPending,
-      required String briefFact,
-      required String status,
-      required String apealNo,
-      required String stayOrderNumberAndDate,
-      required String iec,
-      required String gstin,
-      required String pan,
-      double? age,
-      required String completeTrack,
-      required String category,
-      // required String efforMade,
-      required String remark,
-      required String subcategory,
-      required String effortMade,
-      required bool isShifted,
+  Future updateCaseDetails({
+    required String uid,
+    required String name,
+    required String formation,
+    required String oio,
+    required String date,
+    required String dutyOfArrear,
+    required String penalty,
+    required String amountRecovered,
+    required String preDeposit,
+    required String intrest,
+    required String totalArrearPending,
+    required String briefFact,
+    required String status,
+    required String apealNo,
+    required String stayOrderNumberAndDate,
+    required String iec,
+    required String gstin,
+    required String pan,
+    double? age,
+    required String completeTrack,
+    required String category,
+    // required String efforMade,
+    required String remark,
+    required String subcategory,
+    required String effortMade,
+    required bool isShifted,
+  }) async {
+    WriteBatch batch = _fireStore.batch();
+    DocumentSnapshot _snap = await _fireStore
+        .collection("MP")
+        .doc(formation)
+        .collection('cases')
+        .doc(uid)
+        .get();
+    if (_snap.exists) {
+      List<String> trac = List<String>.from(
+          (_snap.data() as Map<String, dynamic>)['completeTrack']);
+      if (isShifted) {
+        trac.add(completeTrack);
       }
-      ) async {
-        WriteBatch batch=_fireStore.batch();
- DocumentSnapshot _snap=await _fireStore
-          .collection("MP")
-          .doc(formation)
-          .collection('cases')
-          .doc(uid)
-          .get();
-    if(_snap.exists){
-      List<String>trac=List<String>.from((_snap.data() as Map<String,dynamic>)['completeTrack']);
-      if(isShifted){
-      trac.add(completeTrack);
+      if ((_snap.data() as Map<String, dynamic>)['totalArrearPending']
+              .toString() !=
+          totalArrearPending) {
+        await TarReportInformation().updateDataOfTarReport(
+            batch: batch,
+            category: category,
+            subcategory: subcategory,
+            docName: "receipts",
+            noOfCasesOfTheMonth: 0,
+            noOfCasesUpToTheMonth: 0,
+            amountOfTheMonth: double.parse(totalArrearPending),
+            amountUpTotheMonth: 0,
+            openingBalance: double.parse(totalArrearPending),
+            closingBalance: 0);
       }
-      if((_snap.data() as Map<String,dynamic>)['totalArrearPending'].toString()!=totalArrearPending){
-        await TarReportInformation().updateDataOfTarReport(batch:batch, category: category, subcategory: subcategory, docName:"receipts", noOfCasesOfTheMonth:0, noOfCasesUpToTheMonth:0, amountOfTheMonth:double.parse(totalArrearPending), amountUpTotheMonth:0, openingBalance:double.parse(totalArrearPending), closingBalance: 0);
+
+      MainCaseModel model = MainCaseModel(
+        category: category,
+        completeTrack: trac,
+        uid: uid,
+        name: name,
+        formation: formation,
+        date: date,
+        oio: oio,
+        dutyOfArrear: dutyOfArrear,
+        age: age,
+        amountRecovered: amountRecovered,
+        status: status,
+        briefFact: briefFact,
+        effortMade: effortMade,
+        remark: remark,
+        penalty: penalty,
+        intrest: intrest,
+        totalArrearPending: totalArrearPending,
+        preDeposit: preDeposit,
+        apealNo: apealNo,
+        stayOrderNumberAndDate: stayOrderNumberAndDate,
+        gstin: gstin,
+        iec: iec,
+        pan: pan,
+        subcategory: subcategory,
+      );
+      try {
+        DocumentReference ref = _fireStore
+            .collection("MP")
+            .doc(formation)
+            .collection('cases')
+            .doc(uid);
+        batch.update(ref, model.toJson());
+        await batch.commit();
+        // _fireStore
+        //     .collection("MP")
+        //     .doc(formation)
+        //     .collection('cases')
+        //     .doc(uid)
+        //     .update(model.toJson());
+        return {"res": "success"};
+      } catch (e) {
+        return {"res": e.toString()};
       }
-      
-    
-    MainCaseModel model = MainCaseModel(
-      category: category,
-      completeTrack:trac,
-      uid: uid,
-      name: name,
-      formation: formation,
-      date: date,
-      oio: oio,
-      dutyOfArrear: dutyOfArrear,
-      age: age,
-      amountRecovered: amountRecovered,
-      status: status,
-      briefFact: briefFact,
-      effortMade: effortMade,
-      remark: remark,
-      penalty: penalty,
-      intrest: intrest,
-      totalArrearPending: totalArrearPending,
-      preDeposit: preDeposit,
-      apealNo: apealNo,
-      stayOrderNumberAndDate: stayOrderNumberAndDate,
-      gstin: gstin,
-      iec: iec,
-      pan: pan,
-      subcategory: subcategory,
-    );
-    try {
-      DocumentReference ref=_fireStore
-          .collection("MP")
-          .doc(formation)
-          .collection('cases')
-          .doc(uid);
-          batch.update(ref,model.toJson());
-          batch.commit();
-      // _fireStore
-      //     .collection("MP")
-      //     .doc(formation)
-      //     .collection('cases')
-      //     .doc(uid)
-      //     .update(model.toJson());
-      return {"res": "success"};
-    } catch (e) {
-      return {"res": e.toString()};
+    } else {
+      return {"res": "please provide me all required Prameter"};
     }
-}else{
-       return {"res":"please provide me all required Prameter"};
-}
   }
 
   //update maincase datils (requested cases)
@@ -237,11 +258,10 @@ class MainCasesInformation {
       {required MainCaseModel model,
       required String formation,
       required String uid,
-      bool request=false
-      }) async {
-      WriteBatch batch=_fireStore.batch();
+      bool request = false}) async {
+    WriteBatch batch = _fireStore.batch();
     try {
-       Map<String,dynamic>modelData=model.toJson();
+      Map<String, dynamic> modelData = model.toJson();
       DocumentSnapshot docSnapshot = await _fireStore
           .collection("MP")
           .doc(formation)
@@ -249,57 +269,59 @@ class MainCasesInformation {
           .doc(uid)
           .get();
       if (!docSnapshot.exists) {
-        DocumentReference ref=
-        _fireStore
+        DocumentReference ref = _fireStore
             .collection("MP")
             .doc(formation)
             .collection("cases")
             .doc(uid);
-          batch.set(ref, model.toJson());
-            // .set(model.toJson());
-            //updating tarreport if this request is not present in database
-           await TarReportInformation().updateDataOfTarReport(
-              // batch:_fireStore.batch(),
-              batch:batch,
-           category:modelData['category'],
-           subcategory:modelData['subcategory'], 
-           docName:"receipts",
-            noOfCasesOfTheMonth:1,
-            noOfCasesUpToTheMonth:0, 
-            amountOfTheMonth:double.parse(modelData['totalArrearPending']), 
-            amountUpTotheMonth:0, 
-            openingBalance:double.parse(modelData['totalArrearPending']), 
+        batch.set(ref, model.toJson());
+        // .set(model.toJson());
+        //updating tarreport if this request is not present in database
+        await TarReportInformation().updateDataOfTarReport(
+            // batch:_fireStore.batch(),
+            batch: batch,
+            category: modelData['category'],
+            subcategory: modelData['subcategory'],
+            docName: "receipts",
+            noOfCasesOfTheMonth: 1,
+            noOfCasesUpToTheMonth: 0,
+            amountOfTheMonth: double.parse(modelData['totalArrearPending']),
+            amountUpTotheMonth: 0,
+            openingBalance: double.parse(modelData['totalArrearPending']),
             closingBalance: 0);
-        if(request){
-         await RequestCasesInformation().rejectRequest(uid:uid, formation:formation,batch:batch);
+        if (request) {
+          await RequestCasesInformation()
+              .rejectRequest(uid: uid, formation: formation, batch: batch);
         }
-        batch.commit();
+       await batch.commit();
         return {"res": "success"};
       }
 
       //tar report updating if total arrear pending is changed
-     
-       if((docSnapshot.data() as Map<String,dynamic>)['totalArrearPending'].toString()!=modelData['totalArrearPending']){
-       await TarReportInformation().updateDataOfTarReport(
-          batch:batch,
-          category:modelData['category'],
-           subcategory:modelData['subcategory'], 
-           docName:"receipts",
-            noOfCasesOfTheMonth:0,
-             noOfCasesUpToTheMonth:0, 
-             amountOfTheMonth:double.parse(modelData['totalArrearPending']), 
-             amountUpTotheMonth:0, 
-             openingBalance:double.parse(modelData['totalArrearPending']), 
-             closingBalance: 0);
+
+      if ((docSnapshot.data() as Map<String, dynamic>)['totalArrearPending']
+              .toString() !=
+          modelData['totalArrearPending']) {
+        await TarReportInformation().updateDataOfTarReport(
+            batch: batch,
+            category: modelData['category'],
+            subcategory: modelData['subcategory'],
+            docName: "receipts",
+            noOfCasesOfTheMonth: 0,
+            noOfCasesUpToTheMonth: 0,
+            amountOfTheMonth: double.parse(modelData['totalArrearPending']),
+            amountUpTotheMonth: 0,
+            openingBalance: double.parse(modelData['totalArrearPending']),
+            closingBalance: 0);
       }
-      DocumentReference ref=  _fireStore
+      DocumentReference ref = _fireStore
           .collection("MP")
           .doc(formation)
           .collection("cases")
           .doc(uid);
       batch.update(ref, model.toJson());
-      batch.commit();
-      
+      await batch.commit();
+
       // _fireStore
       //     .collection("MP")
       //     .doc(formation)
@@ -312,33 +334,73 @@ class MainCasesInformation {
     }
   }
 
-  
-  Future getFormationMainCaseInformation(String formation)async{
-    try{
-      QuerySnapshot snap=await _fireStore.collection("MP").doc(formation).collection("cases").get();
-      List<MainCaseModel>formationCases=[];
-     
-      for(var doc in snap.docs){
+  Future getFormationMainCaseInformation(String formation) async {
+    try {
+      QuerySnapshot snap = await _fireStore
+          .collection("MP")
+          .doc(formation)
+          .collection("cases")
+          .get();
+      List<MainCaseModel> formationCases = [];
+
+      for (var doc in snap.docs) {
         // fomrationCases.add(doc.data() as Map<String,dynamic>);
-        formationCases.add(MainCaseModel.fromJson(doc.data() as Map<String,dynamic>));
-      
+        formationCases
+            .add(MainCaseModel.fromJson(doc.data() as Map<String, dynamic>));
       }
-    
-      
-      return {"res":formationCases};
-    }catch(e){
-      return {"res":"Some error occured ${e.toString()}"};
+
+      return {"res": formationCases};
+    } catch (e) {
+      return {"res": "Some error occured ${e.toString()}"};
     }
   }
 
   //delete main case
-  Future deleteMainCase({required String formation,required String uid})async{
-    try{
-    await _fireStore.collection("MP").doc(formation).collection("cases").doc(uid).delete();
-     return {"res":"success"};
-    }catch(e){
-      return {"res":"some error occured ${e.toString()}"};
+  Future deleteMainCase(
+      {required String formation, required String uid}) async {
+    try {
+      WriteBatch batch = _fireStore.batch();
+      // await _fireStore.collection("MP").doc(formation).collection("cases").doc(uid).delete();
+      DocumentReference ref = _fireStore
+          .collection("MP")
+          .doc(formation)
+          .collection("cases")
+          .doc(uid);
+      await writeOff(formation: formation, uid: uid, writeBatch: batch);
+      batch.delete(ref);
+     await batch.commit();
+      return {"res": "success"};
+    } catch (e) {
+      return {"res": "some error occured ${e.toString()}"};
     }
   }
 
+  Future writeOff(
+      {required String formation,
+      required String uid,
+      required WriteBatch writeBatch}) async {
+    try {
+      DocumentSnapshot snap = await _fireStore
+          .collection("MP")
+          .doc(formation)
+          .collection("cases")
+          .doc(uid)
+          .get();
+      //  uid=const Uuid().v1();
+      // await _fireStore.collection("MP").doc("writeOff").collection("cases").doc(uid).set(_snap.data() as Map<String,dynamic>);
+      DocumentReference ref = _fireStore
+          .collection("MP")
+          .doc("writeOff")
+          .collection("cases")
+          .doc(uid);
+      if(snap.exists){
+      writeBatch.set(ref, snap.data() as Map<String, dynamic>);
+      }else{
+        throw "error occured";
+      }
+      return {"res": "success"};
+    } catch (e) {
+      return {"res": "some error occured ${e.toString()}"};
+    }
+  }
 }
