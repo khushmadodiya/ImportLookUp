@@ -131,7 +131,7 @@ class RequestCasesInformation {
         });
         await completer.future;
 
-        return allCases;
+        return {"res":allCases};
         
        
       }

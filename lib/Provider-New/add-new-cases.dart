@@ -3,6 +3,8 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:import_lookup/Backend-New/main-cases-details.dart';
 import 'package:import_lookup/Backend-New/request-cases-details.dart';
+import 'package:import_lookup/Model-New/main-case-model.dart';
+import 'package:import_lookup/Model-New/request-case-model.dart';
 import 'package:intl/intl.dart';
 // import 'package:provider/provider.dart';
 
@@ -58,6 +60,31 @@ class AddNewCase with ChangeNotifier {
   TextEditingController get remark => remarkController;
   TextEditingController get subcategory => subcategoryController;
 
+
+  //this or data
+  List<MainCaseModel>_mainCaseData=[];
+  List<RequestCaseModel>_requestCaseData=[];
+
+  List<MainCaseModel> get mainCaseData=>_mainCaseData;
+  List<RequestCaseModel> get requestCaseData=>_requestCaseData;
+
+
+  Future getMainCasesInformation({required String formation,required isAdmin})async{
+    if(!isAdmin){
+    _mainCaseData=(await MainCasesInformation().getFormationMainCaseInformation(formation))["res"];
+    }else{
+      _mainCaseData=(await MainCasesInformation().getAllMainCasesDetails())["res"];
+    }
+    notifyListeners();
+  }
+  Future getRequestCasesInformation({required formation,required isAdmin})async{
+    if(isAdmin){
+      _requestCaseData=(await RequestCasesInformation().getFormationRequestedCaseInformation(formation))["res"];
+    }else{
+      _requestCaseData=(await RequestCasesInformation().getAllReuqestCasesDetails())["res"];
+    }
+    notifyListeners();
+  }
   Future<void> addMainCase(bool isAdmin) async {
     await MainCasesInformation().addCases(
       uid: '',

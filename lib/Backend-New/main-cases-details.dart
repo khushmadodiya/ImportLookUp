@@ -125,7 +125,7 @@ class MainCasesInformation {
         });
         await completer.future;
 
-        return allCases;
+        return {"res":allCases};
       }
     } catch (e) {
       print("i am in errro");
