@@ -1,16 +1,14 @@
 
+// import 'package:dropdown_search/dropdown_search.dart';
+// import 'package:dropdown_search/dropdown_search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:import_lookup/Screens/dashboard.dart';
+// import 'package:import_lookup/Screens-New/Auth-Screens/login-screen.dart';
 import 'package:import_lookup/Screens/login-screen.dart';
-import 'package:import_lookup/Screens/show-oio-details.dart';
-import 'package:import_lookup/add_json_data.dart';
-import 'package:import_lookup/global.dart';
 import 'package:import_lookup/provider/provider.dart';
 import 'package:import_lookup/test.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'firebase_options.dart';
 bool isadmin = false;
@@ -41,7 +39,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: Test(),
+        home:const Test(),
        
       
       ),
@@ -49,3 +47,35 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// class Dipu extends StatelessWidget {
+//   final dropDownKey = GlobalKey<DropdownSearchState>();
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: Text('examples mode')),
+//       body: ListView(
+//         padding: EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+//         children: [
+//           Row(
+//             children: [
+//               Expanded(
+//                 child: DropdownSearch<String>(
+//                   // key:,
+                  
+//                   selectedItem: "Menu",
+//                   items: (filter, infiniteScrollProps) =>
+//                   ["Menu", "Dialog", "Modal", "BottomSheet"],
+                  
+//                 ),
+//               ),
+              
+//             ],
+//           ),
+         
+          
+//         ],
+//       ),
+//     );
+//   }
+// }

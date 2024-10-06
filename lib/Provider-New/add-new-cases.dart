@@ -79,9 +79,9 @@ class AddNewCase with ChangeNotifier {
   }
   Future getRequestCasesInformation({required formation,required isAdmin})async{
     if(isAdmin){
-      _requestCaseData=(await RequestCasesInformation().getFormationRequestedCaseInformation(formation))["res"];
+      _requestCaseData=(await RequestCasesInformation().getAllReuqestCasesDetails ())["res"];
     }else{
-      _requestCaseData=(await RequestCasesInformation().getAllReuqestCasesDetails())["res"];
+      _requestCaseData=(await RequestCasesInformation().getFormationRequestedCaseInformation(formation))["res"];
     }
     notifyListeners();
   }
