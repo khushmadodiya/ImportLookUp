@@ -27,7 +27,7 @@ Widget CustomButton({
         child: !isLoading
             ?  Text(
           text.toString(),
-          style: TextStyle(color: Colors.white, fontSize: 20),
+          style: TextStyle(color: Colors.white, fontSize: 16),
         )
             : const CircularProgressIndicator(
           color: Colors.white,
