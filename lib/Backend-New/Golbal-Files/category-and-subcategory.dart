@@ -24,3 +24,24 @@ const List<String> CATEGORY = [
     "disposal formations changed",
     "arrearss realised"
   ];
+
+ const List<String> USERTYPE =[
+   'Admin',
+   'Others'
+ ];
+ const List<String> FORMATION = [
+     "Air Cargo Complex Indore",
+     "Customs Circle Bhopal",
+     "Customs Circle Indore",
+     "Customs Circle Raipur",
+     "Customs Circle Ujjain",
+     "Customs Circle Jabalpur",
+     "Customs Hqrs Indore",
+     "DABH International Airport Indore",
+     "ICD Kheda",
+      "ICD Malanpur",
+     "ICD Mandideep ",
+     "ICD Powerkheda ",
+      "ICD Raipur",
+      "ICD Tihi",
+ ];

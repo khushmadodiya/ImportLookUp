@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserInformation extends ChangeNotifier {
   String _userType = '';
@@ -12,17 +13,22 @@ class UserInformation extends ChangeNotifier {
   String get formation => _formation;
   String get email => _email;
 
-  Future<void> getUserData({required String userType, required String userId}) async {
+  Future getUserData() async {
     try {
+
+      var pref = await SharedPreferences.getInstance();
+      print(pref.getString('userId'));
+      print(pref.getString('userType'));
       FirebaseFirestore store = FirebaseFirestore.instance;
-      DocumentSnapshot snap = await store.collection(userType).doc(userId).get();
+      DocumentSnapshot snap = await store.collection(pref.getString('userType').toString()).doc(pref.getString('userId')).get();
       if (snap.exists) {
         final data = snap.data() as Map<String, dynamic>;
-        _userType = data["userType"] ?? ''; 
-        _userId = data["userId"] ?? '';
+        _userType = pref.getString('userType') ?? ''; 
+        _userId = pref.getString('userId') ?? '';
         _formation = data["formation"] ?? '';
         _email = data["email"] ?? '';
-        notifyListeners(); 
+        notifyListeners();
+        return 'success';
       }
     } catch (e) {
      
