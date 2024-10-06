@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'dart:js_interop';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.dart';
 import 'package:import_lookup/Backend-New/request-cases-details.dart';
 import 'package:import_lookup/Backend-New/tar-report.dart';
 import 'package:import_lookup/Model-New/main-case-model.dart';
@@ -83,7 +84,7 @@ class MainCasesInformation {
       DocumentReference ref = _fireStore
           .collection("MP")
           .doc(formation)
-          .collection(subcategory)
+          .collection("cases")
           .doc(uuid);
       batch.set(ref, model.toJson());
       // _fireStore
@@ -120,19 +121,38 @@ class MainCasesInformation {
         // print('No documents found in the MP collection  ');
         return allCases;
       } else {
-        querySnapshot.docs.forEach((doc) async {
+        for(var formation in FORMATION){
           QuerySnapshot qsnap = await _fireStore
               .collection("MP")
-              .doc(doc.id)
+              .doc(formation)
               .collection("cases")
               .get();
-          for (var val in qsnap.docs) {
+        if(qsnap.docs.isNotEmpty){
+           for (var val in qsnap.docs) {
             // allCases.add(val.data() as Map<String, dynamic>);
             allCases.add(
                 MainCaseModel.fromJson(val.data() as Map<String, dynamic>));
           }
-          completer.complete("Success");
-        });
+        }
+        if(formation=='ICD Tihi'){
+           completer.complete("Success");
+        }
+        }
+
+        // querySnapshot.docs.forEach((doc) async {
+        //   QuerySnapshot qsnap = await _fireStore
+        //       .collection("MP")
+        //       .doc(doc.id)
+        //       .collection("cases")
+        //       .get();
+        //   for (var val in qsnap.docs) {
+        //     // allCases.add(val.data() as Map<String, dynamic>);
+        //     allCases.add(
+        //         MainCaseModel.fromJson(val.data() as Map<String, dynamic>));
+        //   }
+        //   completer.complete("Success");
+        // });
+        print("all cases here with lenght ${allCases.length}");
         await completer.future;
 
         return {"res": allCases};

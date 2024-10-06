@@ -3,6 +3,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:import_lookup/Backend-New/main-cases-details.dart';
+import 'package:import_lookup/Backend-New/request-cases-details.dart';
 import 'package:import_lookup/Provider-New/general-pusrpose.dart';
 import 'package:import_lookup/Screens-New/Auth-Screens/login-screen.dart';
 import 'package:import_lookup/Screens/dashboard.dart';
@@ -89,10 +91,12 @@ class _MyAppState extends State<MyApp> {
 
    var pro = await (Provider.of<UserInformation>(context,listen: false));
    var p = await pro.getUserData();
+   await RequestCasesInformation().getAllReuqestCasesDetails();
     // await UserInformation().getUserData()
     print('${pro.userId}  ${pro.userType}  ${pro.email}  ${pro.formation} ');
 
   }
+  
 }
 
 // class MyHomePage extends StatelessWidget {
