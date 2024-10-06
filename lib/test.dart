@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:import_lookup/Backend-New/main-cases-details.dart';
 
 class Test extends StatefulWidget {
   const Test({super.key});
@@ -12,7 +13,13 @@ class _TestState extends State<Test> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _controller = TextEditingController();
   String? _errorMessage; // Variable to hold the error message
-
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // getData();
+  }
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.dart';
 import 'package:import_lookup/Backend-New/main-cases-details.dart';
 import 'package:import_lookup/Model-New/main-case-model.dart';
 
@@ -115,21 +116,37 @@ class RequestCasesInformation {
       QuerySnapshot querySnapshot = await fireStore.collection('MP').get();
       final Completer<String> completer = Completer<String>();
       if (querySnapshot.docs.isEmpty) {
-        // print('No documents found in the MP collection  ');
          return allCases;
       } else {
-        querySnapshot.docs.forEach((doc) async {
-          // if(d)
+         for(var formation in FORMATION){
           QuerySnapshot qsnap = await fireStore
               .collection("MP")
-              .doc(doc.id)
+              .doc(formation)
               .collection("requested cases")
               .get();
-          for (var val in qsnap.docs) {
-            allCases.add(RequestCaseModel.fromJson(val.data() as Map<String, dynamic>));
+        if(qsnap.docs.isNotEmpty){
+           for (var val in qsnap.docs){
+            allCases.add(
+                RequestCaseModel.fromJson(val.data() as Map<String, dynamic>));
           }
-          completer.complete("Success");
-        });
+        }
+        if(formation=='ICD Tihi'){
+           completer.complete("Success");
+        }
+        }
+        // querySnapshot.docs.forEach((doc) async {
+        //   // if(d)
+        //   QuerySnapshot qsnap = await fireStore
+        //       .collection("MP")
+        //       .doc(doc.id)
+        //       .collection("requested cases")
+        //       .get();
+        //   for (var val in qsnap.docs) {
+        //     allCases.add(RequestCaseModel.fromJson(val.data() as Map<String, dynamic>));
+        //   }
+        //   completer.complete("Success");
+        // });
+        print("leght is here ${allCases.length}");
         await completer.future;
 
         return {"res":allCases};
