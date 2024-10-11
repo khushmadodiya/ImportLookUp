@@ -126,6 +126,7 @@ class RequestCasesInformation {
               .get();
         if(qsnap.docs.isNotEmpty){
            for (var val in qsnap.docs){
+             print(val.data());
             allCases.add(
                 RequestCaseModel.fromJson(val.data() as Map<String, dynamic>));
           }

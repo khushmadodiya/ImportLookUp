@@ -3,6 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.dart';
 import 'package:import_lookup/Backend-New/main-cases-details.dart';
 import 'package:import_lookup/Backend-New/request-cases-details.dart';
 import 'package:import_lookup/Provider-New/general-pusrpose.dart';
@@ -66,11 +67,13 @@ class _MyAppState extends State<MyApp> {
             if (snapshot.connectionState == ConnectionState.active) {
               if (snapshot.hasData) {
                 if(pro.email.isNotEmpty)
-                return DashboardScreen(isadmin: false);
-                // return LoginPage();
+
+                return DashboardScreen(isAdmin: pro.userType==USERTYPE[0]);
+                return LoginPage();
               } else if (snapshot.hasError) {
                 return Center(child: Text('An error occurred'));
               }
+              // return DashboardScreen(isadmin: false);
             }
 
             if (snapshot.connectionState == ConnectionState.waiting ) {

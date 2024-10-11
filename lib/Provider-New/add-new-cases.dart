@@ -279,6 +279,7 @@
 //   }
 // }
 import 'dart:core';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:import_lookup/Backend-New/main-cases-details.dart';
 import 'package:import_lookup/Backend-New/request-cases-details.dart';
@@ -313,6 +314,7 @@ class AddNewCase with ChangeNotifier {
   final TextEditingController _remarkController = TextEditingController();
   final TextEditingController _subcategoryController = TextEditingController();
   bool _isLoading = false;
+
 
   // Getters for each controller
   bool get isLoading => _isLoading;
@@ -356,7 +358,121 @@ class AddNewCase with ChangeNotifier {
     notifyListeners();
   }
 
+  // Setters for each property
+  void setName(String newName) {
+    _nameController.text = newName;
+    notifyListeners();
+  }
 
+  void setFormation(String newFormation) {
+    _formationController.text = newFormation;
+    notifyListeners();
+  }
+
+  void setOio(String newOio) {
+    _oioController.text = newOio;
+    notifyListeners();
+  }
+
+  void setDate(String newDate) {
+    _dateController.text = newDate;
+    notifyListeners();
+  }
+
+  void setDutyOfArrear(String newDutyOfArrear) {
+    _dutyOfArrearController.text = newDutyOfArrear;
+    notifyListeners();
+  }
+
+  void setPenalty(String newPenalty) {
+    _penaltyController.text = newPenalty;
+    notifyListeners();
+  }
+
+  void setAmountRecovered(String newAmountRecovered) {
+    _amountRecoveredController.text = newAmountRecovered;
+    notifyListeners();
+  }
+
+  void setPreDeposit(String newPreDeposit) {
+    _preDepositController.text = newPreDeposit;
+    notifyListeners();
+  }
+
+  void setInterest(String newInterest) {
+    _interestController.text = newInterest;
+    notifyListeners();
+  }
+
+  void setTotalArrearPending(String newTotalArrearPending) {
+    _totalArrearPendingController.text = newTotalArrearPending;
+    notifyListeners();
+  }
+
+  void setBriefFact(String newBriefFact) {
+    _briefFactController.text = newBriefFact;
+    notifyListeners();
+  }
+
+  void setStatus(String newStatus) {
+    _statusController.text = newStatus;
+    notifyListeners();
+  }
+
+  void setAppealNo(String newAppealNo) {
+    _appealNoController.text = newAppealNo;
+    notifyListeners();
+  }
+
+  void setStayOrderNumberAndDate(String newStayOrderNumberAndDate) {
+    _stayOrderNumberAndDateController.text = newStayOrderNumberAndDate;
+    notifyListeners();
+  }
+
+  void setIec(String newIec) {
+    _iecController.text = newIec;
+    notifyListeners();
+  }
+
+  void setGstin(String newGstin) {
+    _gstinController.text = newGstin;
+    notifyListeners();
+  }
+
+  void setPan(String newPan) {
+    _panController.text = newPan;
+    notifyListeners();
+  }
+
+  void setAge(String newAge) {
+    _ageController.text = newAge;
+    notifyListeners();
+  }
+
+  void setCompleteTrack(String newCompleteTrack) {
+    _completeTrackController.text = newCompleteTrack;
+    notifyListeners();
+  }
+
+  void setCategory(String newCategory) {
+    _categoryController.text = newCategory;
+    notifyListeners();
+  }
+
+  void setEffortMade(String newEffortMade) {
+    _effortMadeController.text = newEffortMade;
+    notifyListeners();
+  }
+
+  void setRemark(String newRemark) {
+    _remarkController.text = newRemark;
+    notifyListeners();
+  }
+
+  void setSubcategory(String newSubcategory) {
+    _subcategoryController.text = newSubcategory;
+    notifyListeners();
+  }
   Future getMainCasesInformation({required String formation, required bool isAdmin}) async {
     if (!isAdmin) {
       _mainCaseData = (await MainCasesInformation().getFormationMainCaseInformation(formation))["res"];
@@ -407,8 +523,8 @@ class AddNewCase with ChangeNotifier {
   }
 
   // Update main case details
-  Future<void> updateMainCaseDetails(bool isAdmin, {required String uid, required bool isShifted}) async {
-    await MainCasesInformation().updateCaseDetails(
+  Future updateMainCaseDetails(bool isAdmin, {required String uid, required bool isShifted}) async {
+  var res=  await MainCasesInformation().updateCaseDetails(
       uid: uid,
       name: _nameController.text, // Use the controller's text directly
       formation: _formationController.text,
@@ -434,6 +550,7 @@ class AddNewCase with ChangeNotifier {
       apealNo: _appealNoController.text,
       isShifted: isShifted,
     );
+  return res;
   }
 
   // Add case request
@@ -469,8 +586,8 @@ class AddNewCase with ChangeNotifier {
   }
 
   // Update data of requested cases
-  Future<void> updateRequestCase(bool isAdmin, {required String uid, required Map<String, dynamic> oldData, required bool isShifted}) async {
-    await RequestCasesInformation().addCases(
+  Future updateRequestCase(bool isAdmin, {required String uid, required Map<String, dynamic> oldData, required bool isShifted}) async {
+   var res= await RequestCasesInformation().addCases(
       uid: uid,
       oldData: oldData,
       name: _nameController.text,
@@ -497,6 +614,7 @@ class AddNewCase with ChangeNotifier {
       apealNo: _appealNoController.text,
       isShifted: isShifted,
     );
+   return res;
   }
 
   // Dispose controllers when no longer needed

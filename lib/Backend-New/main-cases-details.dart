@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:js_interop';
+import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.dart';
@@ -421,6 +422,23 @@ class MainCasesInformation {
       return {"res": "success"};
     } catch (e) {
       return {"res": "some error occured ${e.toString()}"};
+    }
+  }
+  //get maincase detail document using formation
+
+  Future getMainCaseDetailByDocument({required  String formation,required String uid}) async {
+
+    try{
+      DocumentSnapshot qsnap = await _fireStore
+          .collection("MP")
+          .doc(formation)
+          .collection("cases").doc(uid)
+          .get();
+      MainCaseModel model = MainCaseModel.fromJson(qsnap.data() as Map<String, dynamic>);
+      return {'res':'success','model':model};
+    }
+    catch(e){
+      return {'res': 'some error occure $e'};
     }
   }
 }

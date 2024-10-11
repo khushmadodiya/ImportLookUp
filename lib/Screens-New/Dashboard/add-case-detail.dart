@@ -9,15 +9,14 @@ import 'package:import_lookup/Provider-New/get-user-deatils.dart';
 import 'package:import_lookup/Widgets/custom-button.dart';
 import 'package:import_lookup/Widgets/formation-dropdown.dart';
 import 'package:intl/intl.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
+import '../../Model-New/main-case-model.dart';
 import '../../Provider-New/add-new-cases.dart';
-import '../../Screens/Custom code/textfiled.dart';
-import '../../Widgets/dropdown.dart';
+import '../../Widgets/Widgets-New/custom-textfield.dart';
+
 
 class AddCaseDeatil extends StatefulWidget {
-  const AddCaseDeatil({super.key});
+
 
   @override
   State<AddCaseDeatil> createState() => _AddCaseDeatilState();
@@ -129,6 +128,7 @@ class _AddCaseDeatilState extends State<AddCaseDeatil> {
                       'Name of the Assessee',
                       'OIO Number',
                     ),
+                  // if(userInfo.userType==USERTYPE[1]) buildRow(, controller2, label1, label2),
 
                     SizedBox(
                       height: 60,
@@ -243,14 +243,14 @@ class _AddCaseDeatilState extends State<AddCaseDeatil> {
                         height: 100,
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 600),
+                    Container(
+                        width: MediaQuery.of(context).size.width/5,
                         child: CustomButton(onpress: (){
                           if(pro.name.text.isEmpty || pro.dutyOfArrear.text.isEmpty || pro.totalArrearPending.text.isEmpty || date=='Select OIO Date'){
                             Fluttertoast.showToast(msg: 'Pleas fill name, duty of arrear, total arrear pending and date',timeInSecForIosWeb: 3);
                           }else{
                           adddetail(pro);}
-                          }, isLoading: pro.isLoading, text: 'Add Data'))
+                          },text: 'Add Data', isLoading: pro.isLoading))
                   ],
                 ),
               ),
