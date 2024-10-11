@@ -1,34 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.dart';
 import 'package:import_lookup/Backend-New/authentication.dart';
+import 'package:import_lookup/Provider-New/get-user-deatils.dart';
 import 'package:import_lookup/Screens-New/Auth-Screens/login-screen.dart';
+import 'package:import_lookup/Screens-New/Dashboard/accept_request.dart';
 import 'package:import_lookup/Screens-New/Dashboard/add-case-detail.dart';
-import 'package:import_lookup/Screens/RecoverableArrear/Sattlement_commission_cases.dart';
-import 'package:import_lookup/Screens/RecoverableArrear/apeal_period_over_but_no_apeal_filed.dart';
-import 'package:import_lookup/Screens/RecoverableArrear/arrear_under_section11.dart';
-import 'package:import_lookup/Screens/RecoverableArrear/arrear_under_section142.dart';
-import 'package:import_lookup/Screens/RecoverableArrear/unit_closed_not_traceable.dart';
-import 'package:import_lookup/Screens/ResrainedArriers/BIFR.dart';
-import 'package:import_lookup/Screens/ResrainedArriers/DRT.dart';
-import 'package:import_lookup/Screens/ResrainedArriers/NCLT.dart';
-import 'package:import_lookup/Screens/ResrainedArriers/OL.dart';
-import 'package:import_lookup/Screens/accept-request-page.dart';
-import 'package:import_lookup/Screens/arrear_fit_write_off.dart';
-import 'package:import_lookup/Screens/cestat_page.dart';
-import 'package:import_lookup/Screens/comm_page.dart';
-import 'package:import_lookup/Screens/high_court_page.dart';
-import 'package:import_lookup/Screens/oio-page.dart';
-import 'package:import_lookup/Screens/show-oio-details.dart';
-import 'package:import_lookup/Screens/supreme_court_page.dart';
 import 'package:import_lookup/Screens/search_screen.dart';
+import 'package:import_lookup/Widgets/Widgets-New/custom-table.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../Screens-New/Dashboard/apeal-period.dart';
 import '../global.dart';
 
 class DashboardScreen extends StatefulWidget {
-  final bool isadmin;
-  const DashboardScreen({
-    required this.isadmin,
+bool isAdmin;
+   DashboardScreen({super.key,
+   required this.isAdmin
 });
 
   @override
@@ -36,6 +22,7 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  bool isadmin=false;
   @override
   void initState() {
     // TODO: implement initState
@@ -49,27 +36,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
   int _selectedIndex = 0;
 
-   List<Widget> _widgetOptions = const [
-     ApealPeriodNotOver(),
-    SearchScreen(),
-    AddCaseDeatil(),
-    SupremeCourtCases(),
-    HighCourtCases(),
-    CestatCases(),
-    CommApealCases(),
-    OLPage(),
-    DRTPage(),
-    BIFRPage(),
-    NCLTPage(),
-    RecoverableNoApealFiled(),
-    RecoverableSattelmentCases(),
-    RecoverableUnitClose(),
-    RecoverableArrearUnderSection11(),
-    RecoverableArrearUnder142(),
-    RecoverableWriteOff(),
-    AcceptRequests()
-    
-  ];
+
 
   void _onItemTapped(int index, String itemName) {
     setState(() {
@@ -125,7 +92,33 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final isNarrowScreen = screenWidth < 300;
+    final List<Widget> _widgetOptions =  [
+      CustomTable(title: "Show OIO Details", subcategory: SUBCATEGORY[CATEGORY[2]]![0],category: CATEGORY[2],),
+      // SearchScreen(),
+      Text('hello'),
+      AddCaseDeatil(),
+      CustomTable(title: "Supreme Court", subcategory: SUBCATEGORY[CATEGORY[0]]![0],category: CATEGORY[0],),
+      CustomTable(title: "High Court", subcategory: SUBCATEGORY[CATEGORY[0]]![1],category: CATEGORY[0],),
+      CustomTable(title: "CESTAT", subcategory: SUBCATEGORY[CATEGORY[0]]![2],category: CATEGORY[0],),
+      CustomTable(title: "Comm Apeal", subcategory: SUBCATEGORY[CATEGORY[0]]![3],category: CATEGORY[0],),
+      //
+      CustomTable(title: "OL", subcategory: SUBCATEGORY[CATEGORY[1]]![0],category: CATEGORY[1],),
+      CustomTable(title: "DRT", subcategory: SUBCATEGORY[CATEGORY[1]]![1],category: CATEGORY[1]),
+      CustomTable(title: "BIFR", subcategory: SUBCATEGORY[CATEGORY[1]]![2],category: CATEGORY[1]),
+      CustomTable(title: "NCLT", subcategory: SUBCATEGORY[CATEGORY[1]]![3],category: CATEGORY[1]),
+      //
+      CustomTable(title: "Recoverable where apeal period not over", subcategory: SUBCATEGORY[CATEGORY[3]]![0],category: CATEGORY[3]),
+      CustomTable(title: "Recoverable sattelmentcases", subcategory: SUBCATEGORY[CATEGORY[3]]![1],category: CATEGORY[3]),
+      CustomTable(title: "Recoverable unit close", subcategory: SUBCATEGORY[CATEGORY[3]]![2],category: CATEGORY[3]),
+      CustomTable(title: "Recoverable Under section 11", subcategory: SUBCATEGORY[CATEGORY[3]]![3],category: CATEGORY[3]),
+      CustomTable(title: "Recoverable Under 142", subcategory: SUBCATEGORY[CATEGORY[3]]![3],category: CATEGORY[3]),
 
+      CustomTable(title: "Recoverable Write off", subcategory: SUBCATEGORY[CATEGORY[4]]![0],category:CATEGORY[4]),
+      if(widget.isAdmin)
+        AcceptRequestCase(title: 'Reqests',)
+
+
+    ];
     return Scaffold(
       // appBar: AppBar(
       //   actions: [
@@ -257,10 +250,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
           icon: Icon(Icons.delete_outline),
           label: 'Write-off',
         ),
-      if(widget.isadmin)
+      if(widget.isAdmin)
       const BottomNavigationBarItem(
-          icon: Icon(Icons.delete_outline),
-          label: 'Update Requeted',
+          icon: Icon(Icons.request_quote),
+          label: 'Requests',
         ),
       ],
       currentIndex: _getBottomNavIndex(),
@@ -270,7 +263,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           _onItemTapped(index, index == 0 ? 'Home' : index == 1 ? 'Search' : 'Add');
         } else if (index == 6) {
           _onItemTapped(16, 'Write-off');
-        }else if(index == 7 && widget.isadmin){
+        }else if(index == 7 && widget.isAdmin){
           _onItemTapped(17, 'Update Req');
         } else {
           _showBottomSheet(index);
@@ -285,7 +278,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     if (_selectedIndex >= 7 && _selectedIndex <= 10) return 4;
     if (_selectedIndex >= 11 && _selectedIndex <= 15) return 5;
     if (_selectedIndex == 16) return 6;
-    if(widget.isadmin)if (_selectedIndex == 17) return 7;
+    if(widget.isAdmin)if (_selectedIndex == 17) return 7;
     return 0;
   }
 
@@ -384,3 +377,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 }
+
+
+// CustomTable(title: "Supreme Court", subcategory: SUBCATEGORY[CATEGORY[0]]![0],),
+// CustomTable(title: "High Court", subcategory: SUBCATEGORY[CATEGORY[0]]![1],),
+// CustomTable(title: "CESTAT", subcategory: SUBCATEGORY[CATEGORY[0]]![2],),
+// CustomTable(title: "Comm Apeal", subcategory: SUBCATEGORY[CATEGORY[0]]![3],),
+//
+// CustomTable(title: "OL", subcategory: SUBCATEGORY[CATEGORY[1]]![0],),
+// CustomTable(title: "DRT", subcategory: SUBCATEGORY[CATEGORY[1]]![1],),
+// CustomTable(title: "BIFR", subcategory: SUBCATEGORY[CATEGORY[1]]![2],),
+// CustomTable(title: "NCLT", subcategory: SUBCATEGORY[CATEGORY[1]]![3],),
+//
+// CustomTable(title: "Recoverable where apeal period not over", subcategory: SUBCATEGORY[CATEGORY[3]]![0],),
+// CustomTable(title: "Recoverable sattelmentcases", subcategory: SUBCATEGORY[CATEGORY[3]]![1],),
+// CustomTable(title: "Recoverable unit close", subcategory: SUBCATEGORY[CATEGORY[3]]![2],),
+// CustomTable(title: "Recoverable Under section 11", subcategory: SUBCATEGORY[CATEGORY[3]]![4],),
+// CustomTable(title: "Recoverable Under 142", subcategory: SUBCATEGORY[CATEGORY[3]]![4],),
+// CustomTable(title: "Recoverable Write off", subcategory: SUBCATEGORY[CATEGORY[4]]![0],),

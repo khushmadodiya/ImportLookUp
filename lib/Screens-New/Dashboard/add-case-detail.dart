@@ -9,15 +9,14 @@ import 'package:import_lookup/Provider-New/get-user-deatils.dart';
 import 'package:import_lookup/Widgets/custom-button.dart';
 import 'package:import_lookup/Widgets/formation-dropdown.dart';
 import 'package:intl/intl.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
+import '../../Model-New/main-case-model.dart';
 import '../../Provider-New/add-new-cases.dart';
-import '../../Screens/Custom code/textfiled.dart';
-import '../../Widgets/dropdown.dart';
+import '../../Widgets/Widgets-New/custom-textfield.dart';
+
 
 class AddCaseDeatil extends StatefulWidget {
-  const AddCaseDeatil({super.key});
+
 
   @override
   State<AddCaseDeatil> createState() => _AddCaseDeatilState();

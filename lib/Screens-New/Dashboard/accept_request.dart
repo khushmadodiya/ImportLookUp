@@ -16,17 +16,16 @@ import '../../provider/provider.dart';
 
 
 
-class CustomTable extends StatefulWidget {
+class AcceptRequestCase extends StatefulWidget {
   final title;
-  final String subcategory;
-  final String category;
-  const CustomTable({super.key, required this.title, required this.subcategory,  required this.category});
+
+  const AcceptRequestCase({super.key, required this.title});
 
   @override
-  State<CustomTable> createState() => _CustomTableState();
+  State<AcceptRequestCase> createState() => _AcceptRequestCaseState();
 }
 
-class _CustomTableState extends State<CustomTable> {
+class _AcceptRequestCaseState extends State<AcceptRequestCase> {
   ScrollController _scrollController = ScrollController();
   List<Map<String, dynamic>> myData = [];
 
@@ -34,6 +33,7 @@ class _CustomTableState extends State<CustomTable> {
   void initState() {
     super.initState();
     // Fetch data on widget initialization
+    print('AceptRequested');
     getData();
   }
 
@@ -46,7 +46,7 @@ class _CustomTableState extends State<CustomTable> {
       builder: (context,provider,child)=>
           Scaffold(
             appBar: AppBar(
-              title: const Text('SHOW OIO DETAILS'),
+              title:  Text(widget.title),
               actions: [
                 IconButton(onPressed: (){
                   AuthMethods().signOut(context);
@@ -119,11 +119,11 @@ class _CustomTableState extends State<CustomTable> {
                                 // Header Row
                                 _buildHeaderRow(),
                                 // Data Rows
-                                for(int i=0;i<provider.mainCaseData.length;i++)
-                                  if(provider.mainCaseData[i].subcategory==widget.subcategory &&provider.mainCaseData[i].category==widget.category)
-                                  _buildDataRow( provider, i)
-                      
-                      
+                                for(int i=0;i<provider.requestCaseData.length;i++)
+
+                                    _buildDataRow( provider, i)
+
+
                               ],
                             ),
                           ),
@@ -165,25 +165,26 @@ class _CustomTableState extends State<CustomTable> {
   }
 
   TableRow _buildDataRow(AddNewCase provider, int index) {
-    String day = _calculateDayCount(provider.mainCaseData[index].date).toString();
+    String day = _calculateDayCount(provider.requestCaseData[index].update).toString();
+    print('${provider.requestCaseData[index].upname}lovdaaaaaaaaaaaaaaaaaaaaa');
     return TableRow(
       children: [
         _multiLineText('${index+1}', 1),
-        _multiLineText(provider.mainCaseData[index].name, 2),
-        _multiLineText(provider.mainCaseData[index].formation , 3),
-        _multiLineText(provider.mainCaseData[index].oio, 4),
-        _multiLineText(provider.mainCaseData[index].date , 5),
+        _multiLineText(provider.requestCaseData[index].upname, 2),
+        _multiLineText(provider.requestCaseData[index].upformation , 3),
+        _multiLineText(provider.requestCaseData[index].upoio, 4),
+        _multiLineText(provider.requestCaseData[index].update , 5),
         _multiLineText(day, 6),
-        _multiLineText(provider.mainCaseData[index].dutyOfArrear , 7),
-        _multiLineText(provider.mainCaseData[index].penalty, 8),
-        _multiLineText(provider.mainCaseData[index].amountRecovered, 9),
-        _multiLineText(provider.mainCaseData[index].preDeposit, 10),
-        _multiLineText(provider.mainCaseData[index].totalArrearPending, 11),
-        _multiLineText(provider.mainCaseData[index].briefFact, 12),
-        _multiLineText(provider.mainCaseData[index].status, 13),
-        _multiLineText(provider.mainCaseData[index].apealNo , 14),
-        _multiLineText(provider.mainCaseData[index].stayOrderNumberAndDate, 15),
-        _buildTransferButton(provider.mainCaseData[index].uid,provider.mainCaseData[index].formation),
+        _multiLineText(provider.requestCaseData[index].updutyOfArrear , 7),
+        _multiLineText(provider.requestCaseData[index].uppenalty, 8),
+        _multiLineText(provider.requestCaseData[index].upamountRecovered, 9),
+        _multiLineText(provider.requestCaseData[index].uppreDeposit, 10),
+        _multiLineText(provider.requestCaseData[index].uptotalArrearPending, 11),
+        _multiLineText(provider.requestCaseData[index].upbriefFact, 12),
+        _multiLineText(provider.requestCaseData[index].upstatus, 13),
+        _multiLineText(provider.requestCaseData[index].upapealNo , 14),
+        _multiLineText(provider.requestCaseData[index].upstayOrderNumberAndDate, 15),
+        _buildTransferButton(provider.requestCaseData[index].uid,provider.requestCaseData[index].upformation),
       ],
     );
   }
@@ -193,11 +194,11 @@ class _CustomTableState extends State<CustomTable> {
     return Container(
       color: Colors.blue.withOpacity(0.2),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child:
-        CustomButton(text: 'Transfer', onpress: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdateCaseDetail(uid: uid,formation: formation)));
-        }, isLoading: false)
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child:
+          CustomButton(text: 'Transfer', onpress: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdateCaseDetail(uid: uid,formation: formation)));
+          }, isLoading: false)
 
         // ElevatedButton(
         //   onPressed: () async {
@@ -278,12 +279,11 @@ class _CustomTableState extends State<CustomTable> {
     final asseserProvider = Provider.of<AddNewCase>(context, listen: false);
     final userinfo = Provider.of<UserInformation>(context,listen: false);
     if(userinfo.userType==USERTYPE[0]){
-      await asseserProvider.getMainCasesInformation(formation: userinfo.formation, isAdmin: true);
+      print(userinfo.formation);
+     var res= await asseserProvider.getRequestCasesInformation(formation: userinfo.formation, isAdmin: false);
+    String name= asseserProvider.requestCaseData[0].upname;
+      print('$name khushhhhhhhhhhhhhhhhhhhhhhh');
     }
-    else{
-      await asseserProvider.getMainCasesInformation(formation: userinfo.formation, isAdmin: false);
-    }
-
     print('dipu landka hai ${asseserProvider.mainCaseData[0].formation}');
   }
 }

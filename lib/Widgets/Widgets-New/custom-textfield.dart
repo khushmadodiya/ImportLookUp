@@ -49,27 +49,26 @@ class _CustomTextFieldState extends State<CustomTextField> {
         height: widget.height,
         width: widget.width,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: Colors.blue[50]
+            borderRadius: BorderRadius.circular(15),
+            color: Colors.blue[50]
         ),
         child: TextFormField(
+            controller: widget.controller,
+            obscureText: widget.obscureText,
+            keyboardType: widget.keyboardType,
+            maxLines: widget.maxLines,
+            decoration: InputDecoration(
+              prefixIcon: widget.prefixIcon != null ? Icon(widget.prefixIcon) : null,
+              suffixIcon: widget.suffixIcon != null ? Icon(widget.suffixIcon) : null,
+              hintText: widget.hintText,
 
-          controller: widget.controller,
-          obscureText: widget.obscureText,
-          keyboardType: widget.keyboardType,
-          maxLines: widget.maxLines,
-          decoration: InputDecoration(
-            prefixIcon: widget.prefixIcon != null ? Icon(widget.prefixIcon) : null,
-            suffixIcon: widget.suffixIcon != null ? Icon(widget.suffixIcon) : null,
-            hintText: widget.hintText,
-
-            // labelStyle: ,
-            labelText: widget.labelText,
-            border: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(15.0)),
-        borderSide: BorderSide.none,
-      ),
-          ),
+              // labelStyle: ,
+              labelText: widget.labelText,
+              border: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                borderSide: BorderSide.none,
+              ),
+            ),
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: widget.customValidator
 
