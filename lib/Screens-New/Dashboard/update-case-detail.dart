@@ -60,7 +60,7 @@ String? formation=FORMATION[0];
 
     }
     else {
-      res =await pro.addRequestCase(false, uid: widget.uid, oldData:oldData, isShifted: false);
+      res =await pro.addRequestCase(false, uid: widget.uid, oldData:oldData, isShifted: true);
     }
     if(res['res']=='success'){
       if(userInfo.userType==USERTYPE[0]) {

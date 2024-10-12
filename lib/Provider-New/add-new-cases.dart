@@ -278,6 +278,7 @@
 //     // super.clear();
 //   }
 // }
+import 'dart:convert';
 import 'dart:core';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -483,7 +484,7 @@ class AddNewCase with ChangeNotifier {
   }
 
   Future getRequestCasesInformation({required String formation, required bool isAdmin}) async {
-    if (isAdmin) {
+    if (!isAdmin) {
       _requestCaseData = (await RequestCasesInformation().getFormationRequestedCaseInformation(formation))["res"];
     } else {
       _requestCaseData = (await RequestCasesInformation().getAllReuqestCasesDetails())["res"];
@@ -615,6 +616,36 @@ class AddNewCase with ChangeNotifier {
       isShifted: isShifted,
     );
    return res;
+  }
+
+
+  //acceptRequest usin admin
+  Future acceptRequestByAdmin({required String uid}) async {
+  var res=  RequestCasesInformation().acceptRequest(
+        uid: uid,
+        name: _nameController.text,
+        formation: _formationController.text,
+        oio: _oioController.text,
+        date: _dateController.text,
+        dutyOfArrear: _dutyOfArrearController.text,
+        penalty: _penaltyController.text,
+        amountRecovered: _amountRecoveredController.text,
+        preDeposit: _preDepositController.text,
+        intrest: _interestController.text,
+        totalArrearPending: _totalArrearPendingController.text,
+        briefFact: _briefFactController.text,
+        status: _statusController.text,
+        apealNo: _appealNoController.text,
+        stayOrderNumberAndDate: _stayOrderNumberAndDateController.text,
+        iec: _iecController.text,
+        gstin: _gstinController.text,
+        pan: _panController.text,
+        completeTrack: [_completeTrackController.text],
+        category: _categoryController.text,
+        remark: _remarkController.text,
+        subcategory: _subcategoryController.text,
+        effortMade: _effortMadeController.text);
+  return res;
   }
 
   // Dispose controllers when no longer needed
