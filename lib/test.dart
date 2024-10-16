@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:import_lookup/Backend-New/main-cases-details.dart';
+import 'package:import_lookup/Backend-New/tar-report.dart';
+import 'package:import_lookup/Model-New/tar-model.dart';
 
 class Test extends StatefulWidget {
   const Test({super.key});
@@ -17,7 +19,15 @@ class _TestState extends State<Test> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // getData();
+    getData();
+  }
+  void getData()async{
+    print("success 1");
+   var res=await TarReportInformation().litigationReport();
+   TarReportModel ele=res["data"]["hcreceipts"] as TarReportModel;
+   print("hee;o i ma dipu ${ele.closingBalance}");
+  //  TarReportModel model=TarReportModel.from(res["data"];
+    // print("success  ${model.amountOfTheMonth}   ${model.amountUpTotheMonth}");
   }
  
   @override
