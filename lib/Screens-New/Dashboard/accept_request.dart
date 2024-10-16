@@ -15,6 +15,7 @@ import 'package:import_lookup/Screens/universal-update-details-page.dart';
 import 'package:import_lookup/excael-download-option.dart';
 
 import '../../provider/provider.dart';
+import 'accept-request-case-textfield.dart';
 
 
 
@@ -185,12 +186,12 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
         _multiLineText(provider.mainCaseData[index].status, 13),
         _multiLineText(provider.mainCaseData[index].apealNo , 14),
         _multiLineText(provider.mainCaseData[index].stayOrderNumberAndDate, 15),
-        _buildTransferButton(provider.mainCaseData[index].uid),
+        _buildTransferButton(provider.mainCaseData[index].uid,provider.mainCaseData[index].formation),
       ],
     );
   }
 
-  Widget _buildTransferButton(String uid) {
+  Widget _buildTransferButton(String uid,String formation) {
     print(uid);
     return Container(
       color: Colors.blue.withOpacity(0.2),
@@ -198,16 +199,8 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
           padding: const EdgeInsets.symmetric(vertical: 10),
           child:
           CustomButton(text: 'Transfer', onpress: ()async{
-          var res=   await Provider.of<AddNewCase>(context,listen: false).acceptRequestByAdmin(uid: uid);
-          print(res['res']);
-          if(res['res']=='success'){
-            Fluttertoast.showToast(msg: 'Accepted Request');
-          }
-          else{
-
-            Fluttertoast.showToast(msg: 'some error occure ${res['res']}');
-          }
-
+            print('object $formation');
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>AcceptRequestCaseTextFields(uid: uid, formation: formation)));
           }, isLoading: false)
 
         // ElevatedButton(
@@ -293,7 +286,7 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
      var res= await asseserProvider.getRequestCasesInformation(formation: '', isAdmin: true);
       final pro =  Provider.of<AddNewCase>(context, listen: false);
 
-      String name= pro.requestCaseData[0].name;
+      String name= pro.requestCaseData[0].formation;
 
       print('$name khushhhhhhhhhhhhhhhhhhhhhhh');
     }

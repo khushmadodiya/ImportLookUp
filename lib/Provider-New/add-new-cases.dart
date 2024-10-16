@@ -620,11 +620,11 @@ class AddNewCase with ChangeNotifier {
 
 
   //acceptRequest usin admin
-  Future acceptRequestByAdmin({required String uid}) async {
+  Future acceptRequestByAdmin({required String uid,required String formation}) async {
   var res=  RequestCasesInformation().acceptRequest(
         uid: uid,
         name: _nameController.text,
-        formation: _formationController.text,
+        formation: formation,
         oio: _oioController.text,
         date: _dateController.text,
         dutyOfArrear: _dutyOfArrearController.text,
