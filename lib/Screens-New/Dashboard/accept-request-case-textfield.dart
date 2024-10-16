@@ -17,20 +17,19 @@ import '../../Provider-New/add-new-cases.dart';
 import '../../Widgets/Widgets-New/custom-textfield.dart';
 
 
-class UpdateCaseDetail extends StatefulWidget {
-
+class AcceptRequestCaseTextFields extends StatefulWidget {
   String uid;
   String formation;
-UpdateCaseDetail({super.key, required this.uid,required this.formation,});
+  AcceptRequestCaseTextFields({super.key, required this.uid,required this.formation});
 
   @override
-  State<UpdateCaseDetail> createState() => _UpdateCaseDetailState();
+  State<AcceptRequestCaseTextFields> createState() => _AcceptRequestCaseTextFieldsState();
 }
 
-class _UpdateCaseDetailState extends State<UpdateCaseDetail> {
-Map<String,dynamic> oldData ={};
-String? selectedCategory=CATEGORY[2];
-String? formation=FORMATION[0];
+class _AcceptRequestCaseTextFieldsState extends State<AcceptRequestCaseTextFields> {
+  Map<String,dynamic> oldData ={};
+  String? selectedCategory=CATEGORY[2];
+  String? formation=FORMATION[0];
   @override
   void initState() {
     // TODO: implement initState
@@ -55,7 +54,8 @@ String? formation=FORMATION[0];
 
     Map<String,dynamic> res ;
     if(userInfo.userType==USERTYPE[0]) {
-      res= await pro.updateMainCaseDetails(true, uid: widget.uid, isShifted: true,);
+      print("Objectsssssssssssss");
+      res=  await pro.acceptRequestByAdmin( uid: widget.uid,formation: widget.formation) ;
 
       print('dddddddddddddddddddddddddddddddddddddddd$res');
       print(res);
@@ -330,7 +330,7 @@ String? formation=FORMATION[0];
 
   void setValues()async {
     var date = Provider.of<GeneralPurposeProvider>(context,listen: false);
-   var res = (await MainCasesInformation().getMainCaseDetailByDocument(formation: widget.formation, uid: widget.uid)) ;
+    var res = (await MainCasesInformation().getMainCaseDetailByDocument(formation: widget.formation, uid: widget.uid)) ;
     if(res['res']=='success') {
       var pro = Provider.of<AddNewCase>(context,listen: false);
       MainCaseModel model = res['model'];

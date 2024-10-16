@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.dart';
 import 'package:import_lookup/Backend/authmethos.dart';
+import 'package:import_lookup/Model-New/main-case-model.dart';
 import 'package:import_lookup/Provider-New/add-new-cases.dart';
 import 'package:import_lookup/Provider-New/get-user-deatils.dart';
 import 'package:import_lookup/Screens-New/Dashboard/update-case-detail.dart';
@@ -13,6 +15,7 @@ import 'package:import_lookup/Screens/universal-update-details-page.dart';
 import 'package:import_lookup/excael-download-option.dart';
 
 import '../../provider/provider.dart';
+import 'accept-request-case-textfield.dart';
 
 
 
@@ -165,26 +168,25 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
   }
 
   TableRow _buildDataRow(AddNewCase provider, int index) {
-    String day = _calculateDayCount(provider.requestCaseData[index].update).toString();
-    print('${provider.requestCaseData[index].upname}lovdaaaaaaaaaaaaaaaaaaaaa');
+    String day = _calculateDayCount(provider.mainCaseData[index].date).toString();
     return TableRow(
       children: [
         _multiLineText('${index+1}', 1),
-        _multiLineText(provider.requestCaseData[index].upname, 2),
-        _multiLineText(provider.requestCaseData[index].upformation , 3),
-        _multiLineText(provider.requestCaseData[index].upoio, 4),
-        _multiLineText(provider.requestCaseData[index].update , 5),
+        _multiLineText(provider.mainCaseData[index].name, 2),
+        _multiLineText(provider.mainCaseData[index].formation , 3),
+        _multiLineText(provider.mainCaseData[index].oio, 4),
+        _multiLineText(provider.mainCaseData[index].date , 5),
         _multiLineText(day, 6),
-        _multiLineText(provider.requestCaseData[index].updutyOfArrear , 7),
-        _multiLineText(provider.requestCaseData[index].uppenalty, 8),
-        _multiLineText(provider.requestCaseData[index].upamountRecovered, 9),
-        _multiLineText(provider.requestCaseData[index].uppreDeposit, 10),
-        _multiLineText(provider.requestCaseData[index].uptotalArrearPending, 11),
-        _multiLineText(provider.requestCaseData[index].upbriefFact, 12),
-        _multiLineText(provider.requestCaseData[index].upstatus, 13),
-        _multiLineText(provider.requestCaseData[index].upapealNo , 14),
-        _multiLineText(provider.requestCaseData[index].upstayOrderNumberAndDate, 15),
-        _buildTransferButton(provider.requestCaseData[index].uid,provider.requestCaseData[index].upformation),
+        _multiLineText(provider.mainCaseData[index].dutyOfArrear , 7),
+        _multiLineText(provider.mainCaseData[index].penalty, 8),
+        _multiLineText(provider.mainCaseData[index].amountRecovered, 9),
+        _multiLineText(provider.mainCaseData[index].preDeposit, 10),
+        _multiLineText(provider.mainCaseData[index].totalArrearPending, 11),
+        _multiLineText(provider.mainCaseData[index].briefFact, 12),
+        _multiLineText(provider.mainCaseData[index].status, 13),
+        _multiLineText(provider.mainCaseData[index].apealNo , 14),
+        _multiLineText(provider.mainCaseData[index].stayOrderNumberAndDate, 15),
+        _buildTransferButton(provider.mainCaseData[index].uid,provider.mainCaseData[index].formation),
       ],
     );
   }
@@ -196,8 +198,9 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
       child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
           child:
-          CustomButton(text: 'Transfer', onpress: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdateCaseDetail(uid: uid,formation: formation)));
+          CustomButton(text: 'Transfer', onpress: ()async{
+            print('object $formation');
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>AcceptRequestCaseTextFields(uid: uid, formation: formation)));
           }, isLoading: false)
 
         // ElevatedButton(
@@ -280,10 +283,12 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
     final userinfo = Provider.of<UserInformation>(context,listen: false);
     if(userinfo.userType==USERTYPE[0]){
       print(userinfo.formation);
-     var res= await asseserProvider.getRequestCasesInformation(formation: userinfo.formation, isAdmin: false);
-    String name= asseserProvider.requestCaseData[0].upname;
+     var res= await asseserProvider.getRequestCasesInformation(formation: '', isAdmin: true);
+      final pro =  Provider.of<AddNewCase>(context, listen: false);
+
+      String name= pro.requestCaseData[0].formation;
+
       print('$name khushhhhhhhhhhhhhhhhhhhhhhh');
     }
-    print('dipu landka hai ${asseserProvider.mainCaseData[0].formation}');
   }
 }

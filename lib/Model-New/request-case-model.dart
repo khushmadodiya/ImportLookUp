@@ -1,125 +1,126 @@
 import 'dart:core';
 
 class RequestCaseModel {
-  
-   Map<String,dynamic>oldData;
+
+  Map<String,dynamic>oldData;
   String uid;
-  String upname;
-  String upformation;
-  String upoio;
-  String update;
-  String updutyOfArrear;
-  String uppenalty;
-  String upamountRecovered;
-  String uppreDeposit;
-  String upintrest;
-  String uptotalArrearPending;
-  String upbriefFact;
-  String upstatus;
-  String upapealNo;
-  String upstayOrderNumberAndDate;
-  String upiec;
-  String upgstin;
-  String uppan;
-  double? upage;
-  // String updutyOfArrear,
-  List<String>? upcompleteTrack;
-  bool? upisshifted;
-  String upcategory;
-  String upeffortMade;
-  String upremark;
-  String upsubcategory;
+  String name;
+  String formation;
+  String oio;
+  String date;
+  String dutyOfArrear;
+  String penalty;
+  String amountRecovered;
+  String preDeposit;
+  String intrest;
+  String totalArrearPending;
+  String briefFact;
+  String status;
+  String apealNo;
+  String stayOrderNumberAndDate;
+  String iec;
+  String gstin;
+  String pan;
+  double? age;
+  // String dutyOfArrear,
+  List<String>? completeTrack;
+  bool? isshifted;
+  String category;
+  String effortMade;
+  String remark;
+  String subcategory;
 
   RequestCaseModel(
       {
-      required this.oldData,  
-      required this.uid,
-      required this.upname,
-      required this.upformation,
-      required this.upoio,
-      required this.update,
-      required this.updutyOfArrear,
-      required this.uppenalty,
-      required this.upintrest,
-      required this.upamountRecovered,
-      required this.uppreDeposit,
-      required this.uptotalArrearPending,
-      required this.upbriefFact,
-      required this.upstatus,
-      required this.upapealNo,
-      required this.upstayOrderNumberAndDate,
-      required this.upgstin,
-      required this.upiec,
-      required this.uppan,
-      this.upage,
-      required this.upcompleteTrack,
-      this.upisshifted,
-      required this.upcategory,
-      required this.upremark,
-      required this.upsubcategory,
-      required this.upeffortMade});
+        required this.oldData,
+        required this.uid,
+        required this.name,
+        required this.formation,
+        required this.oio,
+        required this.date,
+        required this.dutyOfArrear,
+        required this.penalty,
+        required this.intrest,
+        required this.amountRecovered,
+        required this.preDeposit,
+        required this.totalArrearPending,
+        required this.briefFact,
+        required this.status,
+        required this.apealNo,
+        required this.stayOrderNumberAndDate,
+        required this.gstin,
+        required this.iec,
+        required this.pan,
+        this.age,
+        required this.completeTrack,
+        this.isshifted,
+        required this.category,
+        required this.remark,
+        required this.subcategory,
+        required this.effortMade});
 
   factory RequestCaseModel.fromJson(Map<String, dynamic> json) {
     return RequestCaseModel(
         oldData:json['oldData'] as Map<String,dynamic>,
         uid: json['uid'] as String? ?? '',
-        upname: json['name'] as String? ?? '',
-        upformation: json['formation'] as String? ?? '',
-        upoio: json['oio'] as String? ?? '',
-        update: json['date'] as String? ?? '',
-        updutyOfArrear: json['dutyOfArrear'] as String? ?? '',
-        uppenalty: json['penalty'] as String? ?? '',
-        upamountRecovered: json['amountRecovered'] as String? ?? '',
-        uppreDeposit: json['preDeposit'] as String? ?? '',
-        uptotalArrearPending: json['totalArrearPending'] as String? ?? '',
-        upbriefFact: json['briefFact'] as String? ?? '',
-        upstatus: json['status'] as String? ?? '',
-        upapealNo: json['apealNo'] as String? ?? '',
-        upstayOrderNumberAndDate: json['stayOrderNumberAndDate'] as String? ?? '',
-        upiec: json['iec'] as String? ?? '',
-        upgstin: json['gstin'] as String? ?? '',
-        uppan: json['pan'] as String? ?? '',
-        upage: (json['age'] as num?)?.toDouble() ?? 0.0,
-        upcompleteTrack: (json['completeTrack'] as List<dynamic>?)
-                ?.map((item) => item as String)
-                .toList() ?? [],
-        upisshifted: json['isshifted'] as bool? ?? false,
-        upcategory: json['category'] as String? ?? '',
-        upsubcategory: json['subcategory'] as String? ?? '',
-        upremark: json['remark'] as String? ?? '',
-        upeffortMade: json['effortMade'] as String? ?? '',
-        upintrest: json['intrest'] as String? ?? ''
-        );
+        name: json['name'] as String? ?? '',
+        formation: json['formation'] as String? ?? '',
+        oio: json['oio'] as String? ?? '',
+        date: json['date'] as String? ?? '',
+        dutyOfArrear: json['dutyOfArrear'] as String? ?? '',
+        penalty: json['penalty'] as String? ?? '',
+        amountRecovered: json['amountRecovered'] as String? ?? '',
+        preDeposit: json['preDeposit'] as String? ?? '',
+        totalArrearPending: json['totalArrearPending'] as String? ?? '',
+        briefFact: json['briefFact'] as String? ?? '',
+        status: json['status'] as String? ?? '',
+        apealNo: json['apealNo'] as String? ?? '',
+        stayOrderNumberAndDate: json['stayOrderNumberAndDate'] as String? ?? '',
+        iec: json['iec'] as String? ?? '',
+        gstin: json['gstin'] as String? ?? '',
+        pan: json['pan'] as String? ?? '',
+        age: (json['age'] as num?)?.toDouble() ?? 0.0,
+        completeTrack: (json['completeTrack'] as List<dynamic>?)
+            ?.map((item) => item as String)
+            .toList() ?? [],
+        isshifted: json['isshifted'] as bool? ?? false,
+        category: json['category'] as String? ?? '',
+        subcategory: json['subcategory'] as String? ?? '',
+        remark: json['remark'] as String? ?? '',
+        effortMade: json['effortMade'] as String? ?? '',
+        intrest: json['intrest'] as String? ?? ''
+    );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'uid': uid,
-      'upname': upname,
-      'upoio': upoio,
-      'upformation': upformation,
-      'uppenalty': uppenalty,
-      'upamountRecovered': upamountRecovered,
-      'uppreDeposit': uppreDeposit,
-      'uptotalArrearPending': uptotalArrearPending,
-      'upbriefFact': upbriefFact,
-      'upstatus': upstatus,
-      'upapealNo': upapealNo,
-      'upstayOrderNumberAndDate': upstayOrderNumberAndDate,
-      'upiec': upiec,
-      'upgstin': upgstin,
-      'uppan': uppan,
-      'upage': upage,
-      'upcompleteTrack': upcompleteTrack,
-      'upisshifted': upisshifted,
-      'upcategory': upcategory,
-      'upsubcategory': upsubcategory,
-      'upremark': upremark,
-      'upeffortMade': upeffortMade,
-      'upintrest': upintrest,
+      'name': name,
+      'oio': oio,
+      'formation': formation,
+      'penalty': penalty,
+      'amountRecovered': amountRecovered,
+      'preDeposit': preDeposit,
+      'totalArrearPending': totalArrearPending,
+      'briefFact': briefFact,
+      'status': status,
+      'apealNo': apealNo,
+      'stayOrderNumberAndDate': stayOrderNumberAndDate,
+      'iec': iec,
+      'gstin': gstin,
+      'pan': pan,
+      'age': age,
+      'completeTrack': completeTrack,
+      'isshifted': isshifted,
+      'category': category,
+      'subcategory': subcategory,
+      'remark': remark,
+      'effortMade': effortMade,
+      'intrest': intrest,
       'oldData':oldData,
-      "update":update,
-      "updutyOfArrear":updutyOfArrear
+      "date":date,
+      "dutyOfArrear":dutyOfArrear
     };
   }
+
 }
