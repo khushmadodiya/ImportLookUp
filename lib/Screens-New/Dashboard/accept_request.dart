@@ -1,14 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.dart';
 import 'package:import_lookup/Backend/authmethos.dart';
 import 'package:import_lookup/Model-New/main-case-model.dart';
 import 'package:import_lookup/Provider-New/add-new-cases.dart';
+import 'package:import_lookup/Provider-New/general-pusrpose.dart';
 import 'package:import_lookup/Provider-New/get-user-deatils.dart';
 import 'package:import_lookup/Screens-New/Dashboard/update-case-detail.dart';
 import 'package:import_lookup/Widgets/custom-button.dart';
+import 'package:pagination_flutter/pagination.dart';
 import 'package:provider/provider.dart';
 import 'package:import_lookup/Backend/fetchAsseserData.dart';
 import 'package:import_lookup/Screens/universal-update-details-page.dart';
@@ -141,6 +144,36 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
                   ),
                 ),
               ),
+          SingleChildScrollView(
+            scrollDirection:Axis.horizontal,
+            child: Consumer<GeneralPurposeProvider>(
+              builder:(context,generalProvider,child)=>Row(
+                children:List.generate(
+                  FORMATION.length, 
+                  (index) =>Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InkWell(
+                      child: Container(
+                        color:generalProvider.selectedIndex==index?Colors.blue:Colors.green,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            FORMATION[index],
+                            style:const TextStyle(color:Colors.white,fontWeight:FontWeight.bold),
+                            ),
+                        ),
+                      ),
+                      onTap:(){
+                        generalProvider.updateSelectedIndex(index);
+                      },
+                    ),
+                  )),
+              ),
+            ),
+          ),
+         const SizedBox(
+              height:20,
+            ),
             ],
           ),
 
