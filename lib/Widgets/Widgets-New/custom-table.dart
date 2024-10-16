@@ -46,7 +46,7 @@ class _CustomTableState extends State<CustomTable> {
       builder: (context,provider,child)=>
           Scaffold(
             appBar: AppBar(
-              title: const Text('SHOW OIO DETAILS'),
+              title: Text(widget.title),
               actions: [
                 IconButton(onPressed: (){
                   AuthMethods().signOut(context);
