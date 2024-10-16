@@ -330,7 +330,8 @@ class RequestCasesInformation {
       required String category,
       required String remark,
       required String subcategory,
-      required String effortMade
+      required String effortMade,
+      required bool isRequest
       })async{
     try{
     //model of main case
@@ -360,7 +361,8 @@ class RequestCasesInformation {
       pan: pan,
       subcategory: subcategory,
     );
-    Map<String,dynamic>res= await MainCasesInformation().updateMainCaseDetails(model:model,uid:uid,formation:formation,request:true);
+    print("Hello i am divyansh aayuahuhu $isRequest");
+    Map<String,dynamic>res= await MainCasesInformation().updateMainCaseDetails(model:model,uid:uid,formation:formation,request:isRequest);
     if(res["res"]=="success"){
     return {"res":"success"};
     }else{
