@@ -69,6 +69,7 @@ class MainCasesInformation {
       subcategory: subcategory,
     );
     WriteBatch batch = _fireStore.batch();
+    replicateMainCase(mainCaseModel:model,batch:batch);
     try {
       DocumentReference formationDocRef =
           _fireStore.collection("MP").doc(formation);
@@ -88,12 +89,6 @@ class MainCasesInformation {
           .collection("cases")
           .doc(uuid);
       batch.set(ref, model.toJson());
-      // _fireStore
-      //     .collection("MP")
-      //     .doc(formation)
-      //     .collection('cases')
-      //     .doc(uuid)
-      //     .set(model.toJson());
       await TarReportInformation().updateDataOfTarReport(
           batch: batch,
           category: category,
@@ -349,12 +344,7 @@ class MainCasesInformation {
         }
       await batch.commit();
 
-      // _fireStore
-      //     .collection("MP")
-      //     .doc(formation)
-      //     .collection("cases")
-      //     .doc(uid)
-      //     .update(model.toJson());
+      
       return {"res": "success"};
     } catch (e) {
       return {"res": "some error occured ${e.toString()}"};
@@ -447,4 +437,20 @@ class MainCasesInformation {
       return {'res': 'some error occure $e'};
     }
   }
+
+//for read optimize 
+
+  Future replicateMainCase(
+      {required MainCaseModel mainCaseModel,required WriteBatch batch}) async {
+
+
+    try {
+     DocumentReference ref= _fireStore.collection("MP").doc("replicationmaincase").collection("formation").doc(mainCaseModel.uid);
+     batch.set(ref,mainCaseModel.toJson());
+    return {"res": "success"};
+    } catch (e) {
+      return {"res": e.toString()};
+    }
+  }
+
 }

@@ -361,7 +361,7 @@ class RequestCasesInformation {
       pan: pan,
       subcategory: subcategory,
     );
-    print("Hello i am divyansh aayuahuhu $isRequest");
+   
     Map<String,dynamic>res= await MainCasesInformation().updateMainCaseDetails(model:model,uid:uid,formation:formation,request:isRequest);
     if(res["res"]=="success"){
     return {"res":"success"};
