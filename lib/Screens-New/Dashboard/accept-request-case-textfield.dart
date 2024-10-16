@@ -55,7 +55,7 @@ class _AcceptRequestCaseTextFieldsState extends State<AcceptRequestCaseTextField
     Map<String,dynamic> res ;
     if(userInfo.userType==USERTYPE[0]) {
       print("Objectsssssssssssss");
-      res=  await pro.acceptRequestByAdmin( uid: widget.uid,formation: widget.formation) ;
+      res=  await pro.acceptRequestByAdmin( uid: widget.uid,formation: widget.formation, isRequest:true) ;
 
       print('dddddddddddddddddddddddddddddddddddddddd$res');
       print(res);

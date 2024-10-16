@@ -311,6 +311,7 @@ class MainCasesInformation {
             openingBalance: double.parse(modelData['totalArrearPending']),
             closingBalance: 0);
         if (request) {
+          // print("i am in request njndjdnbjdbn");
           await RequestCasesInformation()
               .rejectRequest(uid: uid, formation: formation, batch: batch);
         }
@@ -341,6 +342,11 @@ class MainCasesInformation {
           .collection("cases")
           .doc(uid);
       batch.update(ref, model.toJson());
+      if (request) {
+          // print("i am in request njndjdnbjdbn");
+          await RequestCasesInformation()
+              .rejectRequest(uid: uid, formation: formation, batch: batch);
+        }
       await batch.commit();
 
       // _fireStore

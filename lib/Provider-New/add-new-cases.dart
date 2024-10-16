@@ -620,7 +620,7 @@ class AddNewCase with ChangeNotifier {
 
 
   //acceptRequest usin admin
-  Future acceptRequestByAdmin({required String uid,required String formation}) async {
+  Future acceptRequestByAdmin({required String uid,required String formation,required bool isRequest}) async {
   var res=  RequestCasesInformation().acceptRequest(
         uid: uid,
         name: _nameController.text,
@@ -644,7 +644,9 @@ class AddNewCase with ChangeNotifier {
         category: _categoryController.text,
         remark: _remarkController.text,
         subcategory: _subcategoryController.text,
-        effortMade: _effortMadeController.text);
+        effortMade: _effortMadeController.text,
+        isRequest:true,
+        );
   return res;
   }
 
