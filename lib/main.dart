@@ -36,6 +36,7 @@ void main() async{
 
 }
 
+
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
@@ -67,10 +68,9 @@ class _MyAppState extends State<MyApp> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.active) {
               if (snapshot.hasData) {
-                if(pro.email.isNotEmpty)
-
+                if(pro.email.isNotEmpty  )
                 return DashboardScreen(isAdmin: pro.userType==USERTYPE[0]);
-                return LoginPage();
+                return CircularProgressIndicator();
               } else if (snapshot.hasError) {
                 return Center(child: Text('An error occurred'));
               }

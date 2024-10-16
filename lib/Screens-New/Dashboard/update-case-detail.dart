@@ -67,6 +67,7 @@ String? formation=FORMATION[0];
     if(res['res']=='success'){
       if(userInfo.userType==USERTYPE[0]) {
         Fluttertoast.showToast(msg: 'Updated case');
+        Navigator.pop(context);
       }
       else{
         Fluttertoast.showToast(msg: 'Request submit to the admin');
