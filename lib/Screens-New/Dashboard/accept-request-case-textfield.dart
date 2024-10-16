@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -53,21 +55,27 @@ class _AcceptRequestCaseTextFieldsState extends State<AcceptRequestCaseTextField
     Map<String,dynamic> res ;
     if(userInfo.userType==USERTYPE[0]) {
       print("Objectsssssssssssss");
-      res = await pro.acceptRequestByAdmin(
-          uid: widget.uid, formation: widget.formation);
+      res=  await pro.acceptRequestByAdmin( uid: widget.uid,formation: widget.formation, isRequest: true) ;
 
       print('dddddddddddddddddddddddddddddddddddddddd$res');
       print(res);
 
-
-      if (res['res'] == 'success') {
+    }
+    else {
+      res =await pro.addRequestCase(false, uid: widget.uid, oldData:oldData, isShifted: true);
+    }
+    if(res['res']=='success'){
+      if(userInfo.userType==USERTYPE[0]) {
         Fluttertoast.showToast(msg: 'Updated case');
-        Navigator.pop(context);
-        pro.clear();
       }
-      else {
-        Fluttertoast.showToast(msg: 'Some error occur');
+      else{
+        Fluttertoast.showToast(msg: 'Request submit to the admin');
       }
+      pro.clear();
+    }
+    else{
+      Fluttertoast.showToast(msg: 'Some error occur');
+
     }
     pro.updateLoader();
   }
@@ -80,226 +88,187 @@ class _AcceptRequestCaseTextFieldsState extends State<AcceptRequestCaseTextField
         title: const Text('Appeal Period Not Over'),
       ),
       body: Consumer<GeneralPurposeProvider>(
-        builder: (context,date,child){
-            return Consumer<UserInformation>(
-              builder: (context,userInfo,child){
-                return Consumer<AddNewCase>(
-                    builder: (context,pro,child) {
-                      if(pro.isLoading ){
-                        const Scaffold(body: CircularProgressIndicator(),);
-                      }
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.vertical,
-                          child: Column(
-                            children: [
-                              Column(
-                                children: [
-                                  Column(
-                                    children: CATEGORY.map((category) {
-                                      return RadioListTile<String>(
-                                        title: Text(category),
-                                        value: category,
-                                        groupValue: selectedCategory,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            selectedCategory = value;
-                                            // subcategoryKey.currentState?.getSelectedItems = null; // Reset subcategory when category changes
-                                          });
-                                        },
-                                      );
-                                    }).toList(),
-                                  ),
-
-                                  // Show DropdownSearch for subcategories only when a category is selected
-                                  if (selectedCategory != null &&
-                                      SUBCATEGORY[selectedCategory]!.isNotEmpty)
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: GlobleDropdown(
-                                        label: "Select Subcategory",
-                                        listofvalues: SUBCATEGORY[selectedCategory]!,
-                                        fun: (String? value) {
-                                          pro.updateSubcategory(value!);
-                                          print("vailue is here $value");
-                                        },
-
-                                      ),
+        builder: (context,date,child)=>
+            Consumer<UserInformation>(
+              builder: (context,userInfo,child)=>
+                  Consumer<AddNewCase>(
+                    builder: (context,pro,child)=>
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: Column(
+                              children: [
+                                Column(
+                                  children: [
+                                    Column(
+                                      children: CATEGORY.map((category) {
+                                        return RadioListTile<String>(
+                                          title: Text(category),
+                                          value: category,
+                                          groupValue: selectedCategory,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              selectedCategory = value;
+                                              // subcategoryKey.currentState?.getSelectedItems = null; // Reset subcategory when category changes
+                                            });
+                                          },
+                                        );
+                                      }).toList(),
                                     ),
-                                ],
-                              ),
-                              buildRow(
-                                pro.name,
-                                pro.oio,
-                                'Name of the Assessee',
-                                'OIO Number',
-                              ),
-                              // if(userInfo.userType==USERTYPE[1]) buildRow(, controller2, label1, label2),
 
-                              SizedBox(
-                                height: 60,
-                                // width:,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: Row(
-                                    children: [
-                                      // TextField(),
-                                      if(userInfo.userType ==
-                                          USERTYPE[0])SizedBox(
-                                        width: MediaQuery
-                                            .of(context)
-                                            .size
-                                            .width * 0.269,
+                                    // Show DropdownSearch for subcategories only when a category is selected
+                                    if (selectedCategory != null && SUBCATEGORY[selectedCategory]!.isNotEmpty)
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
                                         child: GlobleDropdown(
-                                          listofvalues: FORMATION,
-                                          label: 'Select formation',
-                                          fun: (value) {
-                                            formation = value;
+                                          label: "Select Subcategory",
+                                          listofvalues: SUBCATEGORY[selectedCategory]!,
+                                          fun: (String? value) {
+                                            pro.updateSubcategory(value!);
+                                            print("vailue is here $value");
+                                          },
+
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                                buildRow(
+                                  pro.name,
+                                  pro.oio,
+                                  'Name of the Assessee',
+                                  'OIO Number',
+                                ),
+                                // if(userInfo.userType==USERTYPE[1]) buildRow(, controller2, label1, label2),
+
+                                SizedBox(
+                                  height: 60,
+                                  // width:,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: Row(
+                                      children: [
+                                        // TextField(),
+                                        if(userInfo.userType==USERTYPE[0])SizedBox(
+                                          width: MediaQuery.of(context).size.width * 0.269,
+                                          child:  GlobleDropdown(listofvalues: FORMATION, label: 'Select formation', fun: (value) {
+                                            formation=value;
                                           },),
 
-                                      ),
-                                      // const SizedBox(width:20,),
-                                      SizedBox(
+                                        ),
+                                        // const SizedBox(width:20,),
+                                        SizedBox(
 
-                                        height: 60,
-                                        width: userInfo.userType == USERTYPE[1]
-                                            ? MediaQuery
-                                            .of(context)
-                                            .size
-                                            .width / 2.1
-                                            : MediaQuery
-                                            .of(context)
-                                            .size
-                                            .width / 5,
-                                        child: InkWell(
-                                          onTap: () async {
-                                            DateTime? dat = await showDatePicker(
-                                                context: context,
-                                                firstDate: DateTime(1500),
-                                                lastDate: DateTime.now());
-                                            if (dat != null) {
-                                              String datt = DateFormat(
-                                                  'dd-MM-yyyy').format(dat);
-                                              date.updateDate(datt);
-                                            }
-                                          },
-                                          child: Card(
-                                            elevation: 8,
-                                            color: Colors.blue[50],
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius
-                                                    .circular(15)
-                                            ),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  color: Colors.blue[50],
-                                                  borderRadius: BorderRadius
-                                                      .circular(15)
+                                          height: 60,
+                                          width: userInfo.userType==USERTYPE[1]?MediaQuery.of(context).size.width/2.1:MediaQuery.of(context).size.width/5,
+                                          child: InkWell(
+                                            onTap:()async {
+                                              DateTime? dat=await showDatePicker(context: context, firstDate:DateTime(1500), lastDate:DateTime.now());
+                                              if(dat!=null){
+                                                String datt=DateFormat('dd-MM-yyyy').format(dat);
+                                                date.updateDate(datt);
+
+                                              }
+                                            },
+                                            child: Card(
+                                              elevation: 8,
+                                              color: Colors.blue[50],
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(15)
                                               ),
-                                              // width: MediaQuery.of(context).size.width * 0.48,
-                                              child: Center(
-                                                  child: Text(date.date)),
+                                              child: Container(
+                                                decoration:BoxDecoration(
+                                                    color: Colors.blue[50],
+                                                    borderRadius: BorderRadius.circular(15)
+                                                ),
+                                                // width: MediaQuery.of(context).size.width * 0.48,
+                                                child:Center(child: Text(date.date)),
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      const SizedBox(width: 20,),
-                                      Expanded(
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 15.0),
-                                          child: SizedBox(
-                                            // width: MediaQuery.of(context).size.width,
-                                              child: CustomTextField(
-                                                controller: pro.dutyOfArrear,
-                                                hintText: 'Total Duty Arrear',
-                                                labelText: 'Total Duty Arrear',
+                                        const SizedBox(width:20,),
+                                        Expanded(
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                                            child: SizedBox(
+                                              // width: MediaQuery.of(context).size.width,
+                                                child: CustomTextField(
+                                                  controller: pro.dutyOfArrear,
+                                                  hintText: 'Total Duty Arrear',
+                                                  labelText: 'Total Duty Arrear',
 
-                                              )
+                                                )
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                              buildRow(
-                                pro.penalty,
-                                pro.interest,
-                                'Penalty',
-                                'Interest',
-                              ),
-                              buildRow(
-                                pro.amountRecovered,
-                                pro.preDeposit,
-                                'Amount Recovered so far',
-                                'Pre-deposit(if any)',
-                              ),
-                              buildRow(
-                                pro.totalArrearPending,
-                                pro.appealNo,
-                                'Total Arrears Pending',
-                                'Appeal No.',
-                              ),
-                              buildRow(
-                                pro.stayOrderNumberAndDate,
-                                pro.pan,
-                                'Stay order no. & date',
-                                'PAN',
-                              ),
-                              buildRow(
-                                pro.iec,
-                                pro.gstin,
-                                'IEC',
-                                'GSTIN',
-                              ),
-                              buildRow(
-                                pro.status,
-                                pro.briefFact,
-                                'Present Status of the case',
-                                'Brief facts of the case',
-                                maxLines: 10,
-
-
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: CustomTextField(
-                                  controller: pro.effortMade,
-                                  hintText: 'Efort Made/Remark',
-                                  maxLines: 10,
-                                  height: 100,
+                                buildRow(
+                                  pro.penalty,
+                                  pro.interest,
+                                  'Penalty',
+                                  'Interest',
                                 ),
-                              ),
-                              Container(
-                                  width: MediaQuery
-                                      .of(context)
-                                      .size
-                                      .width / 5,
-                                  child: CustomButton(onpress: () {
-                                    if (pro.name.text.isEmpty ||
-                                        pro.dutyOfArrear.text.isEmpty ||
-                                        pro.totalArrearPending.text.isEmpty ||
-                                        date == 'Select OIO Date') {
-                                      Fluttertoast.showToast(
-                                          msg: 'Pleas fill name, duty of arrear, total arrear pending and date',
-                                          timeInSecForIosWeb: 3);
-                                    } else {
-                                      adddetail(pro);
-                                    }
-                                  },
-                                      text: 'Accept Request',
-                                      isLoading: pro.isLoading))
-                            ],
+                                buildRow(
+                                  pro.amountRecovered,
+                                  pro.preDeposit,
+                                  'Amount Recovered so far',
+                                  'Pre-deposit(if any)',
+                                ),
+                                buildRow(
+                                  pro.totalArrearPending,
+                                  pro.appealNo,
+                                  'Total Arrears Pending',
+                                  'Appeal No.',
+                                ),
+                                buildRow(
+                                  pro.stayOrderNumberAndDate,
+                                  pro.pan,
+                                  'Stay order no. & date',
+                                  'PAN',
+                                ),
+                                buildRow(
+                                  pro.iec,
+                                  pro.gstin,
+                                  'IEC',
+                                  'GSTIN',
+                                ),
+                                buildRow(
+                                  pro.status,
+                                  pro.briefFact,
+                                  'Present Status of the case',
+                                  'Brief facts of the case',
+                                  maxLines: 10,
+
+
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: CustomTextField(
+                                    controller: pro.effortMade,
+                                    hintText: 'Efort Made/Remark',
+                                    maxLines: 10,
+                                    height: 100,
+                                  ),
+                                ),
+                                Container(
+                                    width: MediaQuery.of(context).size.width/5,
+                                    child: CustomButton(onpress: (){
+                                      if(pro.name.text.isEmpty || pro.dutyOfArrear.text.isEmpty || pro.totalArrearPending.text.isEmpty || date=='Select OIO Date'){
+                                        Fluttertoast.showToast(msg: 'Pleas fill name, duty of arrear, total arrear pending and date',timeInSecForIosWeb: 3);
+                                      }else{
+                                        adddetail(pro);
+                                      }
+                                    },text: 'Add Data', isLoading: pro.isLoading))
+                              ],
+                            ),
                           ),
                         ),
-                      );
-                    }
-                  );
-                    }
-            );
-  }
+                  ),
+            ),
       ),
     );
   }
