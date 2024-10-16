@@ -70,7 +70,7 @@ class _MyAppState extends State<MyApp> {
               if (snapshot.hasData) {
                 if(pro.email.isNotEmpty  )
                 return DashboardScreen(isAdmin: pro.userType==USERTYPE[0]);
-                return CircularProgressIndicator();
+                return const Scaffold(body: Center(child: CircularProgressIndicator()));
               } else if (snapshot.hasError) {
                 return Center(child: Text('An error occurred'));
               }
