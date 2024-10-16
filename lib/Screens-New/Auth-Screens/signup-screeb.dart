@@ -1,13 +1,8 @@
-// ignore_for_file: use_build_context_synchronously
 
-import 'dart:typed_data';
-import 'package:dropdown_search/dropdown_search.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:import_lookup/Provider-New/add-new-cases.dart';
 import 'package:import_lookup/Provider-New/general-pusrpose.dart';
-import 'package:import_lookup/Screens/Custom%20code/textfiled.dart';
 import 'package:import_lookup/Screens/dashboard.dart';
 import 'package:import_lookup/Screens/oio-page.dart';
 import 'package:import_lookup/Widgets/custom-button.dart';
@@ -15,6 +10,7 @@ import 'package:provider/provider.dart';
 
 import '../../Backend-New/Golbal-Files/category-and-subcategory.dart';
 import '../../Backend-New/authentication.dart';
+import '../../Widgets/Widgets-New/custom-textfield.dart';
 import '../../Widgets/formation-dropdown.dart';
 import '../../Widgets/text_field.dart';
 import 'login-screen.dart';

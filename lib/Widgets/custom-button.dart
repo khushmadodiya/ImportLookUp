@@ -16,9 +16,9 @@ Widget CustomButton({
       ),
       child: Container(
         width: double.infinity,
-        height: 45,
+        height: 40,
         alignment: Alignment.center,
-        padding: const EdgeInsets.symmetric(vertical: 12,horizontal: 10),
+        // padding: const EdgeInsets.symmetric(vertical: 12,horizontal: 10),
         decoration: BoxDecoration(
             color: Colors.deepPurple,
             borderRadius: BorderRadius.circular(15)
@@ -27,7 +27,7 @@ Widget CustomButton({
         child: !isLoading
             ?  Text(
           text.toString(),
-          style: TextStyle(color: Colors.white, fontSize: 20),
+          style: TextStyle(color: Colors.white, fontSize: 16),
         )
             : const CircularProgressIndicator(
           color: Colors.white,

@@ -1,16 +1,11 @@
 
-// ignore_for_file: use_build_context_synchronously
-
-import 'package:dropdown_search/dropdown_search.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.dart';
 import 'package:import_lookup/Screens-New/Auth-Screens/signup-screeb.dart';
-import 'package:import_lookup/Screens/Custom%20code/textfiled.dart';
 import 'package:import_lookup/Widgets/custom-button.dart';
-import 'package:import_lookup/Widgets/dropdown.dart';
+
 import 'package:import_lookup/Widgets/formation-dropdown.dart';
 import 'package:import_lookup/global.dart';
 import 'package:import_lookup/main.dart';
@@ -21,6 +16,7 @@ import '../../Backend-New/authentication.dart';
 import '../../Provider-New/add-new-cases.dart';
 import '../../Provider-New/get-user-deatils.dart';
 import '../../Screens/dashboard.dart';
+import '../../Widgets/Widgets-New/custom-textfield.dart';
 import '../../Widgets/text_field.dart';
 
 
@@ -68,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
 
           isadmin= false;
           Navigator.pushAndRemoveUntil(context,
-              MaterialPageRoute(builder: (context) => DashboardScreen(isadmin: false,)), (
+              MaterialPageRoute(builder: (context) => DashboardScreen(isAdmin: false,)), (
                   route) => false);
 
 
