@@ -69,7 +69,7 @@ class MainCasesInformation {
       subcategory: subcategory,
     );
     WriteBatch batch = _fireStore.batch();
-    replicateMainCase(mainCaseModel:model,batch:batch);
+    await replicateMainCase(mainCaseModel:model,batch:batch);
     try {
       DocumentReference formationDocRef =
           _fireStore.collection("MP").doc(formation);
@@ -278,6 +278,7 @@ class MainCasesInformation {
     WriteBatch batch = _fireStore.batch();
     try {
       Map<String, dynamic> modelData = model.toJson();
+      upDatereplicateMainCase(uid: uid, model: model, batch: batch);
       DocumentSnapshot docSnapshot = await _fireStore
           .collection("MP")
           .doc(formation)
@@ -383,6 +384,7 @@ class MainCasesInformation {
           .doc(formation)
           .collection("cases")
           .doc(uid);
+      await deletereplicateMainCase(uid: uid, batch: batch);
       await writeOff(formation: formation, uid: uid, writeBatch: batch);
       batch.delete(ref);
      await batch.commit();
@@ -452,5 +454,50 @@ class MainCasesInformation {
       return {"res": e.toString()};
     }
   }
+  Future deletereplicateMainCase(
+      {required String uid,required WriteBatch batch}) async {
 
+
+    try {
+     DocumentReference ref= _fireStore.collection("MP").doc("replicationmaincase").collection("formation").doc(uid);
+     batch.delete(ref);
+    return {"res": "success"};
+    } catch (e) {
+      return {"res": e.toString()};
+    }
+  }
+
+    Future upDatereplicateMainCase(
+      {required String uid,required MainCaseModel model,required WriteBatch batch}) async {
+    try {
+     DocumentReference ref= _fireStore.collection("MP").doc("replicationmaincase").collection("formation").doc(uid);
+     batch.update(ref,model.toJson());
+    return {"res": "success"};
+    } catch (e) {
+      return {"res": e.toString()};
+    }
+  }
+
+
+ Future<Map<String, dynamic>> getreplicateMainCase({required String category}) async {
+  try {
+    // Get the query snapshot
+    final querySnapshot = await _fireStore
+        .collection("MP")
+        .doc("replicationmaincase")
+        .collection("formation")
+        .where("category", isEqualTo: category)
+        .get();
+
+    // Extract data from the documents
+    List<MainCaseModel> data = querySnapshot.docs.map((doc) => MainCaseModel.fromJson(doc.data())).toList();
+
+    return {"res": "success", "data": data};
+  } catch (e) {
+    return {"res": e.toString()};
+  }
+}
+
+
+ 
 }

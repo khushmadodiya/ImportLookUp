@@ -24,8 +24,8 @@ class _TestState extends State<Test> {
   void getData()async{
     print("success 1");
    var res=await TarReportInformation().litigationReport();
-   TarReportModel ele=res["data"]["hcreceipts"] as TarReportModel;
-   print("hee;o i ma dipu ${ele.closingBalance}");
+   TarReportModel ele=res["data"]["receipts"] as TarReportModel;
+   print("hee;o i ma dipu ${ele.amountOfTheMonth}");
   //  TarReportModel model=TarReportModel.from(res["data"];
     // print("success  ${model.amountOfTheMonth}   ${model.amountUpTotheMonth}");
   }
