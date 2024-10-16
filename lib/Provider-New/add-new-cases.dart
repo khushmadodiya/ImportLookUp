@@ -499,6 +499,11 @@ class AddNewCase with ChangeNotifier {
     );
   }
 
+  //getTarReport Infromation
+  Future getTarReport()async{
+
+  }
+
   // Dispose controllers when no longer needed
   @override
   void dispose() {

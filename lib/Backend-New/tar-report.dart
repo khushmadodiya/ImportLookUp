@@ -199,4 +199,100 @@ class TarReportInformation {
       return {"res": "some error occured ${e.toString()}"};
     }
   }
+
+
+  //get All category Information
+// const List<String> CATEGORY = [
+//     "arrear in litigation",
+//     "restrained arrear",
+//     "arrears where appeal period not over",
+//     "recoverable arrears",
+//     "arrears pending for write-off"
+//   ];
+
+
+Future restrainedArrearReport() async {
+  Map<String, TarReportModel> allData = {};
+
+  DocumentSnapshot snap = await firebaseFirestore.collection("MP").doc("restrained arrear").get();
+  if (snap.exists) {
+    for (int i = 0; i < SUBCATEGORY["restrained arrear"]!.length; i++) {
+      QuerySnapshot snap2 = await firebaseFirestore.collection("MP").doc("restrained arrear").collection(SUBCATEGORY["restrained arrear"]![i]).get();
+      for (var data in snap2.docs) {
+        // print("Data is here: ${data.data().toString()}");
+        allData[SUBCATEGORY["arrear in litigation"]![i]+data.id] = TarReportModel.fromJson(data.data() as Map<String, dynamic>);
+      }
+    }
+  }
+ 
+  return {"res":"success","data":allData};
+}
+Future periodNotOver() async {
+  Map<String, TarReportModel> allData = {};
+
+  DocumentSnapshot snap = await firebaseFirestore.collection("MP").doc("arrears where appeal period not over").get();
+  if (snap.exists) {
+    for (int i = 0; i < SUBCATEGORY["arrears where appeal period not over"]!.length; i++) {
+      QuerySnapshot snap2 = await firebaseFirestore.collection("MP").doc("arrears where appeal period not over").collection(SUBCATEGORY["arrears where appeal period not over"]![i]).get();
+      for (var data in snap2.docs) {
+        // print("Data is here: ${data.data().toString()}");
+        allData[SUBCATEGORY["arrear in litigation"]![i]+data.id] = TarReportModel.fromJson(data.data() as Map<String, dynamic>);
+      }
+    }
+  }
+ 
+  return {"res":"success","data":allData};
+}
+Future recoverableArrears() async {
+  Map<String, TarReportModel> allData = {};
+
+  DocumentSnapshot snap = await firebaseFirestore.collection("MP").doc("recoverable arrears").get();
+  if (snap.exists) {
+    for (int i = 0; i < SUBCATEGORY["recoverable arrears"]!.length; i++) {
+      QuerySnapshot snap2 = await firebaseFirestore.collection("MP").doc("recoverable arrears").collection(SUBCATEGORY["recoverable arrears"]![i]).get();
+      for (var data in snap2.docs) {
+        // print("Data is here: ${data.data().toString()}");
+        allData[SUBCATEGORY["arrear in litigation"]![i]+data.id] = TarReportModel.fromJson(data.data() as Map<String, dynamic>);
+      }
+    }
+  }
+ 
+  return {"res":"success","data":allData};
+}
+Future litigationReport() async {
+  Map<String, TarReportModel> allData = {};
+
+  DocumentSnapshot snap = await firebaseFirestore.collection("MP").doc("arrear in litigation").get();
+  if (snap.exists) {
+    for (int i = 0; i < SUBCATEGORY["arrear in litigation"]!.length; i++) {
+      QuerySnapshot snap2 = await firebaseFirestore.collection("MP").doc("arrear in litigation").collection(SUBCATEGORY["arrear in litigation"]![i]).get();
+      for (var data in snap2.docs) {
+        // print("Data is here: ${data.id}");
+        allData[SUBCATEGORY["arrear in litigation"]![i]+data.id] = TarReportModel.fromJson(data.data() as Map<String, dynamic>);
+      }
+    }
+  }
+  // print("heeelo $allData")
+  return {"res":"success","data":allData};
+}
+
+Future writeOff() async {
+  Map<String, TarReportModel> allData = {};
+
+  DocumentSnapshot snap = await firebaseFirestore.collection("MP").doc("arrears pending for write-off").get();
+  if (snap.exists) {
+    for (int i = 0; i < SUBCATEGORY["arrears pending for write-off"]!.length; i++) {
+      QuerySnapshot snap2 = await firebaseFirestore.collection("MP").doc("arrears pending for write-off").collection(SUBCATEGORY["arrears pending for write-off"]![i]).get();
+      for (var data in snap2.docs) {
+        // print("Data is here: ${data.data().toString()}");
+        allData[SUBCATEGORY["arrear in litigation"]![i]+data.id] = TarReportModel.fromJson(data.data() as Map<String, dynamic>);
+      }
+    }
+  }
+  // for(var i in allData.keys){
+  //   print("data is here ${allData[i]}}");
+  // }
+  return {"res":"success","data":allData};
+}
+
 }
