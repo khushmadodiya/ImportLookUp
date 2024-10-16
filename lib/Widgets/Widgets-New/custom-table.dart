@@ -43,99 +43,114 @@ class _CustomTableState extends State<CustomTable> {
   Widget build(BuildContext context) {
 
     return Consumer<AddNewCase>(
-      builder: (context,provider,child)=>
-          Scaffold(
-            appBar: AppBar(
-              title: Text(widget.title),
-              actions: [
-                IconButton(onPressed: (){
-                  AuthMethods().signOut(context);
-                  setState(() {
+      builder: (context,provider,child) {
+        if(provider.isLoading || provider.mainCaseData.isEmpty){
+          const Scaffold(body: Center(child: CircularProgressIndicator()),);
+        }
+        if(provider.mainCaseData.isNotEmpty)
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(widget.title),
+            actions: [
+              IconButton(onPressed: () {
+                AuthMethods().signOut(context);
+                setState(() {
 
-                  });
-                }, icon: Icon(Icons.logout))
-              ],
-            ),
-            // body: Text('hell0'),
-            body: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                InkWell(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: 40,
-                      width: 150,
-                      color: Colors.amber.withOpacity(0.3),
-                      child: const Center(child: Text("Download Excel")),
-                    ),
+                });
+              }, icon: Icon(Icons.logout))
+            ],
+          ),
+          // body: Text('hell0'),
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              InkWell(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    height: 40,
+                    width: 150,
+                    color: Colors.amber.withOpacity(0.3),
+                    child: const Center(child: Text("Download Excel")),
                   ),
-                  onTap: () {
-                    ExcelDonwloadOption().exportToExcel(myData, 'OIO DETAILS');
-                  },
                 ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Listener(
-                      onPointerSignal: (pointerSignal) {
-                        if (pointerSignal is PointerScrollEvent) {
-                          // Horizontal scroll based on the mouse wheel's delta
-                          _scrollController.jumpTo(
-                            _scrollController.offset + pointerSignal.scrollDelta.dy,  // Use dy for vertical mouse wheel mapped to horizontal scroll
-                          );
-                        }
-                      },
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        controller: _scrollController,
-                        child: Padding(
-                          padding: const EdgeInsets.all(18.0),
-                          child: Card(
-                            elevation: 12,
-                            color: Colors.white,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                            child: Table(
-                              border: TableBorder.all(width: 1.0, color: Colors.black),
-                              columnWidths: const {
-                                0: FixedColumnWidth(70),
-                                1: FixedColumnWidth(300),
-                                2: FixedColumnWidth(180),
-                                3: FixedColumnWidth(300),
-                                4: FixedColumnWidth(150),
-                                5: FixedColumnWidth(120),
-                                6: FixedColumnWidth(180),
-                                7: FixedColumnWidth(180),
-                                8: FixedColumnWidth(180),
-                                9: FixedColumnWidth(180),
-                                10: FixedColumnWidth(180),
-                                11: FixedColumnWidth(350),
-                                12: FixedColumnWidth(350),
-                                13: FixedColumnWidth(250),
-                                14: FixedColumnWidth(180),
-                                15: FixedColumnWidth(180),
-                              },
-                              children: [
-                                // Header Row
-                                _buildHeaderRow(),
-                                // Data Rows
-                                for(int i=0;i<provider.mainCaseData.length;i++)
-                                  if(provider.mainCaseData[i].subcategory==widget.subcategory &&provider.mainCaseData[i].category==widget.category)
-                                  _buildDataRow( provider, i)
-                      
-                      
-                              ],
-                            ),
+                onTap: () {
+                  ExcelDonwloadOption().exportToExcel(myData, 'OIO DETAILS');
+                },
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Listener(
+                    onPointerSignal: (pointerSignal) {
+                      if (pointerSignal is PointerScrollEvent) {
+                        // Horizontal scroll based on the mouse wheel's delta
+                        _scrollController.jumpTo(
+                          _scrollController.offset + pointerSignal.scrollDelta
+                              .dy, // Use dy for vertical mouse wheel mapped to horizontal scroll
+                        );
+                      }
+                    },
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      controller: _scrollController,
+                      child: Padding(
+                        padding: const EdgeInsets.all(18.0),
+                        child: Card(
+                          elevation: 12,
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Table(
+                            border: TableBorder.all(
+                                width: 1.0, color: Colors.black),
+                            columnWidths: const {
+                              0: FixedColumnWidth(70),
+                              1: FixedColumnWidth(300),
+                              2: FixedColumnWidth(180),
+                              3: FixedColumnWidth(300),
+                              4: FixedColumnWidth(150),
+                              5: FixedColumnWidth(120),
+                              6: FixedColumnWidth(180),
+                              7: FixedColumnWidth(180),
+                              8: FixedColumnWidth(180),
+                              9: FixedColumnWidth(180),
+                              10: FixedColumnWidth(180),
+                              11: FixedColumnWidth(350),
+                              12: FixedColumnWidth(350),
+                              13: FixedColumnWidth(250),
+                              14: FixedColumnWidth(180),
+                              15: FixedColumnWidth(180),
+                            },
+                            children: [
+                              // Header Row
+                              _buildHeaderRow(),
+                              // Data Rows
+                              for(int i = 0; i <
+                                  provider.mainCaseData.length; i++)
+                                if(provider.mainCaseData[i].subcategory ==
+                                    widget.subcategory &&
+                                    provider.mainCaseData[i].category ==
+                                        widget.category)
+                                  _buildDataRow(provider, i)
+
+
+                            ],
                           ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
-
+              ),
+            ],
           ),
+
+        );
+        return const Scaffold(body: Center(child: CircularProgressIndicator()),);
+
+
+      }
     );
 
 
@@ -277,13 +292,14 @@ class _CustomTableState extends State<CustomTable> {
 
     final asseserProvider = Provider.of<AddNewCase>(context, listen: false);
     final userinfo = Provider.of<UserInformation>(context,listen: false);
+    asseserProvider.updateLoader();
     if(userinfo.userType==USERTYPE[0]){
       await asseserProvider.getMainCasesInformation(formation: userinfo.formation, isAdmin: true);
     }
     else{
       await asseserProvider.getMainCasesInformation(formation: userinfo.formation, isAdmin: false);
     }
-
+   asseserProvider.updateLoader();
     print('dipu landka hai ${asseserProvider.mainCaseData[0].formation}');
   }
 }
