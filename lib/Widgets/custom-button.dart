@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 typedef VoidCallback = void Function();
 Widget CustomButton({
+  Color color=Colors.deepPurple,
   required text,
   required VoidCallback onpress ,required bool isLoading
 }){
@@ -20,7 +21,7 @@ Widget CustomButton({
         alignment: Alignment.center,
         // padding: const EdgeInsets.symmetric(vertical: 12,horizontal: 10),
         decoration: BoxDecoration(
-            color: Colors.deepPurple,
+            color: color,
             borderRadius: BorderRadius.circular(15)
 
         ),

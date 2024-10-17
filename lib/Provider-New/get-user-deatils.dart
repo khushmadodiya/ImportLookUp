@@ -19,8 +19,10 @@ class UserInformation extends ChangeNotifier {
       var pref = await SharedPreferences.getInstance();
       print(pref.getString('userId'));
       print(pref.getString('userType'));
+      var usertype = pref.getString('userType').toString();
+      var userid = pref.getString('userId');
       FirebaseFirestore store = FirebaseFirestore.instance;
-      DocumentSnapshot snap = await store.collection(pref.getString('userType').toString()).doc(pref.getString('userId')).get();
+      DocumentSnapshot snap = await store.collection(usertype).doc(userid).get();
       if (snap.exists) {
         final data = snap.data() as Map<String, dynamic>;
         _userType = pref.getString('userType') ?? ''; 
