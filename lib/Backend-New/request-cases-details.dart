@@ -50,7 +50,7 @@ class RequestCasesInformation {
       }
     }
     RequestCaseModel model = RequestCaseModel(
-      oldData: oldData,
+      oldData:MainCaseModel.fromJson(oldData),
       category: category,
       completeTrack: oldData['completeTrack'] ?? [completeTrack],
       uid: uid,
@@ -369,7 +369,9 @@ class RequestCasesInformation {
       return {"res":"some error occured"};
     }
     }catch(e){
+      print("hello i am khush ${e.toString()}");
       return {"res":"some error occured ${e.toString()}"};
     }
+
   }
 }

@@ -1,3 +1,4 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -18,7 +19,8 @@ import '../../Widgets/Widgets-New/custom-textfield.dart';
 class AcceptRequestCaseTextFields extends StatefulWidget {
   String uid;
   String formation;
-  AcceptRequestCaseTextFields({super.key, required this.uid,required this.formation});
+  bool isNewRequest;
+  AcceptRequestCaseTextFields({super.key, required this.uid,required this.formation,this.isNewRequest=false});
 
   @override
   State<AcceptRequestCaseTextFields> createState() => _AcceptRequestCaseTextFieldsState();
@@ -44,19 +46,15 @@ class _AcceptRequestCaseTextFieldsState extends State<AcceptRequestCaseTextField
     var pro= Provider.of<AddNewCase>(context,listen: false);
     pro.updateLoader();
     var userInfo = Provider.of<UserInformation>(context,listen: false);
-    print('${pro.subcategory.text} ${formation} $selectedCategory');
-
-    // pro.subcategory.text = subcateCategory??"";
-    pro.category.text = selectedCategory??"";
-    pro.formation.text = formation??"";
+    print('${pro.subcategory.text} ${widget.formation} $selectedCategory ${widget.uid}');
 
     Map<String,dynamic> res ;
     if(userInfo.userType==USERTYPE[0]) {
       print("Objectsssssssssssss");
-      res=  await pro.acceptRequestByAdmin( uid: widget.uid,formation: widget.formation, isRequest: true) ;
+      res=  await pro.acceptRequestByAdmin( uid: widget.uid,formation: formation!, isRequest: true) ;
 
-      print('dddddddddddddddddddddddddddddddddddddddd$res');
-      print(res);
+      print('dddddddddddddddddddddddddddddddddddddddd${res['res']}');
+
 
     }
     else {
@@ -65,11 +63,11 @@ class _AcceptRequestCaseTextFieldsState extends State<AcceptRequestCaseTextField
     if(res['res']=='success'){
       if(userInfo.userType==USERTYPE[0]) {
         Fluttertoast.showToast(msg: 'Updated case');
-        Navigator.pop(context);
+        // Navigator.pop(context);
       }
       else{
         Fluttertoast.showToast(msg: 'Request submit to the admin');
-        Navigator.pop(context);
+        // Navigator.pop(context);
       }
       pro.clear();
     }
@@ -332,41 +330,85 @@ class _AcceptRequestCaseTextFieldsState extends State<AcceptRequestCaseTextField
 
   void setValues()async {
     var date = Provider.of<GeneralPurposeProvider>(context,listen: false);
-    var res = (await MainCasesInformation().getMainCaseDetailByDocument(formation: widget.formation, uid: widget.uid)) ;
-    if(res['res']=='success') {
-      var pro = Provider.of<AddNewCase>(context,listen: false);
-      MainCaseModel model = res['model'];
-      oldData = model.toJson();
-      pro.setName(model.name);
-      pro.setCategory(model.category);
-      pro.setSubcategory(model.subcategory);
-      pro.setDutyOfArrear(model.dutyOfArrear);
-      pro.setFormation(model.formation);
-      pro.setOio(model.oio);
-      pro.setDate(model.date);
-      pro.setPenalty(model.penalty);
-      pro.setAmountRecovered(model.amountRecovered);
-      pro.setPreDeposit(model.preDeposit);
-      pro.setInterest(model.intrest);
-      pro.setTotalArrearPending(model.totalArrearPending);
-      pro.setBriefFact(model.briefFact);
-      pro.setStatus(model.status);
-      pro.setAppealNo(model.apealNo);
-      pro.setStayOrderNumberAndDate(model.stayOrderNumberAndDate);
-      pro.setIec(model.iec);
-      pro.setGstin(model.gstin);
-      pro.setPan(model.pan);
-      pro.setAge(model.age.toString());
-      pro.setEffortMade(model.effortMade);
-      pro.setRemark(model.remark);
-      selectedCategory = pro.category.text;
-      formation = pro.formation.text;
-      date.updateDate(model.date);
+    if(!widget.isNewRequest){
+      print('Maincasedetail');
+      var res = (await MainCasesInformation().getMainCaseDetailByDocument(formation: widget.formation, uid: widget.uid)) ;
+      if(res['res']=='success') {
+        var pro = Provider.of<AddNewCase>(context,listen: false);
+        MainCaseModel model = res['model'];
+        oldData = model.toJson();
+        pro.setName(model.name);
+        pro.setCategory(model.category);
+        pro.setSubcategory(model.subcategory);
+        pro.setDutyOfArrear(model.dutyOfArrear);
+        pro.setFormation(model.formation);
+        pro.setOio(model.oio);
+        pro.setDate(model.date);
+        pro.setPenalty(model.penalty);
+        pro.setAmountRecovered(model.amountRecovered);
+        pro.setPreDeposit(model.preDeposit);
+        pro.setInterest(model.intrest);
+        pro.setTotalArrearPending(model.totalArrearPending);
+        pro.setBriefFact(model.briefFact);
+        pro.setStatus(model.status);
+        pro.setAppealNo(model.apealNo);
+        pro.setStayOrderNumberAndDate(model.stayOrderNumberAndDate);
+        pro.setIec(model.iec);
+        pro.setGstin(model.gstin);
+        pro.setPan(model.pan);
+        pro.setAge('00');
+        pro.setEffortMade(model.effortMade);
+        pro.setRemark(model.remark);
+        selectedCategory = pro.category.text;
+        formation = pro.formation.text;
+        date.updateDate(model.date);
+        pro.updateSubcategory(model.subcategory);
+      }
+      else{
+        Fluttertoast.showToast(msg: '${res['res']}',timeInSecForIosWeb:4 );
+        Navigator.pop(context);
+        print(res['res']);
+      }
     }
     else{
-      Fluttertoast.showToast(msg: '${res['res']}',timeInSecForIosWeb:4 );
-      // Navigator.pop(context);
-      print(res['res']);
+      print('objectREqusstttttttttttttt');
+      var res = (await MainCasesInformation().getRequestCaseDetailByDocument(formation: widget.formation, uid: widget.uid)) ;
+      if(res['res']=='success') {
+        var pro = Provider.of<AddNewCase>(context,listen: false);
+        MainCaseModel model = res['model'];
+        oldData = model.toJson();
+        pro.setName(model.name);
+        pro.setCategory(model.category);
+        pro.setSubcategory(model.subcategory);
+        pro.setDutyOfArrear(model.dutyOfArrear);
+        pro.setFormation(model.formation);
+        pro.setOio(model.oio);
+        pro.setDate(model.date);
+        pro.setPenalty(model.penalty);
+        pro.setAmountRecovered(model.amountRecovered);
+        pro.setPreDeposit(model.preDeposit);
+        pro.setInterest(model.intrest);
+        pro.setTotalArrearPending(model.totalArrearPending);
+        pro.setBriefFact(model.briefFact);
+        pro.setStatus(model.status);
+        pro.setAppealNo(model.apealNo);
+        pro.setStayOrderNumberAndDate(model.stayOrderNumberAndDate);
+        pro.setIec(model.iec);
+        pro.setGstin(model.gstin);
+        pro.setPan(model.pan);
+        pro.setAge("00");
+        pro.setEffortMade(model.effortMade);
+        pro.setRemark(model.remark);
+        selectedCategory = pro.category.text;
+        formation = pro.formation.text;
+        date.updateDate(model.date);
+        pro.updateSubcategory(model.subcategory);
+      }
+      else{
+        Fluttertoast.showToast(msg: '${res['res']}',timeInSecForIosWeb:4 );
+        Navigator.pop(context);
+        print(res['res']);
+      }
     }
   }
 }

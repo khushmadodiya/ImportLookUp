@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.dart';
 import 'package:import_lookup/Backend/authmethos.dart';
 import 'package:import_lookup/Model-New/main-case-model.dart';
+import 'package:import_lookup/Model-New/request-case-model.dart';
 import 'package:import_lookup/Provider-New/add-new-cases.dart';
 import 'package:import_lookup/Provider-New/general-pusrpose.dart';
 import 'package:import_lookup/Provider-New/get-user-deatils.dart';
@@ -231,7 +232,7 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
     if(flag) {
       return TableRow(
         children: [
-          _multiLineText('${index + 1}', 1),
+          _multiLineText('${index + 1} New', 1),
           _multiLineText(provider.requestCaseData[index].name, 2),
           _multiLineText(provider.requestCaseData[index].formation, 3),
           _multiLineText(provider.requestCaseData[index].oio, 4),
@@ -248,33 +249,32 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
           _multiLineText(provider.requestCaseData[index].apealNo, 14),
           _multiLineText(
               provider.requestCaseData[index].stayOrderNumberAndDate, 15),
-         if(userInfo.userType ==USERTYPE[0]) _buildTransferButton(provider.requestCaseData[index].uid,
-              provider.requestCaseData[index].formation),
+         if(userInfo.userType ==USERTYPE[0]) _buildTransferButton(provider.requestCaseData[index].uid,provider.requestCaseData[index].formation,provider.requestCaseData[index].oldData.uid==''),
         ],
       );
     }
     // else if(!flag && provider.requestCaseData[index].oldData!={})
 
     return TableRow(
-    children: [
-    _multiLineText('${index+1}', 1),
-    _multiLineText(provider.requestCaseData[index]?.oldData?['name'] ?? '', 2),
-    _multiLineText(provider.requestCaseData[index]?.oldData?['formation'] ?? '', 3),
-    _multiLineText(provider.requestCaseData[index]?.oldData?['oio'] ?? '', 4),
-    _multiLineText(provider.requestCaseData[index]?.oldData?['date'] ?? '', 5),
-    _multiLineText(day ?? '', 6),
-    _multiLineText(provider.requestCaseData[index]?.oldData?['dutyOfArrear'] ?? '', 7),
-    _multiLineText(provider.requestCaseData[index]?.oldData?['penalty'] ?? '', 8),
-    _multiLineText(provider.requestCaseData[index]?.oldData?['amountRecovered'] ?? '', 9),
-    _multiLineText(provider.requestCaseData[index]?.oldData?['preDeposit'] ?? '', 10),
-    _multiLineText(provider.requestCaseData[index]?.oldData?['totalArrearPending'] ?? '', 11),
-    _multiLineText(provider.requestCaseData[index]?.oldData?['briefFact'] ?? '', 12),
-    _multiLineText(provider.requestCaseData[index]?.oldData?['status'] ?? '', 13),
-    _multiLineText(provider.requestCaseData[index]?.oldData?['apealNo'] ?? '', 14),
-    _multiLineText(provider.requestCaseData[index]?.oldData?['stayOrderNumberAndDate'] ?? '', 15),
-    if (userInfo?.userType == USERTYPE[0])
-    _buildRejectButton(provider.requestCaseData[index]?.uid ?? '', provider.requestCaseData[index]?.formation ?? ''),
-    ],
+      children: [
+        _multiLineText('${index+1} Old', 1),
+        _multiLineText(provider.requestCaseData[index].oldData.name, 2),
+        _multiLineText(provider.requestCaseData[index].oldData.formation , 3),
+        _multiLineText(provider.requestCaseData[index].oldData.oio, 4),
+        _multiLineText(provider.requestCaseData[index].oldData.date, 5),
+        _multiLineText(day, 6),
+        _multiLineText(provider.requestCaseData[index].oldData.dutyOfArrear , 7),
+        _multiLineText(provider.requestCaseData[index].oldData.penalty, 8),
+        _multiLineText(provider.requestCaseData[index].oldData.amountRecovered, 9),
+        _multiLineText(provider.requestCaseData[index].oldData.preDeposit, 10),
+        _multiLineText(provider.requestCaseData[index].oldData.totalArrearPending, 11),
+        _multiLineText(provider.requestCaseData[index].oldData.briefFact, 12),
+        _multiLineText(provider.requestCaseData[index].oldData.status, 13),
+        _multiLineText(provider.requestCaseData[index].oldData.apealNo , 14),
+        _multiLineText(provider.requestCaseData[index].oldData.stayOrderNumberAndDate, 15),
+      if(userInfo.userType==USERTYPE[0])  _buildRejectButton(provider.requestCaseData[index].uid,provider.requestCaseData[index].formation),
+      ],
+
     );
     // else
     // return TableRow(
@@ -316,16 +316,16 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
     );
   }
 
-  Widget _buildTransferButton(String uid,String formation) {
-    print(uid);
-    return Container(
+  Widget _buildTransferButton(String uid , String formation,bool isnewdata) {
+return Container(
       color: Colors.blue.withOpacity(0.2),
       child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
           child:
           CustomButton(text: 'Accept Request', onpress: ()async{
-            print('object $formation');
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>AcceptRequestCaseTextFields(uid: uid, formation: formation)));
+
+
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>AcceptRequestCaseTextFields(isNewRequest: isnewdata, uid: uid, formation: formation,)));
           }, isLoading: false)
       ),
     );
