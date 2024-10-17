@@ -57,28 +57,32 @@ String? formation=FORMATION[0];
     if(userInfo.userType==USERTYPE[0]) {
       res= await pro.updateMainCaseDetails(true, uid: widget.uid, isShifted: true,);
 
-      print('dddddddddddddddddddddddddddddddddddddddd$res');
-      print(res);
 
     }
     else {
       res =await pro.addRequestCase(false, uid: widget.uid, oldData:oldData, isShifted: true);
     }
+    print('dfihugihhffiheihufbiuhfriuwher');
+    print(res['res']);
     if(res['res']=='success'){
       if(userInfo.userType==USERTYPE[0]) {
+        await pro.getMainCasesInformation(formation: userInfo.formation, isAdmin: true);
         Fluttertoast.showToast(msg: 'Updated case');
         Navigator.pop(context);
       }
       else{
         Fluttertoast.showToast(msg: 'Request submit to the admin');
+        Navigator.pop(context);
       }
+
       pro.clear();
     }
     else{
-      Fluttertoast.showToast(msg: 'Some error occur');
+      Fluttertoast.showToast(msg: res['res'],timeInSecForIosWeb: 3);
 
     }
     pro.updateLoader();
+
   }
 
 
@@ -111,6 +115,7 @@ String? formation=FORMATION[0];
                                           onChanged: (value) {
                                             setState(() {
                                               selectedCategory = value;
+                                              pro.updateSubcategory(SUBCATEGORY[value]![0]);
                                               // subcategoryKey.currentState?.getSelectedItems = null; // Reset subcategory when category changes
                                             });
                                           },
@@ -127,7 +132,7 @@ String? formation=FORMATION[0];
                                           listofvalues: SUBCATEGORY[selectedCategory]!,
                                           fun: (String? value) {
                                             pro.updateSubcategory(value!);
-                                            print("vailue is here $value");
+                                            print("value is hererrrrrrrrrr $value");
                                           },
 
                                         ),
@@ -168,7 +173,7 @@ String? formation=FORMATION[0];
                                               if(dat!=null){
                                                 String datt=DateFormat('dd-MM-yyyy').format(dat);
                                                 date.updateDate(datt);
-
+                                                pro.setDate(datt);
                                               }
                                             },
                                             child: Card(

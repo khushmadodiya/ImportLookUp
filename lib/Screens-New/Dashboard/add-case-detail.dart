@@ -1,4 +1,3 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -10,7 +9,6 @@ import 'package:import_lookup/Widgets/custom-button.dart';
 import 'package:import_lookup/Widgets/formation-dropdown.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import '../../Model-New/main-case-model.dart';
 import '../../Provider-New/add-new-cases.dart';
 import '../../Widgets/Widgets-New/custom-textfield.dart';
 
@@ -23,18 +21,19 @@ class AddCaseDeatil extends StatefulWidget {
 }
 
 class _AddCaseDeatilState extends State<AddCaseDeatil> {
-
+  String? selectedCategory=CATEGORY[2];
+  String? formation=FORMATION[0];
  @override
   void initState() {
     // TODO: implement initState
     super.initState();
    var pro= Provider.of<AddNewCase>(context,listen: false);
+   var userInfo =  Provider.of<UserInformation>(context,listen: false);
+    formation=userInfo.formation;
     pro.updateSubcategory(SUBCATEGORY[CATEGORY[2]]![0]);
     print(pro.subcategory.text);
   }
-  String? selectedCategory=CATEGORY[2];
-  // String?  subcateCategory;
-  String? formation=FORMATION[0];
+
 
 
   @override
@@ -44,6 +43,7 @@ class _AddCaseDeatilState extends State<AddCaseDeatil> {
    var pro= Provider.of<AddNewCase>(context,listen: false);
    pro.updateLoader();
    var userInfo = Provider.of<UserInformation>(context,listen: false);
+
    print('${pro.subcategory.text} ${formation} $selectedCategory');
 
    // pro.subcategory.text = subcateCategory??"";
@@ -99,6 +99,7 @@ class _AddCaseDeatilState extends State<AddCaseDeatil> {
                               onChanged: (value) {
                                 setState(() {
                                   selectedCategory = value;
+                                  pro.updateSubcategory(SUBCATEGORY[value]![0]);
                                   // subcategoryKey.currentState?.getSelectedItems = null; // Reset subcategory when category changes
                                 });
                               },
@@ -156,7 +157,7 @@ class _AddCaseDeatilState extends State<AddCaseDeatil> {
                                   if(dat!=null){
                                     String datt=DateFormat('dd-MM-yyyy').format(dat);
                                     date.updateDate(datt);
-
+                                    pro.setDate(datt);
                                   }
                                 },
                                 child: Card(
@@ -246,8 +247,10 @@ class _AddCaseDeatilState extends State<AddCaseDeatil> {
                     Container(
                         width: MediaQuery.of(context).size.width/5,
                         child: CustomButton(onpress: (){
-                          if(pro.name.text.isEmpty || pro.dutyOfArrear.text.isEmpty || pro.totalArrearPending.text.isEmpty || date=='Select OIO Date'){
-                            Fluttertoast.showToast(msg: 'Pleas fill name, duty of arrear, total arrear pending and date',timeInSecForIosWeb: 3);
+                          print('DAteeeeeeeeeeeeeeeeeee');
+                          print(date.date);
+                          if(pro.name.text.isEmpty || pro.dutyOfArrear.text.isEmpty || pro.totalArrearPending.text.isEmpty || date.date=='Select OIO Date' || date.date==''){
+                            Fluttertoast.showToast(msg: 'Pleas fill name, duty of arrears, total arrears pending and date',timeInSecForIosWeb: 3);
                           }else{
                           adddetail(pro);}
                           },text: 'Add Data', isLoading: pro.isLoading))
