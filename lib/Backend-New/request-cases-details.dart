@@ -50,7 +50,7 @@ class RequestCasesInformation {
       }
     }
     RequestCaseModel model = RequestCaseModel(
-      oldData: oldData,
+      oldData:MainCaseModel.fromJson(oldData),
       category: category,
       completeTrack: oldData['completeTrack'] ?? [completeTrack],
       uid: uid,

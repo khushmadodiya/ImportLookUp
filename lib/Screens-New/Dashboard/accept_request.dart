@@ -324,7 +324,7 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
     final userinfo = Provider.of<UserInformation>(context,listen: false);
     if(userinfo.userType==USERTYPE[0]){
       print(userinfo.formation);
-     var res= await asseserProvider.getRequestCasesInformation(formation: '', isAdmin: true);
+     var res= await asseserProvider.getRequestCasesInformation(formation:FORMATION[0], isAdmin: true);
       final pro =  Provider.of<AddNewCase>(context, listen: false);
 
       String name= pro.requestCaseData[0].formation;
