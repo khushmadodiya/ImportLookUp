@@ -31,7 +31,7 @@ void main() async{
         ChangeNotifierProvider(create: (_) => UserInformation()),
         ChangeNotifierProvider(create: (_) => GeneralPurposeProvider()),
       ],
-      child:  Test()));
+      child:  MyApp()));
 
 
 }

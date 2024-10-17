@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.dart';
 import 'package:import_lookup/Backend/authmethos.dart';
 import 'package:import_lookup/Model-New/main-case-model.dart';
+import 'package:import_lookup/Model-New/request-case-model.dart';
 import 'package:import_lookup/Provider-New/add-new-cases.dart';
 import 'package:import_lookup/Provider-New/general-pusrpose.dart';
 import 'package:import_lookup/Provider-New/get-user-deatils.dart';
@@ -131,14 +132,14 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
                                   // Header Row
                                   _buildHeaderRow(userInfo),
                                   // Data Rows
-          for (int i = 0; i < provider.requestCaseData.length ; i++)
+          for (int i = 0; i < provider.requestCaseData.length*2 ; i++)
 
-          // if (i % 2 == 0)
-          // _buildDataRow(provider,userInfo ,i~/2, true) // First pass for index
-          //  else
-          // _buildDataRow(provider,userInfo, i ~/ 2, false)  // Second pass for the same index
+          if (i % 2 == 0)
+          _buildDataRow(provider,userInfo ,i~/2, true) // First pass for index
+           else
+          _buildDataRow(provider,userInfo, i ~/ 2, false)  // Second pass for the same index
 
-             _buildDataRow(provider, userInfo, i, true)
+             // _buildDataRow(provider, userInfo, i, true)
 
                                 ],
                               ),
@@ -227,11 +228,11 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
   }
 
   TableRow _buildDataRow(AddNewCase provider,UserInformation userInfo, int index,flag) {
-    String day = _calculateDayCount(provider.requestCaseData[index].date).toString();
+    String day = _calculateDayCount(provider.requestCaseData[index].date??"").toString();
     if(flag) {
       return TableRow(
         children: [
-          _multiLineText('${index + 1}', 1),
+          _multiLineText('${index + 1} New', 1),
           _multiLineText(provider.requestCaseData[index].name, 2),
           _multiLineText(provider.requestCaseData[index].formation, 3),
           _multiLineText(provider.requestCaseData[index].oio, 4),
@@ -248,15 +249,15 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
           _multiLineText(provider.requestCaseData[index].apealNo, 14),
           _multiLineText(
               provider.requestCaseData[index].stayOrderNumberAndDate, 15),
-         if(userInfo.userType ==USERTYPE[0]) _buildTransferButton(provider.requestCaseData[index].uid,
-              provider.requestCaseData[index].formation),
+         if(userInfo.userType ==USERTYPE[0]) _buildTransferButton(provider.requestCaseData[index].uid,provider.requestCaseData[index].formation,provider.requestCaseData[index].oldData.uid==''),
         ],
       );
     }
+    // else if(!flag && provider.requestCaseData[index].oldData!={})
 
     return TableRow(
       children: [
-        _multiLineText('${index+1}', 1),
+        _multiLineText('${index+1} Old', 1),
         _multiLineText(provider.requestCaseData[index].oldData.name, 2),
         _multiLineText(provider.requestCaseData[index].oldData.formation , 3),
         _multiLineText(provider.requestCaseData[index].oldData.oio, 4),
@@ -273,7 +274,29 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
         _multiLineText(provider.requestCaseData[index].oldData.stayOrderNumberAndDate, 15),
       if(userInfo.userType==USERTYPE[0])  _buildRejectButton(provider.requestCaseData[index].uid,provider.requestCaseData[index].formation),
       ],
+
     );
+    // else
+    // return TableRow(
+    //   children: [
+    //     _multiLineText('${index + 1}', 1),
+    //     _multiLineText('', 2),
+    //     _multiLineText('', 3),
+    //     _multiLineText('', 4),
+    //     _multiLineText('', 5),
+    //     _multiLineText(day, 6),
+    //     _multiLineText('', 7),
+    //     _multiLineText('', 8),
+    //     _multiLineText('', 9),
+    //     _multiLineText('', 10),
+    //     _multiLineText(
+    //        '', 11),
+    //     _multiLineText('', 12),
+    //     _multiLineText('', 13),
+    //     _multiLineText('', 14),
+    //     _multiLineText('', 15),
+    //   ]
+    // );
 
   }
   Widget _buildRejectButton(String uid,String formation) {
@@ -293,16 +316,16 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
     );
   }
 
-  Widget _buildTransferButton(String uid,String formation) {
-    print(uid);
-    return Container(
+  Widget _buildTransferButton(String uid , String formation,bool isnewdata) {
+return Container(
       color: Colors.blue.withOpacity(0.2),
       child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
           child:
           CustomButton(text: 'Accept Request', onpress: ()async{
-            print('object $formation');
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>AcceptRequestCaseTextFields(uid: uid, formation: formation)));
+
+
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>AcceptRequestCaseTextFields(isNewRequest: isnewdata, uid: uid, formation: formation,)));
           }, isLoading: false)
       ),
     );
