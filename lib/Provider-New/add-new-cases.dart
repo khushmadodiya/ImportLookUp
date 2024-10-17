@@ -487,12 +487,14 @@ class AddNewCase with ChangeNotifier {
   }
 
   Future getRequestCasesInformation({required String formation, required bool isAdmin}) async {
+    
     if (!isAdmin) {
       _requestCaseData = (await RequestCasesInformation().getFormationRequestedCaseInformation(formation))["res"];
     } else {
       _requestCaseData = (await RequestCasesInformation().getAllReuqestCasesDetails())["res"];
     }
     notifyListeners();
+    return {"res":"success"};
   }
 
   Future addMainCase(bool isAdmin) async {
