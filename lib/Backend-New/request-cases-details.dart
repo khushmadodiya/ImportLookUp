@@ -147,7 +147,7 @@ class RequestCasesInformation {
         //   }
         //   completer.complete("Success");
         // });
-        print("leght is here ${allCases.length}");
+        // print("leght is here ${allCases.length}");
         await completer.future;
 
         return {"res":allCases};

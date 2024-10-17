@@ -656,6 +656,12 @@ class AddNewCase with ChangeNotifier {
   return res;
   }
 
+  //reject request
+  Future rejectRequest({required String uid,required String formation})async{
+  var res = await RequestCasesInformation().rejectRequest(uid: uid, formation: formation);
+  return res;
+  }
+
   //getTarReport Infromation
   Future getTarReport()async{
 
