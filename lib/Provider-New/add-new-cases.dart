@@ -280,13 +280,16 @@
 // }
 import 'dart:convert';
 import 'dart:core';
+import 'dart:js';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:import_lookup/Backend-New/main-cases-details.dart';
 import 'package:import_lookup/Backend-New/request-cases-details.dart';
 import 'package:import_lookup/Model-New/main-case-model.dart';
 import 'package:import_lookup/Model-New/request-case-model.dart';
+import 'package:import_lookup/Provider-New/general-pusrpose.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 // import 'package:provider/provider.dart';
 
 class AddNewCase with ChangeNotifier {
@@ -352,6 +355,10 @@ class AddNewCase with ChangeNotifier {
   void updateSubcategory(String subCatregory){
     subcategory.text=subCatregory;
   }
+  void setDate(String date){
+    _dateController.text = date;
+    notifyListeners();
+  }
 
   //update loader
   void updateLoader(){
@@ -375,10 +382,6 @@ class AddNewCase with ChangeNotifier {
     notifyListeners();
   }
 
-  void setDate(String newDate) {
-    _dateController.text = newDate;
-    notifyListeners();
-  }
 
   void setDutyOfArrear(String newDutyOfArrear) {
     _dutyOfArrearController.text = newDutyOfArrear;
@@ -493,6 +496,7 @@ class AddNewCase with ChangeNotifier {
   }
 
   Future addMainCase(bool isAdmin) async {
+
     var res=await MainCasesInformation().addCases(
       uid: '',
       name: _nameController.text, // Use the controller's text directly

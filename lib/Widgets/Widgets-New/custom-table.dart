@@ -147,7 +147,7 @@ class _CustomTableState extends State<CustomTable> {
           ),
 
         );
-        return const Scaffold(body: Center(child: CircularProgressIndicator()),);
+        return const Scaffold(body: Center(child: Text("No date available")),);
 
 
       }

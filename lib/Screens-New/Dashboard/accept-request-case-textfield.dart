@@ -65,9 +65,11 @@ class _AcceptRequestCaseTextFieldsState extends State<AcceptRequestCaseTextField
     if(res['res']=='success'){
       if(userInfo.userType==USERTYPE[0]) {
         Fluttertoast.showToast(msg: 'Updated case');
+        // Navigator.pop(context);
       }
       else{
         Fluttertoast.showToast(msg: 'Request submit to the admin');
+        // Navigator.pop(context);
       }
       pro.clear();
     }
@@ -108,6 +110,7 @@ class _AcceptRequestCaseTextFieldsState extends State<AcceptRequestCaseTextField
                                           onChanged: (value) {
                                             setState(() {
                                               selectedCategory = value;
+                                              pro.updateSubcategory(SUBCATEGORY[value]![0]);
                                               // subcategoryKey.currentState?.getSelectedItems = null; // Reset subcategory when category changes
                                             });
                                           },
@@ -165,6 +168,7 @@ class _AcceptRequestCaseTextFieldsState extends State<AcceptRequestCaseTextField
                                               if(dat!=null){
                                                 String datt=DateFormat('dd-MM-yyyy').format(dat);
                                                 date.updateDate(datt);
+                                                pro.setDate(datt);
 
                                               }
                                             },

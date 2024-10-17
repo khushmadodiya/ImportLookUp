@@ -30,7 +30,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     // TODO: implement initState
     super.initState();
     getitem();
-    getData();
   }
   getitem()async{
     var pref = await SharedPreferences.getInstance();
@@ -98,7 +97,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final List<Widget> _widgetOptions =  [
       RevenueTable(),
       CustomTable(title: "Show OIO Details", subcategory: SUBCATEGORY[CATEGORY[2]]![0],category: CATEGORY[2],),
-      Text('Search'),
+      SearchScreen(),
       AddCaseDeatil(),
       CustomTable(title: "Supreme Court", subcategory: SUBCATEGORY[CATEGORY[0]]![0],category: CATEGORY[0],),
       CustomTable(title: "High Court", subcategory: SUBCATEGORY[CATEGORY[0]]![1],category: CATEGORY[0],),
@@ -117,18 +116,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
       CustomTable(title: "Recoverable Under 142", subcategory: SUBCATEGORY[CATEGORY[3]]![3],category: CATEGORY[3]),
 
       CustomTable(title: "Recoverable Write off", subcategory: SUBCATEGORY[CATEGORY[4]]![0],category:CATEGORY[4]),
-      if(widget.isAdmin)
+      // if(widget.isAdmin)
         AcceptRequestCase(title: 'Reqests',)
 
 
     ];
     return Consumer<AddNewCase>(
       builder: (context,pro,child) {
-        if(pro.isLoading || pro.mainCaseData.isEmpty){
-          const Scaffold(body: Center(child: CircularProgressIndicator()),);
-
-        }
-        if(pro.mainCaseData.isNotEmpty)
         return Scaffold(
           // appBar: AppBar(
           //   actions: [
@@ -144,7 +138,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           body: _widgetOptions.elementAt(_selectedIndex),
           bottomNavigationBar: isNarrowScreen ? null : _buildBottomBar(),
         );
-        return  const Scaffold(body: Center(child: CircularProgressIndicator()),);
+
 
       }
     );
@@ -273,7 +267,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           icon: Icon(Icons.delete_outline),
           label: 'Write-off',
         ),
-      if(widget.isAdmin)
+      // if(widget.isAdmin)
       const BottomNavigationBarItem(
           icon: Icon(Icons.request_quote),
           label: 'Requests',
@@ -286,7 +280,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           _onItemTapped(index, index == 0 ? 'Home' : index == 1 ? 'OIO' : index==2?'Search': 'Add');
         } else if (index == 7) {
           _onItemTapped(17, 'Write-off');
-        }else if(index == 8 && widget.isAdmin){
+        }else if(index == 8
+            // && widget.isAdmin
+        ){
           _onItemTapped(18, 'Update Req');
         } else {
           _showBottomSheet(index);
@@ -302,7 +298,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     if (_selectedIndex >= 8 && _selectedIndex <= 11) return 5; // Restrained Arrears
     if (_selectedIndex >= 12 && _selectedIndex <= 16) return 6; // Recoverable Arrear
     if (_selectedIndex == 17) return 7; // Write-off
-    if(widget.isAdmin && _selectedIndex == 18) return 8; // Requests (for Admin)
+    if(
+    // widget.isAdmin&&
+    _selectedIndex == 18) return 8; // Requests (for Admin)
     return 0;
   }
 
@@ -400,20 +398,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       }).toList(),
     );
   }
-  void getData()async {
 
-    final asseserProvider = Provider.of<AddNewCase>(context, listen: false);
-    final userinfo = Provider.of<UserInformation>(context,listen: false);
-    asseserProvider.updateLoader();
-    if(userinfo.userType==USERTYPE[0]){
-      await asseserProvider.getMainCasesInformation(formation: userinfo.formation, isAdmin: true);
-    }
-    else{
-      await asseserProvider.getMainCasesInformation(formation: userinfo.formation, isAdmin: false);
-    }
-    asseserProvider.updateLoader();
-    print('dipu landka hai ${asseserProvider.mainCaseData[0].formation}');
-  }
 }
 
 
