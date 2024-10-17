@@ -65,11 +65,11 @@ class _AcceptRequestCaseTextFieldsState extends State<AcceptRequestCaseTextField
     if(res['res']=='success'){
       if(userInfo.userType==USERTYPE[0]) {
         Fluttertoast.showToast(msg: 'Updated case');
-        // Navigator.pop(context);
+        Navigator.pop(context);
       }
       else{
         Fluttertoast.showToast(msg: 'Request submit to the admin');
-        // Navigator.pop(context);
+        Navigator.pop(context);
       }
       pro.clear();
     }
@@ -365,7 +365,7 @@ class _AcceptRequestCaseTextFieldsState extends State<AcceptRequestCaseTextField
     }
     else{
       Fluttertoast.showToast(msg: '${res['res']}',timeInSecForIosWeb:4 );
-      Navigator.pop(context);
+      // Navigator.pop(context);
       print(res['res']);
     }
   }

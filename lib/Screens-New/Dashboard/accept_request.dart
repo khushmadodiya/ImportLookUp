@@ -131,14 +131,14 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
                                   // Header Row
                                   _buildHeaderRow(userInfo),
                                   // Data Rows
-          for (int i = 0; i < provider.requestCaseData.length ; i++)
+          for (int i = 0; i < provider.requestCaseData.length*2 ; i++)
 
-          // if (i % 2 == 0)
-          // _buildDataRow(provider,userInfo ,i~/2, true) // First pass for index
-          //  else
-          // _buildDataRow(provider,userInfo, i ~/ 2, false)  // Second pass for the same index
+          if (i % 2 == 0)
+          _buildDataRow(provider,userInfo ,i~/2, true) // First pass for index
+           else
+          _buildDataRow(provider,userInfo, i ~/ 2, false)  // Second pass for the same index
 
-             _buildDataRow(provider, userInfo, i, true)
+             // _buildDataRow(provider, userInfo, i, true)
 
                                 ],
                               ),
@@ -227,7 +227,7 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
   }
 
   TableRow _buildDataRow(AddNewCase provider,UserInformation userInfo, int index,flag) {
-    String day = _calculateDayCount(provider.requestCaseData[index].date).toString();
+    String day = _calculateDayCount(provider.requestCaseData[index].date??"").toString();
     if(flag) {
       return TableRow(
         children: [
@@ -253,27 +253,50 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
         ],
       );
     }
+    // else if(!flag && provider.requestCaseData[index].oldData!={})
 
     return TableRow(
-      children: [
-        _multiLineText('${index+1}', 1),
-        _multiLineText(provider.requestCaseData[index].oldData['name'], 2),
-        _multiLineText(provider.requestCaseData[index].oldData['formation'] , 3),
-        _multiLineText(provider.requestCaseData[index].oldData['oio'], 4),
-        _multiLineText(provider.requestCaseData[index].oldData['date'], 5),
-        _multiLineText(day, 6),
-        _multiLineText(provider.requestCaseData[index].oldData['dutyOfArrear'] , 7),
-        _multiLineText(provider.requestCaseData[index].oldData['penalty'], 8),
-        _multiLineText(provider.requestCaseData[index].oldData['amountRecovered'], 9),
-        _multiLineText(provider.requestCaseData[index].oldData['preDeposit'], 10),
-        _multiLineText(provider.requestCaseData[index].oldData['totalArrearPending'], 11),
-        _multiLineText(provider.requestCaseData[index].oldData['briefFact'], 12),
-        _multiLineText(provider.requestCaseData[index].oldData['status'], 13),
-        _multiLineText(provider.requestCaseData[index].oldData['apealNo'] , 14),
-        _multiLineText(provider.requestCaseData[index].oldData['stayOrderNumberAndDate'], 15),
-      if(userInfo.userType==USERTYPE[0])  _buildRejectButton(provider.requestCaseData[index].uid,provider.requestCaseData[index].formation),
-      ],
+    children: [
+    _multiLineText('${index+1}', 1),
+    _multiLineText(provider.requestCaseData[index]?.oldData?['name'] ?? '', 2),
+    _multiLineText(provider.requestCaseData[index]?.oldData?['formation'] ?? '', 3),
+    _multiLineText(provider.requestCaseData[index]?.oldData?['oio'] ?? '', 4),
+    _multiLineText(provider.requestCaseData[index]?.oldData?['date'] ?? '', 5),
+    _multiLineText(day ?? '', 6),
+    _multiLineText(provider.requestCaseData[index]?.oldData?['dutyOfArrear'] ?? '', 7),
+    _multiLineText(provider.requestCaseData[index]?.oldData?['penalty'] ?? '', 8),
+    _multiLineText(provider.requestCaseData[index]?.oldData?['amountRecovered'] ?? '', 9),
+    _multiLineText(provider.requestCaseData[index]?.oldData?['preDeposit'] ?? '', 10),
+    _multiLineText(provider.requestCaseData[index]?.oldData?['totalArrearPending'] ?? '', 11),
+    _multiLineText(provider.requestCaseData[index]?.oldData?['briefFact'] ?? '', 12),
+    _multiLineText(provider.requestCaseData[index]?.oldData?['status'] ?? '', 13),
+    _multiLineText(provider.requestCaseData[index]?.oldData?['apealNo'] ?? '', 14),
+    _multiLineText(provider.requestCaseData[index]?.oldData?['stayOrderNumberAndDate'] ?? '', 15),
+    if (userInfo?.userType == USERTYPE[0])
+    _buildRejectButton(provider.requestCaseData[index]?.uid ?? '', provider.requestCaseData[index]?.formation ?? ''),
+    ],
     );
+    // else
+    // return TableRow(
+    //   children: [
+    //     _multiLineText('${index + 1}', 1),
+    //     _multiLineText('', 2),
+    //     _multiLineText('', 3),
+    //     _multiLineText('', 4),
+    //     _multiLineText('', 5),
+    //     _multiLineText(day, 6),
+    //     _multiLineText('', 7),
+    //     _multiLineText('', 8),
+    //     _multiLineText('', 9),
+    //     _multiLineText('', 10),
+    //     _multiLineText(
+    //        '', 11),
+    //     _multiLineText('', 12),
+    //     _multiLineText('', 13),
+    //     _multiLineText('', 14),
+    //     _multiLineText('', 15),
+    //   ]
+    // );
 
   }
   Widget _buildRejectButton(String uid,String formation) {
