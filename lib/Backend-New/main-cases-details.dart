@@ -229,7 +229,7 @@ class MainCasesInformation {
         date: date,
         oio: oio,
         dutyOfArrear: dutyOfArrear,
-        age: age,
+        age: 0.0,
         amountRecovered: amountRecovered,
         status: status,
         briefFact: briefFact,
@@ -262,6 +262,8 @@ class MainCasesInformation {
         //     .update(model.toJson());
         return {"res": "success"};
       } catch (e) {
+        print("hello i am khushvant ${e.toString()}");
+        print(e.toString());
         return {"res": e.toString()};
       }
     } else {
@@ -300,12 +302,12 @@ class MainCasesInformation {
             category: modelData['category'],
             subcategory: modelData['subcategory'],
             docName: "receipts",
-            noOfCasesOfTheMonth: 1,
-            noOfCasesUpToTheMonth: 0,
+            noOfCasesOfTheMonth: 1.0,
+            noOfCasesUpToTheMonth: 0.0,
             amountOfTheMonth: double.parse(modelData['totalArrearPending']),
-            amountUpTotheMonth: 0,
+            amountUpTotheMonth: 0.0,
             openingBalance: double.parse(modelData['totalArrearPending']),
-            closingBalance: 0);
+            closingBalance: 0.0);
         if (request) {
           // print("i am in request njndjdnbjdbn");
           await RequestCasesInformation()
@@ -431,6 +433,23 @@ class MainCasesInformation {
           .collection("MP")
           .doc(formation)
           .collection("cases").doc(uid)
+          .get();
+      MainCaseModel model = MainCaseModel.fromJson(qsnap.data() as Map<String, dynamic>);
+      return {'res':'success','model':model};
+    }
+    catch(e){
+      return {'res': 'some error occure $e'};
+    }
+  }
+  //get reuestcase detail document using formation
+
+  Future getRequestCaseDetailByDocument({required  String formation,required String uid}) async {
+
+    try{
+      DocumentSnapshot qsnap = await _fireStore
+          .collection("MP")
+          .doc(formation)
+          .collection("requested cases").doc(uid)
           .get();
       MainCaseModel model = MainCaseModel.fromJson(qsnap.data() as Map<String, dynamic>);
       return {'res':'success','model':model};

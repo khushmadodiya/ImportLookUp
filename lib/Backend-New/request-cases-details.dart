@@ -369,7 +369,9 @@ class RequestCasesInformation {
       return {"res":"some error occured"};
     }
     }catch(e){
+      print("hello i am khush ${e.toString()}");
       return {"res":"some error occured ${e.toString()}"};
     }
+
   }
 }
