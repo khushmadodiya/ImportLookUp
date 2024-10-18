@@ -59,6 +59,7 @@ class _AcceptRequestCaseTextFieldsState extends State<AcceptRequestCaseTextField
     }
     else {
       res =await pro.addRequestCase(false, uid: widget.uid, oldData:oldData, isShifted: true);
+      print("here is resp[onse ${res["res"]}");
     }
     if(res['res']=='success'){
       if(userInfo.userType==USERTYPE[0]) {
