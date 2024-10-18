@@ -39,7 +39,7 @@ class _AddCaseDeatilState extends State<AddCaseDeatil> {
   @override
 
   void adddetail(var pro) async {
-
+print("dhndhijdihn");
    var pro= Provider.of<AddNewCase>(context,listen: false);
    pro.updateLoader();
    var userInfo = Provider.of<UserInformation>(context,listen: false);
@@ -51,8 +51,12 @@ class _AddCaseDeatilState extends State<AddCaseDeatil> {
    pro.formation.text = formation??"";
 
    Map<String,dynamic> res ;
-   if(userInfo.userType==USERTYPE[0]) res=await pro.addMainCase(userInfo==userInfo.userType);
-   else res =await pro.addRequestCase(false, uid: '', oldData:{}, isShifted: false);
+   if(userInfo.userType==USERTYPE[0]){
+    res=await pro.addMainCase(userInfo==userInfo.userType);}
+   else{
+    print("heeelo i ma divyansh ");
+    res =await pro.addRequestCase(false, uid: '', oldData:{}, isShifted: false);
+    };
 
    if(res['res']=='success'){
      if(userInfo.userType==USERTYPE[0]) {
@@ -64,6 +68,7 @@ class _AddCaseDeatilState extends State<AddCaseDeatil> {
      pro.clear();
    }
    else{
+    print("heeelo i am here ${res["res"]}");
      Fluttertoast.showToast(msg: 'Some error occur');
 
    }

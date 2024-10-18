@@ -249,7 +249,7 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
           _multiLineText(provider.requestCaseData[index].apealNo, 14),
           _multiLineText(
               provider.requestCaseData[index].stayOrderNumberAndDate, 15),
-         if(userInfo.userType ==USERTYPE[0]) _buildTransferButton(provider.requestCaseData[index].uid,provider.requestCaseData[index].formation,provider.requestCaseData[index].oldData.uid==''),
+         if(userInfo.userType ==USERTYPE[0]) _buildTransferButton(provider.requestCaseData[index].uid,provider.requestCaseData[index].formation,provider.requestCaseData[index].oldDataMode!.uid==''),
         ],
       );
     }
@@ -258,20 +258,20 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
     return TableRow(
       children: [
         _multiLineText('${index+1} Old', 1),
-        _multiLineText(provider.requestCaseData[index].oldData.name, 2),
-        _multiLineText(provider.requestCaseData[index].oldData.formation , 3),
-        _multiLineText(provider.requestCaseData[index].oldData.oio, 4),
-        _multiLineText(provider.requestCaseData[index].oldData.date, 5),
+        _multiLineText(provider.requestCaseData[index].oldDataMode!.name, 2),
+        _multiLineText(provider.requestCaseData[index].oldDataMode!.formation , 3),
+        _multiLineText(provider.requestCaseData[index].oldDataMode!.oio, 4),
+        _multiLineText(provider.requestCaseData[index].oldDataMode!.date, 5),
         _multiLineText(day, 6),
-        _multiLineText(provider.requestCaseData[index].oldData.dutyOfArrear , 7),
-        _multiLineText(provider.requestCaseData[index].oldData.penalty, 8),
-        _multiLineText(provider.requestCaseData[index].oldData.amountRecovered, 9),
-        _multiLineText(provider.requestCaseData[index].oldData.preDeposit, 10),
-        _multiLineText(provider.requestCaseData[index].oldData.totalArrearPending, 11),
-        _multiLineText(provider.requestCaseData[index].oldData.briefFact, 12),
-        _multiLineText(provider.requestCaseData[index].oldData.status, 13),
-        _multiLineText(provider.requestCaseData[index].oldData.apealNo , 14),
-        _multiLineText(provider.requestCaseData[index].oldData.stayOrderNumberAndDate, 15),
+        _multiLineText(provider.requestCaseData[index].oldDataMode!.dutyOfArrear , 7),
+        _multiLineText(provider.requestCaseData[index].oldDataMode!.penalty, 8),
+        _multiLineText(provider.requestCaseData[index].oldDataMode!.amountRecovered, 9),
+        _multiLineText(provider.requestCaseData[index].oldDataMode!.preDeposit, 10),
+        _multiLineText(provider.requestCaseData[index].oldDataMode!.totalArrearPending, 11),
+        _multiLineText(provider.requestCaseData[index].oldDataMode!.briefFact, 12),
+        _multiLineText(provider.requestCaseData[index].oldDataMode!.status, 13),
+        _multiLineText(provider.requestCaseData[index].oldDataMode!.apealNo , 14),
+        _multiLineText(provider.requestCaseData[index].oldDataMode!.stayOrderNumberAndDate, 15),
       if(userInfo.userType==USERTYPE[0])  _buildRejectButton(provider.requestCaseData[index].uid,provider.requestCaseData[index].formation),
       ],
 

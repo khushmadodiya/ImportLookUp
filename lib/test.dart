@@ -20,7 +20,7 @@ class _TestState extends State<Test> {
   AddNewCase dipu=Provider.of<AddNewCase>(context,listen:false);
    await dipu.getRequestCasesInformation(formation:"Air Cargo Complex Indore", isAdmin:false);
    AddNewCase dipu2=Provider.of<AddNewCase>(context,listen:false);
-   print("here dipu ${dipu2.requestCaseData[2].oldData.category}");
+  //  print("here dipu ${dipu2.requestCaseData[2].category}");
   }
   @override
   Widget build(BuildContext context) {
