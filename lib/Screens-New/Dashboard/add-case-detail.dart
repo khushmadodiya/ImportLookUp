@@ -52,7 +52,10 @@ class _AddCaseDeatilState extends State<AddCaseDeatil> {
 
    Map<String,dynamic> res ;
    if(userInfo.userType==USERTYPE[0]) res=await pro.addMainCase(userInfo==userInfo.userType);
-   else res =await pro.addRequestCase(false, uid: '', oldData:{}, isShifted: false);
+   else{
+    print("heeelo i ma divyansh ");
+    res =await pro.addRequestCase(false, uid: '', oldData:{}, isShifted: false);
+    };
 
    if(res['res']=='success'){
      if(userInfo.userType==USERTYPE[0]) {

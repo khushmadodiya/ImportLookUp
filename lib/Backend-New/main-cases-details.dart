@@ -490,7 +490,14 @@ class MainCasesInformation {
       {required String uid,required MainCaseModel model,required WriteBatch batch}) async {
     try {
      DocumentReference ref= _fireStore.collection("MP").doc("replicationmaincase").collection("formation").doc(uid);
-     batch.update(ref,model.toJson());
+    //  if(ref.get().
+    DocumentSnapshot snap=await _fireStore.collection("MP").doc("replicationmaincase").collection("formation").doc(uid).get();
+    if(!snap.exists){
+       batch.set(ref,model.toJson());
+    }else{
+       batch.update(ref,model.toJson());
+    }
+    
     return {"res": "success"};
     } catch (e) {
       return {"res": e.toString()};

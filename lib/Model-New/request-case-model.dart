@@ -4,7 +4,8 @@ import 'package:import_lookup/Model-New/main-case-model.dart';
 
 class RequestCaseModel {
 
-  MainCaseModel oldData;
+  Map<String,dynamic> oldData;
+  MainCaseModel? oldDataMode;
   String uid;
   String name;
   String formation;
@@ -54,6 +55,7 @@ class RequestCaseModel {
         required this.iec,
         required this.pan,
         this.age,
+        this.oldDataMode,
         required this.completeTrack,
         this.isshifted,
         required this.category,
@@ -63,7 +65,8 @@ class RequestCaseModel {
 
   factory RequestCaseModel.fromJson(Map<String, dynamic> json) {
     return RequestCaseModel(
-        oldData:MainCaseModel.fromJson(json['oldData'] as Map<String,dynamic>),
+        oldData:json['oldData']??{},
+        oldDataMode:MainCaseModel.fromJson(json['oldData'] as Map<String,dynamic>),
         uid: json['uid'] as String? ?? '',
         name: json['name'] as String? ?? '',
         formation: json['formation'] as String? ?? '',
