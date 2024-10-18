@@ -57,7 +57,6 @@ String? formation=FORMATION[0];
     if(userInfo.userType==USERTYPE[0]) {
       res= await pro.updateMainCaseDetails(true, uid: widget.uid, isShifted: true,);
 
-
     }
     else {
       res =await pro.addRequestCase(false, uid: widget.uid, oldData:oldData, isShifted: true);
@@ -66,9 +65,8 @@ String? formation=FORMATION[0];
     print(res['res']);
     if(res['res']=='success'){
       if(userInfo.userType==USERTYPE[0]) {
-        await pro.getMainCasesInformation(formation: userInfo.formation, isAdmin: true);
         Fluttertoast.showToast(msg: 'Updated case');
-        Navigator.pop(context);
+        Navigator.pop(context,true);
       }
       else{
         Fluttertoast.showToast(msg: 'Request submit to the admin');

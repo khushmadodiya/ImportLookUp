@@ -147,7 +147,8 @@ class _CustomTableState extends State<CustomTable> {
           ),
 
         );
-        return const Scaffold(body: Center(child: Text("No date available")),);
+        
+        return const Scaffold(body: Center(child: CircularProgressIndicator()),);
 
 
       }
@@ -210,8 +211,11 @@ class _CustomTableState extends State<CustomTable> {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
         child:
-        CustomButton(text: 'Transfer', onpress: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdateCaseDetail(uid: uid,formation: formation)));
+        CustomButton(text: 'Transfer', onpress: ()async{
+        final res= await Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdateCaseDetail(uid: uid,formation: formation)));
+        if(res){
+          getData();
+        }
         }, isLoading: false)
 
         // ElevatedButton(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:import_lookup/Model-New/main-case-model.dart';
 import 'package:import_lookup/Provider-New/add-new-cases.dart';
+import 'package:import_lookup/Provider-New/general-pusrpose.dart';
 import 'package:import_lookup/Screens/universal-update-details-page.dart';
 import 'package:provider/provider.dart';
 
@@ -96,75 +97,120 @@ class _SearchScreenState extends State<SearchScreen> {
 
 
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Search Cases')),
-      body: Column(
-        children: [
-          Row(children: [
-            ElevatedButton(onPressed:(){
-            sortBasedofDate();
-          }, child:const Text("Sort Based On Date")),
-           ElevatedButton(onPressed:(){
-            sortBasedofToatlArrearsPending();
-          }, child:const Text("Sort Based On arrears pending")),
-          ],),
-          Padding(
-            padding: const EdgeInsets.all(14.0),
-            child: TextField(
-              decoration: const InputDecoration(
-                labelText: 'Search by Category',
-                hintText: 'Enter "Supreme Court" to filter...',
-                border: OutlineInputBorder(),
+    return Consumer<UserInformation>(
+      builder: (context,userInfo,child)=>
+      Consumer<AddNewCase>(
+        builder: (context,provider,child)=>
+       Scaffold(
+          appBar: AppBar(title: const Text('Search Cases')),
+          body: Column(
+            children: [
+              Row(children: [
+                ElevatedButton(onPressed:(){
+                sortBasedofDate();
+              }, child:const Text("Sort Based On Date")),
+               ElevatedButton(onPressed:(){
+                sortBasedofToatlArrearsPending();
+              }, child:const Text("Sort Based On arrears pending")),
+              ],),
+              Padding(
+                padding: const EdgeInsets.all(14.0),
+                child: TextField(
+                  decoration: const InputDecoration(
+                    labelText: 'Search by Category',
+                    hintText: 'Enter "Supreme Court" to filter...',
+                    border: OutlineInputBorder(),
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      _searchQuery = value; // Update the search query when user types
+                    });
+                  },
+                ),
               ),
-              onChanged: (value) {
-                setState(() {
-                  _searchQuery = value; // Update the search query when user types
-                });
-              },
-            ),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Padding(
-                  padding: const EdgeInsets.all(18.0),
-                  child: Table(
-                    border: TableBorder.all(width: 1.0, color: Colors.black),
-                    columnWidths: const {
-                      0: FixedColumnWidth(70),
-                      1: FixedColumnWidth(300),
-                      2:FixedColumnWidth(300),
-                      3:FixedColumnWidth(180),
-                      4: FixedColumnWidth(180),
-                      5: FixedColumnWidth(300),
-                      6: FixedColumnWidth(150),
-                      7: FixedColumnWidth(120),
-                      8: FixedColumnWidth(180),
-                      9: FixedColumnWidth(180),
-                      10: FixedColumnWidth(180),
-                      11: FixedColumnWidth(180),
-                      12: FixedColumnWidth(180),
-                      13: FixedColumnWidth(350),
-                      14: FixedColumnWidth(350),
-                      15: FixedColumnWidth(250),
-                      16: FixedColumnWidth(180),
-                      17: FixedColumnWidth(180),
-                      18: FixedColumnWidth(180),
-
-                    },
-                    children: [
-                      // Header Row
-                      _buildHeaderRow(),
-                      ...rows
-                    ],
+              Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Padding(
+                      padding: const EdgeInsets.all(18.0),
+                      child: Table(
+                        border: TableBorder.all(width: 1.0, color: Colors.black),
+                        columnWidths: const {
+                          0: FixedColumnWidth(70),
+                          1: FixedColumnWidth(300),
+                          2:FixedColumnWidth(300),
+                          3:FixedColumnWidth(180),
+                          4: FixedColumnWidth(180),
+                          5: FixedColumnWidth(300),
+                          6: FixedColumnWidth(150),
+                          7: FixedColumnWidth(120),
+                          8: FixedColumnWidth(180),
+                          9: FixedColumnWidth(180),
+                          10: FixedColumnWidth(180),
+                          11: FixedColumnWidth(180),
+                          12: FixedColumnWidth(180),
+                          13: FixedColumnWidth(350),
+                          14: FixedColumnWidth(350),
+                          15: FixedColumnWidth(250),
+                          16: FixedColumnWidth(180),
+                          17: FixedColumnWidth(180),
+                          18: FixedColumnWidth(180),
+        
+                        },
+                        children: [
+                          // Header Row
+                          _buildHeaderRow(),
+                          ...rows
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
+              if(userInfo.userType==USERTYPE[0])  SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Consumer<GeneralPurposeProvider>(
+                          builder: (context, generalProvider, child) =>
+                              Row(
+                                children: List.generate(
+                                    FORMATION.length,
+                                        (index) =>
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: InkWell(
+                                            child: Container(
+                                              color: generalProvider.selectedIndex ==
+                                                  index ? Colors.blue : Colors.green,
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  FORMATION[index],
+                                                  style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight: FontWeight.bold),
+                                                ),
+                                              ),
+                                            ),
+                                            onTap: () {
+                                              provider.updateLoader();
+                                              generalProvider.updateSelectedIndex(index);
+                                              provider.getMainCasesInformation(formation: FORMATION[index] , isAdmin: false);
+                                              provider.updateLoader();
+        
+                                            },
+                                          ),
+                                        )),
+                              ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -294,13 +340,7 @@ class _SearchScreenState extends State<SearchScreen> {
     final asseserProvider = Provider.of<AddNewCase>(context, listen: false);
     final userinfo = Provider.of<UserInformation>(context,listen: false);
     asseserProvider.updateLoader();
-    if(userinfo.userType==USERTYPE[0]){
-      await asseserProvider.getMainCasesInformation(formation: userinfo.formation, isAdmin: true);
-    }
-    else{
-      await asseserProvider.getMainCasesInformation(formation: userinfo.formation, isAdmin: false);
-    }
-    asseserProvider.updateLoader();
-    print('dipu landka hai ${asseserProvider.mainCaseData[0].formation}');
+      await asseserProvider.getMainCasesInformation(formation: FORMATION[0], isAdmin: false);
+  
   }
 }

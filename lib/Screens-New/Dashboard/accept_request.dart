@@ -325,8 +325,14 @@ return Container(
           CustomButton(text: 'Accept Request', onpress: ()async{
 
 
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>AcceptRequestCaseTextFields(isNewRequest: isnewdata, uid: uid, formation: formation,)));
-          }, isLoading: false)
+           final res = await Navigator.push(context, MaterialPageRoute(builder: (context)=>AcceptRequestCaseTextFields(isNewRequest: isnewdata, uid: uid, formation: formation,)));
+          if(res){
+            getData();
+           }
+          }, isLoading: false
+
+    
+      )
       ),
     );
   }

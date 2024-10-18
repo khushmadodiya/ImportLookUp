@@ -64,11 +64,11 @@ class _AcceptRequestCaseTextFieldsState extends State<AcceptRequestCaseTextField
     if(res['res']=='success'){
       if(userInfo.userType==USERTYPE[0]) {
         Fluttertoast.showToast(msg: 'Updated case');
-        // Navigator.pop(context);
+        Navigator.pop(context,true);
       }
       else{
         Fluttertoast.showToast(msg: 'Request submit to the admin');
-        // Navigator.pop(context);
+        Navigator.pop(context,true);
       }
       pro.clear();
     }
