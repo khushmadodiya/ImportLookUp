@@ -30,6 +30,7 @@ UpdateCaseDetail({super.key, required this.uid,required this.formation,});
 class _UpdateCaseDetailState extends State<UpdateCaseDetail> {
 Map<String,dynamic> oldData ={};
 String? selectedCategory=CATEGORY[2];
+String? selectedSubCategory=SUBCATEGORY[CATEGORY[2]]![0];
 String? formation=FORMATION[0];
   @override
   void initState() {
@@ -57,7 +58,6 @@ String? formation=FORMATION[0];
     if(userInfo.userType==USERTYPE[0]) {
       res= await pro.updateMainCaseDetails(true, uid: widget.uid, isShifted: true,);
 
-
     }
     else {
       res =await pro.addRequestCase(false, uid: widget.uid, oldData:oldData, isShifted: true);
@@ -66,12 +66,11 @@ String? formation=FORMATION[0];
     print(res['res']);
     if(res['res']=='success'){
       if(userInfo.userType==USERTYPE[0]) {
-        await pro.getMainCasesInformation(formation: userInfo.formation, isAdmin: true);
-        Fluttertoast.showToast(msg: 'Updated case');
-        Navigator.pop(context);
+        Fluttertoast.showToast(msg: 'Updated case',timeInSecForIosWeb: 3);
+        Navigator.pop(context,true);
       }
       else{
-        Fluttertoast.showToast(msg: 'Request submit to the admin');
+        Fluttertoast.showToast(msg: 'Request submit to the admin',timeInSecForIosWeb: 3);
         Navigator.pop(context);
       }
 
@@ -115,6 +114,7 @@ String? formation=FORMATION[0];
                                           onChanged: (value) {
                                             setState(() {
                                               selectedCategory = value;
+                                              selectedSubCategory=SUBCATEGORY[value]![0];
                                               pro.updateSubcategory(SUBCATEGORY[value]![0]);
                                               // subcategoryKey.currentState?.getSelectedItems = null; // Reset subcategory when category changes
                                             });
@@ -124,16 +124,17 @@ String? formation=FORMATION[0];
                                     ),
 
                                     // Show DropdownSearch for subcategories only when a category is selected
-                                    if (selectedCategory != null && SUBCATEGORY[selectedCategory]!.isNotEmpty)
+                                    if (selectedCategory != null && SUBCATEGORY[selectedCategory]!.isNotEmpty )
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: GlobleDropdown(
                                           label: "Select Subcategory",
                                           listofvalues: SUBCATEGORY[selectedCategory]!,
                                           fun: (String? value) {
+                                            selectedSubCategory = value;
                                             pro.updateSubcategory(value!);
                                             print("value is hererrrrrrrrrr $value");
-                                          },
+                                          }, selectedItem: selectedSubCategory!,
 
                                         ),
                                       ),
@@ -159,7 +160,7 @@ String? formation=FORMATION[0];
                                           width: MediaQuery.of(context).size.width * 0.269,
                                           child:  GlobleDropdown(listofvalues: FORMATION, label: 'Select formation', fun: (value) {
                                             formation=value;
-                                          },),
+                                          }, selectedItem:FORMATION[0],),
 
                                         ),
                                         // const SizedBox(width:20,),
@@ -363,7 +364,8 @@ String? formation=FORMATION[0];
       pro.setAge(model.age.toString());
       pro.setEffortMade(model.effortMade);
       pro.setRemark(model.remark);
-      selectedCategory = pro.category.text;
+      selectedCategory = model.category;
+      selectedSubCategory = model.subcategory;
       formation = pro.formation.text;
       date.updateDate(model.date);
     }

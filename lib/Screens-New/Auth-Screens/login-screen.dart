@@ -79,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
         _isLoading = false;
       });
       if (context.mounted) {
-        Fluttertoast.showToast(msg: res);
+        Fluttertoast.showToast(msg: res,timeInSecForIosWeb: 3);
       }
     }
   }
@@ -137,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                         // const SizedBox(height: 10,),
                         GlobleDropdown(listofvalues: USERTYPE, label: 'Select UserType', fun: (String? value) {
                           selectedUsertype = value;
-                        },),
+                        }, selectedItem: USERTYPE[0],),
                         const SizedBox(height: 20,),
                         CustomTextField(
                           hintText: 'Enter your UserId',

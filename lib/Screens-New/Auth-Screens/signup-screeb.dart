@@ -61,7 +61,7 @@ class _SignupPageState extends State<SignupPage> {
       }
     } else {
       if (context.mounted) {
-        Fluttertoast.showToast(msg: res);
+        Fluttertoast.showToast(msg: res,timeInSecForIosWeb: 3);
       }
     }
     loading.updateLoader();
@@ -95,11 +95,11 @@ class _SignupPageState extends State<SignupPage> {
                   GlobleDropdown(listofvalues: USERTYPE,label: 'Select UserType', fun: (String? value) {
                     pro.updateUserType(value??"");
                     print(pro.userType);
-                  },),
+                  }, selectedItem: USERTYPE[0],),
                   const SizedBox(height: 10,),
                   if(pro.userType==USERTYPE[1])GlobleDropdown(listofvalues: FORMATION, label: 'Select Formation', fun: (String? value) {
                     formation = value;
-                  },),
+                  }, selectedItem: SUBCATEGORY[CATEGORY[2]]![0],),
                   const SizedBox(height: 10,),
                   CustomTextField(
                     hintText: 'Enter your username',

@@ -29,6 +29,7 @@ class AcceptRequestCaseTextFields extends StatefulWidget {
 class _AcceptRequestCaseTextFieldsState extends State<AcceptRequestCaseTextFields> {
   Map<String,dynamic> oldData ={};
   String? selectedCategory=CATEGORY[2];
+  String? selectedSubcategory = SUBCATEGORY[CATEGORY[2]]![0];
   String? formation=FORMATION[0];
   @override
   void initState() {
@@ -63,18 +64,17 @@ class _AcceptRequestCaseTextFieldsState extends State<AcceptRequestCaseTextField
     }
     if(res['res']=='success'){
       if(userInfo.userType==USERTYPE[0]) {
-        Fluttertoast.showToast(msg: 'Updated case');
-        // Navigator.pop(context);
+        Fluttertoast.showToast(msg: 'Updated case',timeInSecForIosWeb: 3);
+        Navigator.pop(context,true);
       }
       else{
-        Fluttertoast.showToast(msg: 'Request submit to the admin');
-        // Navigator.pop(context);
+        Fluttertoast.showToast(msg: 'Request submit to the admin',timeInSecForIosWeb: 3);
+        Navigator.pop(context,true);
       }
       pro.clear();
     }
     else{
-      Fluttertoast.showToast(msg: 'Some error occur');
-
+      Fluttertoast.showToast(msg: 'Some error occur ${res['res']}',timeInSecForIosWeb: 3);
     }
     pro.updateLoader();
   }
@@ -109,7 +109,9 @@ class _AcceptRequestCaseTextFieldsState extends State<AcceptRequestCaseTextField
                                           onChanged: (value) {
                                             setState(() {
                                               selectedCategory = value;
-                                              pro.updateSubcategory(SUBCATEGORY[value]![0]);
+                                             if(value!=null) {pro.setCategory(value);
+                                             selectedSubcategory=SUBCATEGORY[value]![0];
+                                             pro.updateSubcategory(SUBCATEGORY[value]![0]);}
                                               // subcategoryKey.currentState?.getSelectedItems = null; // Reset subcategory when category changes
                                             });
                                           },
@@ -125,9 +127,10 @@ class _AcceptRequestCaseTextFieldsState extends State<AcceptRequestCaseTextField
                                           label: "Select Subcategory",
                                           listofvalues: SUBCATEGORY[selectedCategory]!,
                                           fun: (String? value) {
+                                            selectedSubcategory = value;
                                             pro.updateSubcategory(value!);
                                             print("vailue is here $value");
-                                          },
+                                          }, selectedItem: selectedSubcategory!,
 
                                         ),
                                       ),
@@ -153,7 +156,7 @@ class _AcceptRequestCaseTextFieldsState extends State<AcceptRequestCaseTextField
                                           width: MediaQuery.of(context).size.width * 0.269,
                                           child:  GlobleDropdown(listofvalues: FORMATION, label: 'Select formation', fun: (value) {
                                             formation=value;
-                                          },),
+                                          }, selectedItem: formation!,),
 
                                         ),
                                         // const SizedBox(width:20,),
@@ -263,7 +266,7 @@ class _AcceptRequestCaseTextFieldsState extends State<AcceptRequestCaseTextField
                                       }else{
                                         adddetail(pro);
                                       }
-                                    },text: 'Add Data', isLoading: pro.isLoading))
+                                    },text: 'Accept Request', isLoading: pro.isLoading))
                               ],
                             ),
                           ),
@@ -333,10 +336,12 @@ class _AcceptRequestCaseTextFieldsState extends State<AcceptRequestCaseTextField
     var date = Provider.of<GeneralPurposeProvider>(context,listen: false);
     if(!widget.isNewRequest){
       print('Maincasedetail');
-      var res = (await MainCasesInformation().getMainCaseDetailByDocument(formation: widget.formation, uid: widget.uid)) ;
+      var res = (await MainCasesInformation().getRequestCaseDetailByDocument(formation: widget.formation, uid: widget.uid)) ;
       if(res['res']=='success') {
         var pro = Provider.of<AddNewCase>(context,listen: false);
         MainCaseModel model = res['model'];
+        print(model.category);
+        print(model.subcategory);
         oldData = model.toJson();
         pro.setName(model.name);
         pro.setCategory(model.category);
@@ -357,13 +362,16 @@ class _AcceptRequestCaseTextFieldsState extends State<AcceptRequestCaseTextField
         pro.setIec(model.iec);
         pro.setGstin(model.gstin);
         pro.setPan(model.pan);
-        pro.setAge('00');
+        pro.setAge(model.age.toString());
         pro.setEffortMade(model.effortMade);
         pro.setRemark(model.remark);
-        selectedCategory = pro.category.text;
-        formation = pro.formation.text;
+        selectedCategory = model.category;
+        selectedSubcategory = model.subcategory;
+        formation = model.formation;
         date.updateDate(model.date);
-        pro.updateSubcategory(model.subcategory);
+
+
+
       }
       else{
         Fluttertoast.showToast(msg: '${res['res']}',timeInSecForIosWeb:4 );
@@ -377,6 +385,7 @@ class _AcceptRequestCaseTextFieldsState extends State<AcceptRequestCaseTextField
       if(res['res']=='success') {
         var pro = Provider.of<AddNewCase>(context,listen: false);
         MainCaseModel model = res['model'];
+        print(model.category);
         oldData = model.toJson();
         pro.setName(model.name);
         pro.setCategory(model.category);
@@ -397,13 +406,14 @@ class _AcceptRequestCaseTextFieldsState extends State<AcceptRequestCaseTextField
         pro.setIec(model.iec);
         pro.setGstin(model.gstin);
         pro.setPan(model.pan);
-        pro.setAge("00");
+        pro.setAge(model.age.toString());
         pro.setEffortMade(model.effortMade);
         pro.setRemark(model.remark);
-        selectedCategory = pro.category.text;
-        formation = pro.formation.text;
+        selectedCategory = model.category;
+        selectedSubcategory=model.subcategory;
+        formation = model.formation;
         date.updateDate(model.date);
-        pro.updateSubcategory(model.subcategory);
+
       }
       else{
         Fluttertoast.showToast(msg: '${res['res']}',timeInSecForIosWeb:4 );
