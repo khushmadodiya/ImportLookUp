@@ -21,7 +21,8 @@ class AddCaseDeatil extends StatefulWidget {
 }
 
 class _AddCaseDeatilState extends State<AddCaseDeatil> {
-  String? selectedCategory=CATEGORY[2];
+  String selectedCategory=CATEGORY[2];
+  String selectedSubCategory=SUBCATEGORY[CATEGORY[2]]![0];
   String? formation=FORMATION[0];
  @override
   void initState() {
@@ -60,16 +61,16 @@ print("dhndhijdihn");
 
    if(res['res']=='success'){
      if(userInfo.userType==USERTYPE[0]) {
-       Fluttertoast.showToast(msg: 'Added new case');
+       Fluttertoast.showToast(msg: 'Added new case',timeInSecForIosWeb: 3);
      }
      else{
-       Fluttertoast.showToast(msg: 'Request submit to the admin');
+       Fluttertoast.showToast(msg: 'Request submit to the admin',timeInSecForIosWeb: 3);
      }
      pro.clear();
    }
    else{
     print("heeelo i am here ${res["res"]}");
-     Fluttertoast.showToast(msg: 'Some error occur');
+     Fluttertoast.showToast(msg: 'Some error occur',timeInSecForIosWeb: 3);
 
    }
    pro.updateLoader();
@@ -103,7 +104,8 @@ print("dhndhijdihn");
                               groupValue: selectedCategory,
                               onChanged: (value) {
                                 setState(() {
-                                  selectedCategory = value;
+                                  selectedCategory = value!;
+                                  selectedSubCategory=SUBCATEGORY[value]![0];
                                   pro.updateSubcategory(SUBCATEGORY[value]![0]);
                                   // subcategoryKey.currentState?.getSelectedItems = null; // Reset subcategory when category changes
                                 });
@@ -120,9 +122,10 @@ print("dhndhijdihn");
                               label: "Select Subcategory",
                               listofvalues: SUBCATEGORY[selectedCategory]!,
                               fun: (String? value) {
+                                selectedSubCategory = value!;
                                 pro.updateSubcategory(value!);
                                 print("vailue is here $value");
-                              },
+                              }, selectedItem: selectedSubCategory!,
 
                             ),
                           ),
@@ -148,7 +151,7 @@ print("dhndhijdihn");
                               width: MediaQuery.of(context).size.width * 0.269,
                               child:  GlobleDropdown(listofvalues: FORMATION, label: 'Select formation', fun: (value) {
                                 formation=value;
-                              },),
+                              }, selectedItem: formation!,),
 
                             ),
                             // const SizedBox(width:20,),

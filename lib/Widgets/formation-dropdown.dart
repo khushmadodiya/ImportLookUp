@@ -6,11 +6,11 @@ import '../Backend-New/Golbal-Files/category-and-subcategory.dart';
 
 class GlobleDropdown extends StatefulWidget {
    final dropdownkey;
-   final int selectedIndex;
+   final String selectedItem;
    ValueChanged <String?> fun;
    final label;
    final List<String> listofvalues ;
-   GlobleDropdown({super.key, this.dropdownkey, required this.listofvalues, required this.label,  required this.fun, this.selectedIndex = 0});
+   GlobleDropdown({super.key, this.dropdownkey, required this.listofvalues, required this.label,  required this.fun, required this.selectedItem });
 
   @override
   State<GlobleDropdown> createState() => _GlobleDropdownState();
@@ -44,7 +44,7 @@ class _GlobleDropdownState extends State<GlobleDropdown> {
             },
             items: widget.listofvalues,
 
-            selectedItem: widget.listofvalues[widget.selectedIndex],
+            selectedItem: widget.selectedItem,
             dropdownDecoratorProps: DropDownDecoratorProps(
               dropdownSearchDecoration: InputDecoration(
                 labelText: widget.label,
