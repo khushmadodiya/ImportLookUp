@@ -497,7 +497,7 @@ class AddNewCase with ChangeNotifier {
     return {"res":"success"};
   }
 
-  Future addMainCase(bool isAdmin) async {
+  Future addMainCase() async {
 
     var res=await MainCasesInformation().addCases(
       uid: '',
