@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'Backend-New/financial-year.dart';
 import 'Provider-New/add-new-cases.dart';
 
 class Test extends StatefulWidget {
@@ -17,9 +18,12 @@ class _TestState extends State<Test> {
   }
 
   void getData()async{
-  AddNewCase dipu=Provider.of<AddNewCase>(context,listen:false);
-   await dipu.getRequestCasesInformation(formation:"Air Cargo Complex Indore", isAdmin:false);
-   AddNewCase dipu2=Provider.of<AddNewCase>(context,listen:false);
+  // AddNewCase dipu=Provider.of<AddNewCase>(context,listen:false);
+  //  await dipu.getRequestCasesInformation(formation:"Air Cargo Complex Indore", isAdmin:false);
+  //  AddNewCase dipu2=Provider.of<AddNewCase>(context,listen:false);
+    print('dipuuuuuuuuuuuuuuu');
+  var res = await FinancialYear().financialYear(currentMonth: DateTime.now().month.toString());
+  print('hello i am dipu ${res['res']}');
   //  print("here dipu ${dipu2.requestCaseData[2].category}");
   }
   @override

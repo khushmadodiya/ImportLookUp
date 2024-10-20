@@ -34,8 +34,6 @@ class CustomTextField extends StatefulWidget {
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
-
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -45,21 +43,20 @@ class _CustomTextFieldState extends State<CustomTextField> {
         borderRadius: BorderRadius.circular(15.0),
       ),
       child: Container(
-
         height: widget.height,
         width: widget.width,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: Colors.blue[50]
-        ),
+            borderRadius: BorderRadius.circular(15), color: Colors.blue[50]),
         child: TextFormField(
             controller: widget.controller,
             obscureText: widget.obscureText,
             keyboardType: widget.keyboardType,
             maxLines: widget.maxLines,
             decoration: InputDecoration(
-              prefixIcon: widget.prefixIcon != null ? Icon(widget.prefixIcon) : null,
-              suffixIcon: widget.suffixIcon != null ? Icon(widget.suffixIcon) : null,
+              prefixIcon:
+                  widget.prefixIcon != null ? Icon(widget.prefixIcon) : null,
+              suffixIcon:
+                  widget.suffixIcon != null ? Icon(widget.suffixIcon) : null,
               hintText: widget.hintText,
 
               // labelStyle: ,
@@ -70,10 +67,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               ),
             ),
             autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: widget.customValidator
-
-
-        ),
+            validator: widget.customValidator),
       ),
     );
   }

@@ -1,27 +1,15 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.dart';
 import 'package:import_lookup/Backend/authmethos.dart';
-import 'package:import_lookup/Model-New/main-case-model.dart';
-import 'package:import_lookup/Model-New/request-case-model.dart';
 import 'package:import_lookup/Provider-New/add-new-cases.dart';
 import 'package:import_lookup/Provider-New/general-pusrpose.dart';
 import 'package:import_lookup/Provider-New/get-user-deatils.dart';
-import 'package:import_lookup/Screens-New/Dashboard/update-case-detail.dart';
 import 'package:import_lookup/Widgets/custom-button.dart';
-import 'package:pagination_flutter/pagination.dart';
 import 'package:provider/provider.dart';
-import 'package:import_lookup/Backend/fetchAsseserData.dart';
-import 'package:import_lookup/Screens/universal-update-details-page.dart';
 import 'package:import_lookup/excael-download-option.dart';
-
-import '../../provider/provider.dart';
 import 'accept-request-case-textfield.dart';
-
-
 
 class AcceptRequestCase extends StatefulWidget {
   final title;
@@ -34,7 +22,7 @@ class AcceptRequestCase extends StatefulWidget {
 
 class _AcceptRequestCaseState extends State<AcceptRequestCase> {
   ScrollController _scrollController = ScrollController();
-  int index=0;
+  int index = 0;
   List<Map<String, dynamic>> myData = [];
 
   @override
@@ -50,159 +38,162 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
   @override
   Widget build(BuildContext context) {
     return Consumer<UserInformation>(
-      builder: (context,userInfo,child)=>
-       Consumer<AddNewCase>(
-        builder: (context, provider, child) {
-          if (!provider.isLoading || provider.requestCaseData.isNotEmpty) {
-            return Scaffold(
-              appBar: AppBar(
-                title: Text(widget.title),
-                actions: [
-                  IconButton(onPressed: () {
-                    AuthMethods().signOut(context);
-                    setState(() {
-
-                    });
-                  }, icon: Icon(Icons.logout))
-                ],
-              ),
-              // body: Text('hell0'),
-              body: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  InkWell(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        height: 40,
-                        width: 150,
-                        color: Colors.amber.withOpacity(0.3),
-                        child: const Center(child: Text("Download Excel")),
-                      ),
-                    ),
-                    onTap: () {
-                      ExcelDonwloadOption().exportToExcel(myData, 'OIO DETAILS');
+      builder: (context, userInfo, child) =>
+          Consumer<AddNewCase>(builder: (context, provider, child) {
+        if (!provider.isLoading || provider.requestCaseData.isNotEmpty) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(widget.title),
+              actions: [
+                IconButton(
+                    onPressed: () {
+                      AuthMethods().signOut(context);
+                      setState(() {});
                     },
+                    icon: Icon(Icons.logout))
+              ],
+            ),
+            // body: Text('hell0'),
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                InkWell(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      height: 40,
+                      width: 150,
+                      color: Colors.amber.withOpacity(0.3),
+                      child: const Center(child: Text("Download Excel")),
+                    ),
                   ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: Listener(
-                        onPointerSignal: (pointerSignal) {
-                          if (pointerSignal is PointerScrollEvent) {
-                            // Horizontal scroll based on the mouse wheel's delta
-                            _scrollController.jumpTo(
-                              _scrollController.offset + pointerSignal.scrollDelta
-                                  .dy, // Use dy for vertical mouse wheel mapped to horizontal scroll
-                            );
-                          }
-                        },
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          controller: _scrollController,
-                          child: Padding(
-                            padding: const EdgeInsets.all(18.0),
-                            child: Card(
-                              elevation: 12,
-                              color: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15)),
-                              child: Table(
-                                border: TableBorder.all(
-                                    width: 1.0, color: Colors.black),
-                                columnWidths: const {
-                                  0: FixedColumnWidth(70),
-                                  1: FixedColumnWidth(300),
-                                  2: FixedColumnWidth(180),
-                                  3: FixedColumnWidth(300),
-                                  4: FixedColumnWidth(150),
-                                  5: FixedColumnWidth(120),
-                                  6: FixedColumnWidth(180),
-                                  7: FixedColumnWidth(180),
-                                  8: FixedColumnWidth(180),
-                                  9: FixedColumnWidth(180),
-                                  10: FixedColumnWidth(180),
-                                  11: FixedColumnWidth(350),
-                                  12: FixedColumnWidth(350),
-                                  13: FixedColumnWidth(250),
-                                  14: FixedColumnWidth(180),
-                                  15: FixedColumnWidth(180),
-                                  16: FixedColumnWidth(180),
-                                },
-                                children: [
-                                  // Header Row
-                                  _buildHeaderRow(userInfo),
-                                  // Data Rows
-          for (int i = 0; i < provider.requestCaseData.length*2 ; i++)
+                  onTap: () {
+                    ExcelDonwloadOption().exportToExcel(myData, 'OIO DETAILS');
+                  },
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Listener(
+                      onPointerSignal: (pointerSignal) {
+                        if (pointerSignal is PointerScrollEvent) {
+                          // Horizontal scroll based on the mouse wheel's delta
+                          _scrollController.jumpTo(
+                            _scrollController.offset +
+                                pointerSignal.scrollDelta
+                                    .dy, // Use dy for vertical mouse wheel mapped to horizontal scroll
+                          );
+                        }
+                      },
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        controller: _scrollController,
+                        child: Padding(
+                          padding: const EdgeInsets.all(18.0),
+                          child: Card(
+                            elevation: 12,
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)),
+                            child: Table(
+                              border: TableBorder.all(
+                                  width: 1.0, color: Colors.black),
+                              columnWidths: const {
+                                0: FixedColumnWidth(70),
+                                1: FixedColumnWidth(300),
+                                2: FixedColumnWidth(180),
+                                3: FixedColumnWidth(300),
+                                4: FixedColumnWidth(150),
+                                5: FixedColumnWidth(120),
+                                6: FixedColumnWidth(180),
+                                7: FixedColumnWidth(180),
+                                8: FixedColumnWidth(180),
+                                9: FixedColumnWidth(180),
+                                10: FixedColumnWidth(180),
+                                11: FixedColumnWidth(350),
+                                12: FixedColumnWidth(350),
+                                13: FixedColumnWidth(250),
+                                14: FixedColumnWidth(180),
+                                15: FixedColumnWidth(180),
+                                16: FixedColumnWidth(180),
+                              },
+                              children: [
+                                // Header Row
+                                _buildHeaderRow(userInfo),
+                                // Data Rows
+                                for (int i = 0;
+                                    i < provider.requestCaseData.length * 2;
+                                    i++)
+                                  if (i % 2 == 0)
+                                    _buildDataRow(provider, userInfo, i ~/ 2,
+                                        true) // First pass for index
+                                  else
+                                    _buildDataRow(provider, userInfo, i ~/ 2,
+                                        false) // Second pass for the same index
 
-          if (i % 2 == 0)
-          _buildDataRow(provider,userInfo ,i~/2, true) // First pass for index
-           else
-          _buildDataRow(provider,userInfo, i ~/ 2, false)  // Second pass for the same index
-
-             // _buildDataRow(provider, userInfo, i, true)
-
-                                ],
-                              ),
+                                // _buildDataRow(provider, userInfo, i, true)
+                              ],
                             ),
                           ),
                         ),
                       ),
                     ),
                   ),
-               if(userInfo.userType==USERTYPE[0])  SingleChildScrollView(
+                ),
+                if (userInfo.userType == USERTYPE[0])
+                  SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Consumer<GeneralPurposeProvider>(
-                      builder: (context, generalProvider, child) =>
-                          Row(
-                            children: List.generate(
-                                FORMATION.length,
-                                    (index) =>
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: InkWell(
-                                        child: Container(
-                                          color: generalProvider.selectedIndex ==
-                                              index ? Colors.blue : Colors.green,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(
-                                              FORMATION[index],
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
+                      builder: (context, generalProvider, child) => Row(
+                        children: List.generate(
+                            FORMATION.length,
+                            (index) => Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: InkWell(
+                                    child: Container(
+                                      color:
+                                          generalProvider.selectedIndex == index
+                                              ? Colors.blue
+                                              : Colors.green,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          FORMATION[index],
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
                                         ),
-                                        onTap: () {
-                                          provider.updateLoader();
-                                          generalProvider.updateSelectedIndex(index);
-                                          provider.getRequestCasesInformation(formation: FORMATION[index] , isAdmin: false);
-                                          provider.updateLoader();
-
-                                        },
                                       ),
-                                    )),
-                          ),
+                                    ),
+                                    onTap: () {
+                                      provider.updateLoader();
+                                      generalProvider
+                                          .updateSelectedIndex(index);
+                                      provider.getRequestCasesInformation(
+                                          formation: FORMATION[index],
+                                          isAdmin: false);
+                                      provider.updateLoader();
+                                    },
+                                  ),
+                                )),
+                      ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                ],
-              ),
-
-            );
-          }
-
-            return Scaffold(body: Center(child: CircularProgressIndicator(),),);
-
+                const SizedBox(
+                  height: 20,
+                ),
+              ],
+            ),
+          );
         }
-      ),
+
+        return Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      }),
     );
-
-
-
   }
 
   TableRow _buildHeaderRow(UserInformation provider) {
@@ -224,14 +215,17 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
         _buildHeaderCell('Status', 14),
         _buildHeaderCell('Appeal No.', 15),
         _buildHeaderCell('Stay Order No and Date', 16),
-       if(provider.userType==USERTYPE[0]) _buildHeaderCell('Change Data', 17),
+        if (provider.userType == USERTYPE[0])
+          _buildHeaderCell('Change Data', 17),
       ],
     );
   }
 
-  TableRow _buildDataRow(AddNewCase provider,UserInformation userInfo, int index,flag) {
-    String day = _calculateDayCount(provider.requestCaseData[index].date??"").toString();
-    if(flag) {
+  TableRow _buildDataRow(
+      AddNewCase provider, UserInformation userInfo, int index, flag) {
+    String day = _calculateDayCount(provider.requestCaseData[index].date ?? "")
+        .toString();
+    if (flag) {
       return TableRow(
         children: [
           _multiLineText('${index + 1} New', 1),
@@ -252,7 +246,11 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
           _multiLineText(provider.requestCaseData[index].apealNo, 15),
           _multiLineText(
               provider.requestCaseData[index].stayOrderNumberAndDate, 16),
-         if(userInfo.userType ==USERTYPE[0]) _buildTransferButton(provider.requestCaseData[index].uid,provider.requestCaseData[index].formation,provider.requestCaseData[index].oldDataMode!.uid==''),
+          if (userInfo.userType == USERTYPE[0])
+            _buildTransferButton(
+                provider.requestCaseData[index].uid,
+                provider.requestCaseData[index].formation,
+                provider.requestCaseData[index].oldDataMode!.uid == ''),
         ],
       );
     }
@@ -260,25 +258,37 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
 
     return TableRow(
       children: [
-        _multiLineText('${index+1} Old', 1),
+        _multiLineText('${index + 1} Old', 1),
         _multiLineText(provider.requestCaseData[index].oldDataMode!.name, 2),
-        _multiLineText(provider.requestCaseData[index].oldDataMode!.category , 3),
-        _multiLineText(provider.requestCaseData[index].oldDataMode!.subcategory , 4),
+        _multiLineText(
+            provider.requestCaseData[index].oldDataMode!.category, 3),
+        _multiLineText(
+            provider.requestCaseData[index].oldDataMode!.subcategory, 4),
         _multiLineText(provider.requestCaseData[index].oldDataMode!.oio, 5),
         _multiLineText(provider.requestCaseData[index].oldDataMode!.date, 6),
         _multiLineText(day, 7),
-        _multiLineText(provider.requestCaseData[index].oldDataMode!.dutyOfArrear , 8),
+        _multiLineText(
+            provider.requestCaseData[index].oldDataMode!.dutyOfArrear, 8),
         _multiLineText(provider.requestCaseData[index].oldDataMode!.penalty, 9),
-        _multiLineText(provider.requestCaseData[index].oldDataMode!.amountRecovered, 10),
-        _multiLineText(provider.requestCaseData[index].oldDataMode!.preDeposit, 11),
-        _multiLineText(provider.requestCaseData[index].oldDataMode!.totalArrearPending, 12),
-        _multiLineText(provider.requestCaseData[index].oldDataMode!.briefFact, 13),
+        _multiLineText(
+            provider.requestCaseData[index].oldDataMode!.amountRecovered, 10),
+        _multiLineText(
+            provider.requestCaseData[index].oldDataMode!.preDeposit, 11),
+        _multiLineText(
+            provider.requestCaseData[index].oldDataMode!.totalArrearPending,
+            12),
+        _multiLineText(
+            provider.requestCaseData[index].oldDataMode!.briefFact, 13),
         _multiLineText(provider.requestCaseData[index].oldDataMode!.status, 14),
-        _multiLineText(provider.requestCaseData[index].oldDataMode!.apealNo , 15),
-        _multiLineText(provider.requestCaseData[index].oldDataMode!.stayOrderNumberAndDate, 16),
-      if(userInfo.userType==USERTYPE[0])  _buildRejectButton(provider.requestCaseData[index].uid,provider.requestCaseData[index].formation),
+        _multiLineText(
+            provider.requestCaseData[index].oldDataMode!.apealNo, 15),
+        _multiLineText(
+            provider.requestCaseData[index].oldDataMode!.stayOrderNumberAndDate,
+            16),
+        if (userInfo.userType == USERTYPE[0])
+          _buildRejectButton(provider.requestCaseData[index].uid,
+              provider.requestCaseData[index].formation),
       ],
-
     );
     // else
     // return TableRow(
@@ -301,49 +311,53 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
     //     _multiLineText('', 15),
     //   ]
     // );
-
   }
-  Widget _buildRejectButton(String uid,String formation) {
+
+  Widget _buildRejectButton(String uid, String formation) {
     print(uid);
     return Container(
       color: Colors.blue.withOpacity(0.2),
       child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
-          child:
-          CustomButton(
+          child: CustomButton(
               color: Colors.redAccent,
-              text: 'Reject Request', onpress: ()async{
-            // Naprint('object $formation');
-
-          }, isLoading: false)
-      ),
+              text: 'Reject Request',
+              onpress: () async {
+                // Naprint('object $formation');
+              },
+              isLoading: false)),
     );
   }
 
-  Widget _buildTransferButton(String uid , String formation,bool isnewdata) {
-return Container(
+  Widget _buildTransferButton(String uid, String formation, bool isnewdata) {
+    return Container(
       color: Colors.blue.withOpacity(0.2),
       child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
-          child:
-          CustomButton(text: 'Accept Request', onpress: ()async{
-
-
-           final res = await Navigator.push(context, MaterialPageRoute(builder: (context)=>AcceptRequestCaseTextFields(isNewRequest: isnewdata, uid: uid, formation: formation,)));
-          if(res){
-            getData();
-           }
-          }, isLoading: false
-
-    
-      )
-      ),
+          child: CustomButton(
+              text: 'Accept Request',
+              onpress: () async {
+                final res = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AcceptRequestCaseTextFields(
+                              isNewRequest: isnewdata,
+                              uid: uid,
+                              formation: formation,
+                            )));
+                if (res) {
+                  getData();
+                }
+              },
+              isLoading: false)),
     );
   }
 
   Widget _buildHeaderCell(String text, int i) {
     return Container(
-      color: i % 2 == 0 ? Colors.blue.withOpacity(0.2) : Colors.blue.withOpacity(0.3),
+      color: i % 2 == 0
+          ? Colors.blue.withOpacity(0.2)
+          : Colors.blue.withOpacity(0.3),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text(
@@ -357,7 +371,9 @@ return Container(
   Widget _multiLineText(String text, int i) {
     return Container(
       height: 70,
-      color: i % 2 == 0 ? Colors.blue.withOpacity(0.2) : Colors.blue.withOpacity(0.3),
+      color: i % 2 == 0
+          ? Colors.blue.withOpacity(0.2)
+          : Colors.blue.withOpacity(0.3),
       padding: const EdgeInsets.all(8.0),
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -395,21 +411,22 @@ return Container(
     return difference.inDays;
   }
 
-  void getData()async {
+  void getData() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final asseserProvider = Provider.of<AddNewCase>(context, listen: false);
+      final userinfo = Provider.of<UserInformation>(context, listen: false);
 
-    final asseserProvider = Provider.of<AddNewCase>(context, listen: false);
-    final userinfo = Provider.of<UserInformation>(context,listen: false);
-
-    if(userinfo.userType==USERTYPE[0]){
-      asseserProvider.updateLoader();
-     var res= await asseserProvider.getRequestCasesInformation(formation: FORMATION[0], isAdmin: false);
-      asseserProvider.updateLoader();
-
-    }
-    else{
-      asseserProvider.updateLoader();
-      var res= await asseserProvider.getRequestCasesInformation(formation: userinfo.formation, isAdmin: false);
-      asseserProvider.updateLoader();
-    }
+      if (userinfo.userType == USERTYPE[0]) {
+        asseserProvider.updateLoader();
+        var res = await asseserProvider.getRequestCasesInformation(
+            formation: FORMATION[0], isAdmin: false);
+        asseserProvider.updateLoader();
+      } else {
+        asseserProvider.updateLoader();
+        var res = await asseserProvider.getRequestCasesInformation(
+            formation: userinfo.formation, isAdmin: false);
+        asseserProvider.updateLoader();
+      }
+    });
   }
 }

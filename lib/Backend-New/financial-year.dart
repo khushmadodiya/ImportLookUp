@@ -8,8 +8,6 @@ class FinancialYear {
 
   Future<Map<String, dynamic>> financialYear({
     required String currentMonth,
-    required String category,
-    required String subcategory,
     bool isUpdate = false,
   }) async {
     try {

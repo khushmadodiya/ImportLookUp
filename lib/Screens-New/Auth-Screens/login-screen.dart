@@ -44,14 +44,11 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void loginUser() async {
-    setState(() {
-      _isLoading = true;
-
-    });
-
-
+    var loader=  Provider.of<AddNewCase>(context,listen: false);
+    loader.updateLoader();
     String res = await Authentication().login(
         userType:selectedUsertype??"", userId:userIdController.text.trim(),password: _passwordController.text.trim());
+    loader.updateLoader();
     if (res == 'success') {
       var pre = await SharedPreferences.getInstance();
       await pre.setString(
@@ -82,6 +79,7 @@ class _LoginPageState extends State<LoginPage> {
         Fluttertoast.showToast(msg: res,timeInSecForIosWeb: 3);
       }
     }
+
   }
 
   @override
@@ -143,9 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                           hintText: 'Enter your UserId',
                           controller: userIdController,
                           customValidator: (text){
-                            if(text==null || text.isEmpty){
-                              return 'Invalid id';
-                            }
+
                           },
                         ),
                         const SizedBox(
