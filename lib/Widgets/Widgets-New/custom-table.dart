@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.dart';
 import 'package:import_lookup/Backend/authmethos.dart';
 import 'package:import_lookup/Provider-New/add-new-cases.dart';
@@ -29,7 +30,8 @@ class CustomTable extends StatefulWidget {
 }
 
 class _CustomTableState extends State<CustomTable> {
-  ScrollController _scrollController = ScrollController();
+  ScrollController _horigentalController = ScrollController();
+  ScrollController _verticalController = ScrollController();
   List<Map<String, dynamic>> myData = [];
 
   @override
@@ -53,6 +55,8 @@ class _CustomTableState extends State<CustomTable> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return Consumer<AddNewCase>(
       builder: (context, provider, child) => Consumer<UserInformation>(
         builder: (context, userInfo, child) => Scaffold(
@@ -89,6 +93,7 @@ class _CustomTableState extends State<CustomTable> {
               Expanded(
                 child: _buildTable(),
               ),
+
               if (userInfo.userType == USERTYPE[0]) CutomPagging()
             ],
           ),
@@ -98,72 +103,141 @@ class _CustomTableState extends State<CustomTable> {
   }
 
   Widget _buildTable() {
+    Offset? _startDragPosition;
+
+    // Handle the drag update for scrolling in both directions
+    void _handleDragUpdate(DragUpdateDetails details) {
+      if (_startDragPosition != null) {
+        // Scroll horizontally
+        _horigentalController.jumpTo(
+          _horigentalController.offset - details.delta.dx,
+        );
+        // Scroll vertically
+        _verticalController.jumpTo(
+          _verticalController.offset - details.delta.dy,
+        );
+      }
+    }
+
+    // When user starts dragging, capture the initial position
+    void _handleDragStart(DragStartDetails details) {
+      _startDragPosition = details.globalPosition;
+    }
+
+    // Reset the drag position when the user stops dragging
+    void _handleDragEnd(DragEndDetails details) {
+      _startDragPosition = null;
+    }
+
+    void _handleKeyEvent(KeyEvent event) {
+      if (event is KeyDownEvent) {
+        if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
+          _verticalController.animateTo(
+            _verticalController.offset - 100, // Adjust scroll amount as needed
+            duration: Duration(milliseconds: 200),
+            curve: Curves.easeInOut,
+          );
+        } else if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
+          _verticalController.animateTo(
+            _verticalController.offset + 100, // Adjust scroll amount as needed
+            duration: Duration(milliseconds: 200),
+            curve: Curves.easeInOut,
+          );
+        } else if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
+          _horigentalController.animateTo(
+              _horigentalController.offset - 300, // Adjust scroll amount as needed
+              duration: Duration(milliseconds: 200),
+              curve: Curves.easeInOut,);
+        } else if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
+          _horigentalController.animateTo(
+            _horigentalController.offset + 300, // Adjust scroll amount as needed
+            duration: Duration(milliseconds: 200),
+            curve: Curves.easeInOut,);        }
+      }
+    }
     return Consumer<AddNewCase>(builder: (context, provider, child) {
       if (provider.isLoading) {
-        const Scaffold(
+        return const Scaffold(
           body: Center(child: CircularProgressIndicator()),
         );
       }
       if (provider.mainCaseData.isEmpty) {
-        return Scaffold(
+        return const Scaffold(
           body: Center(
             child: Text('No Data Available'),
           ),
         );
       }
-      return SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Listener(
-          onPointerSignal: (pointerSignal) {
-            if (pointerSignal is PointerScrollEvent) {
-              // Horizontal scroll based on the mouse wheel's delta
-              _scrollController.jumpTo(
-                _scrollController.offset +
-                    pointerSignal.scrollDelta
-                        .dy, // Use dy for vertical mouse wheel mapped to horizontal scroll
-              );
-            }
+      return GestureDetector(
+        onPanStart: _handleDragStart,
+        onPanUpdate: _handleDragUpdate,
+        onPanEnd: _handleDragEnd,
+        child: Focus(
+          autofocus: true,
+          skipTraversal: true,
+          onKeyEvent: (FocusNode node, KeyEvent event) {
+            _handleKeyEvent(event);
+            return KeyEventResult.handled;
           },
           child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            controller: _scrollController,
-            child: Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: Card(
-                elevation: 12,
-                color: Colors.white,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-                child: Table(
-                  border: TableBorder.all(width: 1.0, color: Colors.black),
-                  columnWidths: const {
-                    0: FixedColumnWidth(70),
-                    1: FixedColumnWidth(300),
-                    2: FixedColumnWidth(180),
-                    3: FixedColumnWidth(300),
-                    4: FixedColumnWidth(150),
-                    5: FixedColumnWidth(120),
-                    6: FixedColumnWidth(180),
-                    7: FixedColumnWidth(180),
-                    8: FixedColumnWidth(180),
-                    9: FixedColumnWidth(180),
-                    10: FixedColumnWidth(180),
-                    11: FixedColumnWidth(350),
-                    12: FixedColumnWidth(350),
-                    13: FixedColumnWidth(250),
-                    14: FixedColumnWidth(180),
-                    15: FixedColumnWidth(180),
-                  },
-                  children: [
-                    // Header Row
-                    _buildHeaderRow(),
-                    // Data Rows
-                    for (int i = 0; i < provider.mainCaseData.length; i++)
-                      if (provider.mainCaseData[i].subcategory ==
-                              widget.subcategory &&
-                          provider.mainCaseData[i].category == widget.category)
-                        _buildDataRow(provider, i)
-                  ],
+            scrollDirection: Axis.vertical,
+            controller: _verticalController,
+            child: Scrollbar(
+              trackVisibility: true,
+              thumbVisibility: true,
+              thickness: 15,
+              controller: _horigentalController,
+              child: Listener(
+                onPointerSignal: (pointerSignal) {
+                  if (pointerSignal is PointerScrollEvent) {
+                    _verticalController.jumpTo(
+                      _verticalController.offset + pointerSignal.scrollDelta.dx,
+                    );
+                  }
+                },
+                child: SingleChildScrollView(
+                  controller: _horigentalController,
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: const EdgeInsets.all(18.0),
+                    child: Card(
+                      elevation: 12,
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Table(
+                        border: TableBorder.all(width: 1.0, color: Colors.black),
+                        columnWidths: const {
+                          0: FixedColumnWidth(70),
+                          1: FixedColumnWidth(300),
+                          2: FixedColumnWidth(180),
+                          3: FixedColumnWidth(300),
+                          4: FixedColumnWidth(150),
+                          5: FixedColumnWidth(120),
+                          6: FixedColumnWidth(180),
+                          7: FixedColumnWidth(180),
+                          8: FixedColumnWidth(180),
+                          9: FixedColumnWidth(180),
+                          10: FixedColumnWidth(180),
+                          11: FixedColumnWidth(350),
+                          12: FixedColumnWidth(350),
+                          13: FixedColumnWidth(250),
+                          14: FixedColumnWidth(180),
+                          15: FixedColumnWidth(180),
+                        },
+                        children: [
+                          _buildHeaderRow(),
+                          for (int i = 0; i < provider.mainCaseData.length; i++)
+                            if (provider.mainCaseData[i].subcategory ==
+                                widget.subcategory &&
+                                provider.mainCaseData[i].category ==
+                                    widget.category)
+                              _buildDataRow(provider, i),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -172,6 +246,7 @@ class _CustomTableState extends State<CustomTable> {
       );
     });
   }
+
 
   TableRow _buildHeaderRow() {
     return TableRow(

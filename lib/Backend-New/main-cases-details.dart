@@ -68,6 +68,7 @@ class MainCasesInformation {
       pan: pan,
       subcategory: subcategory,
     );
+    print("this is formation in database $formation");
     WriteBatch batch = _fireStore.batch();
     await replicateMainCase(mainCaseModel:model,batch:batch);
     try {

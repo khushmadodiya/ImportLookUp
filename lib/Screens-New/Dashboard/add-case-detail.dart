@@ -20,14 +20,16 @@ class AddCaseDeatil extends StatefulWidget {
 class _AddCaseDeatilState extends State<AddCaseDeatil> {
   String selectedCategory = CATEGORY[2];
   String selectedSubCategory = SUBCATEGORY[CATEGORY[2]]![0];
-  String? formation = FORMATION[0];
+  String formation = FORMATION[0];
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     var pro = Provider.of<AddNewCase>(context, listen: false);
     var userInfo = Provider.of<UserInformation>(context, listen: false);
-    formation = userInfo.formation;
+    if(userInfo.userType==USERTYPE[1]){
+      formation = userInfo.formation;
+    }
     pro.updateSubcategory(SUBCATEGORY[CATEGORY[2]]![0]);
     print(pro.subcategory.text);
   }
@@ -47,7 +49,7 @@ class _AddCaseDeatilState extends State<AddCaseDeatil> {
 
     Map<String, dynamic> res;
     if (userInfo.userType == USERTYPE[0]) {
-      res = await pro.addMainCase(userInfo == userInfo.userType);
+      res = await pro.addMainCase();
     } else {
       print("heeelo i ma divyansh ");
       res = await pro.addRequestCase(false,
@@ -147,7 +149,7 @@ class _AddCaseDeatilState extends State<AddCaseDeatil> {
                                   listofvalues: FORMATION,
                                   label: 'Select formation',
                                   fun: (value) {
-                                    formation = value;
+                                    formation = value!;
                                   },
                                   selectedItem: FORMATION[0],
                                 ),
