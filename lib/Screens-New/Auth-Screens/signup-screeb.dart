@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:import_lookup/Provider-New/add-new-cases.dart';
 import 'package:import_lookup/Provider-New/general-pusrpose.dart';
-import 'package:import_lookup/Screens/dashboard.dart';
-import 'package:import_lookup/Screens/oio-page.dart';
 import 'package:import_lookup/Widgets/custom-button.dart';
 import 'package:provider/provider.dart';
 
@@ -30,7 +28,6 @@ class _SignupPageState extends State<SignupPage> {
   final TextEditingController _passwordController = TextEditingController();
   String? formation = FORMATION[0];
 
-  bool _isLoading = false;
 
 
   @override
@@ -51,6 +48,7 @@ class _SignupPageState extends State<SignupPage> {
       userId: _usernameController.text,
       userType:userType.userType??"",
      formation: formation?? '');
+    loading.updateLoader();
     if (res == "success") {
 
       if (context.mounted) {
@@ -64,7 +62,7 @@ class _SignupPageState extends State<SignupPage> {
         Fluttertoast.showToast(msg: res,timeInSecForIosWeb: 3);
       }
     }
-    loading.updateLoader();
+
   }
 
 

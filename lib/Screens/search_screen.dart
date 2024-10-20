@@ -4,8 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:import_lookup/Model-New/main-case-model.dart';
 import 'package:import_lookup/Provider-New/add-new-cases.dart';
 import 'package:import_lookup/Provider-New/general-pusrpose.dart';
-import 'package:import_lookup/Screens/universal-update-details-page.dart';
-import 'package:import_lookup/Widgets/custom-button.dart';
+import 'package:import_lookup/Screens-New/Dashboard/complete-track.dart';
 import 'package:provider/provider.dart';
 
 import '../Backend-New/Golbal-Files/category-and-subcategory.dart';
@@ -180,12 +179,18 @@ return  SingleChildScrollView(
       Container(
         padding: EdgeInsets.zero,
         height: 40,
-        width: MediaQuery.of(context).size.width/3,
+        // width: MediaQuery.of(context).size.width/3,
         child: Row(
-
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-          Expanded(child: CustomButton(text: "Sort Based On Date", onpress: ()=>sortBasedofDate(), isLoading: false)),
-          Expanded(child: CustomButton(text: "Sort Based On arrears pending", onpress: ()=>sortBasedofToatlArrearsPending(), isLoading: false)),
+            FilledButton(onPressed: (){
+              sortBasedofDate();
+            }, child: Text("  Sort Based On Date  ")),
+            SizedBox(width: 10,),
+            FilledButton(onPressed: (){
+              sortBasedofToatlArrearsPending();
+            }, child: Text("Sort Based On arrears pending")),
+
         ],),
       ),
       SingleChildScrollView(
@@ -215,7 +220,7 @@ return  SingleChildScrollView(
               15: FixedColumnWidth(250),
               16: FixedColumnWidth(180),
               17: FixedColumnWidth(180),
-              18: FixedColumnWidth(180),
+
 
             },
             children: [
@@ -253,6 +258,7 @@ return  SingleChildScrollView(
         _buildHeaderCell('Status', 15),
         _buildHeaderCell('Appeal No.', 16),
         _buildHeaderCell('Stay Order No and Date', 17),
+        _buildHeaderCell('Complete Track', 18),
 
       ],
     );
@@ -279,18 +285,23 @@ return  SingleChildScrollView(
         _multiLineText(data.status ?? 'N/A', 15),
         _multiLineText(data.apealNo ?? 'N/A', 16),
         _multiLineText(data.stayOrderNumberAndDate ?? 'N/A', 17),
+        _buildCompleteTrackButton(i, completeTrack: data.completeTrack!.toList(),name:data.name),
       ],
     );
   }
 
-  Widget _buildTransferButton(int i,String title,VoidCallback ontap,{List<String>complete_track=const []}) {
+  Widget _buildCompleteTrackButton(int i,{required List<String>completeTrack,required String name}) {
     return Container(
       color: Colors.blue.withOpacity(0.2),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 15),
-        child: ElevatedButton(
-          onPressed:ontap,
-          child: Text(title),
+        padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 8),
+        child: FilledButton(
+          onPressed:(){
+            print(completeTrack);
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>CompleteTrack(list: completeTrack, name: name,)));
+          },
+
+          child: Text('Complete Track'),
         ),
       ),
     );
@@ -355,10 +366,12 @@ return  SingleChildScrollView(
   }
   void getData()async {
 
-    final asseserProvider = Provider.of<AddNewCase>(context, listen: false);
-     asseserProvider.updateLoader();
+    WidgetsBinding.instance.addPostFrameCallback((_) async{
+      final asseserProvider = Provider.of<AddNewCase>(context, listen: false);
+      asseserProvider.updateLoader();
       await asseserProvider.getMainCasesInformation(formation: FORMATION[0], isAdmin: false);
       asseserProvider.updateLoader();
+    });
 
   }
 }
