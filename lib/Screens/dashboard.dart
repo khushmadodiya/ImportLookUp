@@ -30,7 +30,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     // TODO: implement initState
     super.initState();
     getitem();
+
   }
+
   getitem()async{
     var pref = await SharedPreferences.getInstance();
     selecteditem = pref.get('value').toString();
@@ -234,6 +236,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget _buildBottomBar() {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
+      iconSize: 20,
       items:  <BottomNavigationBarItem>[
        const BottomNavigationBarItem(
           icon: Icon(Icons.home),

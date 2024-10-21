@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:import_lookup/Model-New/main-case-model.dart';
 import 'package:import_lookup/Provider-New/add-new-cases.dart';
-import 'package:import_lookup/Screens/universal-update-details-page.dart';
+import 'package:import_lookup/Provider-New/general-pusrpose.dart';
+import 'package:import_lookup/Screens-New/Dashboard/complete-track.dart';
 import 'package:provider/provider.dart';
 
 import '../Backend-New/Golbal-Files/category-and-subcategory.dart';
@@ -28,9 +31,86 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    return Consumer<UserInformation>(
+      builder: (context,userInfo,child)=>
+      Consumer<AddNewCase>(
+        builder: (context,provider,child)=>
+       Scaffold(
+          appBar: AppBar(title: const Text('Search Cases')),
+          body: Column(
+            children: [
+              Container(
+                height: 70,
+                child: Padding(
+                  padding: const EdgeInsets.all(14.0),
+                  child: TextField(
+
+                    decoration: const InputDecoration(
+                      labelText: 'Search by Category',
+                      hintText: 'Enter "Supreme Court" to filter...',
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        _searchQuery = value; // Update the search query when user types
+                      });
+                    },
+                  ),
+                ),
+              ),
+              Expanded(
+                child: _buildTable()
+
+              ),
+              if(userInfo.userType==USERTYPE[0])  SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Consumer<GeneralPurposeProvider>(
+                          builder: (context, generalProvider, child) =>
+                              Row(
+                                children: List.generate(
+                                    FORMATION.length,
+                                        (index) =>
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: InkWell(
+                                            child: Container(
+                                              color: generalProvider.selectedIndex ==
+                                                  index ? Colors.blue : Colors.green,
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  FORMATION[index],
+                                                  style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight: FontWeight.bold),
+                                                ),
+                                              ),
+                                            ),
+                                            onTap: () {
+                                              provider.updateLoader();
+                                              generalProvider.updateSelectedIndex(index);
+                                              provider.getMainCasesInformation(formation: FORMATION[index] , isAdmin: false);
+                                              provider.updateLoader();
+        
+                                            },
+                                          ),
+                                        )),
+                              ),
+                        ),
+                      ),
+                      // const SizedBox(
+                      //   height: 20,
+                      // ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTable(){
     final asseserProvider = Provider.of<AddNewCase>(context);
-
-
     if (asseserProvider.isLoading) {
       return Center(child: CircularProgressIndicator());
     }
@@ -38,7 +118,6 @@ class _SearchScreenState extends State<SearchScreen> {
     if (asseserProvider.mainCaseData.isEmpty) {
       return Center(child: Text('No data found'));
     }
-
     var filteredAssesers = asseserProvider.mainCaseData.where((asseser) {
       final status = asseser.status??'';
       final category = asseser.category?? '';
@@ -58,116 +137,106 @@ class _SearchScreenState extends State<SearchScreen> {
     for (int i = 0; i < filteredAssesers.length; i++) {
       MainCaseModel mainCaseModel = filteredAssesers[i];
       // print("here data of complere ${asseser['complete_track'].length}");
-        num++;
-        rows.add(_buildDataRow(mainCaseModel, i));
+      num++;
+      rows.add(_buildDataRow(mainCaseModel, i));
 
     }
     void sortBasedofDate(){
       filteredAssesers=asseserProvider.mainCaseData;
       filteredAssesers.sort((a,b)=> DateTime(
-        int.parse(a.date.toString().substring(6,10)),
-        int.parse(a.date.toString().substring(3,5)),
-        int.parse(a.date.toString().substring(0,2))
-        ).compareTo(DateTime(
+          int.parse(a.date.toString().substring(6,10)),
+          int.parse(a.date.toString().substring(3,5)),
+          int.parse(a.date.toString().substring(0,2))
+      ).compareTo(DateTime(
           int.parse(b.date.toString().substring(6,10)),
-        int.parse(b.date.toString().substring(3,5)),
-        int.parse(b.date.toString().substring(0,2))
-        )
-        ));
-        setState(() {
+          int.parse(b.date.toString().substring(3,5)),
+          int.parse(b.date.toString().substring(0,2))
+      )
+      ));
+      setState(() {
 
-        });
+      });
 
     }
     void sortBasedofToatlArrearsPending(){
-      // filteredAssesers=asseserProvider.assesers();
+      filteredAssesers=asseserProvider.mainCaseData;
       filteredAssesers.sort((a,b){
         if(int.parse(a.totalArrearPending)>int.parse(b.totalArrearPending)){
           return 1;
         }
         return 0;
       }
-        );
-        setState(() {
-
-        });
+      );
+      setState(() {
+       print('Called');
+      });
 
     }
+return  SingleChildScrollView(
+  scrollDirection: Axis.vertical,
+  child: Column(
+    children:[
+      Container(
+        padding: EdgeInsets.zero,
+        height: 40,
+        // width: MediaQuery.of(context).size.width/3,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            FilledButton(onPressed: (){
+              sortBasedofDate();
+            }, child: Text("  Sort Based On Date  ")),
+            SizedBox(width: 10,),
+            FilledButton(onPressed: (){
+              sortBasedofToatlArrearsPending();
+            }, child: Text("Sort Based On arrears pending")),
 
-
-
-    return Scaffold(
-      appBar: AppBar(title: const Text('Search Cases')),
-      body: Column(
-        children: [
-          Row(children: [
-            ElevatedButton(onPressed:(){
-            sortBasedofDate();
-          }, child:const Text("Sort Based On Date")),
-           ElevatedButton(onPressed:(){
-            sortBasedofToatlArrearsPending();
-          }, child:const Text("Sort Based On arrears pending")),
-          ],),
-          Padding(
-            padding: const EdgeInsets.all(14.0),
-            child: TextField(
-              decoration: const InputDecoration(
-                labelText: 'Search by Category',
-                hintText: 'Enter "Supreme Court" to filter...',
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (value) {
-                setState(() {
-                  _searchQuery = value; // Update the search query when user types
-                });
-              },
-            ),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Padding(
-                  padding: const EdgeInsets.all(18.0),
-                  child: Table(
-                    border: TableBorder.all(width: 1.0, color: Colors.black),
-                    columnWidths: const {
-                      0: FixedColumnWidth(70),
-                      1: FixedColumnWidth(300),
-                      2:FixedColumnWidth(300),
-                      3:FixedColumnWidth(180),
-                      4: FixedColumnWidth(180),
-                      5: FixedColumnWidth(300),
-                      6: FixedColumnWidth(150),
-                      7: FixedColumnWidth(120),
-                      8: FixedColumnWidth(180),
-                      9: FixedColumnWidth(180),
-                      10: FixedColumnWidth(180),
-                      11: FixedColumnWidth(180),
-                      12: FixedColumnWidth(180),
-                      13: FixedColumnWidth(350),
-                      14: FixedColumnWidth(350),
-                      15: FixedColumnWidth(250),
-                      16: FixedColumnWidth(180),
-                      17: FixedColumnWidth(180),
-                      18: FixedColumnWidth(180),
-
-                    },
-                    children: [
-                      // Header Row
-                      _buildHeaderRow(),
-                      ...rows
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
+        ],),
       ),
-    );
+      SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Padding(
+          padding: const EdgeInsets.all(18.0),
+          child: Table(
+            border: TableBorder.all(width: 1.0, color: Colors.black),
+            columnWidths: const {
+              0: FixedColumnWidth(70),
+              1: FixedColumnWidth(300),
+              2:FixedColumnWidth(300),
+              3:FixedColumnWidth(180),
+              4: FixedColumnWidth(180),
+              5: FixedColumnWidth(300),
+              6: FixedColumnWidth(150),
+              7: FixedColumnWidth(120),
+              8: FixedColumnWidth(180),
+              9: FixedColumnWidth(180),
+              10: FixedColumnWidth(180),
+              11: FixedColumnWidth(180),
+              12: FixedColumnWidth(180),
+              13: FixedColumnWidth(350),
+              14: FixedColumnWidth(350),
+              15: FixedColumnWidth(250),
+              16: FixedColumnWidth(180),
+              17: FixedColumnWidth(180),
+
+
+            },
+            children: [
+              // Header Row
+              _buildHeaderRow(),
+              ...rows
+            ],
+          ),
+        ),
+      ),
+          ),
+      ]
+  ),
+);
   }
+
 
   TableRow _buildHeaderRow() {
     return TableRow(
@@ -189,6 +258,7 @@ class _SearchScreenState extends State<SearchScreen> {
         _buildHeaderCell('Status', 15),
         _buildHeaderCell('Appeal No.', 16),
         _buildHeaderCell('Stay Order No and Date', 17),
+        _buildHeaderCell('Complete Track', 18),
 
       ],
     );
@@ -215,18 +285,23 @@ class _SearchScreenState extends State<SearchScreen> {
         _multiLineText(data.status ?? 'N/A', 15),
         _multiLineText(data.apealNo ?? 'N/A', 16),
         _multiLineText(data.stayOrderNumberAndDate ?? 'N/A', 17),
+        _buildCompleteTrackButton(i, completeTrack: data.completeTrack!.toList(),name:data.name),
       ],
     );
   }
 
-  Widget _buildTransferButton(int i,String title,VoidCallback ontap,{List<String>complete_track=const []}) {
+  Widget _buildCompleteTrackButton(int i,{required List<String>completeTrack,required String name}) {
     return Container(
       color: Colors.blue.withOpacity(0.2),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 15),
-        child: ElevatedButton(
-          onPressed:ontap,
-          child: Text(title),
+        padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 8),
+        child: FilledButton(
+          onPressed:(){
+            print(completeTrack);
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>CompleteTrack(list: completeTrack, name: name,)));
+          },
+
+          child: Text('Complete Track'),
         ),
       ),
     );
@@ -291,16 +366,12 @@ class _SearchScreenState extends State<SearchScreen> {
   }
   void getData()async {
 
-    final asseserProvider = Provider.of<AddNewCase>(context, listen: false);
-    final userinfo = Provider.of<UserInformation>(context,listen: false);
-    asseserProvider.updateLoader();
-    if(userinfo.userType==USERTYPE[0]){
-      await asseserProvider.getMainCasesInformation(formation: userinfo.formation, isAdmin: true);
-    }
-    else{
-      await asseserProvider.getMainCasesInformation(formation: userinfo.formation, isAdmin: false);
-    }
-    asseserProvider.updateLoader();
-    print('dipu landka hai ${asseserProvider.mainCaseData[0].formation}');
+    WidgetsBinding.instance.addPostFrameCallback((_) async{
+      final asseserProvider = Provider.of<AddNewCase>(context, listen: false);
+      asseserProvider.updateLoader();
+      await asseserProvider.getMainCasesInformation(formation: FORMATION[0], isAdmin: false);
+      asseserProvider.updateLoader();
+    });
+
   }
 }

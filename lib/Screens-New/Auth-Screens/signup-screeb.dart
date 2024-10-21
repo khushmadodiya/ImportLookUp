@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:import_lookup/Provider-New/add-new-cases.dart';
 import 'package:import_lookup/Provider-New/general-pusrpose.dart';
-import 'package:import_lookup/Screens/dashboard.dart';
-import 'package:import_lookup/Screens/oio-page.dart';
 import 'package:import_lookup/Widgets/custom-button.dart';
 import 'package:provider/provider.dart';
 
@@ -30,7 +28,6 @@ class _SignupPageState extends State<SignupPage> {
   final TextEditingController _passwordController = TextEditingController();
   String? formation = FORMATION[0];
 
-  bool _isLoading = false;
 
 
   @override
@@ -51,6 +48,7 @@ class _SignupPageState extends State<SignupPage> {
       userId: _usernameController.text,
       userType:userType.userType??"",
      formation: formation?? '');
+    loading.updateLoader();
     if (res == "success") {
 
       if (context.mounted) {
@@ -61,10 +59,10 @@ class _SignupPageState extends State<SignupPage> {
       }
     } else {
       if (context.mounted) {
-        Fluttertoast.showToast(msg: res);
+        Fluttertoast.showToast(msg: res,timeInSecForIosWeb: 3);
       }
     }
-    loading.updateLoader();
+
   }
 
 
@@ -95,11 +93,11 @@ class _SignupPageState extends State<SignupPage> {
                   GlobleDropdown(listofvalues: USERTYPE,label: 'Select UserType', fun: (String? value) {
                     pro.updateUserType(value??"");
                     print(pro.userType);
-                  },),
+                  }, selectedItem: USERTYPE[0],),
                   const SizedBox(height: 10,),
                   if(pro.userType==USERTYPE[1])GlobleDropdown(listofvalues: FORMATION, label: 'Select Formation', fun: (String? value) {
                     formation = value;
-                  },),
+                  }, selectedItem: SUBCATEGORY[CATEGORY[2]]![0],),
                   const SizedBox(height: 10,),
                   CustomTextField(
                     hintText: 'Enter your username',
