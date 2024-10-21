@@ -1,5 +1,9 @@
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.dart';
+import 'package:import_lookup/Backend-New/tar-report.dart';
+import 'package:import_lookup/Model-New/tar-model.dart';
 import 'package:provider/provider.dart';
 
 import 'Provider-New/add-new-cases.dart';
@@ -8,6 +12,7 @@ class Test extends StatefulWidget {
   @override
   _TestState createState() => _TestState();
 }
+
 class _TestState extends State<Test> {
   @override
   void initState() {
@@ -16,12 +21,49 @@ class _TestState extends State<Test> {
     getData();
   }
 
-  void getData()async{
-  AddNewCase dipu=Provider.of<AddNewCase>(context,listen:false);
-   await dipu.getRequestCasesInformation(formation:"Air Cargo Complex Indore", isAdmin:false);
-   AddNewCase dipu2=Provider.of<AddNewCase>(context,listen:false);
-  //  print("here dipu ${dipu2.requestCaseData[2].category}");
+  // void getData() async {
+  // AddNewCase dipu=Provider.of<AddNewCase>(context,listen:false);
+  //  await dipu.getMainCasesFromReplication(query:"air");
+  //  AddNewCase dipu2=Provider.of<AddNewCase>(context,listen:false);
+  //  print("here dipu ${dipu2.mainCaseData.length}");
+  // FirebaseFirestore store = FirebaseFirestore.instance;
+  // WriteBatch batch = store.batch();
+  // for (int i = 0; i < CATEGORY.length; i++) {
+  //   for (int j = 0; j < SUBCATEGORY[CATEGORY[i]]!.length; j++) {
+  //     for (int k = 0; k < DOCNAME.length; k++) {
+  //       await TarReportInformation().updateDataOfTarReport(
+  //           batch: batch,
+  //           category: CATEGORY[i],
+  //           subcategory: SUBCATEGORY[CATEGORY[i]]![j],
+  //           docName: DOCNAME[k],
+  //           noOfCasesOfTheMonth: 0,
+  //           noOfCasesUpToTheMonth: 0,
+  //           amountOfTheMonth: 0,
+  //           amountUpTotheMonth: 0,
+  //           openingBalance: 0,
+  //           closingBalance: 0);
+  // }
+  // print("heeli i am ${CATEGORY[i]}   ${SUBCATEGORY[CATEGORY[i]]![j]}");
+  // }
+  // }
+  // batch.commit();
+  // }
+
+  void getData() async {
+    var res = (await TarReportInformation().litigationReport())["data"];
+    // // print("i am dipu ${res['data']}");
+    // TarReportModel model = res[RESTRAINEDKEYS["ol"]![0]];
+    // print("i am dipu");
+
+    // print("here is final answer ${model.amountOfTheMonth}");
+    print("i am executed   ssmk");
+    await Provider.of<AddNewCase>(context, listen: false).tarArrearLitigation();
+    print("i am executed   ssmk");
+    TarReportModel? model = Provider.of<AddNewCase>(context, listen: false)
+        .arrearLitigation[LITIGATIONKEYS["sc"]![0]];
+    print("Heeelo i am divyansh Patidra${model!.amountOfTheMonth}");
   }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -30,28 +72,30 @@ class _TestState extends State<Test> {
           title: Text('DataTable Demo'),
         ),
         body: ListView(
-          children: [
-            _createDataTable()
-          ],
+          children: [_createDataTable()],
         ),
       ),
     );
   }
-DataTable _createDataTable() {
+
+  DataTable _createDataTable() {
     return DataTable(columns: _createColumns(), rows: _createRows());
   }
-List<DataColumn> _createColumns() {
+
+  List<DataColumn> _createColumns() {
     return [
       DataColumn(label: Text('ID')),
       DataColumn(label: Text('Book')),
-      DataColumn(label:DataTable(columns:[
+      DataColumn(
+          label: DataTable(columns: [
         DataColumn(label: Text('ID')),
-        DataColumn(label: Text('jsjnsD')),], 
-        rows: _createRows())),
+        DataColumn(label: Text('jsjnsD')),
+      ], rows: _createRows())),
       DataColumn(label: Text('Author'))
     ];
   }
-List<DataRow> _createRows() {
+
+  List<DataRow> _createRows() {
     return [
       DataRow(cells: [
         DataCell(Text('#100')),
