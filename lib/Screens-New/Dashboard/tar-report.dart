@@ -2,6 +2,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.dart';
 
 class RevenueTable extends StatefulWidget {
   RevenueTable({Key? key}) : super(key: key);
@@ -13,6 +15,19 @@ class RevenueTable extends StatefulWidget {
 class _RevenueTableState extends State<RevenueTable> {
   final ScrollController horizontalController = ScrollController();
   double sliderValue = 0;
+  bool showStack=false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    horizontalController.addListener(() {
+      setState(() {
+        // Show the Stack widget if scrolled more than 300 pixels
+        showStack = horizontalController.offset >= 300;
+        print('called');
+      });
+    });
+  }
 
   @override
   void dispose() {
@@ -50,16 +65,16 @@ class _RevenueTableState extends State<RevenueTable> {
                         border: TableBorder.all(),
                         columnWidths: {
                           0: const FixedColumnWidth(40),
-                          1: const FixedColumnWidth(160),
-                          2: const FixedColumnWidth(160),
-                          3: const FixedColumnWidth(300),
-                          4: const FixedColumnWidth(160),
-                          5: const FixedColumnWidth(300),
-                          6: const FixedColumnWidth(300),
-                          7: const FixedColumnWidth(300),
-                          8: const FixedColumnWidth(300),
-                          9: const FixedColumnWidth(300),
-                          10: const FixedColumnWidth(300),
+                          1: const FixedColumnWidth(260),
+                          2: const FixedColumnWidth(200),
+                          3: const FixedColumnWidth(500),
+                          4: const FixedColumnWidth(200),
+                          5: const FixedColumnWidth(500),
+                          6: const FixedColumnWidth(500),
+                          7: const FixedColumnWidth(500),
+                          8: const FixedColumnWidth(500),
+                          9: const FixedColumnWidth(200),
+                          10: const FixedColumnWidth(200),
                         },
                         children: [
                           // Header row with subcolumns
@@ -191,9 +206,50 @@ class _RevenueTableState extends State<RevenueTable> {
                               '25',
                               '26',
                               '27',
-                              '28')
+                              '28'),
+                          _buildDataRow(
+                              '4',
+                              'Comm Apeal',
+                              '1',
+                              '2',
+                              '3',
+                              '4',
+                              '5',
+                              '6',
+                              '7',
+                              '8',
+                              '9',
+                              '10',
+                              '11',
+                              '12',
+                              '13',
+                              '14',
+                              '15',
+                              '16',
+                              '17',
+                              '18',
+                              '19',
+                              '20',
+                              '21',
+                              '22',
+                              '23',
+                              '24',
+                              '25',
+                              '26',
+                              '27',
+                              '28') ,
+                          _buildDataRow('5', 'DRT', '1111111111', '2', '3', '4444444444444', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),
+                          _buildDataRow('6', 'BIFR', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),
+                          _buildDataRow('7', 'NCLT-Unit', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),
+                          _buildDataRow('8', 'Apeal Period not over', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),
+                          _buildDataRow('9', '${SUBCATEGORY[CATEGORY[3]]![0]}', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),
+                          _buildDataRow('10', '${SUBCATEGORY[CATEGORY[3]]![1]}', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),
+                          _buildDataRow('11', '${SUBCATEGORY[CATEGORY[3]]![2]}', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),
+                          _buildDataRow('12', '${SUBCATEGORY[CATEGORY[3]]![3]}', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),
+                          _buildDataRow('13', 'Write off', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),
                         ],
-                      ),
+                      )
+
                     ],
                   ),
                 ),
