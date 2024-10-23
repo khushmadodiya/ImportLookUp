@@ -285,11 +285,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:import_lookup/Backend-New/main-cases-details.dart';
 import 'package:import_lookup/Backend-New/request-cases-details.dart';
+import 'package:import_lookup/Backend-New/tar-report.dart';
 import 'package:import_lookup/Model-New/main-case-model.dart';
 import 'package:import_lookup/Model-New/request-case-model.dart';
+import 'package:import_lookup/Model-New/tar-model.dart';
 import 'package:import_lookup/Provider-New/general-pusrpose.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+
+import '../Backend-New/Golbal-Files/category-and-subcategory.dart';
 // import 'package:provider/provider.dart';
 
 class AddNewCase with ChangeNotifier {
@@ -300,25 +304,28 @@ class AddNewCase with ChangeNotifier {
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _dutyOfArrearController = TextEditingController();
   final TextEditingController _penaltyController = TextEditingController();
-  final TextEditingController _amountRecoveredController = TextEditingController();
+  final TextEditingController _amountRecoveredController =
+      TextEditingController();
   final TextEditingController _preDepositController = TextEditingController();
   final TextEditingController _interestController = TextEditingController();
-  final TextEditingController _totalArrearPendingController = TextEditingController();
+  final TextEditingController _totalArrearPendingController =
+      TextEditingController();
   final TextEditingController _briefFactController = TextEditingController();
   final TextEditingController _statusController = TextEditingController();
   final TextEditingController _appealNoController = TextEditingController();
-  final TextEditingController _stayOrderNumberAndDateController = TextEditingController();
+  final TextEditingController _stayOrderNumberAndDateController =
+      TextEditingController();
   final TextEditingController _iecController = TextEditingController();
   final TextEditingController _gstinController = TextEditingController();
   final TextEditingController _panController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
-  final TextEditingController _completeTrackController = TextEditingController();
+  final TextEditingController _completeTrackController =
+      TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
   final TextEditingController _effortMadeController = TextEditingController();
   final TextEditingController _remarkController = TextEditingController();
   final TextEditingController _subcategoryController = TextEditingController();
   bool _isLoading = false;
-
 
   // Getters for each controller
   bool get isLoading => _isLoading;
@@ -335,7 +342,8 @@ class AddNewCase with ChangeNotifier {
   TextEditingController get briefFact => _briefFactController;
   TextEditingController get status => _statusController;
   TextEditingController get appealNo => _appealNoController;
-  TextEditingController get stayOrderNumberAndDate => _stayOrderNumberAndDateController;
+  TextEditingController get stayOrderNumberAndDate =>
+      _stayOrderNumberAndDateController;
   TextEditingController get iec => _iecController;
   TextEditingController get gstin => _gstinController;
   TextEditingController get pan => _panController;
@@ -352,17 +360,18 @@ class AddNewCase with ChangeNotifier {
 
   List<MainCaseModel> get mainCaseData => _mainCaseData;
   List<RequestCaseModel> get requestCaseData => _requestCaseData;
-  void updateSubcategory(String subCatregory){
-    subcategory.text=subCatregory;
+  void updateSubcategory(String subCatregory) {
+    subcategory.text = subCatregory;
   }
-  void setDate(String date){
+
+  void setDate(String date) {
     _dateController.text = date;
     notifyListeners();
   }
 
   //update loader
-  void updateLoader(){
-    _isLoading=!_isLoading;
+  void updateLoader() {
+    _isLoading = !_isLoading;
     notifyListeners();
   }
 
@@ -381,7 +390,6 @@ class AddNewCase with ChangeNotifier {
     _oioController.text = newOio;
     notifyListeners();
   }
-
 
   void setDutyOfArrear(String newDutyOfArrear) {
     _dutyOfArrearController.text = newDutyOfArrear;
@@ -477,29 +485,34 @@ class AddNewCase with ChangeNotifier {
     _subcategoryController.text = newSubcategory;
     notifyListeners();
   }
-  Future getMainCasesInformation({required String formation, required bool isAdmin}) async {
+
+  Future getMainCasesInformation(
+      {required String formation, required bool isAdmin}) async {
     if (!isAdmin) {
-      _mainCaseData = (await MainCasesInformation().getFormationMainCaseInformation(formation))["res"];
+      _mainCaseData = (await MainCasesInformation()
+          .getFormationMainCaseInformation(formation))["res"];
     } else {
-      _mainCaseData = (await MainCasesInformation().getAllMainCasesDetails())["res"];
+      _mainCaseData =
+          (await MainCasesInformation().getAllMainCasesDetails())["res"];
     }
     notifyListeners();
   }
 
-  Future getRequestCasesInformation({required String formation, required bool isAdmin}) async {
-    
+  Future getRequestCasesInformation(
+      {required String formation, required bool isAdmin}) async {
     if (!isAdmin) {
-      _requestCaseData = (await RequestCasesInformation().getFormationRequestedCaseInformation(formation))["res"];
+      _requestCaseData = (await RequestCasesInformation()
+          .getFormationRequestedCaseInformation(formation))["res"];
     } else {
-      _requestCaseData = (await RequestCasesInformation().getAllReuqestCasesDetails())["res"];
+      _requestCaseData =
+          (await RequestCasesInformation().getAllReuqestCasesDetails())["res"];
     }
     notifyListeners();
-    return {"res":"success"};
+    return {"res": "success"};
   }
 
   Future addMainCase() async {
-
-    var res=await MainCasesInformation().addCases(
+    var res = await MainCasesInformation().addCases(
       uid: '',
       name: _nameController.text, // Use the controller's text directly
       formation: _formationController.text,
@@ -530,8 +543,9 @@ class AddNewCase with ChangeNotifier {
   }
 
   // Update main case details
-  Future updateMainCaseDetails(bool isAdmin, {required String uid, required bool isShifted}) async {
-  var res=  await MainCasesInformation().updateCaseDetails(
+  Future updateMainCaseDetails(bool isAdmin,
+      {required String uid, required bool isShifted}) async {
+    var res = await MainCasesInformation().updateCaseDetails(
       uid: uid,
       name: _nameController.text, // Use the controller's text directly
       formation: _formationController.text,
@@ -548,7 +562,8 @@ class AddNewCase with ChangeNotifier {
       iec: _iecController.text,
       gstin: _gstinController.text,
       pan: _panController.text,
-      completeTrack: "On date ${DateFormat('dd/MM/yyyy').format(DateTime.now())} case is in ${_categoryController.text} ${_subcategoryController.text}",
+      completeTrack:
+          "On date ${DateFormat('dd/MM/yyyy').format(DateTime.now())} case is in ${_categoryController.text} ${_subcategoryController.text}",
       category: _categoryController.text,
       remark: _remarkController.text,
       subcategory: _subcategoryController.text,
@@ -557,12 +572,15 @@ class AddNewCase with ChangeNotifier {
       apealNo: _appealNoController.text,
       isShifted: isShifted,
     );
-  return res;
+    return res;
   }
 
   // Add case request
-  Future addRequestCase(bool isAdmin, {required String uid, required Map<String, dynamic> oldData, required bool isShifted}) async {
-  var res=  await RequestCasesInformation().addCases(
+  Future addRequestCase(bool isAdmin,
+      {required String uid,
+      required Map<String, dynamic> oldData,
+      required bool isShifted}) async {
+    var res = await RequestCasesInformation().addCases(
       uid: uid,
       oldData: oldData,
       name: _nameController.text,
@@ -580,7 +598,8 @@ class AddNewCase with ChangeNotifier {
       iec: _iecController.text,
       gstin: _gstinController.text,
       pan: _panController.text,
-      completeTrack: "On Date ${DateFormat('dd/MM/yyyy').format(DateTime.now())} case is in ${_categoryController.text}  ${_subcategoryController.text}",
+      completeTrack:
+          "On Date ${DateFormat('dd/MM/yyyy').format(DateTime.now())} case is in ${_categoryController.text}  ${_subcategoryController.text}",
       category: _categoryController.text,
       remark: _remarkController.text,
       subcategory: _subcategoryController.text,
@@ -593,8 +612,11 @@ class AddNewCase with ChangeNotifier {
   }
 
   // Update data of requested cases
-  Future updateRequestCase(bool isAdmin, {required String uid, required Map<String, dynamic> oldData, required bool isShifted}) async {
-   var res= await RequestCasesInformation().addCases(
+  Future updateRequestCase(bool isAdmin,
+      {required String uid,
+      required Map<String, dynamic> oldData,
+      required bool isShifted}) async {
+    var res = await RequestCasesInformation().addCases(
       uid: uid,
       oldData: oldData,
       name: _nameController.text,
@@ -612,7 +634,8 @@ class AddNewCase with ChangeNotifier {
       iec: _iecController.text,
       gstin: _gstinController.text,
       pan: _panController.text,
-      completeTrack: "On Date ${DateFormat('dd/MM/yyyy').format(DateTime.now())} case is in ${_categoryController.text}  ${_subcategoryController.text}",
+      completeTrack:
+          "On Date ${DateFormat('dd/MM/yyyy').format(DateTime.now())} case is in ${_categoryController.text}  ${_subcategoryController.text}",
       category: _categoryController.text,
       remark: _remarkController.text,
       subcategory: _subcategoryController.text,
@@ -621,51 +644,52 @@ class AddNewCase with ChangeNotifier {
       apealNo: _appealNoController.text,
       isShifted: isShifted,
     );
-   return res;
+    return res;
   }
 
-
   //acceptRequest usin admin
-  Future acceptRequestByAdmin({required String uid,required String formation,required bool isRequest}) async {
-  var res=  RequestCasesInformation().acceptRequest(
-        uid: uid,
-        name: _nameController.text,
-        formation: formation,
-        oio: _oioController.text,
-        date: _dateController.text,
-        dutyOfArrear: _dutyOfArrearController.text,
-        penalty: _penaltyController.text,
-        amountRecovered: _amountRecoveredController.text,
-        preDeposit: _preDepositController.text,
-        intrest: _interestController.text,
-        totalArrearPending: _totalArrearPendingController.text,
-        briefFact: _briefFactController.text,
-        status: _statusController.text,
-        apealNo: _appealNoController.text,
-        stayOrderNumberAndDate: _stayOrderNumberAndDateController.text,
-        iec: _iecController.text,
-        gstin: _gstinController.text,
-        pan: _panController.text,
-        completeTrack: [_completeTrackController.text],
-        category: _categoryController.text,
-        remark: _remarkController.text,
-        subcategory: _subcategoryController.text,
-        effortMade: _effortMadeController.text,
-        isRequest:true,
-        );
-  return res;
+  Future acceptRequestByAdmin(
+      {required String uid,
+      required String formation,
+      required bool isRequest}) async {
+    var res = RequestCasesInformation().acceptRequest(
+      uid: uid,
+      name: _nameController.text,
+      formation: formation,
+      oio: _oioController.text,
+      date: _dateController.text,
+      dutyOfArrear: _dutyOfArrearController.text,
+      penalty: _penaltyController.text,
+      amountRecovered: _amountRecoveredController.text,
+      preDeposit: _preDepositController.text,
+      intrest: _interestController.text,
+      totalArrearPending: _totalArrearPendingController.text,
+      briefFact: _briefFactController.text,
+      status: _statusController.text,
+      apealNo: _appealNoController.text,
+      stayOrderNumberAndDate: _stayOrderNumberAndDateController.text,
+      iec: _iecController.text,
+      gstin: _gstinController.text,
+      pan: _panController.text,
+      completeTrack: [_completeTrackController.text],
+      category: _categoryController.text,
+      remark: _remarkController.text,
+      subcategory: _subcategoryController.text,
+      effortMade: _effortMadeController.text,
+      isRequest: true,
+    );
+    return res;
   }
 
   //reject request
-  Future rejectRequest({required String uid,required String formation})async{
-  var res = await RequestCasesInformation().rejectRequest(uid: uid, formation: formation);
-  return res;
+  Future rejectRequest({required String uid, required String formation}) async {
+    var res = await RequestCasesInformation()
+        .rejectRequest(uid: uid, formation: formation);
+    return res;
   }
 
   //getTarReport Infromation
-  Future getTarReport()async{
-
-  }
+  Future getTarReport() async {}
 
   // Dispose controllers when no longer needed
   @override
@@ -694,6 +718,65 @@ class AddNewCase with ChangeNotifier {
     _remarkController.dispose();
     _subcategoryController.dispose();
     super.dispose();
+  }
+
+  //get replication data
+  Future getMainCasesFromReplication({required String query}) async {
+    // print("i am djjdnjdn");
+    _mainCaseData = (await MainCasesInformation()
+        .getReplicateMainCase(category: query))["res"];
+
+    notifyListeners();
+  }
+
+  //get Tar report  data
+  //     "arrear in litigation",
+//     "restrained arrear",
+//     "arrears where appeal period not over",
+//     "recoverable arrears",
+//     "arrears pending for write-off"
+  List<TarReportModel?> _litigationCompleteData = [];
+  Map<String, TarReportModel> _arrearLitigation = {};
+  Map<String, TarReportModel> _restrainded = {};
+  Map<String, TarReportModel> _appealPeriodNotOver = {};
+  Map<String, TarReportModel> _recoverable = {};
+  Map<String, TarReportModel> _writeOff = {};
+  Map<String, TarReportModel> get arrearLitigation => _arrearLitigation;
+  Map<String, TarReportModel> get restrainded => _restrainded;
+  Map<String, TarReportModel> get appealPeriodNotOver => _appealPeriodNotOver;
+  Map<String, TarReportModel> get writeOff => _writeOff;
+  List<TarReportModel?> get litigationCompleteData => _litigationCompleteData;
+  Future tarArrearLitigation() async {
+    _arrearLitigation =
+        (await TarReportInformation().litigationReport())["data"];
+    for (var i in LITIGATIONKEYS.keys) {
+      for (int j = 0; j < LITIGATIONKEYS[i]!.length; j++) {
+        _litigationCompleteData.add(_arrearLitigation[LITIGATIONKEYS![i]![j]]);
+      }
+    }
+    notifyListeners();
+  }
+
+  Future tarRestrainded() async {
+    _restrainded =
+        (await TarReportInformation().restrainedArrearReport())["data"];
+    notifyListeners();
+  }
+
+  Future tarAppealPeriodNotOver() async {
+    _appealPeriodNotOver =
+        (await TarReportInformation().periodNotOver())["data"];
+    notifyListeners();
+  }
+
+  Future tarrecoverable() async {
+    _recoverable = (await TarReportInformation().recoverableArrears())["data"];
+    notifyListeners();
+  }
+
+  Future tarWriteOff() async {
+    _writeOff = (await TarReportInformation().writeOff())["data"];
+    notifyListeners();
   }
 
   void clear() {
