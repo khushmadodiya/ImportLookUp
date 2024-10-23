@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.dart';
+import 'package:import_lookup/Provider-New/add-new-cases.dart';
+import 'package:provider/provider.dart';
 
 class RevenueTable extends StatefulWidget {
   RevenueTable({Key? key}) : super(key: key);
@@ -17,18 +19,19 @@ class _RevenueTableState extends State<RevenueTable> {
   final ScrollController horizontalController = ScrollController();
   final ScrollController verticalController = ScrollController();
   double sliderValue = 0;
-  bool showStack=false;
+  // bool showStack=false;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    horizontalController.addListener(() {
-      setState(() {
-        // Show the Stack widget if scrolled more than 300 pixels
-        showStack = horizontalController.offset >= 300;
-        print('called');
-      });
-    });
+
+    // horizontalController.addListener(() {
+    //   setState(() {
+    //     // Show the Stack widget if scrolled more than 300 pixels
+    //     showStack = horizontalController.offset >= 300;
+    //     print('called');
+    //   });
+    // });
   }
 
   @override
@@ -67,75 +70,78 @@ class _RevenueTableState extends State<RevenueTable> {
     }
 
 
-    return Focus(
-      autofocus: true,
-      skipTraversal: true,
-      onKeyEvent: (FocusNode node, KeyEvent event) {
-        _handleKeyEvent(event);
-        return KeyEventResult.handled;
-      },
-      child: Column(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Scrollbar(
-                controller: horizontalController,
-                thickness: 13,
-                child: SingleChildScrollView(
-                  dragStartBehavior: DragStartBehavior.down,
+    return Consumer<AddNewCase>(
+      builder: (context,pro,child)=>
+       Focus(
+        autofocus: true,
+        skipTraversal: true,
+        onKeyEvent: (FocusNode node, KeyEvent event) {
+          _handleKeyEvent(event);
+          return KeyEventResult.handled;
+        },
+        child: Column(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Scrollbar(
                   controller: horizontalController,
-                  scrollDirection: Axis.horizontal,
-                  child: Scrollbar(
-                    controller: verticalController,
-                    thickness: 10,
-                    scrollbarOrientation: ScrollbarOrientation.left,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
+                  thickness: 13,
+                  child: SingleChildScrollView(
+                    dragStartBehavior: DragStartBehavior.down,
+                    controller: horizontalController,
+                    scrollDirection: Axis.horizontal,
+                    child: Scrollbar(
                       controller: verticalController,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                         _buildCustomTable('Litigation', [
-                           _buildDataRow('1', 'Supreme Court cases', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15','16', '17', '18', '19', '20', '21', '22', '23','24', '25', '26', '27', '28'),
-                           _buildDataRow('2', 'High Court', '1', '2', '3', '4','5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),
-                           _buildDataRow('3', 'CESTAT', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),
-                           _buildDataRow('4', 'Comm Apeal', '1', '2', '3', '4','5', '6', '7','8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28') ,]),
-                          SizedBox(height: 15,),
-                          _buildCustomTable('Restrained Arrears', [
-                            _buildDataRow('5', 'OL', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),
-                            _buildDataRow('6', 'DRT', '1111111111', '2', '3', '4444444444444', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),
-                            _buildDataRow('7', 'BIFR', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),
-                            _buildDataRow('8', 'NCLT-Unit', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),
+                      thickness: 10,
+                      scrollbarOrientation: ScrollbarOrientation.left,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        controller: verticalController,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                           _buildCustomTable('Litigation', [
+                             _buildDataRow('1', 'Supreme Court cases', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15','16', '17', '18', '19', '20', '21', '22', '23','24', '25', '26', '27', '28'),
+                             _buildDataRow('2', 'High Court', '1', '2', '3', '4','5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),
+                             _buildDataRow('3', 'CESTAT', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),
+                             _buildDataRow('4', 'Comm Apeal', '1', '2', '3', '4','5', '6', '7','8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28') ,]),
+                            SizedBox(height: 15,),
+                            _buildCustomTable('Restrained Arrears', [
+                              _buildDataRow('5', 'OL', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),
+                              _buildDataRow('6', 'DRT', '1111111111', '2', '3', '44444444444444444', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),
+                              _buildDataRow('7', 'BIFR', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),
+                              _buildDataRow('8', 'NCLT-Unit', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),
 
-                          ]),
-                          SizedBox(height: 15,),
-                          _buildCustomTable("Where Appeal Period not Over", [_buildDataRow('8', 'Apeal Period not over', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28')]),
-                          SizedBox(height: 15,),
-                         _buildCustomTable('Recoverable', [
-                           _buildDataRow('9', '${SUBCATEGORY[CATEGORY[3]]![0]}', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),
-                           _buildDataRow('10', '${SUBCATEGORY[CATEGORY[3]]![1]}', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),
-                           _buildDataRow('11', '${SUBCATEGORY[CATEGORY[3]]![2]}', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),
-                           _buildDataRow('12', '${SUBCATEGORY[CATEGORY[3]]![3]}', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),
+                            ]),
+                            SizedBox(height: 15,),
+                            _buildCustomTable("Where Appeal Period not Over", [_buildDataRow('8', 'Apeal Period not over', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28')]),
+                            SizedBox(height: 15,),
+                           _buildCustomTable('Recoverable', [
+                             _buildDataRow('9', '${SUBCATEGORY[CATEGORY[3]]![0]}', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),
+                             _buildDataRow('10', '${SUBCATEGORY[CATEGORY[3]]![1]}', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),
+                             _buildDataRow('11', '${SUBCATEGORY[CATEGORY[3]]![2]}', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),
+                             _buildDataRow('12', '${SUBCATEGORY[CATEGORY[3]]![3]}', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),
 
-                         ]),
-                          SizedBox(height: 15,),
-                         _buildCustomTable('Writer off',
-                            [_buildDataRow('13', 'Write off', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),]
+                           ]),
+                            SizedBox(height: 15,),
+                           _buildCustomTable('Writer off',
+                              [_buildDataRow('13', 'Write off', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'),]
+                          ),
+                            SizedBox(height: 30,),
+
+                          ],
                         ),
-                          SizedBox(height: 30,),
-
-                        ],
                       ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-          // Slider to control horizontal scrolling
-        ],
+            // Slider to control horizontal scrolling
+          ],
+        ),
       ),
     );
   }
@@ -444,6 +450,9 @@ class _RevenueTableState extends State<RevenueTable> {
             children: [
               Table(
                 border: TableBorder.all(color: Colors.black),
+                columnWidths: const {
+                  0:FixedColumnWidth(90)
+                },
                 children: [
                   TableRow(
                     children: [
@@ -468,6 +477,9 @@ class _RevenueTableState extends State<RevenueTable> {
                 ],
               ),
               Table(
+                columnWidths: const {
+                  0:FixedColumnWidth(90)
+                },
                 border: TableBorder.all(color: Colors.black),
                 children: [
                   TableRow(
@@ -497,5 +509,10 @@ class _RevenueTableState extends State<RevenueTable> {
         ],
       ),
     );
+  }
+
+  getData()async{
+    var pro = Provider.of<AddNewCase>(context,listen: false);
+    // pro.
   }
 }
