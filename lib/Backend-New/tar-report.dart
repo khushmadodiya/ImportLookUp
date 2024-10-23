@@ -267,11 +267,13 @@ class TarReportInformation {
         .get();
     if (snap.exists) {
       for (int i = 0; i < SUBCATEGORY["recoverable arrears"]!.length; i++) {
+
         QuerySnapshot snap2 = await firebaseFirestore
             .collection("MP")
             .doc("recoverable arrears")
             .collection(SUBCATEGORY["recoverable arrears"]![i])
             .get();
+
         for (var data in snap2.docs) {
           // print("Data is here: ${data.data().toString()}");
           allData[SUBCATEGORY["recoverable arrears"]![i] + data.id] =
