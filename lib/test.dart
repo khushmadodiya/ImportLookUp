@@ -51,18 +51,13 @@ class _TestState extends State<Test> {
   // }
 
   void getData() async {
-    var res = (await TarReportInformation().litigationReport())["data"];
-    // // print("i am dipu ${res['data']}");
-    // TarReportModel model = res[RESTRAINEDKEYS["ol"]![0]];
-    // print("i am dipu");
-
-    // print("here is final answer ${model.amountOfTheMonth}");
-    print("i am executed   ssmk");
     await Provider.of<AddNewCase>(context, listen: false).tarArrearLitigation();
-    print("i am executed   ssmk");
+    print("i am dipu ");
     TarReportModel? model = Provider.of<AddNewCase>(context, listen: false)
         .arrearLitigation[LITIGATIONKEYS["sc"]![0]];
-    print("Heeelo i am divyansh Patidra${model!.amountOfTheMonth}");
+    print("i am dipu jddjnjnj  ${model!.amountOfTheMonth}");
+
+    // print("i am khushvant madodiya ${model!.amountOfTheMonth}");
   }
 
   @override

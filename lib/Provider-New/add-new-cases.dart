@@ -736,29 +736,41 @@ class AddNewCase with ChangeNotifier {
 //     "recoverable arrears",
 //     "arrears pending for write-off"
   Map<String, TarReportModel> _arrearLitigation = {};
+  Map<String, TarReportModel> _restrainded = {};
+  Map<String, TarReportModel> _appealPeriodNotOver = {};
+  Map<String, TarReportModel> _recoverable = {};
+  Map<String, TarReportModel> _writeOff = {};
   Map<String, TarReportModel> get arrearLitigation => _arrearLitigation;
+  Map<String, TarReportModel> get restrainded => _restrainded;
+  Map<String, TarReportModel> get appealPeriodNotOver => _appealPeriodNotOver;
+  Map<String, TarReportModel> get writeOff => _writeOff;
   Future tarArrearLitigation() async {
     _arrearLitigation =
         (await TarReportInformation().litigationReport())["data"];
-    // TarReportModel model = _arrearLitigation[LITIGATIONKEYS["sc"]![0]];
-    // print("testing is here ${model.amountOfTheMonth}");
+
     notifyListeners();
   }
 
   Future tarRestrainded() async {
-    var res = await TarReportInformation().restrainedArrearReport();
+    _restrainded =
+        (await TarReportInformation().restrainedArrearReport())["data"];
+    notifyListeners();
   }
 
   Future tarAppealPeriodNotOver() async {
-    var res = await TarReportInformation().periodNotOver();
+    _appealPeriodNotOver =
+        (await TarReportInformation().periodNotOver())["data"];
+    notifyListeners();
   }
 
   Future tarrecoverable() async {
-    var res = await TarReportInformation().recoverableArrears();
+    _recoverable = (await TarReportInformation().recoverableArrears())["data"];
+    notifyListeners();
   }
 
   Future tarWriteOff() async {
-    var res = await TarReportInformation().writeOff();
+    _writeOff = (await TarReportInformation().writeOff())["data"];
+    notifyListeners();
   }
 
   void clear() {
