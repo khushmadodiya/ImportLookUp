@@ -735,6 +735,7 @@ class AddNewCase with ChangeNotifier {
 //     "arrears where appeal period not over",
 //     "recoverable arrears",
 //     "arrears pending for write-off"
+  List<TarReportModel?> _litigationCompleteData = [];
   Map<String, TarReportModel> _arrearLitigation = {};
   Map<String, TarReportModel> _restrainded = {};
   Map<String, TarReportModel> _appealPeriodNotOver = {};
@@ -744,10 +745,15 @@ class AddNewCase with ChangeNotifier {
   Map<String, TarReportModel> get restrainded => _restrainded;
   Map<String, TarReportModel> get appealPeriodNotOver => _appealPeriodNotOver;
   Map<String, TarReportModel> get writeOff => _writeOff;
+  List<TarReportModel?> get litigationCompleteData => _litigationCompleteData;
   Future tarArrearLitigation() async {
     _arrearLitigation =
         (await TarReportInformation().litigationReport())["data"];
-
+    for (var i in LITIGATIONKEYS.keys) {
+      for (int j = 0; j < LITIGATIONKEYS[i]!.length; j++) {
+        _litigationCompleteData.add(_arrearLitigation[LITIGATIONKEYS![i]![j]]);
+      }
+    }
     notifyListeners();
   }
 
