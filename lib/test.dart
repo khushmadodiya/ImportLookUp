@@ -71,10 +71,9 @@ class _TestState extends State<Test> {
 
   void getData() async {
     await Provider.of<AddNewCase>(context, listen: false).tarArrearLitigation();
-    print("i am dipu ");
-    TarReportModel? model = Provider.of<AddNewCase>(context, listen: false)
-        .arrearLitigation[LITIGATIONKEYS["sc"]![0]];
-    print("i am dipu jddjnjnj  ${model!.amountOfTheMonth}");
+
+    print(
+        "i am dipu jddjnjnj  ${Provider.of<AddNewCase>(context, listen: false).litigationCompleteData[0]!.amountOfTheMonth}");
 
     // print("i am khushvant madodiya ${model!.amountOfTheMonth}");
   }

@@ -745,10 +745,15 @@ class AddNewCase with ChangeNotifier {
   Map<String, TarReportModel> get restrainded => _restrainded;
   Map<String, TarReportModel> get appealPeriodNotOver => _appealPeriodNotOver;
   Map<String, TarReportModel> get writeOff => _writeOff;
+  List<TarReportModel?> get litigationCompleteData => _litigationCompleteData;
   Future tarArrearLitigation() async {
     _arrearLitigation =
         (await TarReportInformation().litigationReport())["data"];
-
+    for (var i in LITIGATIONKEYS.keys) {
+      for (int j = 0; j < LITIGATIONKEYS[i]!.length; j++) {
+        _litigationCompleteData.add(_arrearLitigation[LITIGATIONKEYS![i]![j]]);
+      }
+    }
     notifyListeners();
   }
 
