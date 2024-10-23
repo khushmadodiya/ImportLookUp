@@ -1,4 +1,3 @@
-
 // import 'package:dropdown_search/dropdown_search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -16,26 +15,22 @@ import 'package:provider/provider.dart';
 import 'Provider-New/add-new-cases.dart';
 import 'Provider-New/get-user-deatils.dart';
 import 'firebase_options.dart';
+
 bool isadmin = false;
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => AsseserProvider()),
-        ChangeNotifierProvider(create: (_) => RequestedAsseserProvider()),
-        ChangeNotifierProvider(create: (_) => AddNewCase()),
-        ChangeNotifierProvider(create: (_) => UserInformation()),
-        ChangeNotifierProvider(create: (_) => GeneralPurposeProvider()),
-      ],
-      child:  MyApp()));
-
-
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => AsseserProvider()),
+    ChangeNotifierProvider(create: (_) => RequestedAsseserProvider()),
+    ChangeNotifierProvider(create: (_) => AddNewCase()),
+    ChangeNotifierProvider(create: (_) => UserInformation()),
+    ChangeNotifierProvider(create: (_) => GeneralPurposeProvider()),
+  ], child: MyApp()));
 }
-
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -51,10 +46,9 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     getData();
   }
+
   @override
   Widget build(BuildContext context) {
-
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -62,22 +56,22 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
       ),
       home: Consumer<UserInformation>(
-        builder: (context,pro,child)=>
-         StreamBuilder<User?>(
+        builder: (context, pro, child) => StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.active) {
               if (snapshot.hasData) {
-                if(pro.email.isNotEmpty  )
-                return DashboardScreen(isAdmin: pro.userType==USERTYPE[0]);
-                return const Scaffold(body: Center(child: CircularProgressIndicator()));
+                if (pro.email.isNotEmpty)
+                  return DashboardScreen(isAdmin: pro.userType == USERTYPE[0]);
+                return const Scaffold(
+                    body: Center(child: CircularProgressIndicator()));
               } else if (snapshot.hasError) {
                 return Center(child: Text('An error occurred'));
               }
               // return DashboardScreen(isadmin: false);
             }
 
-            if (snapshot.connectionState == ConnectionState.waiting ) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
@@ -86,21 +80,16 @@ class _MyAppState extends State<MyApp> {
           },
         ),
       ),
-
-
     );
   }
 
-  void getData() async{
-
-   var pro = await (Provider.of<UserInformation>(context,listen: false));
-   var p = await pro.getUserData();
-   await RequestCasesInformation().getAllReuqestCasesDetails();
+  void getData() async {
+    var pro = await (Provider.of<UserInformation>(context, listen: false));
+    var p = await pro.getUserData();
+    await RequestCasesInformation().getAllReuqestCasesDetails();
     // await UserInformation().getUserData()
     print('${pro.userId}  ${pro.userType}  ${pro.email}  ${pro.formation} ');
-
   }
-  
 }
 
 // class MyHomePage extends StatelessWidget {
