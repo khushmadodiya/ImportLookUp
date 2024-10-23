@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.dart';
 import 'package:import_lookup/Backend/authmethos.dart';
 import 'package:import_lookup/Provider-New/add-new-cases.dart';
@@ -290,30 +291,11 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
               provider.requestCaseData[index].formation),
       ],
     );
-    // else
-    // return TableRow(
-    //   children: [
-    //     _multiLineText('${index + 1}', 1),
-    //     _multiLineText('', 2),
-    //     _multiLineText('', 3),
-    //     _multiLineText('', 4),
-    //     _multiLineText('', 5),
-    //     _multiLineText(day, 6),
-    //     _multiLineText('', 7),
-    //     _multiLineText('', 8),
-    //     _multiLineText('', 9),
-    //     _multiLineText('', 10),
-    //     _multiLineText(
-    //        '', 11),
-    //     _multiLineText('', 12),
-    //     _multiLineText('', 13),
-    //     _multiLineText('', 14),
-    //     _multiLineText('', 15),
-    //   ]
-    // );
+
   }
 
   Widget _buildRejectButton(String uid, String formation) {
+  var  pro=  Provider.of<AddNewCase>(context,listen: false);
     print(uid);
     return Container(
       color: Colors.blue.withOpacity(0.2),
@@ -323,7 +305,10 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
               color: Colors.redAccent,
               text: 'Reject Request',
               onpress: () async {
-                // Naprint('object $formation');
+                pro.rejectRequest(uid: uid, formation: formation);
+                getData();
+                Fluttertoast.showToast(msg: 'Rejected',timeInSecForIosWeb: 3);
+                print('rejected');
               },
               isLoading: false)),
     );
