@@ -181,3 +181,7 @@ Map<String, List<String>> WRITEOFFKEYS = {
     "casesarrearss realised"
   ],
 };
+
+//checkloader
+
+bool isloaded = false;

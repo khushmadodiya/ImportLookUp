@@ -736,6 +736,11 @@ class AddNewCase with ChangeNotifier {
 //     "recoverable arrears",
 //     "arrears pending for write-off"
   List<TarReportModel?> _litigationCompleteData = [];
+  List<TarReportModel?> _restrainedCompleteData = [];
+  List<TarReportModel?> _apealPeriodNotOverCompleteData = [];
+  List<TarReportModel?> _recoverableCompleteData = [];
+  List<TarReportModel?> _writeOffCompleteData = [];
+
   Map<String, TarReportModel> _arrearLitigation = {};
   Map<String, TarReportModel> _restrainded = {};
   Map<String, TarReportModel> _appealPeriodNotOver = {};
@@ -745,7 +750,12 @@ class AddNewCase with ChangeNotifier {
   Map<String, TarReportModel> get restrainded => _restrainded;
   Map<String, TarReportModel> get appealPeriodNotOver => _appealPeriodNotOver;
   Map<String, TarReportModel> get writeOff => _writeOff;
+
   List<TarReportModel?> get litigationCompleteData => _litigationCompleteData;
+  List<TarReportModel?> get restrainedCompleteData => _restrainedCompleteData;
+  List<TarReportModel?> get apealPeiodNotOverCompleteData => _apealPeriodNotOverCompleteData;
+  List<TarReportModel?> get recoverableCompleteData => _recoverableCompleteData;
+  List<TarReportModel?> get writeOffCompleteData => _writeOffCompleteData;
   Future tarArrearLitigation() async {
     _arrearLitigation =
         (await TarReportInformation().litigationReport())["data"];
@@ -760,22 +770,48 @@ class AddNewCase with ChangeNotifier {
   Future tarRestrainded() async {
     _restrainded =
         (await TarReportInformation().restrainedArrearReport())["data"];
+    for (var i in RESTRAINEDKEYS.keys) {
+      for (int j = 0; j < RESTRAINEDKEYS[i]!.length; j++) {
+        _restrainedCompleteData.add(_restrainded[RESTRAINEDKEYS![i]![j]]);
+      }
+    }
     notifyListeners();
   }
 
   Future tarAppealPeriodNotOver() async {
     _appealPeriodNotOver =
         (await TarReportInformation().periodNotOver())["data"];
+    for (var i in PERIODNOTOVERKEYS.keys) {
+      for (int j = 0; j < PERIODNOTOVERKEYS[i]!.length; j++) {
+        _apealPeriodNotOverCompleteData
+            .add(_appealPeriodNotOver[PERIODNOTOVERKEYS![i]![j]]);
+      }
+    }
+
     notifyListeners();
   }
 
-  Future tarrecoverable() async {
-    _recoverable = (await TarReportInformation().recoverableArrears())["data"];
+  Future tarRecoverable() async {
+
+    _recoverable= (await TarReportInformation().recoverableArrears())["data"];
+    for (var i in RECOVERABLEKEYS.keys) {
+      for (int j = 0; j < RECOVERABLEKEYS[i]!.length; j++) {
+        _recoverableCompleteData
+            .add(_recoverable[RECOVERABLEKEYS![i]![j]]);
+      }
+    }
+
     notifyListeners();
   }
 
   Future tarWriteOff() async {
     _writeOff = (await TarReportInformation().writeOff())["data"];
+    for (var i in WRITEOFFKEYS.keys) {
+      for (int j = 0; j < WRITEOFFKEYS[i]!.length; j++) {
+        _writeOffCompleteData.add(_writeOff[WRITEOFFKEYS![i]![j]]);
+      }
+    }
+
     notifyListeners();
   }
 
