@@ -183,9 +183,8 @@ class _CustomTableState extends State<CustomTable> {
             scrollDirection: Axis.vertical,
             controller: _verticalController,
             child: Scrollbar(
-              trackVisibility: true,
-              thumbVisibility: true,
-              thickness: 15,
+
+              // thickness: 15,
               controller: _horigentalController,
               child: Listener(
                 onPointerSignal: (pointerSignal) {
