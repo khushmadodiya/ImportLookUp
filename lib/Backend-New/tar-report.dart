@@ -32,17 +32,6 @@ class TarReportInformation {
           openingBalance: 0,
           closingBalance: amountOfTheMonth);
 
-      TocModel tocmodel = TocModel(
-        closingBalance: closingBalance,
-        openingBalance: openingBalance,
-        numberOfClosingCases: noOfCasesOfTheMonth,
-        numberOfOpeningCases: 0,
-      );
-      await tocCreation(
-          category: category,
-          subcategory: subcategory,
-          model: tocmodel,
-          batch: batch);
       if (docsnap.exists) {
         // print("heloooo i am a");
         docsnap = await firebaseFirestore
@@ -62,6 +51,19 @@ class TarReportInformation {
               noOfCasesUpToTheMonth: data['noOfCasesUpToTheMonth'],
               openingBalance: data['openingBalance'],
               closingBalance: data['closingBalance'] + amountOfTheMonth);
+          //
+          TocModel tocmodel = TocModel(
+            closingBalance: amountOfTheMonth,
+            openingBalance: openingBalance,
+            numberOfClosingCases: noOfCasesOfTheMonth,
+            numberOfOpeningCases: 0,
+          );
+          await tocCreation(
+              category: category,
+              subcategory: subcategory,
+              model: tocmodel,
+              batch: batch);
+          //
           DocumentReference ref = firebaseFirestore
               .collection("MP")
               .doc(category)
@@ -77,7 +79,19 @@ class TarReportInformation {
           batch.set(ref, model.toJson());
         }
       } else {
-        print("heloooo i am fff D");
+        //
+        TocModel tocmodel = TocModel(
+          closingBalance: closingBalance,
+          openingBalance: openingBalance,
+          numberOfClosingCases: noOfCasesOfTheMonth,
+          numberOfOpeningCases: 0,
+        );
+        await tocCreation(
+            category: category,
+            subcategory: subcategory,
+            model: tocmodel,
+            batch: batch);
+        // print("heloooo i am fff D");
         await firebaseFirestore
             .collection("MP")
             .doc(category)
