@@ -362,7 +362,7 @@ class AddNewCase with ChangeNotifier {
   List<RequestCaseModel> _requestCaseData = [];
 
   List<MainCaseModel> get mainCaseData => _mainCaseData;
-  List<MainCaseModel> get allMainCaseData => _allMainCaseData;
+  List<MainCaseModel> get allMainCaseData => _mainCaseData;
   List<RequestCaseModel> get requestCaseData => _requestCaseData;
 
   void updateExcelLoader(){
