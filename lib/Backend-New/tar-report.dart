@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:js_util';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.dart';
 import 'package:import_lookup/Model-New/tar-model.dart';
@@ -17,7 +20,6 @@ class TarReportInformation {
     required double openingBalance,
     required double closingBalance,
   }) async {
-    print("heloooo i am fff");
     try {
       DocumentSnapshot docsnap =
           await firebaseFirestore.collection("MP").doc(category).get();
@@ -29,8 +31,20 @@ class TarReportInformation {
           noOfCasesUpToTheMonth: 0,
           openingBalance: 0,
           closingBalance: amountOfTheMonth);
+
+      TocModel tocmodel = TocModel(
+        closingBalance: closingBalance,
+        openingBalance: openingBalance,
+        numberOfClosingCases: noOfCasesOfTheMonth,
+        numberOfOpeningCases: 0,
+      );
+      await tocCreation(
+          category: category,
+          subcategory: subcategory,
+          model: tocmodel,
+          batch: batch);
       if (docsnap.exists) {
-        print("heloooo i am a");
+        // print("heloooo i am a");
         docsnap = await firebaseFirestore
             .collection("MP")
             .doc(category)
@@ -39,7 +53,6 @@ class TarReportInformation {
             .get();
 
         if (docsnap.exists) {
-          print("heloooo i am fff b");
           final data = docsnap.data() as Map<String, dynamic>;
           model = TarReportModel(
               amountOfTheMonth: data['amountOfTheMonth'] + amountOfTheMonth,
@@ -55,26 +68,13 @@ class TarReportInformation {
               .collection(subcategory)
               .doc(docName);
           batch.update(ref, model.toJson());
-          // await firebaseFirestore
-          //     .collection("MP")
-          //     .doc(category)
-          //     .collection(subcategory)
-          //     .doc(docName)
-          //     .update(model.toJson());
         } else {
-          print("heloooo i am fff c");
           DocumentReference ref = firebaseFirestore
               .collection("MP")
               .doc(category)
               .collection(subcategory)
               .doc(docName);
           batch.set(ref, model.toJson());
-          // await firebaseFirestore
-          //     .collection("MP")
-          //     .doc(category)
-          //     .collection(subcategory)
-          //     .doc(docName)
-          //     .set(model.toJson());
         }
       } else {
         print("heloooo i am fff D");
@@ -97,6 +97,94 @@ class TarReportInformation {
     }
   }
 
+  Future tocCreation(
+      {required String category,
+      required String subcategory,
+      required TocModel model,
+      required WriteBatch batch}) async {
+    // print("i am in toc heree");
+    DocumentSnapshot snap =
+        await firebaseFirestore.collection("MP").doc(category).get();
+    if (snap.exists) {
+      DocumentSnapshot snp = await firebaseFirestore
+          .collection("MP")
+          .doc(category)
+          .collection(subcategory)
+          .doc("toc")
+          .get();
+      if (snp.exists) {
+        TocModel model1 = TocModel.fromJson(snp.data() as Map<String, dynamic>);
+        model = TocModel(
+            closingBalance: model.closingBalance + model1.closingBalance,
+            openingBalance: model1.openingBalance,
+            numberOfClosingCases:
+                model.numberOfClosingCases + model1.numberOfClosingCases,
+            numberOfOpeningCases: model1.numberOfOpeningCases);
+        DocumentSnapshot snapshot = await firebaseFirestore
+            .collection("MP")
+            .doc(category)
+            .collection(subcategory)
+            .doc("toc")
+            .get();
+        if (snapshot.exists) {
+          DocumentReference ref = firebaseFirestore
+              .collection("MP")
+              .doc(category)
+              .collection(subcategory)
+              .doc("toc");
+          batch.update(ref, model.toJson());
+        } else {
+          DocumentReference ref = firebaseFirestore
+              .collection("MP")
+              .doc(category)
+              .collection(subcategory)
+              .doc("toc");
+          batch.set(ref, model.toJson());
+        }
+      }
+    } else {
+      await firebaseFirestore
+          .collection("MP")
+          .doc(category)
+          .set({}, SetOptions(merge: true));
+
+      DocumentReference ref = firebaseFirestore
+          .collection("MP")
+          .doc(category)
+          .collection(subcategory)
+          .doc("toc");
+      batch.set(ref, model.toJson());
+    }
+  }
+
+  Future tocUpdate(
+      {required String category,
+      required String subcategory,
+      required WriteBatch batch}) async {
+    DocumentSnapshot snp = await firebaseFirestore
+        .collection("MP")
+        .doc(category)
+        .collection(subcategory)
+        .doc("TOC")
+        .get();
+
+    if (snp.exists) {
+      DocumentReference ref = firebaseFirestore
+          .collection("MP")
+          .doc(category)
+          .collection(subcategory)
+          .doc("TOC");
+      TocModel model = TocModel.fromJson(snp.data() as Map<String, dynamic>);
+      model = TocModel(
+          closingBalance: 0,
+          openingBalance: model.closingBalance + model.openingBalance,
+          numberOfClosingCases: 0,
+          numberOfOpeningCases:
+              model.numberOfOpeningCases + model.numberOfClosingCases);
+      batch.update(ref, snp.data() as Map<String, dynamic>);
+    }
+  }
+
   //transfer case in up to the month
 
   Future transferCasesUpTheMonth({
@@ -105,6 +193,9 @@ class TarReportInformation {
     required String docName,
   }) async {
     try {
+      WriteBatch batch = firebaseFirestore.batch();
+      tocUpdate(batch: batch, category: category, subcategory: subcategory);
+
       for (int i = 0; i < CATEGORY.length; i++) {
         category = CATEGORY[i];
         for (int j = 0; j < SUBCATEGORY[CATEGORY[i]]!.length; j++) {
@@ -118,35 +209,41 @@ class TarReportInformation {
                 .collection(subcategory)
                 .doc(docName)
                 .get();
+
             if (docsnap.exists) {
               Map<String, dynamic> data =
                   docsnap.data() as Map<String, dynamic>;
               TarReportModel model = TarReportModel(
-                  amountOfTheMonth: 0,
-                  amountUpTotheMonth:
-                      data["amountOfTheMonth"] + data["amountUpTotheMonth"],
-                  noOfCasesOfTheMonth: 0,
-                  noOfCasesUpToTheMonth: data["noOfCasesUpToTheMonth"] +
-                      data["noOfCasesOfTheMonth"],
-                  openingBalance:
-                      data["openingBalance"] + data["closingBalance"],
-                  closingBalance: 0);
-              await firebaseFirestore
-                  .collection("MP")
-                  .doc(category)
-                  .collection(subcategory)
-                  .doc(docName)
-                  .update(model.toJson());
+                amountOfTheMonth: 0,
+                amountUpTotheMonth:
+                    data["amountOfTheMonth"] + data["amountUpToTheMonth"],
+                noOfCasesOfTheMonth: 0,
+                noOfCasesUpToTheMonth:
+                    data["noOfCasesUpToTheMonth"] + data["noOfCasesOfTheMonth"],
+                openingBalance: data["openingBalance"] + data["closingBalance"],
+                closingBalance: 0,
+              );
+
+              // Use batch.update instead of direct update
+              batch.update(
+                  firebaseFirestore
+                      .collection("MP")
+                      .doc(category)
+                      .collection(subcategory)
+                      .doc(docName),
+                  model.toJson());
             } else {
-              return {"res": "some problem is occured"};
+              return {"res": "some problem has occurred"};
             }
           }
         }
       }
 
+      // Commit the batch after all updates are added
+      await batch.commit();
       return {"res": "success"};
     } catch (e) {
-      return {"res": "some error occured ${e.toString()}"};
+      return {"res": "some error occurred ${e.toString()}"};
     }
   }
 
@@ -156,6 +253,9 @@ class TarReportInformation {
     required String docName,
   }) async {
     try {
+      WriteBatch batch = firebaseFirestore.batch();
+      tocUpdate(batch: batch, category: category, subcategory: subcategory);
+
       for (int i = 0; i < CATEGORY.length; i++) {
         category = CATEGORY[i];
         for (int j = 0; j < SUBCATEGORY[CATEGORY[i]]!.length; j++) {
@@ -168,44 +268,41 @@ class TarReportInformation {
                 .collection(subcategory)
                 .doc(docName)
                 .get();
+
             if (docsnap.exists) {
               Map<String, dynamic> data =
                   docsnap.data() as Map<String, dynamic>;
               TarReportModel model = TarReportModel(
-                  amountOfTheMonth: 0,
-                  amountUpTotheMonth: 0,
-                  noOfCasesOfTheMonth: 0,
-                  noOfCasesUpToTheMonth: 0,
-                  openingBalance:
-                      data["openingBalance"] + data["closingBalance"],
-                  closingBalance: 0);
-              await firebaseFirestore
-                  .collection("MP")
-                  .doc(category)
-                  .collection(subcategory)
-                  .doc(docName)
-                  .update(model.toJson());
+                amountOfTheMonth: 0,
+                amountUpTotheMonth: 0,
+                noOfCasesOfTheMonth: 0,
+                noOfCasesUpToTheMonth: 0,
+                openingBalance: data["openingBalance"] + data["closingBalance"],
+                closingBalance: 0,
+              );
+
+              // Use batch.update instead of direct update
+              batch.update(
+                  firebaseFirestore
+                      .collection("MP")
+                      .doc(category)
+                      .collection(subcategory)
+                      .doc(docName),
+                  model.toJson());
             } else {
-              return {"res": "some problem is occured"};
+              return {"res": "some problem has occurred"};
             }
           }
         }
       }
 
+      // Commit the batch after all updates are added
+      await batch.commit();
       return {"res": "success"};
     } catch (e) {
-      return {"res": "some error occured ${e.toString()}"};
+      return {"res": "some error occurred ${e.toString()}"};
     }
   }
-
-  //get All category Information
-// const List<String> CATEGORY = [
-//     "arrear in litigation",
-//     "restrained arrear",
-//     "arrears where appeal period not over",
-//     "recoverable arrears",
-//     "arrears pending for write-off"
-//   ];
 
   Future restrainedArrearReport() async {
     Map<String, TarReportModel> allData = {};
@@ -259,28 +356,35 @@ class TarReportInformation {
   }
 
   Future recoverableArrears() async {
-    Map<String, TarReportModel> allData = {};
-
-    DocumentSnapshot snap = await firebaseFirestore
-        .collection("MP")
-        .doc("recoverable arrears")
-        .get();
-    if (snap.exists) {
-      for (int i = 0; i < SUBCATEGORY["recoverable arrears"]!.length; i++) {
-        QuerySnapshot snap2 = await firebaseFirestore
-            .collection("MP")
-            .doc("recoverable arrears")
-            .collection(SUBCATEGORY["recoverable arrears"]![i])
-            .get();
-        for (var data in snap2.docs) {
-          // print("Data is here: ${data.data().toString()}");
-          allData[SUBCATEGORY["recoverable arrears"]![i] + data.id] =
-              TarReportModel.fromJson(data.data() as Map<String, dynamic>);
+    try {
+      Map<String, TarReportModel> allData = {};
+      // print("here is dipuu");
+      DocumentSnapshot snap = await firebaseFirestore
+          .collection("MP")
+          .doc("recoverable arrears")
+          .get();
+      // print("here is dipuu  n ");
+      if (snap.exists) {
+        // print("here is dipuu");
+        for (int i = 0; i < SUBCATEGORY["recoverable arrears"]!.length; i++) {
+          QuerySnapshot snap2 = await firebaseFirestore
+              .collection("MP")
+              .doc("recoverable arrears")
+              .collection(SUBCATEGORY["recoverable arrears"]![i])
+              .get();
+          for (var data in snap2.docs) {
+            // print("Data is here: ${data.data().toString()}");
+            allData[SUBCATEGORY["recoverable arrears"]![i] + data.id] =
+                TarReportModel.fromJson(data.data() as Map<String, dynamic>);
+          }
         }
       }
-    }
+      // print("here is dipuu end");
 
-    return {"res": "success", "data": allData};
+      return {"res": "success", "data": allData};
+    } catch (e) {
+      print("heeelo ma error ${e.toString()}");
+    }
   }
 
   Future litigationReport() async {
