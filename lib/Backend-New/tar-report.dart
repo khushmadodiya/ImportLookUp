@@ -165,7 +165,7 @@ class TarReportInformation {
         .collection("MP")
         .doc(category)
         .collection(subcategory)
-        .doc("TOC")
+        .doc("toc")
         .get();
 
     if (snp.exists) {
@@ -173,7 +173,7 @@ class TarReportInformation {
           .collection("MP")
           .doc(category)
           .collection(subcategory)
-          .doc("TOC");
+          .doc("toc");
       TocModel model = TocModel.fromJson(snp.data() as Map<String, dynamic>);
       model = TocModel(
           closingBalance: 0,
