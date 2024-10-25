@@ -61,6 +61,24 @@ class _TestState extends State<Test> {
   //  print("here dipu ${dipu2.requestCaseData[2].category}");
   // await TarReportInformation().recoverableArrears();
   // }
+<<<<<<< HEAD
+=======
+  // print("heeli i am ${CATEGORY[i]}   ${SUBCATEGORY[CATEGORY[i]]![j]}");
+  // }
+  // }
+  // batch.commit();
+  // }
+
+  void getData() async {
+    await Provider.of<AddNewCase>(context, listen: false).tarArrearLitigation();
+    print("i am dipu ");
+    TarReportModel? model = Provider.of<AddNewCase>(context, listen: false)
+        .arrearLitigation[LITIGATIONKEYS["sc"]![0]];
+    print("i am dipu jddjnjnj  ${model!.amountOfTheMonth}");
+
+    // print("i am khushvant madodiya ${model!.amountOfTheMonth}");
+  }
+>>>>>>> 2a212ce (my side is done)
 
   @override
   Widget build(BuildContext context) {
