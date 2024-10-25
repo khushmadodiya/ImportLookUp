@@ -12,9 +12,8 @@ class CompleteTrack extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Complete Track'),
-        backgroundColor:
-            Colors.blueAccent, // Change AppBar color to make it more lively
-        elevation: 4.0, // Add a shadow effect to AppBar
+         // Change AppBar color to make it more lively
+        // elevation: 4.0, // Add a shadow effect to AppBar
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0), // Add padding to the entire screen
@@ -22,17 +21,17 @@ class CompleteTrack extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: Text(
                 "Name: $name",
                 style: const TextStyle(
                   fontSize: 24, // Larger font size for emphasis
                   fontWeight: FontWeight.bold, // Bold for prominence
-                  color: Colors.lightBlue, // Color match with AppBar
+                  color: Colors.deepPurple, // Color match with AppBar
                 ),
               ),
             ),
-            const SizedBox(height: 20), // Spacing between title and list
+            const SizedBox(height: 10), // Spacing between title and list
             Expanded(
               child: ListView.builder(
                 padding: const EdgeInsets.symmetric(
