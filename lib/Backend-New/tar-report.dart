@@ -140,21 +140,28 @@ class TarReportInformation {
             .collection(subcategory)
             .doc("toc")
             .get();
-        if (snapshot.exists) {
-          DocumentReference ref = firebaseFirestore
-              .collection("MP")
-              .doc(category)
-              .collection(subcategory)
-              .doc("toc");
-          batch.update(ref, model.toJson());
-        } else {
-          DocumentReference ref = firebaseFirestore
-              .collection("MP")
-              .doc(category)
-              .collection(subcategory)
-              .doc("toc");
-          batch.set(ref, model.toJson());
-        }
+        // if (snapshot.exists) {
+        DocumentReference ref = firebaseFirestore
+            .collection("MP")
+            .doc(category)
+            .collection(subcategory)
+            .doc("toc");
+        batch.update(ref, model.toJson());
+        // } else {
+        // DocumentReference ref = firebaseFirestore
+        //     .collection("MP")
+        //     .doc(category)
+        //     .collection(subcategory)
+        //     .doc("toc");
+        // batch.set(ref, model.toJson());
+        // }
+      } else {
+        DocumentReference ref = firebaseFirestore
+            .collection("MP")
+            .doc(category)
+            .collection(subcategory)
+            .doc("toc");
+        batch.set(ref, model.toJson());
       }
     } else {
       await firebaseFirestore

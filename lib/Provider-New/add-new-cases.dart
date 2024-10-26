@@ -544,8 +544,11 @@ class AddNewCase with ChangeNotifier {
 
   // Update main case details
   Future updateMainCaseDetails(bool isAdmin,
-      {required String uid, required bool isShifted}) async {
+      {required String uid,
+      required bool isShifted,
+      required MainCaseModel oldDataModel}) async {
     var res = await MainCasesInformation().updateCaseDetails(
+      oldDataModel: oldDataModel,
       uid: uid,
       name: _nameController.text, // Use the controller's text directly
       formation: _formationController.text,
@@ -753,7 +756,8 @@ class AddNewCase with ChangeNotifier {
 
   List<TarReportModel?> get litigationCompleteData => _litigationCompleteData;
   List<TarReportModel?> get restrainedCompleteData => _restrainedCompleteData;
-  List<TarReportModel?> get apealPeiodNotOverCompleteData => _apealPeriodNotOverCompleteData;
+  List<TarReportModel?> get apealPeiodNotOverCompleteData =>
+      _apealPeriodNotOverCompleteData;
   List<TarReportModel?> get recoverableCompleteData => _recoverableCompleteData;
   List<TarReportModel?> get writeOffCompleteData => _writeOffCompleteData;
   Future tarArrearLitigation() async {
@@ -792,12 +796,10 @@ class AddNewCase with ChangeNotifier {
   }
 
   Future tarRecoverable() async {
-
-    _recoverable= (await TarReportInformation().recoverableArrears())["data"];
+    _recoverable = (await TarReportInformation().recoverableArrears())["data"];
     for (var i in RECOVERABLEKEYS.keys) {
       for (int j = 0; j < RECOVERABLEKEYS[i]!.length; j++) {
-        _recoverableCompleteData
-            .add(_recoverable[RECOVERABLEKEYS![i]![j]]);
+        _recoverableCompleteData.add(_recoverable[RECOVERABLEKEYS![i]![j]]);
       }
     }
 

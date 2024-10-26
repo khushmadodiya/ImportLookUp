@@ -70,7 +70,7 @@ class MainCasesInformation {
     );
     print("this is formation in database $formation");
     WriteBatch batch = _fireStore.batch();
-    await replicateMainCase(mainCaseModel:model,batch:batch);
+    await replicateMainCase(mainCaseModel: model, batch: batch);
     try {
       DocumentReference formationDocRef =
           _fireStore.collection("MP").doc(formation);
@@ -118,22 +118,22 @@ class MainCasesInformation {
         // print('No documents found in the MP collection  ');
         return allCases;
       } else {
-        for(var formation in FORMATION){
+        for (var formation in FORMATION) {
           QuerySnapshot qsnap = await _fireStore
               .collection("MP")
               .doc(formation)
               .collection("cases")
               .get();
-        if(qsnap.docs.isNotEmpty){
-           for (var val in qsnap.docs) {
-            // allCases.add(val.data() as Map<String, dynamic>);
-            allCases.add(
-                MainCaseModel.fromJson(val.data() as Map<String, dynamic>));
+          if (qsnap.docs.isNotEmpty) {
+            for (var val in qsnap.docs) {
+              // allCases.add(val.data() as Map<String, dynamic>);
+              allCases.add(
+                  MainCaseModel.fromJson(val.data() as Map<String, dynamic>));
+            }
           }
-        }
-        if(formation=='ICD Tihi'){
-           completer.complete("Success");
-        }
+          if (formation == 'ICD Tihi') {
+            completer.complete("Success");
+          }
         }
 
         // querySnapshot.docs.forEach((doc) async {
@@ -165,6 +165,7 @@ class MainCasesInformation {
   //this is form main cases
 
   Future updateCaseDetails({
+    MainCaseModel? oldDataModel,
     required String uid,
     required String name,
     required String formation,
@@ -200,6 +201,8 @@ class MainCasesInformation {
         .doc(uid)
         .get();
     if (_snap.exists) {
+      oldDataModel =
+          MainCaseModel.fromJson(_snap.data() as Map<String, dynamic>);
       List<String> trac = List<String>.from(
           (_snap.data() as Map<String, dynamic>)['completeTrack']);
       if (isShifted) {
@@ -210,15 +213,42 @@ class MainCasesInformation {
           totalArrearPending) {
         await TarReportInformation().updateDataOfTarReport(
             batch: batch,
-            category: category,
-            subcategory: subcategory,
+            category: oldDataModel.category,
+            subcategory: oldDataModel.subcategory,
             docName: "receipts",
             noOfCasesOfTheMonth: 0,
             noOfCasesUpToTheMonth: 0,
             amountOfTheMonth: double.parse(totalArrearPending),
             amountUpTotheMonth: 0,
-            openingBalance: double.parse(totalArrearPending),
-            closingBalance: 0);
+            openingBalance: 0,
+            closingBalance: double.parse(totalArrearPending));
+      }
+      if (oldDataModel.category != category ||
+          oldDataModel.subcategory != subcategory) {
+        await TarReportInformation().updateDataOfTarReport(
+            batch: batch,
+            category: oldDataModel.category,
+            subcategory: oldDataModel.subcategory,
+            docName: "receipts",
+            noOfCasesOfTheMonth: -1,
+            noOfCasesUpToTheMonth: 0,
+            amountOfTheMonth: -double.parse(totalArrearPending),
+            amountUpTotheMonth: 0,
+            openingBalance: 0,
+            closingBalance: -double.parse(totalArrearPending));
+
+        //new update
+        await TarReportInformation().updateDataOfTarReport(
+            batch: batch,
+            category: category,
+            subcategory: subcategory,
+            docName: "receipts",
+            noOfCasesOfTheMonth: 1,
+            noOfCasesUpToTheMonth: 0,
+            amountOfTheMonth: double.parse(totalArrearPending),
+            amountUpTotheMonth: 0,
+            openingBalance: 0,
+            closingBalance: double.parse(totalArrearPending));
       }
 
       MainCaseModel model = MainCaseModel(
@@ -314,19 +344,20 @@ class MainCasesInformation {
           await RequestCasesInformation()
               .rejectRequest(uid: uid, formation: formation, batch: batch);
         }
-       await batch.commit();
+        await batch.commit();
         return {"res": "success"};
       }
 
       //tar report updating if total arrear pending is changed
-
+      MainCaseModel oldDataModel =
+          MainCaseModel.fromJson(docSnapshot.data() as Map<String, dynamic>);
       if ((docSnapshot.data() as Map<String, dynamic>)['totalArrearPending']
               .toString() !=
           modelData['totalArrearPending']) {
         await TarReportInformation().updateDataOfTarReport(
             batch: batch,
-            category: modelData['category'],
-            subcategory: modelData['subcategory'],
+            category: oldDataModel.category,
+            subcategory: oldDataModel.subcategory,
             docName: "receipts",
             noOfCasesOfTheMonth: 0,
             noOfCasesUpToTheMonth: 0,
@@ -335,6 +366,31 @@ class MainCasesInformation {
             openingBalance: double.parse(modelData['totalArrearPending']),
             closingBalance: 0);
       }
+      if (oldDataModel.category != model.category ||
+          oldDataModel.subcategory != model.subcategory) {
+        await TarReportInformation().updateDataOfTarReport(
+            batch: batch,
+            category: oldDataModel.category,
+            subcategory: oldDataModel.subcategory,
+            docName: "receipts",
+            noOfCasesOfTheMonth: -1,
+            noOfCasesUpToTheMonth: 0,
+            amountOfTheMonth: -double.parse(model.totalArrearPending),
+            amountUpTotheMonth: 0,
+            openingBalance: 0,
+            closingBalance: -double.parse(model.totalArrearPending));
+        await TarReportInformation().updateDataOfTarReport(
+            batch: batch,
+            category: oldDataModel.category,
+            subcategory: oldDataModel.subcategory,
+            docName: "receipts",
+            noOfCasesOfTheMonth: 1,
+            noOfCasesUpToTheMonth: 0,
+            amountOfTheMonth: double.parse(model.totalArrearPending),
+            amountUpTotheMonth: 0,
+            openingBalance: 0,
+            closingBalance: double.parse(model.totalArrearPending));
+      }
       DocumentReference ref = _fireStore
           .collection("MP")
           .doc(formation)
@@ -342,13 +398,12 @@ class MainCasesInformation {
           .doc(uid);
       batch.update(ref, model.toJson());
       if (request) {
-          // print("i am in request njndjdnbjdbn");
-          await RequestCasesInformation()
-              .rejectRequest(uid: uid, formation: formation, batch: batch);
-        }
+        // print("i am in request njndjdnbjdbn");
+        await RequestCasesInformation()
+            .rejectRequest(uid: uid, formation: formation, batch: batch);
+      }
       await batch.commit();
 
-      
       return {"res": "success"};
     } catch (e) {
       return {"res": "some error occured ${e.toString()}"};
@@ -390,7 +445,7 @@ class MainCasesInformation {
       await deletereplicateMainCase(uid: uid, batch: batch);
       await writeOff(formation: formation, uid: uid, writeBatch: batch);
       batch.delete(ref);
-     await batch.commit();
+      await batch.commit();
       return {"res": "success"};
     } catch (e) {
       return {"res": "some error occured ${e.toString()}"};
@@ -415,9 +470,9 @@ class MainCasesInformation {
           .doc("writeOff")
           .collection("cases")
           .doc(uid);
-      if(snap.exists){
-      writeBatch.set(ref, snap.data() as Map<String, dynamic>);
-      }else{
+      if (snap.exists) {
+        writeBatch.set(ref, snap.data() as Map<String, dynamic>);
+      } else {
         throw "error occured";
       }
       return {"res": "success"};
@@ -427,155 +482,175 @@ class MainCasesInformation {
   }
   //get maincase detail document using formation
 
-  Future getMainCaseDetailByDocument({required  String formation,required String uid}) async {
-
-    try{
+  Future getMainCaseDetailByDocument(
+      {required String formation, required String uid}) async {
+    try {
       DocumentSnapshot qsnap = await _fireStore
           .collection("MP")
           .doc(formation)
-          .collection("cases").doc(uid)
+          .collection("cases")
+          .doc(uid)
           .get();
-      MainCaseModel model = MainCaseModel.fromJson(qsnap.data() as Map<String, dynamic>);
-      return {'res':'success','model':model};
-    }
-    catch(e){
+      MainCaseModel model =
+          MainCaseModel.fromJson(qsnap.data() as Map<String, dynamic>);
+      return {'res': 'success', 'model': model};
+    } catch (e) {
       return {'res': 'some error occure $e'};
     }
   }
   //get reuestcase detail document using formation
 
-  Future getRequestCaseDetailByDocument({required  String formation,required String uid}) async {
-
-    try{
+  Future getRequestCaseDetailByDocument(
+      {required String formation, required String uid}) async {
+    try {
       DocumentSnapshot qsnap = await _fireStore
           .collection("MP")
           .doc(formation)
-          .collection("requested cases").doc(uid)
+          .collection("requested cases")
+          .doc(uid)
           .get();
-      MainCaseModel model = MainCaseModel.fromJson(qsnap.data() as Map<String, dynamic>);
-      return {'res':'success','model':model};
-    }
-    catch(e){
+      MainCaseModel model =
+          MainCaseModel.fromJson(qsnap.data() as Map<String, dynamic>);
+      return {'res': 'success', 'model': model};
+    } catch (e) {
       return {'res': 'some error occure $e'};
     }
   }
 
-//for read optimize 
+//for read optimize
 
   Future replicateMainCase(
-      {required MainCaseModel mainCaseModel,required WriteBatch batch}) async {
-
-
+      {required MainCaseModel mainCaseModel, required WriteBatch batch}) async {
     try {
-     DocumentReference ref= _fireStore.collection("MP").doc("replicationmaincase").collection("formation").doc(mainCaseModel.uid);
-     batch.set(ref,mainCaseModel.toJson());
-    return {"res": "success"};
+      DocumentReference ref = _fireStore
+          .collection("MP")
+          .doc("replicationmaincase")
+          .collection("formation")
+          .doc(mainCaseModel.uid);
+      batch.set(ref, mainCaseModel.toJson());
+      return {"res": "success"};
     } catch (e) {
       return {"res": e.toString()};
     }
   }
+
   Future deletereplicateMainCase(
-      {required String uid,required WriteBatch batch}) async {
-
-
+      {required String uid, required WriteBatch batch}) async {
     try {
-     DocumentReference ref= _fireStore.collection("MP").doc("replicationmaincase").collection("formation").doc(uid);
-     batch.delete(ref);
-    return {"res": "success"};
+      DocumentReference ref = _fireStore
+          .collection("MP")
+          .doc("replicationmaincase")
+          .collection("formation")
+          .doc(uid);
+      batch.delete(ref);
+      return {"res": "success"};
     } catch (e) {
       return {"res": e.toString()};
     }
   }
 
-    Future upDatereplicateMainCase(
-      {required String uid,required MainCaseModel model,required WriteBatch batch}) async {
+  Future upDatereplicateMainCase(
+      {required String uid,
+      required MainCaseModel model,
+      required WriteBatch batch}) async {
     try {
-     DocumentReference ref= _fireStore.collection("MP").doc("replicationmaincase").collection("formation").doc(uid);
-    //  if(ref.get().
-    DocumentSnapshot snap=await _fireStore.collection("MP").doc("replicationmaincase").collection("formation").doc(uid).get();
-    if(!snap.exists){
-       batch.set(ref,model.toJson());
-    }else{
-       batch.update(ref,model.toJson());
-    }
-    
-    return {"res": "success"};
+      DocumentReference ref = _fireStore
+          .collection("MP")
+          .doc("replicationmaincase")
+          .collection("formation")
+          .doc(uid);
+      //  if(ref.get().
+      DocumentSnapshot snap = await _fireStore
+          .collection("MP")
+          .doc("replicationmaincase")
+          .collection("formation")
+          .doc(uid)
+          .get();
+      if (!snap.exists) {
+        batch.set(ref, model.toJson());
+      } else {
+        batch.update(ref, model.toJson());
+      }
+
+      return {"res": "success"};
     } catch (e) {
       return {"res": e.toString()};
     }
   }
 
-
 // import 'package:cloud_firestore/cloud_firestore.dart';
 
 // import 'package:cloud_firestore/cloud_firestore.dart';
 
-Future<Map<String, dynamic>> getReplicateMainCase({required String category}) async {
-  try {
-    print("Making request for data");
-    
-    // String lowerCategory = category.toLowerCase();
-    // String upperCategory = category.toUpperCase();
-    
-    // Create a list of queries for each field
-    List<Query> queries = [
-      _fireStore.collection("MP").doc("replicationmaincase").collection("formation")
-        .where(("name").toLowerCase(),isLessThanOrEqualTo:("GoUrAv").toLowerCase())
-        .where(("name").toLowerCase(),isGreaterThanOrEqualTo:("GoUrAv").toLowerCase())
+  Future<Map<String, dynamic>> getReplicateMainCase(
+      {required String category}) async {
+    try {
+      print("Making request for data");
+
+      // String lowerCategory = category.toLowerCase();
+      // String upperCategory = category.toUpperCase();
+
+      // Create a list of queries for each field
+      List<Query> queries = [
+        _fireStore
+            .collection("MP")
+            .doc("replicationmaincase")
+            .collection("formation")
+            .where(("name").toLowerCase(),
+                isLessThanOrEqualTo: ("GoUrAv").toLowerCase())
+            .where(("name").toLowerCase(),
+                isGreaterThanOrEqualTo: ("GoUrAv").toLowerCase())
 
         // .where("name", isLessThanOrEqualTo: "GOURAV"),
-      // _fireStore.collection("MP").doc("replicationmaincase").collection("formation")
-      //   .where("formation", isGreaterThanOrEqualTo: lowerCategory)
-      //   .where("formation", isLessThanOrEqualTo: upperCategory + '\uf8ff'),
-      // _fireStore.collection("MP").doc("replicationmaincase").collection("formation")
-      //   .where("briefFact", isGreaterThanOrEqualTo: lowerCategory)
-      //   .where("briefFact", isLessThanOrEqualTo: upperCategory + '\uf8ff'),
-      // _fireStore.collection("MP").doc("replicationmaincase").collection("formation")
-      //   .where("amountRecovered", isGreaterThanOrEqualTo: lowerCategory)
-      //   .where("amountRecovered", isLessThanOrEqualTo: upperCategory + '\uf8ff'),
-      // _fireStore.collection("MP").doc("replicationmaincase").collection("formation")
-      //   .where("apealNo", isGreaterThanOrEqualTo: lowerCategory)
-      //   .where("apealNo", isLessThanOrEqualTo: upperCategory + '\uf8ff'),
-      // _fireStore.collection("MP").doc("replicationmaincase").collection("formation")
-      //   .where("category", isGreaterThanOrEqualTo: lowerCategory)
-      //   .where("category", isLessThanOrEqualTo: upperCategory + '\uf8ff'),
-      // _fireStore.collection("MP").doc("replicationmaincase").collection("formation")
-      //   .where("intrest", isGreaterThanOrEqualTo: lowerCategory)
-      //   .where("intrest", isLessThanOrEqualTo: upperCategory + '\uf8ff'),
-    ];
+        // _fireStore.collection("MP").doc("replicationmaincase").collection("formation")
+        //   .where("formation", isGreaterThanOrEqualTo: lowerCategory)
+        //   .where("formation", isLessThanOrEqualTo: upperCategory + '\uf8ff'),
+        // _fireStore.collection("MP").doc("replicationmaincase").collection("formation")
+        //   .where("briefFact", isGreaterThanOrEqualTo: lowerCategory)
+        //   .where("briefFact", isLessThanOrEqualTo: upperCategory + '\uf8ff'),
+        // _fireStore.collection("MP").doc("replicationmaincase").collection("formation")
+        //   .where("amountRecovered", isGreaterThanOrEqualTo: lowerCategory)
+        //   .where("amountRecovered", isLessThanOrEqualTo: upperCategory + '\uf8ff'),
+        // _fireStore.collection("MP").doc("replicationmaincase").collection("formation")
+        //   .where("apealNo", isGreaterThanOrEqualTo: lowerCategory)
+        //   .where("apealNo", isLessThanOrEqualTo: upperCategory + '\uf8ff'),
+        // _fireStore.collection("MP").doc("replicationmaincase").collection("formation")
+        //   .where("category", isGreaterThanOrEqualTo: lowerCategory)
+        //   .where("category", isLessThanOrEqualTo: upperCategory + '\uf8ff'),
+        // _fireStore.collection("MP").doc("replicationmaincase").collection("formation")
+        //   .where("intrest", isGreaterThanOrEqualTo: lowerCategory)
+        //   .where("intrest", isLessThanOrEqualTo: upperCategory + '\uf8ff'),
+      ];
 
-    // Execute all queries
-    List<QuerySnapshot> snapshots = await Future.wait(queries.map((query) => query.get()));
+      // Execute all queries
+      List<QuerySnapshot> snapshots =
+          await Future.wait(queries.map((query) => query.get()));
 
-    // Combine and deduplicate results
-    Map<String, MainCaseModel> uniqueData = {};
+      // Combine and deduplicate results
+      Map<String, MainCaseModel> uniqueData = {};
 
-    for (var snapshot in snapshots) {
-      for (var doc in snapshot.docs) {
-        String docId = doc.id;
-        if (!uniqueData.containsKey(docId)) {
-          uniqueData[docId] = MainCaseModel.fromJson(doc.data() as Map<String, dynamic>);
+      for (var snapshot in snapshots) {
+        for (var doc in snapshot.docs) {
+          String docId = doc.id;
+          if (!uniqueData.containsKey(docId)) {
+            uniqueData[docId] =
+                MainCaseModel.fromJson(doc.data() as Map<String, dynamic>);
+          }
         }
       }
+
+      List<MainCaseModel> data = uniqueData.values.toList();
+
+      print("Data fetched successfully. Total unique records: ${data.length}");
+
+      for (int i = 0; i < data.length; i++) {
+        print("Fetched data: ${data[i].name}");
+      }
+
+      return {"res": "success", "data": data};
+    } catch (e) {
+      print("Error fetching data: $e"); // Log the error
+      return {"res": e.toString(), "data": []};
     }
-
-    List<MainCaseModel> data = uniqueData.values.toList();
-
-    print("Data fetched successfully. Total unique records: ${data.length}");
-
-    for (int i = 0; i < data.length; i++) {
-      print("Fetched data: ${data[i].name}");
-    }
-
-    return {"res": "success", "data": data};
-  } catch (e) {
-    print("Error fetching data: $e");  // Log the error
-    return {"res": e.toString(), "data": []};
   }
 }
-
-}
-
-
- 
-

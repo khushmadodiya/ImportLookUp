@@ -34,6 +34,7 @@ class _UpdateCaseDetailState extends State<UpdateCaseDetail> {
   String? selectedCategory = CATEGORY[2];
   String? selectedSubCategory = SUBCATEGORY[CATEGORY[2]]![0];
   String? formation = FORMATION[0];
+  // oldData;
   @override
   void initState() {
     // TODO: implement initState
@@ -54,11 +55,10 @@ class _UpdateCaseDetailState extends State<UpdateCaseDetail> {
 
     Map<String, dynamic> res;
     if (userInfo.userType == USERTYPE[0]) {
-      res = await pro.updateMainCaseDetails(
-        true,
-        uid: widget.uid,
-        isShifted: true,
-      );
+      res = await pro.updateMainCaseDetails(true,
+          uid: widget.uid,
+          isShifted: true,
+          oldDataModel: MainCaseModel.fromJson(oldData));
     } else {
       res = await pro.addRequestCase(false,
           uid: widget.uid, oldData: oldData, isShifted: true);
