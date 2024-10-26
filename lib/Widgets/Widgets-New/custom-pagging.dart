@@ -14,8 +14,8 @@ Widget CutomPagging() {
     child: Consumer<AddNewCase>(
       builder: (context, provider, child) => Consumer<GeneralPurposeProvider>(
         builder: (context, generalProvider, child) => Row(
-          children:[... List.generate(
-              FORMATION.length+1,
+          children: List.generate(
+              FORMATION.length,
               (index) => Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: InkWell(
@@ -26,7 +26,7 @@ Widget CutomPagging() {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                          index==0?"All Formation":  FORMATION[index-1],
+                           FORMATION[index],
                             style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),
@@ -36,12 +36,12 @@ Widget CutomPagging() {
                       onTap: () {
                         provider.updateLoader();
                         generalProvider.updateSelectedIndex(index);
-                        index==0?provider.getMainCasesInformation(formation: FORMATION[0], isAdmin: true): provider.getMainCasesInformation(formation: FORMATION[index-1], isAdmin: false);
+                        provider.getMainCasesInformation(formation: FORMATION[index], isAdmin: false);
                         provider.updateLoader();
                       },
                     ),
                   )),
-        ]
+
         ),
       ),
     ),
