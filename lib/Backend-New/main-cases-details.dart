@@ -375,10 +375,10 @@ class MainCasesInformation {
             docName: "receipts",
             noOfCasesOfTheMonth: -1,
             noOfCasesUpToTheMonth: 0,
-            amountOfTheMonth: -double.parse(model.totalArrearPending),
+            amountOfTheMonth: -double.parse(oldDataModel.totalArrearPending),
             amountUpTotheMonth: 0,
             openingBalance: 0,
-            closingBalance: -double.parse(model.totalArrearPending));
+            closingBalance: -double.parse(oldDataModel.totalArrearPending));
         await TarReportInformation().updateDataOfTarReport(
             batch: batch,
             category: oldDataModel.category,

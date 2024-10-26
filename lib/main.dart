@@ -29,7 +29,7 @@ void main() async {
     ChangeNotifierProvider(create: (_) => AddNewCase()),
     ChangeNotifierProvider(create: (_) => UserInformation()),
     ChangeNotifierProvider(create: (_) => GeneralPurposeProvider()),
-  ], child: Test()));
+  ], child: MyApp()));
 }
 
 class MyApp extends StatefulWidget {
