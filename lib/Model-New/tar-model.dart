@@ -48,10 +48,10 @@ class TocModel {
       required this.numberOfOpeningCases});
   factory TocModel.fromJson(Map<String, dynamic> json) {
     return TocModel(
-      closingBalance: json["closingBalance"],
-      openingBalance: json["openingBalance"],
-      numberOfClosingCases: json["numberOfClosingCases"],
-      numberOfOpeningCases: json["numberOfOpeningCases"],
+      closingBalance: json["closingBalance"]??0.0,
+      openingBalance: json["openingBalance"]??0.0,
+      numberOfClosingCases: json["numberOfClosingCases"]??0.0,
+      numberOfOpeningCases: json["numberOfOpeningCases"]??0.0,
     );
   }
 

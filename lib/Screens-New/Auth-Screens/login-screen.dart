@@ -48,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
     loader.updateLoader();
     String res = await Authentication().login(
         userType:selectedUsertype??"", userId:userIdController.text.trim(),password: _passwordController.text.trim());
-    loader.updateLoader();
+
     if (res == 'success') {
       var pre = await SharedPreferences.getInstance();
       await pre.setString(
@@ -57,6 +57,7 @@ class _LoginPageState extends State<LoginPage> {
       // selecteditem = pre.get('value').toString();
       // send data to provider
       await (Provider.of<UserInformation>(context,listen: false)).getUserData();
+      loader.updateLoader();
       if (context.mounted) {
 
           isadmin= false;

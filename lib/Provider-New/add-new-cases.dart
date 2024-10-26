@@ -278,6 +278,7 @@
 //     // super.clear();
 //   }
 // }
+import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
 import 'dart:js';
@@ -327,10 +328,12 @@ class AddNewCase with ChangeNotifier {
   final TextEditingController _subcategoryController = TextEditingController();
   bool _isLoading = false;
   bool _excelLoader = false;
+  bool _tarLoader = false;
 
   // Getters for each controller
   bool get isLoading => _isLoading;
   bool get excelLoader => _excelLoader;
+  bool get tarLoader => _tarLoader;
   TextEditingController get name => _nameController;
   TextEditingController get formation => _formationController;
   TextEditingController get oio => _oioController;
@@ -366,7 +369,11 @@ class AddNewCase with ChangeNotifier {
   List<RequestCaseModel> get requestCaseData => _requestCaseData;
 
   void updateExcelLoader(){
-     _excelLoader = !excelLoader;
+     _excelLoader = !_excelLoader;
+     notifyListeners();
+  }
+  void updateTarLoader(){
+     _tarLoader = !_tarLoader;
      notifyListeners();
   }
   void updateSubcategory(String subCatregory) {
@@ -765,13 +772,45 @@ class AddNewCase with ChangeNotifier {
 
   List<TarReportModel?> get litigationCompleteData => _litigationCompleteData;
   List<TarReportModel?> get restrainedCompleteData => _restrainedCompleteData;
-  List<TarReportModel?> get apealPeiodNotOverCompleteData =>
-      _apealPeriodNotOverCompleteData;
+  List<TarReportModel?> get apealPeiodNotOverCompleteData => _apealPeriodNotOverCompleteData;
   List<TarReportModel?> get recoverableCompleteData => _recoverableCompleteData;
   List<TarReportModel?> get writeOffCompleteData => _writeOffCompleteData;
+
+  Map<String , TocModel> _allTocdata = {};
+  List<TocModel> _arrearTocLitgation = [];
+  List<TocModel> _arrearTocRestrained = [];
+  List<TocModel> _arrearTocRecoverable = [];
+  TocModel ?_arrearTocWhereApealPeriodNotOver ;
+  TocModel? _arrearTocPendingForWirteOff;
+  Map<String , TocModel> get allTocdata => _allTocdata;
+  List<TocModel> get arrearTocLitgation => _arrearTocLitgation;
+  List<TocModel> get arrearTocRestrained => _arrearTocRestrained;
+  TocModel get arrearTocWhereApealPeriodNotOver => _arrearTocWhereApealPeriodNotOver!;
+  List<TocModel> get arrearTocRecoverable => _arrearTocRecoverable;
+  TocModel get arrearTocPendingForWirteOff => _arrearTocPendingForWirteOff!;
+
+
+  Future getAllSubcategoryTocdata()async{
+    _allTocdata =  (await TarReportInformation().TocReport())['data'];
+    for(int i=0;i<4;i++){
+      _arrearTocLitgation.add(_allTocdata[TOCKEY[i]]!);
+    }
+    for(int i=4;i<8;i++){
+      _arrearTocRestrained.add(_allTocdata[TOCKEY[i]]!);
+    }
+    _arrearTocWhereApealPeriodNotOver=_allTocdata[TOCKEY[8]]!;
+    for(int i=9;i<13;i++){
+      _arrearTocRecoverable.add(_allTocdata[TOCKEY[i]]!);
+    }
+    _arrearTocPendingForWirteOff=_allTocdata[TOCKEY[13]]!;
+
+     // print(_allTocdata['sctoc']!.);
+     notifyListeners();
+  }
+
+
   Future tarArrearLitigation() async {
-    _arrearLitigation =
-        (await TarReportInformation().litigationReport())["data"];
+    _arrearLitigation = (await TarReportInformation().litigationReport())["data"];
     for (var i in LITIGATIONKEYS.keys) {
       for (int j = 0; j < LITIGATIONKEYS[i]!.length; j++) {
         _litigationCompleteData.add(_arrearLitigation[LITIGATIONKEYS![i]![j]]);

@@ -22,29 +22,29 @@ class _TestState extends State<Test> {
     getData();
   }
 
-  void getData() async {
-    FirebaseFirestore store = FirebaseFirestore.instance;
-    WriteBatch batch = store.batch();
-    for (int i = 0; i < CATEGORY.length; i++) {
-      for (int j = 0; j < SUBCATEGORY[CATEGORY[i]]!.length; j++) {
-        for (int k = 0; k < DOCNAME.length; k++) {
-          await TarReportInformation().updateDataOfTarReport(
-              batch: batch,
-              category: CATEGORY[i],
-              subcategory: SUBCATEGORY[CATEGORY[i]]![j],
-              docName: DOCNAME[k],
-              noOfCasesOfTheMonth: 0,
-              noOfCasesUpToTheMonth: 0,
-              amountOfTheMonth: 0,
-              amountUpTotheMonth: 0,
-              openingBalance: 0,
-              closingBalance: 0);
-        }
-        print("heeli i am ${CATEGORY[i]}   ${SUBCATEGORY[CATEGORY[i]]![j]}");
-      }
-    }
-    batch.commit();
-  }
+  // void getData() async {
+  //   FirebaseFirestore store = FirebaseFirestore.instance;
+  //   WriteBatch batch = store.batch();
+  //   for (int i = 0; i < CATEGORY.length; i++) {
+  //     for (int j = 0; j < SUBCATEGORY[CATEGORY[i]]!.length; j++) {
+  //       for (int k = 0; k < DOCNAME.length; k++) {
+  //         await TarReportInformation().updateDataOfTarReport(
+  //             batch: batch,
+  //             category: CATEGORY[i],
+  //             subcategory: SUBCATEGORY[CATEGORY[i]]![j],
+  //             docName: DOCNAME[k],
+  //             noOfCasesOfTheMonth: 0,
+  //             noOfCasesUpToTheMonth: 0,
+  //             amountOfTheMonth: 0,
+  //             amountUpTotheMonth: 0,
+  //             openingBalance: 0,
+  //             closingBalance: 0);
+  //       }
+  //       print("heeli i am ${CATEGORY[i]}   ${SUBCATEGORY[CATEGORY[i]]![j]}");
+  //     }
+  //   }
+  //   batch.commit();
+  // }
 
   // void getData() async {
   // AddNewCase dipu=Provider.of<AddNewCase>(context,listen:false);
@@ -57,6 +57,14 @@ class _TestState extends State<Test> {
   //  print("here dipu ${dipu2.requestCaseData[2].category}");
   // await TarReportInformation().recoverableArrears();
   // }
+
+
+   getData()async{
+   var res =  (await TarReportInformation().TocReport());
+   if(res['res']=='success'){
+      print("this is my data ${res['data']}");
+   }
+   }
 
   @override
   Widget build(BuildContext context) {

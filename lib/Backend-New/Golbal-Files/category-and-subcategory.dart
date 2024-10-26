@@ -55,7 +55,7 @@ Map<String, List<String>> LITIGATIONKEYS = {
     "scdisposal against the department",
     "scdisposal order for denovo",
     "scdisposal formations changed",
-    "scarrearss realised"
+    "scarrearss realised",
   ],
   "hc": [
     "hcreceipts",
@@ -63,7 +63,7 @@ Map<String, List<String>> LITIGATIONKEYS = {
     "hcdisposal against the department",
     "hcdisposal order for denovo",
     "hcdisposal formations changed",
-    "hcarrearss realised"
+    "hcarrearss realised",
   ],
   "cestat": [
     "cestatreceipts",
@@ -71,7 +71,7 @@ Map<String, List<String>> LITIGATIONKEYS = {
     "cestatdisposal against the department",
     "cestatdisposal order for denovo",
     "cestatdisposal formations changed",
-    "cestatarrearss realised"
+    "cestatarrearss realised",
   ],
   "commissioner appleal": [
     "commissioner applealreceipts",
@@ -79,7 +79,8 @@ Map<String, List<String>> LITIGATIONKEYS = {
     "commissioner applealdisposal against the department",
     "commissioner applealdisposal order for denovo",
     "commissioner applealdisposal formations changed",
-    "commissioner applealarrearss realised"
+    "commissioner applealarrearss realised",
+    "commissioner appealtoc"
   ]
 };
 // ["ol", "drt", "bifr", "nclt units"]
@@ -182,6 +183,8 @@ Map<String, List<String>> WRITEOFFKEYS = {
   ],
 };
 
+//toc all subcateogry data
+    List<String> TOCKEY = ['sctoc','hctoc','cestattoc','commissioner applealtoc','oltoc','drttoc','bifrtoc','nclt unitstoc','casestoc','appeal period over but no appeal fieldtoc','settlement commision casestoc','arrear under section 11toc','arrear under section 142toc','arrears pending for write-offtoc'];
 //checkloader
 
 bool isloaded = false;
