@@ -326,9 +326,11 @@ class AddNewCase with ChangeNotifier {
   final TextEditingController _remarkController = TextEditingController();
   final TextEditingController _subcategoryController = TextEditingController();
   bool _isLoading = false;
+  bool _excelLoader = false;
 
   // Getters for each controller
   bool get isLoading => _isLoading;
+  bool get excelLoader => _excelLoader;
   TextEditingController get name => _nameController;
   TextEditingController get formation => _formationController;
   TextEditingController get oio => _oioController;
@@ -356,10 +358,17 @@ class AddNewCase with ChangeNotifier {
 
   //this or data
   List<MainCaseModel> _mainCaseData = [];
+  List<MainCaseModel> _allMainCaseData = [];
   List<RequestCaseModel> _requestCaseData = [];
 
   List<MainCaseModel> get mainCaseData => _mainCaseData;
+  List<MainCaseModel> get allMainCaseData => _mainCaseData;
   List<RequestCaseModel> get requestCaseData => _requestCaseData;
+
+  void updateExcelLoader(){
+     _excelLoader = !excelLoader;
+     notifyListeners();
+  }
   void updateSubcategory(String subCatregory) {
     subcategory.text = subCatregory;
   }
@@ -492,7 +501,7 @@ class AddNewCase with ChangeNotifier {
       _mainCaseData = (await MainCasesInformation()
           .getFormationMainCaseInformation(formation))["res"];
     } else {
-      _mainCaseData =
+      _allMainCaseData =
           (await MainCasesInformation().getAllMainCasesDetails())["res"];
     }
     notifyListeners();
