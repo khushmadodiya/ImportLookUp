@@ -23,10 +23,6 @@ class _TestState extends State<Test> {
   }
 
   void getData() async {
-    // AddNewCase dipu=Provider.of<AddNewCase>(context,listen:false);
-    //  await dipu.getMainCasesFromReplication(query:"air");
-    //  AddNewCase dipu2=Provider.of<AddNewCase>(context,listen:false);
-    //  print("here dipu ${dipu2.mainCaseData.length}");
     FirebaseFirestore store = FirebaseFirestore.instance;
     WriteBatch batch = store.batch();
     for (int i = 0; i < CATEGORY.length; i++) {
@@ -67,7 +63,7 @@ class _TestState extends State<Test> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('DataTable Demo'),
+          title: const Text('DataTable Demo'),
         ),
         body: ListView(
           children: [_createDataTable()],
