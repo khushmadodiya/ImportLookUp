@@ -218,10 +218,22 @@ class MainCasesInformation {
             docName: "receipts",
             noOfCasesOfTheMonth: 0,
             noOfCasesUpToTheMonth: 0,
-            amountOfTheMonth: double.parse(totalArrearPending),
+            amountOfTheMonth: double.parse(oldDataModel.totalArrearPending) -
+                        double.parse(totalArrearPending) <
+                    0
+                ? double.parse(totalArrearPending) -
+                    double.parse(oldDataModel.totalArrearPending)
+                : double.parse(oldDataModel.totalArrearPending) -
+                    double.parse(totalArrearPending),
             amountUpTotheMonth: 0,
             openingBalance: 0,
-            closingBalance: double.parse(totalArrearPending));
+            closingBalance: double.parse(oldDataModel.totalArrearPending) -
+                        double.parse(totalArrearPending) <
+                    0
+                ? double.parse(totalArrearPending) -
+                    double.parse(oldDataModel.totalArrearPending)
+                : double.parse(oldDataModel.totalArrearPending) -
+                    double.parse(totalArrearPending));
       }
       if (oldDataModel.category != category ||
           oldDataModel.subcategory != subcategory) {
@@ -232,10 +244,10 @@ class MainCasesInformation {
             docName: "receipts",
             noOfCasesOfTheMonth: -1,
             noOfCasesUpToTheMonth: 0,
-            amountOfTheMonth: -double.parse(totalArrearPending),
+            amountOfTheMonth: -double.parse(oldDataModel.totalArrearPending),
             amountUpTotheMonth: 0,
             openingBalance: 0,
-            closingBalance: -double.parse(totalArrearPending));
+            closingBalance: -double.parse(oldDataModel.totalArrearPending));
 
         //new update
         await TarReportInformation().updateDataOfTarReport(
@@ -304,14 +316,14 @@ class MainCasesInformation {
 
   //update maincase datils (requested cases)
   Future updateMainCaseDetails(
-      {required MainCaseModel model,
+      {required MainCaseModel newDataModel,
       required String formation,
       required String uid,
       bool request = false}) async {
     WriteBatch batch = _fireStore.batch();
     try {
-      Map<String, dynamic> modelData = model.toJson();
-      upDatereplicateMainCase(uid: uid, model: model, batch: batch);
+      Map<String, dynamic> modelData = newDataModel.toJson();
+      upDatereplicateMainCase(uid: uid, model: newDataModel, batch: batch);
       DocumentSnapshot docSnapshot = await _fireStore
           .collection("MP")
           .doc(formation)
@@ -324,7 +336,7 @@ class MainCasesInformation {
             .doc(formation)
             .collection("cases")
             .doc(uid);
-        batch.set(ref, model.toJson());
+        batch.set(ref, newDataModel.toJson());
         // .set(model.toJson());
         //updating tarreport if this request is not present in database
         await TarReportInformation().updateDataOfTarReport(
@@ -348,12 +360,15 @@ class MainCasesInformation {
         return {"res": "success"};
       }
 
+      print("i am divyansh patidar");
       //tar report updating if total arrear pending is changed
       MainCaseModel oldDataModel =
           MainCaseModel.fromJson(docSnapshot.data() as Map<String, dynamic>);
       if ((docSnapshot.data() as Map<String, dynamic>)['totalArrearPending']
               .toString() !=
           modelData['totalArrearPending']) {
+        print(
+            "i am inside of it update  ${oldDataModel.totalArrearPending}  ${newDataModel.totalArrearPending}");
         await TarReportInformation().updateDataOfTarReport(
             batch: batch,
             category: oldDataModel.category,
@@ -361,13 +376,29 @@ class MainCasesInformation {
             docName: "receipts",
             noOfCasesOfTheMonth: 0,
             noOfCasesUpToTheMonth: 0,
-            amountOfTheMonth: double.parse(modelData['totalArrearPending']),
+            // amountOfTheMonth: double.parse(modelData['totalArrearPending']),
+            amountOfTheMonth: double.parse(oldDataModel.totalArrearPending) -
+                        double.parse(newDataModel.totalArrearPending) <
+                    0
+                ? double.parse(newDataModel.totalArrearPending) -
+                    double.parse(oldDataModel.totalArrearPending)
+                : double.parse(oldDataModel.totalArrearPending) -
+                    double.parse(newDataModel.totalArrearPending),
             amountUpTotheMonth: 0,
-            openingBalance: double.parse(modelData['totalArrearPending']),
-            closingBalance: 0);
+            openingBalance: 0,
+            closingBalance: double.parse(oldDataModel.totalArrearPending) -
+                        double.parse(newDataModel.totalArrearPending) <
+                    0
+                ? double.parse(newDataModel.totalArrearPending) -
+                    double.parse(oldDataModel.totalArrearPending)
+                : double.parse(oldDataModel.totalArrearPending) -
+                    double.parse(newDataModel.totalArrearPending));
       }
-      if (oldDataModel.category != model.category ||
-          oldDataModel.subcategory != model.subcategory) {
+      print("i am inside of it above of it");
+      if (oldDataModel.category != newDataModel.category ||
+          oldDataModel.subcategory != newDataModel.subcategory) {
+        print(
+            "i am inside of it ndjnjnjnjdnjnd  ${oldDataModel.totalArrearPending}  ${newDataModel.totalArrearPending}");
         await TarReportInformation().updateDataOfTarReport(
             batch: batch,
             category: oldDataModel.category,
@@ -381,22 +412,22 @@ class MainCasesInformation {
             closingBalance: -double.parse(oldDataModel.totalArrearPending));
         await TarReportInformation().updateDataOfTarReport(
             batch: batch,
-            category: oldDataModel.category,
-            subcategory: oldDataModel.subcategory,
+            category: newDataModel.category,
+            subcategory: newDataModel.subcategory,
             docName: "receipts",
             noOfCasesOfTheMonth: 1,
             noOfCasesUpToTheMonth: 0,
-            amountOfTheMonth: double.parse(model.totalArrearPending),
+            amountOfTheMonth: double.parse(newDataModel.totalArrearPending),
             amountUpTotheMonth: 0,
             openingBalance: 0,
-            closingBalance: double.parse(model.totalArrearPending));
+            closingBalance: double.parse(newDataModel.totalArrearPending));
       }
       DocumentReference ref = _fireStore
           .collection("MP")
           .doc(formation)
           .collection("cases")
           .doc(uid);
-      batch.update(ref, model.toJson());
+      batch.update(ref, newDataModel.toJson());
       if (request) {
         // print("i am in request njndjdnbjdbn");
         await RequestCasesInformation()

@@ -11,46 +11,46 @@ import 'package:uuid/uuid.dart';
 
 class RequestCasesInformation {
   FirebaseFirestore fireStore = FirebaseFirestore.instance;
-  Future addCases(
-      {required Map<String, dynamic> oldData,
-      required String uid,
-      required String name,
-      required String formation,
-      required String oio,
-      required String date,
-      required String dutyOfArrear,
-      required String penalty,
-      required String amountRecovered,
-      required String preDeposit,
-      required String intrest,
-      required String totalArrearPending,
-      required String briefFact,
-      required String status,
-      required String apealNo,
-      required String stayOrderNumberAndDate,
-      required String iec,
-      required String gstin,
-      required String pan,
-      double? age,
-      required String completeTrack,
-      required String category,
-      required String remark,
-      required String subcategory,
-      required String effortMade,
-      required bool isShifted,
-      }) async {
+  Future addCases({
+    required Map<String, dynamic> oldData,
+    required String uid,
+    required String name,
+    required String formation,
+    required String oio,
+    required String date,
+    required String dutyOfArrear,
+    required String penalty,
+    required String amountRecovered,
+    required String preDeposit,
+    required String intrest,
+    required String totalArrearPending,
+    required String briefFact,
+    required String status,
+    required String apealNo,
+    required String stayOrderNumberAndDate,
+    required String iec,
+    required String gstin,
+    required String pan,
+    double? age,
+    required String completeTrack,
+    required String category,
+    required String remark,
+    required String subcategory,
+    required String effortMade,
+    required bool isShifted,
+  }) async {
     if (uid.isEmpty) {
       uid = const Uuid().v1();
     }
     if (oldData.isNotEmpty) {
       List<String> addNewTrack = List<String>.from(oldData['completeTrack']);
       addNewTrack.add(completeTrack);
-      if(isShifted){
-      oldData['completeTrack'] = addNewTrack;
+      if (isShifted) {
+        oldData['completeTrack'] = addNewTrack;
       }
     }
     RequestCaseModel model = RequestCaseModel(
-      oldData:oldData,
+      oldData: oldData,
       category: category,
       completeTrack: oldData['completeTrack'] ?? [completeTrack],
       uid: uid,
@@ -110,30 +110,30 @@ class RequestCasesInformation {
   }
 
   //get all request dettails
-    Future getAllReuqestCasesDetails() async {
+  Future getAllReuqestCasesDetails() async {
     List<RequestCaseModel> allCases = [];
     try {
       QuerySnapshot querySnapshot = await fireStore.collection('MP').get();
       final Completer<String> completer = Completer<String>();
       if (querySnapshot.docs.isEmpty) {
-         return allCases;
+        return allCases;
       } else {
-         for(var formation in FORMATION){
+        for (var formation in FORMATION) {
           QuerySnapshot qsnap = await fireStore
               .collection("MP")
               .doc(formation)
               .collection("requested cases")
               .get();
-        if(qsnap.docs.isNotEmpty){
-           for (var val in qsnap.docs){
-             print(val.data());
-            allCases.add(
-                RequestCaseModel.fromJson(val.data() as Map<String, dynamic>));
+          if (qsnap.docs.isNotEmpty) {
+            for (var val in qsnap.docs) {
+              print(val.data());
+              allCases.add(RequestCaseModel.fromJson(
+                  val.data() as Map<String, dynamic>));
+            }
           }
-        }
-        if(formation=='ICD Tihi'){
-           completer.complete("Success");
-        }
+          if (formation == 'ICD Tihi') {
+            completer.complete("Success");
+          }
         }
         // querySnapshot.docs.forEach((doc) async {
         //   // if(d)
@@ -150,9 +150,7 @@ class RequestCasesInformation {
         // print("leght is here ${allCases.length}");
         await completer.future;
 
-        return {"res":allCases};
-        
-       
+        return {"res": allCases};
       }
     } catch (e) {
       print("i am in errro");
@@ -188,7 +186,8 @@ class RequestCasesInformation {
       required String category,
       required String remark,
       required String subcategory,
-      required String effortMade,required bool isShifted}) async {
+      required String effortMade,
+      required bool isShifted}) async {
     if (uid.isEmpty) {
       // uid = const Uuid().v1();
       return {"res": "Uid cannot be empty"};
@@ -202,15 +201,17 @@ class RequestCasesInformation {
         .get();
     if (documentSnapshot.exists) {
       //if admin is updating the category or subgatory then the last entery of complete request will be deleted
-      List<String>trackComplete=List<String>.from(documentSnapshot['upcompleteTrack']);
-      if(isShifted){
-          trackComplete.removeLast();
-          trackComplete.add("On Date ${DateFormat('dd/mm/yyyy').format(DateTime.now())} case is in $category  $subcategory");
+      List<String> trackComplete =
+          List<String>.from(documentSnapshot['upcompleteTrack']);
+      if (isShifted) {
+        trackComplete.removeLast();
+        trackComplete.add(
+            "On Date ${DateFormat('dd/mm/yyyy').format(DateTime.now())} case is in $category  $subcategory");
       }
       RequestCaseModel model = RequestCaseModel(
         oldData: documentSnapshot['oldData'],
         category: category,
-        completeTrack:trackComplete,
+        completeTrack: trackComplete,
         uid: uid,
         name: name,
         formation: formation,
@@ -245,35 +246,38 @@ class RequestCasesInformation {
       return {"res": "some error occured or request is not present"};
     }
   }
-  
+
   //get all requets case by using formation
-    Future getFormationRequestedCaseInformation(String formation)async{
-    try{
-      QuerySnapshot snap=await fireStore.collection("MP").doc(formation).collection("requested cases").get();
-      List<RequestCaseModel>fomrationCases=[];
-     
-      for(var doc in snap.docs){
+  Future getFormationRequestedCaseInformation(String formation) async {
+    try {
+      QuerySnapshot snap = await fireStore
+          .collection("MP")
+          .doc(formation)
+          .collection("requested cases")
+          .get();
+      List<RequestCaseModel> fomrationCases = [];
+
+      for (var doc in snap.docs) {
         // fomrationCases.add(doc.data() as Map<String,dynamic>);
-        fomrationCases.add(RequestCaseModel.fromJson(doc.data() as Map<String,dynamic>));
-      
+        fomrationCases
+            .add(RequestCaseModel.fromJson(doc.data() as Map<String, dynamic>));
       }
-    // for(var form in fomrationCases){
-    //     // fomrationCases.add(doc.data() as Map<String,dynamic>);
-    //   print("here is data ${form.toString()}");
-    //   }
-      
-      return {"res":fomrationCases};
-    }catch(e){
-      return {"res":"Some error occured ${e.toString()}"};
+      // for(var form in fomrationCases){
+      //     // fomrationCases.add(doc.data() as Map<String,dynamic>);
+      //   print("here is data ${form.toString()}");
+      //   }
+
+      return {"res": fomrationCases};
+    } catch (e) {
+      return {"res": "Some error occured ${e.toString()}"};
     }
   }
 
   //reject request
-  Future rejectRequest({
-    required String uid,
-    required String formation,
-    WriteBatch? batch
-  }) async {
+  Future rejectRequest(
+      {required String uid,
+      required String formation,
+      WriteBatch? batch}) async {
     if (uid.isEmpty) {
       return {"res": "Uid cannot be empty"};
     } else if (formation.isEmpty) {
@@ -281,22 +285,21 @@ class RequestCasesInformation {
     }
 
     try {
-      if(batch!=null){
-        DocumentReference ref= fireStore
-          .collection("MP")
-          .doc(formation)
-          .collection('requested cases')
-          .doc(uid);
-          batch.delete(ref);
-      }else{
+      if (batch != null) {
+        DocumentReference ref = fireStore
+            .collection("MP")
+            .doc(formation)
+            .collection('requested cases')
+            .doc(uid);
+        batch.delete(ref);
+      } else {
         await fireStore
-          .collection("MP")
-          .doc(formation)
-          .collection('requested cases')
-          .doc(uid)
-          .delete();
+            .collection("MP")
+            .doc(formation)
+            .collection('requested cases')
+            .doc(uid)
+            .delete();
       }
-      
 
       return {"res": "success"};
     } catch (e) {
@@ -306,8 +309,7 @@ class RequestCasesInformation {
 
   //accept request
   Future acceptRequest(
-    {
-      required String uid,
+      {required String uid,
       required String name,
       required String formation,
       required String oio,
@@ -331,47 +333,50 @@ class RequestCasesInformation {
       required String remark,
       required String subcategory,
       required String effortMade,
-      required bool isRequest
-      })async{
-    try{
-    //model of main case
-    MainCaseModel model = MainCaseModel(
-      category: category,
-      completeTrack: completeTrack,
-      uid: uid,
-      name: name,
-      formation: formation,
-      date: date,
-      oio: oio,
-      dutyOfArrear: dutyOfArrear,
-      age: age,
-      amountRecovered: amountRecovered,
-      status: status,
-      briefFact: briefFact,
-      effortMade: effortMade,
-      remark: remark,
-      penalty: penalty,
-      intrest: intrest,
-      totalArrearPending: totalArrearPending,
-      preDeposit: preDeposit,
-      apealNo: apealNo,
-      stayOrderNumberAndDate: stayOrderNumberAndDate,
-      gstin: gstin,
-      iec: iec,
-      pan: pan,
-      subcategory: subcategory,
-    );
-   
-    Map<String,dynamic>res= await MainCasesInformation().updateMainCaseDetails(model:model,uid:uid,formation:formation,request:isRequest);
-    if(res["res"]=="success"){
-    return {"res":"success"};
-    }else{
-      return {"res":"some error occured  ${res["res"]}"};
-    }
-    }catch(e){
-      print("hello i am khush ${e.toString()}");
-      return {"res":"some error occured ${e.toString()}"};
-    }
+      required bool isRequest}) async {
+    try {
+      //model of main case
+      MainCaseModel model = MainCaseModel(
+        category: category,
+        completeTrack: completeTrack,
+        uid: uid,
+        name: name,
+        formation: formation,
+        date: date,
+        oio: oio,
+        dutyOfArrear: dutyOfArrear,
+        age: age,
+        amountRecovered: amountRecovered,
+        status: status,
+        briefFact: briefFact,
+        effortMade: effortMade,
+        remark: remark,
+        penalty: penalty,
+        intrest: intrest,
+        totalArrearPending: totalArrearPending,
+        preDeposit: preDeposit,
+        apealNo: apealNo,
+        stayOrderNumberAndDate: stayOrderNumberAndDate,
+        gstin: gstin,
+        iec: iec,
+        pan: pan,
+        subcategory: subcategory,
+      );
 
+      Map<String, dynamic> res = await MainCasesInformation()
+          .updateMainCaseDetails(
+              newDataModel: model,
+              uid: uid,
+              formation: formation,
+              request: isRequest);
+      if (res["res"] == "success") {
+        return {"res": "success"};
+      } else {
+        return {"res": "some error occured  ${res["res"]}"};
+      }
+    } catch (e) {
+      print("hello i am khush ${e.toString()}");
+      return {"res": "some error occured ${e.toString()}"};
+    }
   }
 }
