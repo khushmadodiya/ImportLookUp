@@ -228,14 +228,7 @@ class _CustomTableState extends State<CustomTable> {
                             children: [
                               if(provider.mainCaseData.isNotEmpty)_buildHeaderRow(),
 
-                              if (userInfo.userType==USERTYPE[0] && genPro.selectedIndex==0)
-                                for (int i = 0; i < provider.allMainCaseData.length; i++)
-                                  if (provider.allMainCaseData[i].subcategory ==
-                                      widget.subcategory &&
-                                      provider.allMainCaseData[i].category ==
-                                          widget.category)
-                                    _buildDataRowWithAllCases(provider, i),
-                              if(genPro.selectedIndex!=0)
+                              if(provider.mainCaseData.isNotEmpty)
                               for (int i = 0; i < provider.mainCaseData.length; i++)
                                 if (provider.mainCaseData[i].subcategory ==
                                     widget.subcategory &&
@@ -305,30 +298,30 @@ class _CustomTableState extends State<CustomTable> {
       ],
     );
   }
-  TableRow _buildDataRowWithAllCases(AddNewCase provider, int index) {
-    String day =
-        _calculateDayCount(provider.allMainCaseData[index].date).toString();
-    return TableRow(
-      children: [
-        _multiLineText('${index + 1}', 1),
-        _multiLineText(provider.allMainCaseData[index].name, 2),
-        _multiLineText(provider.allMainCaseData[index].formation, 3),
-        _multiLineText(provider.allMainCaseData[index].oio, 4),
-        _multiLineText(provider.allMainCaseData[index].date, 5),
-        _multiLineText(day, 6),
-        _multiLineText(provider.allMainCaseData[index].dutyOfArrear, 7),
-        _multiLineText(provider.allMainCaseData[index].penalty, 8),
-        _multiLineText(provider.allMainCaseData[index].amountRecovered, 9),
-        _multiLineText(provider.allMainCaseData[index].preDeposit, 10),
-        _multiLineText(provider.allMainCaseData[index].totalArrearPending, 11),
-        _multiLineText(provider.allMainCaseData[index].briefFact, 12),
-        _multiLineText(provider.allMainCaseData[index].status, 13),
-        _multiLineText(provider.allMainCaseData[index].apealNo, 14),
-        _multiLineText(provider.allMainCaseData[index].stayOrderNumberAndDate, 15),
-        _buildTransferButton(provider.allMainCaseData[index].uid, provider.allMainCaseData[index].formation),
-      ],
-    );
-  }
+  // TableRow _buildDataRowWithAllCases(AddNewCase provider, int index) {
+  //   String day =
+  //       _calculateDayCount(provider.allMainCaseData[index].date).toString();
+  //   return TableRow(
+  //     children: [
+  //       _multiLineText('${index + 1}', 1),
+  //       _multiLineText(provider.allMainCaseData[index].name, 2),
+  //       _multiLineText(provider.allMainCaseData[index].formation, 3),
+  //       _multiLineText(provider.allMainCaseData[index].oio, 4),
+  //       _multiLineText(provider.allMainCaseData[index].date, 5),
+  //       _multiLineText(day, 6),
+  //       _multiLineText(provider.allMainCaseData[index].dutyOfArrear, 7),
+  //       _multiLineText(provider.allMainCaseData[index].penalty, 8),
+  //       _multiLineText(provider.allMainCaseData[index].amountRecovered, 9),
+  //       _multiLineText(provider.allMainCaseData[index].preDeposit, 10),
+  //       _multiLineText(provider.allMainCaseData[index].totalArrearPending, 11),
+  //       _multiLineText(provider.allMainCaseData[index].briefFact, 12),
+  //       _multiLineText(provider.allMainCaseData[index].status, 13),
+  //       _multiLineText(provider.allMainCaseData[index].apealNo, 14),
+  //       _multiLineText(provider.allMainCaseData[index].stayOrderNumberAndDate, 15),
+  //       _buildTransferButton(provider.allMainCaseData[index].uid, provider.allMainCaseData[index].formation),
+  //     ],
+  //   );
+  // }
 
   Widget _buildTransferButton(String uid, String formation) {
     print(uid);
@@ -422,7 +415,7 @@ class _CustomTableState extends State<CustomTable> {
       asseserProvider.updateLoader();
       if (userinfo.userType == USERTYPE[0]) {
         await asseserProvider.getMainCasesInformation(
-            formation: FORMATION[0], isAdmin: true);
+            formation: FORMATION[0], isAdmin: false);
       } else {
         await asseserProvider.getMainCasesInformation(
             formation: userinfo.formation, isAdmin: false);

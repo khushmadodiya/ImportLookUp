@@ -501,7 +501,7 @@ class AddNewCase with ChangeNotifier {
       _mainCaseData = (await MainCasesInformation()
           .getFormationMainCaseInformation(formation))["res"];
     } else {
-      _allMainCaseData =
+      _mainCaseData =
           (await MainCasesInformation().getAllMainCasesDetails())["res"];
     }
     notifyListeners();
