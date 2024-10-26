@@ -58,20 +58,6 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
             body: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                InkWell(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: 40,
-                      width: 150,
-                      color: Colors.amber.withOpacity(0.3),
-                      child: const Center(child: Text("Download Excel")),
-                    ),
-                  ),
-                  onTap: () {
-                    ExcelDonwloadOption().exportToExcel(myData, 'OIO DETAILS');
-                  },
-                ),
                 Expanded(
                   child: SingleChildScrollView(
                     scrollDirection: Axis.vertical,

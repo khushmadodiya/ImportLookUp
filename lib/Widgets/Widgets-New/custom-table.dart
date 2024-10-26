@@ -34,6 +34,7 @@ class _CustomTableState extends State<CustomTable> {
   ScrollController _verticalController = ScrollController();
   List<Map<String, dynamic>> myData = [];
 
+
   @override
   void initState() {
     super.initState();
@@ -62,32 +63,33 @@ class _CustomTableState extends State<CustomTable> {
         builder: (context, userInfo, child) => Scaffold(
           appBar: AppBar(
             title: Text(widget.title),
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    AuthMethods().signOut(context);
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LoginPage()));
-                  },
-                  icon: Icon(Icons.logout))
-            ],
           ),
           // body: Text('hell0'),
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              InkWell(
+           InkWell(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                     height: 40,
                     width: 150,
                     color: Colors.amber.withOpacity(0.3),
-                    child: const Center(child: Text("Download Excel")),
+                    child: provider.excelLoader?Center(child: Container(height:20,width:20,child: CircularProgressIndicator(strokeWidth: 3,))): Center(child: Text("Download Excel")),
                   ),
                 ),
-                onTap: () {
-                  ExcelDonwloadOption().exportToExcel(myData, 'OIO DETAILS');
+                onTap: () async{
+                  final userinfo = Provider.of<UserInformation>(context, listen: false);
+                  provider.updateExcelLoader();
+                  if (userinfo.userType == USERTYPE[0]) {
+                    await provider.getMainCasesInformation(
+                        formation: FORMATION[0], isAdmin: true);
+                  } else {
+                    await provider.getMainCasesInformation(
+                        formation: userinfo.formation, isAdmin: false);
+                  }
+                  provider.updateExcelLoader();
+                  ExcelDonwloadOption().exportToExcel(provider.mainCaseData, 'OIO DETAILS');
                 },
               ),
               Expanded(
@@ -155,95 +157,104 @@ class _CustomTableState extends State<CustomTable> {
             curve: Curves.easeInOut,);        }
       }
     }
-    return Consumer<AddNewCase>(builder: (context, provider, child) {
-      if (provider.isLoading) {
-        return const Scaffold(
-          body: Center(child: CircularProgressIndicator()),
-        );
-      }
-      if (provider.mainCaseData.isEmpty) {
-        return const Scaffold(
-          body: Center(
-            child: Text('No Data Available'),
-          ),
-        );
-      }
-      return GestureDetector(
-        onPanStart: _handleDragStart,
-        onPanUpdate: _handleDragUpdate,
-        onPanEnd: _handleDragEnd,
-        child: Focus(
-          autofocus: true,
-          skipTraversal: true,
-          onKeyEvent: (FocusNode node, KeyEvent event) {
-            _handleKeyEvent(event);
-            return KeyEventResult.handled;
-          },
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            controller: _verticalController,
-            child: Scrollbar(
+    return Consumer<GeneralPurposeProvider>(
+      builder: (context,genPro,child)=>
+       Consumer<UserInformation>(
+        builder: (context,userInfo,child)=>
+       Consumer<AddNewCase>(builder: (context, provider, child) {
+          if (provider.isLoading) {
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
 
-              // thickness: 15,
-              controller: _horigentalController,
-              child: Listener(
-                onPointerSignal: (pointerSignal) {
-                  if (pointerSignal is PointerScrollEvent) {
-                    _verticalController.jumpTo(
-                      _verticalController.offset + pointerSignal.scrollDelta.dx,
-                    );
-                  }
-                },
-                child: SingleChildScrollView(
+          return GestureDetector(
+            onPanStart: _handleDragStart,
+            onPanUpdate: _handleDragUpdate,
+            onPanEnd: _handleDragEnd,
+            child: Focus(
+              autofocus: true,
+              skipTraversal: true,
+              onKeyEvent: (FocusNode node, KeyEvent event) {
+                _handleKeyEvent(event);
+                return KeyEventResult.handled;
+              },
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                controller: _verticalController,
+                child: Scrollbar(
+
+                  // thickness: 15,
                   controller: _horigentalController,
-                  scrollDirection: Axis.horizontal,
-                  child: Padding(
-                    padding: const EdgeInsets.all(18.0),
-                    child: Card(
-                      elevation: 12,
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Table(
-                        border: TableBorder.all(width: 1.0, color: Colors.black),
-                        columnWidths: const {
-                          0: FixedColumnWidth(70),
-                          1: FixedColumnWidth(300),
-                          2: FixedColumnWidth(180),
-                          3: FixedColumnWidth(300),
-                          4: FixedColumnWidth(150),
-                          5: FixedColumnWidth(120),
-                          6: FixedColumnWidth(180),
-                          7: FixedColumnWidth(180),
-                          8: FixedColumnWidth(180),
-                          9: FixedColumnWidth(180),
-                          10: FixedColumnWidth(180),
-                          11: FixedColumnWidth(350),
-                          12: FixedColumnWidth(350),
-                          13: FixedColumnWidth(250),
-                          14: FixedColumnWidth(180),
-                          15: FixedColumnWidth(180),
-                        },
-                        children: [
-                          _buildHeaderRow(),
-                          for (int i = 0; i < provider.mainCaseData.length; i++)
-                            if (provider.mainCaseData[i].subcategory ==
-                                widget.subcategory &&
-                                provider.mainCaseData[i].category ==
-                                    widget.category)
-                              _buildDataRow(provider, i),
-                        ],
+                  child: Listener(
+                    onPointerSignal: (pointerSignal) {
+                      if (pointerSignal is PointerScrollEvent) {
+                        _verticalController.jumpTo(
+                          _verticalController.offset + pointerSignal.scrollDelta.dx,
+                        );
+                      }
+                    },
+                    child: SingleChildScrollView(
+                      controller: _horigentalController,
+                      scrollDirection: Axis.horizontal,
+                      child: Padding(
+                        padding: const EdgeInsets.all(18.0),
+                        child: Card(
+                          elevation: 12,
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Table(
+                            border: TableBorder.all(width: 1.0, color: Colors.black),
+                            columnWidths: const {
+                              0: FixedColumnWidth(70),
+                              1: FixedColumnWidth(300),
+                              2: FixedColumnWidth(180),
+                              3: FixedColumnWidth(300),
+                              4: FixedColumnWidth(150),
+                              5: FixedColumnWidth(120),
+                              6: FixedColumnWidth(180),
+                              7: FixedColumnWidth(180),
+                              8: FixedColumnWidth(180),
+                              9: FixedColumnWidth(180),
+                              10: FixedColumnWidth(180),
+                              11: FixedColumnWidth(350),
+                              12: FixedColumnWidth(350),
+                              13: FixedColumnWidth(250),
+                              14: FixedColumnWidth(180),
+                              15: FixedColumnWidth(180),
+                            },
+                            children: [
+                              if(provider.mainCaseData.isNotEmpty)_buildHeaderRow(),
+
+                              if (userInfo.userType==USERTYPE[0] && genPro.selectedIndex==0)
+                                for (int i = 0; i < provider.allMainCaseData.length; i++)
+                                  if (provider.allMainCaseData[i].subcategory ==
+                                      widget.subcategory &&
+                                      provider.allMainCaseData[i].category ==
+                                          widget.category)
+                                    _buildDataRowWithAllCases(provider, i),
+                              if(genPro.selectedIndex!=0)
+                              for (int i = 0; i < provider.mainCaseData.length; i++)
+                                if (provider.mainCaseData[i].subcategory ==
+                                    widget.subcategory &&
+                                    provider.mainCaseData[i].category ==
+                                        widget.category)
+                                  _buildDataRow(provider, i),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-        ),
-      );
-    });
+          );
+        }),
+      ),
+    );
   }
 
 
@@ -290,8 +301,31 @@ class _CustomTableState extends State<CustomTable> {
         _multiLineText(provider.mainCaseData[index].status, 13),
         _multiLineText(provider.mainCaseData[index].apealNo, 14),
         _multiLineText(provider.mainCaseData[index].stayOrderNumberAndDate, 15),
-        _buildTransferButton(provider.mainCaseData[index].uid,
-            provider.mainCaseData[index].formation),
+        _buildTransferButton(provider.mainCaseData[index].uid, provider.mainCaseData[index].formation),
+      ],
+    );
+  }
+  TableRow _buildDataRowWithAllCases(AddNewCase provider, int index) {
+    String day =
+        _calculateDayCount(provider.allMainCaseData[index].date).toString();
+    return TableRow(
+      children: [
+        _multiLineText('${index + 1}', 1),
+        _multiLineText(provider.allMainCaseData[index].name, 2),
+        _multiLineText(provider.allMainCaseData[index].formation, 3),
+        _multiLineText(provider.allMainCaseData[index].oio, 4),
+        _multiLineText(provider.allMainCaseData[index].date, 5),
+        _multiLineText(day, 6),
+        _multiLineText(provider.allMainCaseData[index].dutyOfArrear, 7),
+        _multiLineText(provider.allMainCaseData[index].penalty, 8),
+        _multiLineText(provider.allMainCaseData[index].amountRecovered, 9),
+        _multiLineText(provider.allMainCaseData[index].preDeposit, 10),
+        _multiLineText(provider.allMainCaseData[index].totalArrearPending, 11),
+        _multiLineText(provider.allMainCaseData[index].briefFact, 12),
+        _multiLineText(provider.allMainCaseData[index].status, 13),
+        _multiLineText(provider.allMainCaseData[index].apealNo, 14),
+        _multiLineText(provider.allMainCaseData[index].stayOrderNumberAndDate, 15),
+        _buildTransferButton(provider.allMainCaseData[index].uid, provider.allMainCaseData[index].formation),
       ],
     );
   }
@@ -315,23 +349,6 @@ class _CustomTableState extends State<CustomTable> {
                 }
               },
               isLoading: false)
-
-          // ElevatedButton(
-          //   onPressed: () async {
-          //     Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdateCaseDetail(uid: uid)));
-          //     // bool? shouldRefresh = await Navigator.push(
-          //     //   context,
-          //     //   MaterialPageRoute(
-          //     //     builder: (context) => UpdateUniversalDetails(index: i),
-          //     //   ),
-          //     // );
-          //
-          //     // if (shouldRefresh == true) {
-          //     //   var fetchAssesers = Provider.of<AsseserProvider>(context, listen: false).fetchAssesers();
-          //     // }
-          //   },
-          //   child: const Text("Transfer Case"),
-          // ),
           ),
     );
   }
@@ -405,12 +422,13 @@ class _CustomTableState extends State<CustomTable> {
       asseserProvider.updateLoader();
       if (userinfo.userType == USERTYPE[0]) {
         await asseserProvider.getMainCasesInformation(
-            formation: FORMATION[0], isAdmin: false);
+            formation: FORMATION[0], isAdmin: true);
       } else {
         await asseserProvider.getMainCasesInformation(
             formation: userinfo.formation, isAdmin: false);
       }
       asseserProvider.updateLoader();
+
     });
   }
 }

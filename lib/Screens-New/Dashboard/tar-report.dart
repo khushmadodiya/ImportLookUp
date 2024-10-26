@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.dart';
-import 'package:import_lookup/Model-New/tar-model.dart';
 import 'package:import_lookup/Provider-New/add-new-cases.dart';
 import 'package:provider/provider.dart';
 
 import '../../Backend/authmethos.dart';
+import '../../excael-download-option.dart';
 import '../Auth-Screens/login-screen.dart';
 
 class RevenueTable extends StatefulWidget {
@@ -108,7 +108,7 @@ class _RevenueTableState extends State<RevenueTable> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                              if(pro.writeOffCompleteData.isNotEmpty)
+                              // if(pro.writeOffCompleteData.isNotEmpty)
                                 Container(
                                   height: 50,
                                   width: MediaQuery.of(context).size.width*.9,
@@ -117,7 +117,7 @@ class _RevenueTableState extends State<RevenueTable> {
                                     children: [
                                       InkWell(
                                         child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
+                                          padding: const EdgeInsets.symmetric(vertical: 8.0),
                                           child: Container(
                                             height: 40,
                                             width: 150,
@@ -126,10 +126,9 @@ class _RevenueTableState extends State<RevenueTable> {
                                           ),
                                         ),
                                         onTap: () {
-                                          // ExcelDonwloadOption().exportToExcel(myData, 'OIO DETAILS');
+                                          // ExcelDonwloadOption().downloadExcelForTar(pro.mainCaseData, 'OIO DETAILS');
                                         },
                                       ),
-                                      Expanded(child: SizedBox()),
 
                                       InkWell(
                                         child: Padding(
