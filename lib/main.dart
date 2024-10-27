@@ -7,6 +7,7 @@ import 'package:import_lookup/Backend-New/main-cases-details.dart';
 import 'package:import_lookup/Backend-New/request-cases-details.dart';
 import 'package:import_lookup/Provider-New/general-pusrpose.dart';
 import 'package:import_lookup/Screens-New/Auth-Screens/login-screen.dart';
+import 'package:import_lookup/Screens-New/Dashboard/DisposalScreen.dart';
 import 'package:import_lookup/Screens/dashboard.dart';
 import 'package:import_lookup/provider/provider.dart';
 import 'package:import_lookup/test.dart';
@@ -52,10 +53,12 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor:Colors.deepPurple,primary: Colors.deepPurple,background: Colors.white),
+
         useMaterial3: true,
       ),
-      home: Consumer<UserInformation>(
+      home:
+      Consumer<UserInformation>(
         builder: (context, pro, child) => StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {

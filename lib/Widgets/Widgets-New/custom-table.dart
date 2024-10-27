@@ -3,11 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.dart';
 import 'package:import_lookup/Backend/authmethos.dart';
+import 'package:import_lookup/Model-New/main-case-model.dart';
 import 'package:import_lookup/Provider-New/add-new-cases.dart';
 import 'package:import_lookup/Provider-New/get-user-deatils.dart';
 import 'package:import_lookup/Screens-New/Auth-Screens/login-screen.dart';
+import 'package:import_lookup/Screens-New/Dashboard/DisposalScreen.dart';
 import 'package:import_lookup/Screens-New/Dashboard/update-case-detail.dart';
 import 'package:import_lookup/Widgets/custom-button.dart';
 import 'package:provider/provider.dart';
@@ -167,7 +170,7 @@ class _CustomTableState extends State<CustomTable> {
               body: Center(child: CircularProgressIndicator()),
             );
           }
-
+          int rowNumber = 1;
           return GestureDetector(
             onPanStart: _handleDragStart,
             onPanUpdate: _handleDragUpdate,
@@ -223,7 +226,8 @@ class _CustomTableState extends State<CustomTable> {
                               12: FixedColumnWidth(350),
                               13: FixedColumnWidth(250),
                               14: FixedColumnWidth(180),
-                              15: FixedColumnWidth(180),
+                              15: FixedColumnWidth(120),
+                              16: FixedColumnWidth(120),
                             },
                             children: [
                               if(provider.mainCaseData.isNotEmpty)_buildHeaderRow(),
@@ -234,7 +238,7 @@ class _CustomTableState extends State<CustomTable> {
                                     widget.subcategory &&
                                     provider.mainCaseData[i].category ==
                                         widget.category)
-                                  _buildDataRow(provider, i),
+                                  _buildDataRow(provider, i,rowNumber++),
                             ],
                           ),
                         ),
@@ -270,16 +274,17 @@ class _CustomTableState extends State<CustomTable> {
         _buildHeaderCell('Appeal No.', 14),
         _buildHeaderCell('Stay Order No and Date', 15),
         _buildHeaderCell('Change Data', 16),
+        _buildHeaderCell('Disposal', 17),
       ],
     );
   }
 
-  TableRow _buildDataRow(AddNewCase provider, int index) {
+  TableRow _buildDataRow(AddNewCase provider, int index, int rownumber) {
     String day =
         _calculateDayCount(provider.mainCaseData[index].date).toString();
     return TableRow(
       children: [
-        _multiLineText('${index + 1}', 1),
+        _multiLineText('${rownumber}', 1),
         _multiLineText(provider.mainCaseData[index].name, 2),
         _multiLineText(provider.mainCaseData[index].formation, 3),
         _multiLineText(provider.mainCaseData[index].oio, 4),
@@ -295,6 +300,7 @@ class _CustomTableState extends State<CustomTable> {
         _multiLineText(provider.mainCaseData[index].apealNo, 14),
         _multiLineText(provider.mainCaseData[index].stayOrderNumberAndDate, 15),
         _buildTransferButton(provider.mainCaseData[index].uid, provider.mainCaseData[index].formation),
+        _buildDisposalButtton(provider.mainCaseData[index]),
       ],
     );
   }
@@ -322,6 +328,23 @@ class _CustomTableState extends State<CustomTable> {
   //     ],
   //   );
   // }
+
+  Widget _buildDisposalButtton(MainCaseModel model){
+    return Container(
+      color: Colors.blue.withOpacity(0.2),
+      child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: CustomButton(
+              text: 'Disposal',
+              onpress: () async {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>DisposalScreen( model: model,)));
+              },
+              isLoading: false)
+      ),
+    );
+  }
+
+
 
   Widget _buildTransferButton(String uid, String formation) {
     print(uid);

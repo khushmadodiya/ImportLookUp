@@ -170,7 +170,7 @@ class _LoginPageState extends State<LoginPage> {
                               loginUser();
                             }
                           }
-                        }, isLoading: _isLoading, text: 'Login'),
+                        }, isLoading: controller.isLoading, text: 'Login'),
 
                         const SizedBox(
                           height: 12,
