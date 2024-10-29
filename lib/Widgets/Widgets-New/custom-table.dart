@@ -44,15 +44,27 @@ class _CustomTableState extends State<CustomTable> {
     // Fetch data on widget initialization
     getData();
   }
-
+  @override
   @override
   void didUpdateWidget(CustomTable oldWidget) {
     super.didUpdateWidget(oldWidget);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async{
       if (oldWidget.title != widget.title) {
+        final asseserProvider = Provider.of<AddNewCase>(context, listen: false);
+        final userinfo = Provider.of<UserInformation>(context, listen: false);
         final pageindex =
-            Provider.of<GeneralPurposeProvider>(context, listen: false);
+        Provider.of<GeneralPurposeProvider>(context, listen: false);
         pageindex.updateSelectedIndex(0);
+        print('updated to 0 khushz');
+        asseserProvider.updateLoader();
+        if (userinfo.userType == USERTYPE[0]) {
+          await asseserProvider.getMainCasesInformation(
+              formation: FORMATION[0], isAdmin: false);
+        } else {
+          await asseserProvider.getMainCasesInformation(
+              formation: userinfo.formation, isAdmin: false);
+        }
+        asseserProvider.updateLoader();
       }
     });
   }

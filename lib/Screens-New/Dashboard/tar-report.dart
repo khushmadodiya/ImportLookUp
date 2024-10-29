@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.dart';
+import 'package:import_lookup/Model-New/main-case-model.dart';
+import 'package:import_lookup/Model-New/tar-model.dart';
 import 'package:import_lookup/Provider-New/add-new-cases.dart';
 import 'package:provider/provider.dart';
 
@@ -21,8 +23,21 @@ class RevenueTable extends StatefulWidget {
 class _RevenueTableState extends State<RevenueTable> {
   final ScrollController horizontalController = ScrollController();
   final ScrollController verticalController = ScrollController();
+  List<List<String>> excelData=[];
   double sliderValue = 0;
 
+  List<List<String>> removeDuplicates(List<List<String>> excelData) {
+    final uniqueRows = <String>{};
+    final result = <List<String>>[];
+
+    for (var row in excelData) {
+      final rowString = row.join(',');
+      if (uniqueRows.add(rowString)) {
+        result.add(row);
+      }
+    }
+    return result;
+  }
 
   @override
   void initState() {
@@ -72,6 +87,9 @@ class _RevenueTableState extends State<RevenueTable> {
         }
       }
     }
+    String _toStringOrDefault(dynamic value, [String defaultValue = '0']) {
+      return value?.toString() ?? defaultValue;
+    }
 
     return Consumer<AddNewCase>(
       builder: (context, pro, child) {
@@ -106,7 +124,7 @@ class _RevenueTableState extends State<RevenueTable> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                              children: <Widget>[
                                 // if(pro.writeOffCompleteData.isNotEmpty)
                                 Container(
                                   height: 50,
@@ -117,7 +135,7 @@ class _RevenueTableState extends State<RevenueTable> {
                                   child: Row(
 
                                     children: [
-                                      InkWell(
+                                   if(pro.writeOffCompleteData.isNotEmpty)InkWell(
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 8.0),
@@ -131,7 +149,9 @@ class _RevenueTableState extends State<RevenueTable> {
                                           ),
                                         ),
                                         onTap: () {
-                                          // ExcelDonwloadOption().downloadExcelForTar(pro.mainCaseData, 'OIO DETAILS');
+                                          print('this is excel${excelData![0][0]}');
+                                          List<List<String>> data =removeDuplicates(excelData);
+                                          ExcelDonwloadOption().downloadExcelForTar(data, 'OIO DETAILS');
                                         },
                                       ),
 
@@ -143,8 +163,8 @@ class _RevenueTableState extends State<RevenueTable> {
                                             width: 150,
                                             color: Colors.amber.withOpacity(
                                                 0.3),
-                                            child: const Center(
-                                                child: Text("Refresh")),
+                                            child:  Center(
+                                                child: pro.tarLoader? Container(width:25,height: 25,child: CircularProgressIndicator(strokeWidth: 3,)):Text("Refresh")),
                                           ),
                                         ),
                                         onTap: () {
@@ -166,1207 +186,38 @@ class _RevenueTableState extends State<RevenueTable> {
                                 ),
                                 if(pro.litigationCompleteData.isNotEmpty)
                                   _buildCustomTable('Litigation', [
-                                    _buildDataRow(
-                                      '1',
-                                      'Supreme Court cases',
-                                      pro.arrearTocLitgation[0]
-                                          .numberOfOpeningCases.toString(),
-                                      pro.arrearTocLitgation[0].openingBalance
-                                          .toString(),
-                                      pro.litigationCompleteData[0]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '3',
-                                      pro.litigationCompleteData[0]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '4',
-                                      pro.litigationCompleteData[0]!
-                                          .amountOfTheMonth.toString() ?? '5',
-                                      pro.litigationCompleteData[0]!
-                                          .amountUpTotheMonth.toString() ?? '6',
-                                      (pro.arrearTocLitgation[0]
-                                          .numberOfOpeningCases +
-                                          pro.litigationCompleteData[0]!
-                                              .noOfCasesOfTheMonth).toString(),
-                                      (pro.arrearTocLitgation[0]
-                                          .openingBalance +
-                                          pro.litigationCompleteData[0]!
-                                              .amountOfTheMonth).toString(),
-                                      pro.litigationCompleteData[1]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '9',
-                                      pro.litigationCompleteData[1]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '10',
-                                      pro.litigationCompleteData[1]!
-                                          .amountOfTheMonth.toString() ?? '11',
-                                      pro.litigationCompleteData[1]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '12',
-                                      pro.litigationCompleteData[2]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '13',
-                                      pro.litigationCompleteData[2]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '14',
-                                      pro.litigationCompleteData[2]!
-                                          .amountOfTheMonth.toString() ?? '15',
-                                      pro.litigationCompleteData[2]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '16',
-                                      pro.litigationCompleteData[3]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '17',
-                                      pro.litigationCompleteData[3]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '18',
-                                      pro.litigationCompleteData[3]!
-                                          .amountOfTheMonth.toString() ?? '19',
-                                      pro.litigationCompleteData[3]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '20',
-                                      pro.litigationCompleteData[4]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '21',
-                                      pro.litigationCompleteData[4]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '22',
-                                      pro.litigationCompleteData[4]!
-                                          .amountOfTheMonth.toString() ?? '23',
-                                      pro.litigationCompleteData[4]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '24',
-                                      pro.litigationCompleteData[5]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '25',
-                                      pro.litigationCompleteData[5]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '26',
-                                      pro.litigationCompleteData[5]!
-                                          .amountOfTheMonth.toString() ?? '27',
-                                      pro.litigationCompleteData[5]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '28',
-                                      pro.arrearTocLitgation[0]
-                                          .numberOfClosingCases.toString(),
-                                      pro.arrearTocLitgation[0].closingBalance
-                                          .toString(),
-                                    ),
-                                    _buildDataRow(
-                                      '2',
-                                      'High Court',
-                                      pro.arrearTocLitgation[1]
-                                          .numberOfOpeningCases.toString(),
-                                      pro.arrearTocLitgation[1].openingBalance
-                                          .toString(),
-                                      pro.litigationCompleteData[6]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '3',
-                                      pro.litigationCompleteData[6]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '4',
-                                      pro.litigationCompleteData[6]!
-                                          .amountOfTheMonth.toString() ?? '5',
-                                      pro.litigationCompleteData[6]!
-                                          .amountUpTotheMonth.toString() ?? '6',
-                                      (pro.arrearTocLitgation[1]
-                                          .numberOfOpeningCases +
-                                          pro.litigationCompleteData[6]!
-                                              .noOfCasesOfTheMonth).toString(),
-                                      (pro.arrearTocLitgation[1]
-                                          .openingBalance +
-                                          pro.litigationCompleteData[6]!
-                                              .amountOfTheMonth).toString(),
-                                      pro.litigationCompleteData[7]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '9',
-                                      pro.litigationCompleteData[7]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '10',
-                                      pro.litigationCompleteData[7]!
-                                          .amountOfTheMonth.toString() ?? '11',
-                                      pro.litigationCompleteData[7]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '12',
-                                      pro.litigationCompleteData[8]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '13',
-                                      pro.litigationCompleteData[8]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '14',
-                                      pro.litigationCompleteData[8]!
-                                          .amountOfTheMonth.toString() ?? '15',
-                                      pro.litigationCompleteData[8]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '16',
-                                      pro.litigationCompleteData[9]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '17',
-                                      pro.litigationCompleteData[9]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '18',
-                                      pro.litigationCompleteData[9]!
-                                          .amountOfTheMonth.toString() ?? '19',
-                                      pro.litigationCompleteData[9]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '20',
-                                      pro.litigationCompleteData[10]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '21',
-                                      pro.litigationCompleteData[10]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '22',
-                                      pro.litigationCompleteData[10]!
-                                          .amountOfTheMonth.toString() ?? '23',
-                                      pro.litigationCompleteData[10]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '24',
-                                      pro.litigationCompleteData[11]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '25',
-                                      pro.litigationCompleteData[11]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '26',
-                                      pro.litigationCompleteData[11]!
-                                          .amountOfTheMonth.toString() ?? '27',
-                                      pro.litigationCompleteData[11]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '28',
-                                      pro.arrearTocLitgation[1]
-                                          .numberOfClosingCases.toString(),
-                                      pro.arrearTocLitgation[1].closingBalance
-                                          .toString(),),
-                                    _buildDataRow(
-                                      '3',
-                                      'CESTAT',
-                                      pro.arrearTocLitgation[2]
-                                          .numberOfOpeningCases.toString(),
-                                      pro.arrearTocLitgation[2].openingBalance
-                                          .toString(),
-                                      pro.litigationCompleteData[12]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '3',
-                                      pro.litigationCompleteData[12]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '4',
-                                      pro.litigationCompleteData[12]!
-                                          .amountOfTheMonth.toString() ?? '5',
-                                      pro.litigationCompleteData[21]!
-                                          .amountUpTotheMonth.toString() ?? '6',
-                                      (pro.arrearTocLitgation[2]
-                                          .numberOfOpeningCases +
-                                          pro.litigationCompleteData[12]!
-                                              .noOfCasesOfTheMonth).toString(),
-                                      (pro.arrearTocLitgation[2]
-                                          .openingBalance +
-                                          pro.litigationCompleteData[12]!
-                                              .amountOfTheMonth).toString(),
-                                      pro.litigationCompleteData[13]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '9',
-                                      pro.litigationCompleteData[13]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '10',
-                                      pro.litigationCompleteData[13]!
-                                          .amountOfTheMonth.toString() ?? '11',
-                                      pro.litigationCompleteData[13]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '12',
-                                      pro.litigationCompleteData[14]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '13',
-                                      pro.litigationCompleteData[14]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '14',
-                                      pro.litigationCompleteData[14]!
-                                          .amountOfTheMonth.toString() ?? '15',
-                                      pro.litigationCompleteData[14]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '16',
-                                      pro.litigationCompleteData[15]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '17',
-                                      pro.litigationCompleteData[15]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '18',
-                                      pro.litigationCompleteData[15]!
-                                          .amountOfTheMonth.toString() ?? '19',
-                                      pro.litigationCompleteData[15]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '20',
-                                      pro.litigationCompleteData[16]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '21',
-                                      pro.litigationCompleteData[16]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '22',
-                                      pro.litigationCompleteData[16]!
-                                          .amountOfTheMonth.toString() ?? '23',
-                                      pro.litigationCompleteData[16]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '24',
-                                      pro.litigationCompleteData[17]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '25',
-                                      pro.litigationCompleteData[17]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '26',
-                                      pro.litigationCompleteData[17]!
-                                          .amountOfTheMonth.toString() ?? '27',
-                                      pro.litigationCompleteData[17]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '28',
-                                      pro.arrearTocLitgation[2]
-                                          .numberOfClosingCases.toString(),
-                                      pro.arrearTocLitgation[2].closingBalance
-                                          .toString(),
-                                    ),
-                                    _buildDataRow(
-                                      '4',
-                                      'Comm. Appeal',
-                                      pro.arrearTocLitgation[3]
-                                          .numberOfOpeningCases.toString(),
-                                      pro.arrearTocLitgation[3].openingBalance
-                                          .toString(),
-                                      pro.litigationCompleteData[18]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '3',
-                                      pro.litigationCompleteData[18]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '4',
-                                      pro.litigationCompleteData[18]!
-                                          .amountOfTheMonth.toString() ?? '5',
-                                      pro.litigationCompleteData[18]!
-                                          .amountUpTotheMonth.toString() ?? '6',
-                                      (pro.arrearTocLitgation[3]
-                                          .numberOfOpeningCases +
-                                          pro.litigationCompleteData[18]!
-                                              .noOfCasesOfTheMonth).toString(),
-                                      (pro.arrearTocLitgation[3]
-                                          .openingBalance +
-                                          pro.litigationCompleteData[18]!
-                                              .amountOfTheMonth).toString(),
-                                      pro.litigationCompleteData[19]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '9',
-                                      pro.litigationCompleteData[19]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '10',
-                                      pro.litigationCompleteData[19]!
-                                          .amountOfTheMonth.toString() ?? '11',
-                                      pro.litigationCompleteData[19]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '12',
-                                      pro.litigationCompleteData[20]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '13',
-                                      pro.litigationCompleteData[20]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '14',
-                                      pro.litigationCompleteData[20]!
-                                          .amountOfTheMonth.toString() ?? '15',
-                                      pro.litigationCompleteData[20]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '16',
-                                      pro.litigationCompleteData[21]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '17',
-                                      pro.litigationCompleteData[21]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '18',
-                                      pro.litigationCompleteData[21]!
-                                          .amountOfTheMonth.toString() ?? '19',
-                                      pro.litigationCompleteData[21]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '20',
-                                      pro.litigationCompleteData[22]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '21',
-                                      pro.litigationCompleteData[22]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '22',
-                                      pro.litigationCompleteData[22]!
-                                          .amountOfTheMonth.toString() ?? '23',
-                                      pro.litigationCompleteData[22]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '24',
-                                      pro.litigationCompleteData[23]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '25',
-                                      pro.litigationCompleteData[23]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '26',
-                                      pro.litigationCompleteData[23]!
-                                          .amountOfTheMonth.toString() ?? '27',
-                                      pro.litigationCompleteData[23]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '28',
-                                      pro.arrearTocLitgation[3]
-                                          .numberOfClosingCases.toString(),
-                                      pro.arrearTocLitgation[3].closingBalance
-                                          .toString(),
-                                    ),
-                                  ]),
+                                   row(pro.litigationCompleteData,pro.arrearTocLitgation,0,0, 'Supreme Court cases', 1),
+                                   row(pro.litigationCompleteData,pro.arrearTocLitgation,6,1,"High Court",2),
+                                   row(pro.litigationCompleteData,pro.arrearTocLitgation,12,2,"CESTAT",3),
+                                   row(pro.litigationCompleteData,pro.arrearTocLitgation,18,3,"Comm. Appeal",4),]),
                                 SizedBox(height: 15,),
                                 if(pro.restrainedCompleteData.isNotEmpty)
                                   _buildCustomTable('Restrained', [
-                                    _buildDataRow(
-                                      '1',
-                                      'OL cases',
-                                      pro.arrearTocRestrained[0]
-                                          .numberOfOpeningCases.toString(),
-                                      pro.arrearTocRestrained[0].openingBalance
-                                          .toString(),
-                                      pro.restrainedCompleteData[0]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '3',
-                                      pro.restrainedCompleteData[0]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '4',
-                                      pro.restrainedCompleteData[0]!
-                                          .amountOfTheMonth.toString() ?? '5',
-                                      pro.restrainedCompleteData[0]!
-                                          .amountUpTotheMonth.toString() ?? '6',
-                                      (pro.arrearTocRestrained[0]
-                                          .numberOfOpeningCases +
-                                          pro.restrainedCompleteData[0]!
-                                              .noOfCasesOfTheMonth).toString(),
-                                      (pro.arrearTocRestrained[0]
-                                          .openingBalance +
-                                          pro.restrainedCompleteData[0]!
-                                              .amountOfTheMonth).toString(),
-                                      pro.restrainedCompleteData[1]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '9',
-                                      pro.restrainedCompleteData[1]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '10',
-                                      pro.restrainedCompleteData[1]!
-                                          .amountOfTheMonth.toString() ?? '11',
-                                      pro.restrainedCompleteData[1]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '12',
-                                      pro.restrainedCompleteData[2]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '13',
-                                      pro.restrainedCompleteData[2]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '14',
-                                      pro.restrainedCompleteData[2]!
-                                          .amountOfTheMonth.toString() ?? '15',
-                                      pro.restrainedCompleteData[2]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '16',
-                                      pro.restrainedCompleteData[3]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '17',
-                                      pro.restrainedCompleteData[3]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '18',
-                                      pro.restrainedCompleteData[3]!
-                                          .amountOfTheMonth.toString() ?? '19',
-                                      pro.restrainedCompleteData[3]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '20',
-                                      pro.restrainedCompleteData[4]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '21',
-                                      pro.restrainedCompleteData[4]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '22',
-                                      pro.restrainedCompleteData[4]!
-                                          .amountOfTheMonth.toString() ?? '23',
-                                      pro.restrainedCompleteData[4]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '24',
-                                      pro.restrainedCompleteData[5]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '25',
-                                      pro.restrainedCompleteData[5]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '26',
-                                      pro.restrainedCompleteData[5]!
-                                          .amountOfTheMonth.toString() ?? '27',
-                                      pro.restrainedCompleteData[5]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '28',
-                                      pro.arrearTocRestrained[0]
-                                          .numberOfClosingCases.toString(),
-                                      pro.arrearTocRestrained[0].closingBalance
-                                          .toString(),
-                                    ),
-                                    _buildDataRow(
-                                      '2',
-                                      'DRT Cases',
-                                      pro.arrearTocRestrained[1]
-                                          .numberOfOpeningCases.toString(),
-                                      pro.arrearTocRestrained[1].openingBalance
-                                          .toString(),
-                                      pro.restrainedCompleteData[6]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '3',
-                                      pro.restrainedCompleteData[6]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '4',
-                                      pro.restrainedCompleteData[6]!
-                                          .amountOfTheMonth.toString() ?? '5',
-                                      pro.restrainedCompleteData[6]!
-                                          .amountUpTotheMonth.toString() ?? '6',
-                                      (pro.arrearTocRestrained[1]
-                                          .numberOfOpeningCases +
-                                          pro.restrainedCompleteData[6]!
-                                              .noOfCasesOfTheMonth).toString(),
-                                      (pro.arrearTocRestrained[1]
-                                          .openingBalance +
-                                          pro.restrainedCompleteData[6]!
-                                              .amountOfTheMonth).toString(),
-                                      pro.restrainedCompleteData[7]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '9',
-                                      pro.restrainedCompleteData[7]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '10',
-                                      pro.restrainedCompleteData[7]!
-                                          .amountOfTheMonth.toString() ?? '11',
-                                      pro.restrainedCompleteData[7]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '12',
-                                      pro.restrainedCompleteData[8]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '13',
-                                      pro.restrainedCompleteData[8]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '14',
-                                      pro.restrainedCompleteData[8]!
-                                          .amountOfTheMonth.toString() ?? '15',
-                                      pro.restrainedCompleteData[8]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '16',
-                                      pro.restrainedCompleteData[9]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '17',
-                                      pro.restrainedCompleteData[9]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '18',
-                                      pro.restrainedCompleteData[9]!
-                                          .amountOfTheMonth.toString() ?? '19',
-                                      pro.restrainedCompleteData[9]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '20',
-                                      pro.restrainedCompleteData[10]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '21',
-                                      pro.restrainedCompleteData[10]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '22',
-                                      pro.restrainedCompleteData[10]!
-                                          .amountOfTheMonth.toString() ?? '23',
-                                      pro.restrainedCompleteData[10]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '24',
-                                      pro.restrainedCompleteData[11]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '25',
-                                      pro.restrainedCompleteData[11]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '26',
-                                      pro.restrainedCompleteData[11]!
-                                          .amountOfTheMonth.toString() ?? '27',
-                                      pro.restrainedCompleteData[11]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '28',
-                                      pro.arrearTocRestrained[1]
-                                          .numberOfClosingCases.toString(),
-                                      pro.arrearTocRestrained[1].closingBalance
-                                          .toString(),
-                                    ),
-                                    _buildDataRow(
-                                      '3',
-                                      'BIFR',
-                                      pro.arrearTocRestrained[2]
-                                          .numberOfOpeningCases.toString(),
-                                      pro.arrearTocRestrained[2].openingBalance
-                                          .toString(),
-                                      pro.restrainedCompleteData[12]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '3',
-                                      pro.restrainedCompleteData[12]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '4',
-                                      pro.restrainedCompleteData[12]!
-                                          .amountOfTheMonth.toString() ?? '5',
-                                      pro.restrainedCompleteData[12]!
-                                          .amountUpTotheMonth.toString() ?? '6',
-                                      (pro.arrearTocRestrained[2]
-                                          .numberOfOpeningCases +
-                                          pro.restrainedCompleteData[12]!
-                                              .noOfCasesOfTheMonth).toString(),
-                                      (pro.arrearTocRestrained[2]
-                                          .openingBalance +
-                                          pro.restrainedCompleteData[12]!
-                                              .amountOfTheMonth).toString(),
-                                      pro.restrainedCompleteData[13]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '9',
-                                      pro.restrainedCompleteData[13]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '10',
-                                      pro.restrainedCompleteData[13]!
-                                          .amountOfTheMonth.toString() ?? '11',
-                                      pro.restrainedCompleteData[13]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '12',
-                                      pro.restrainedCompleteData[14]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '13',
-                                      pro.restrainedCompleteData[14]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '14',
-                                      pro.restrainedCompleteData[14]!
-                                          .amountOfTheMonth.toString() ?? '15',
-                                      pro.restrainedCompleteData[14]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '16',
-                                      pro.restrainedCompleteData[15]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '17',
-                                      pro.restrainedCompleteData[15]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '18',
-                                      pro.restrainedCompleteData[15]!
-                                          .amountOfTheMonth.toString() ?? '19',
-                                      pro.restrainedCompleteData[15]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '20',
-                                      pro.restrainedCompleteData[16]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '21',
-                                      pro.restrainedCompleteData[16]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '22',
-                                      pro.restrainedCompleteData[16]!
-                                          .amountOfTheMonth.toString() ?? '23',
-                                      pro.restrainedCompleteData[16]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '24',
-                                      pro.restrainedCompleteData[17]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '25',
-                                      pro.restrainedCompleteData[17]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '26',
-                                      pro.restrainedCompleteData[17]!
-                                          .amountOfTheMonth.toString() ?? '27',
-                                      pro.restrainedCompleteData[17]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '28',
-                                      pro.arrearTocRestrained[2]
-                                          .numberOfClosingCases.toString(),
-                                      pro.arrearTocRestrained[2].closingBalance
-                                          .toString(),
-                                    ),
-                                    _buildDataRow(
-                                      '4',
-                                      'NCLT units',
-                                      pro.arrearTocRestrained[3]
-                                          .numberOfOpeningCases.toString(),
-                                      pro.arrearTocRestrained[3].openingBalance
-                                          .toString(),
-                                      pro.restrainedCompleteData[18]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '3',
-                                      pro.restrainedCompleteData[18]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '4',
-                                      pro.restrainedCompleteData[18]!
-                                          .amountOfTheMonth.toString() ?? '5',
-                                      pro.restrainedCompleteData[18]!
-                                          .amountUpTotheMonth.toString() ?? '6',
-                                      (pro.arrearTocRestrained[3]
-                                          .numberOfOpeningCases +
-                                          pro.restrainedCompleteData[18]!
-                                              .noOfCasesOfTheMonth).toString(),
-                                      (pro.arrearTocRestrained[3]
-                                          .openingBalance +
-                                          pro.restrainedCompleteData[18]!
-                                              .amountOfTheMonth).toString(),
-                                      pro.restrainedCompleteData[19]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '9',
-                                      pro.restrainedCompleteData[19]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '10',
-                                      pro.restrainedCompleteData[19]!
-                                          .amountOfTheMonth.toString() ?? '11',
-                                      pro.restrainedCompleteData[19]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '12',
-                                      pro.restrainedCompleteData[20]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '13',
-                                      pro.restrainedCompleteData[20]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '14',
-                                      pro.restrainedCompleteData[20]!
-                                          .amountOfTheMonth.toString() ?? '15',
-                                      pro.restrainedCompleteData[20]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '16',
-                                      pro.restrainedCompleteData[21]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '17',
-                                      pro.restrainedCompleteData[21]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '18',
-                                      pro.restrainedCompleteData[21]!
-                                          .amountOfTheMonth.toString() ?? '19',
-                                      pro.restrainedCompleteData[21]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '20',
-                                      pro.restrainedCompleteData[22]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '21',
-                                      pro.restrainedCompleteData[22]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '22',
-                                      pro.restrainedCompleteData[22]!
-                                          .amountOfTheMonth.toString() ?? '23',
-                                      pro.restrainedCompleteData[22]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '24',
-                                      pro.restrainedCompleteData[23]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '25',
-                                      pro.restrainedCompleteData[23]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '26',
-                                      pro.restrainedCompleteData[23]!
-                                          .amountOfTheMonth.toString() ?? '27',
-                                      pro.restrainedCompleteData[23]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '28',
-                                      pro.arrearTocRestrained[3]
-                                          .numberOfClosingCases.toString(),
-                                      pro.arrearTocRestrained[3].closingBalance
-                                          .toString(),),
+                                    row(pro.restrainedCompleteData,pro.arrearTocRestrained,0,0,"OL Cases",1),
+                                    row(pro.restrainedCompleteData,pro.arrearTocRestrained,6,1,"DRT Cases",2),
+                                    row(pro.restrainedCompleteData,pro.arrearTocRestrained,12,2,"BIFR Cases",3),
+                                    row(pro.restrainedCompleteData,pro.arrearTocRestrained,18,3,"NCLT Cases",4),
                                   ]),
                                 SizedBox(height: 15,),
                                 if(pro.apealPeiodNotOverCompleteData.isNotEmpty)
                                   _buildCustomTable(
                                       "Where Appeal Period not Over", [
-                                    _buildDataRow(
-                                      '4',
-                                      'Appeal Period not over',
-                                      pro.arrearTocWhereApealPeriodNotOver
-                                          .numberOfOpeningCases.toString(),
-                                      pro.arrearTocWhereApealPeriodNotOver
-                                          .openingBalance.toString(),
-                                      pro.apealPeiodNotOverCompleteData[0]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '3',
-                                      pro.apealPeiodNotOverCompleteData[0]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '4',
-                                      pro.apealPeiodNotOverCompleteData[0]!
-                                          .amountOfTheMonth.toString() ?? '5',
-                                      pro.apealPeiodNotOverCompleteData[0]!
-                                          .amountUpTotheMonth.toString() ?? '6',
-                                      (pro.arrearTocWhereApealPeriodNotOver
-                                          .numberOfOpeningCases +
-                                          pro.apealPeiodNotOverCompleteData[0]!
-                                              .noOfCasesOfTheMonth).toString(),
-                                      (pro.arrearTocWhereApealPeriodNotOver
-                                          .openingBalance +
-                                          pro.apealPeiodNotOverCompleteData[0]!
-                                              .amountOfTheMonth).toString(),
-                                      pro.apealPeiodNotOverCompleteData[1]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '9',
-                                      pro.apealPeiodNotOverCompleteData[1]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '10',
-                                      pro.apealPeiodNotOverCompleteData[1]!
-                                          .amountOfTheMonth.toString() ?? '11',
-                                      pro.apealPeiodNotOverCompleteData[1]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '12',
-                                      pro.apealPeiodNotOverCompleteData[2]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '13',
-                                      pro.apealPeiodNotOverCompleteData[2]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '14',
-                                      pro.apealPeiodNotOverCompleteData[2]!
-                                          .amountOfTheMonth.toString() ?? '15',
-                                      pro.apealPeiodNotOverCompleteData[2]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '16',
-                                      pro.apealPeiodNotOverCompleteData[3]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '17',
-                                      pro.apealPeiodNotOverCompleteData[3]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '18',
-                                      pro.apealPeiodNotOverCompleteData[3]!
-                                          .amountOfTheMonth.toString() ?? '19',
-                                      pro.apealPeiodNotOverCompleteData[3]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '20',
-                                      pro.apealPeiodNotOverCompleteData[4]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '21',
-                                      pro.apealPeiodNotOverCompleteData[4]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '22',
-                                      pro.apealPeiodNotOverCompleteData[4]!
-                                          .amountOfTheMonth.toString() ?? '23',
-                                      pro.apealPeiodNotOverCompleteData[4]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '24',
-                                      pro.apealPeiodNotOverCompleteData[5]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '25',
-                                      pro.apealPeiodNotOverCompleteData[5]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '26',
-                                      pro.apealPeiodNotOverCompleteData[5]!
-                                          .amountOfTheMonth.toString() ?? '27',
-                                      pro.apealPeiodNotOverCompleteData[5]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '28',
-                                      pro.arrearTocWhereApealPeriodNotOver
-                                          .numberOfClosingCases.toString(),
-                                      pro.arrearTocWhereApealPeriodNotOver
-                                          .closingBalance.toString(),
-                                    ),
+                                        row(pro.apealPeiodNotOverCompleteData,[pro.arrearTocWhereApealPeriodNotOver],0,0,"Appeal Period not over",1),
                                   ]),
                                 SizedBox(height: 15,),
                                 if(pro.recoverableCompleteData.isNotEmpty)
                                   _buildCustomTable('Recoverable', [
-                                    _buildDataRow(
-                                      '1',
-                                      'appeal period over but no appeal field',
-                                      pro.arrearTocRecoverable[0]
-                                          .numberOfOpeningCases.toString(),
-                                      pro.arrearTocRecoverable[0].openingBalance
-                                          .toString(),
-                                      pro.recoverableCompleteData[0]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '3',
-                                      pro.recoverableCompleteData[0]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '4',
-                                      pro.recoverableCompleteData[0]!
-                                          .amountOfTheMonth.toString() ?? '5',
-                                      pro.recoverableCompleteData[0]!
-                                          .amountUpTotheMonth.toString() ?? '6',
-                                      (pro.arrearTocRecoverable[0]
-                                          .numberOfOpeningCases +
-                                          pro.recoverableCompleteData[0]!
-                                              .noOfCasesOfTheMonth).toString(),
-                                      (pro.arrearTocRecoverable[0]
-                                          .openingBalance +
-                                          pro.recoverableCompleteData[0]!
-                                              .amountOfTheMonth).toString(),
-                                      pro.recoverableCompleteData[1]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '9',
-                                      pro.recoverableCompleteData[1]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '10',
-                                      pro.recoverableCompleteData[1]!
-                                          .amountOfTheMonth.toString() ?? '11',
-                                      pro.recoverableCompleteData[1]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '12',
-                                      pro.recoverableCompleteData[2]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '13',
-                                      pro.recoverableCompleteData[2]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '14',
-                                      pro.recoverableCompleteData[2]!
-                                          .amountOfTheMonth.toString() ?? '15',
-                                      pro.recoverableCompleteData[2]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '16',
-                                      pro.recoverableCompleteData[3]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '17',
-                                      pro.recoverableCompleteData[3]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '18',
-                                      pro.recoverableCompleteData[3]!
-                                          .amountOfTheMonth.toString() ?? '19',
-                                      pro.recoverableCompleteData[3]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '20',
-                                      pro.recoverableCompleteData[4]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '21',
-                                      pro.recoverableCompleteData[4]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '22',
-                                      pro.recoverableCompleteData[4]!
-                                          .amountOfTheMonth.toString() ?? '23',
-                                      pro.recoverableCompleteData[4]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '24',
-                                      pro.recoverableCompleteData[5]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '25',
-                                      pro.recoverableCompleteData[5]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '26',
-                                      pro.recoverableCompleteData[5]!
-                                          .amountOfTheMonth.toString() ?? '27',
-                                      pro.recoverableCompleteData[5]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '28',
-                                      pro.arrearTocRecoverable[0]
-                                          .numberOfClosingCases.toString(),
-                                      pro.arrearTocRecoverable[0].closingBalance
-                                          .toString(),),
-                                    _buildDataRow(
-                                      '2',
-                                      'settlement commision cases',
-                                      pro.arrearTocRecoverable[1]
-                                          .numberOfOpeningCases.toString(),
-                                      pro.arrearTocRecoverable[1].openingBalance
-                                          .toString(),
-                                      pro.recoverableCompleteData[6]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '3',
-                                      pro.recoverableCompleteData[6]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '4',
-                                      pro.recoverableCompleteData[6]!
-                                          .amountOfTheMonth.toString() ?? '5',
-                                      pro.recoverableCompleteData[6]!
-                                          .amountUpTotheMonth.toString() ?? '6',
-                                      (pro.arrearTocRecoverable[1]
-                                          .numberOfOpeningCases +
-                                          pro.recoverableCompleteData[6]!
-                                              .noOfCasesOfTheMonth).toString(),
-                                      (pro.arrearTocRecoverable[1]
-                                          .openingBalance +
-                                          pro.recoverableCompleteData[6]!
-                                              .amountOfTheMonth).toString(),
-                                      pro.recoverableCompleteData[7]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '9',
-                                      pro.recoverableCompleteData[7]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '10',
-                                      pro.recoverableCompleteData[7]!
-                                          .amountOfTheMonth.toString() ?? '11',
-                                      pro.recoverableCompleteData[7]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '12',
-                                      pro.recoverableCompleteData[8]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '13',
-                                      pro.recoverableCompleteData[8]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '14',
-                                      pro.recoverableCompleteData[8]!
-                                          .amountOfTheMonth.toString() ?? '15',
-                                      pro.recoverableCompleteData[8]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '16',
-                                      pro.recoverableCompleteData[9]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '17',
-                                      pro.recoverableCompleteData[9]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '18',
-                                      pro.recoverableCompleteData[9]!
-                                          .amountOfTheMonth.toString() ?? '19',
-                                      pro.recoverableCompleteData[9]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '20',
-                                      pro.recoverableCompleteData[10]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '21',
-                                      pro.recoverableCompleteData[10]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '22',
-                                      pro.recoverableCompleteData[10]!
-                                          .amountOfTheMonth.toString() ?? '23',
-                                      pro.recoverableCompleteData[10]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '24',
-                                      pro.recoverableCompleteData[11]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '25',
-                                      pro.recoverableCompleteData[11]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '26',
-                                      pro.recoverableCompleteData[11]!
-                                          .amountOfTheMonth.toString() ?? '27',
-                                      pro.recoverableCompleteData[11]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '28',
-                                      pro.arrearTocRecoverable[1]
-                                          .numberOfClosingCases.toString(),
-                                      pro.arrearTocRecoverable[1].closingBalance
-                                          .toString(),),
-                                    _buildDataRow(
-                                      '3',
-                                      'arrear under section 11',
-                                      pro.arrearTocRecoverable[2]
-                                          .numberOfOpeningCases.toString(),
-                                      pro.arrearTocRecoverable[2].openingBalance
-                                          .toString(),
-                                      pro.recoverableCompleteData[12]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '3',
-                                      pro.recoverableCompleteData[12]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '4',
-                                      pro.recoverableCompleteData[12]!
-                                          .amountOfTheMonth.toString() ?? '5',
-                                      pro.recoverableCompleteData[12]!
-                                          .amountUpTotheMonth.toString() ?? '6',
-                                      (pro.arrearTocRecoverable[2]
-                                          .numberOfOpeningCases +
-                                          pro.recoverableCompleteData[12]!
-                                              .noOfCasesOfTheMonth).toString(),
-                                      (pro.arrearTocRecoverable[2]
-                                          .openingBalance +
-                                          pro.recoverableCompleteData[12]!
-                                              .amountOfTheMonth).toString(),
-                                      pro.recoverableCompleteData[13]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '9',
-                                      pro.recoverableCompleteData[13]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '10',
-                                      pro.recoverableCompleteData[13]!
-                                          .amountOfTheMonth.toString() ?? '11',
-                                      pro.recoverableCompleteData[13]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '12',
-                                      pro.recoverableCompleteData[14]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '13',
-                                      pro.recoverableCompleteData[14]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '14',
-                                      pro.recoverableCompleteData[14]!
-                                          .amountOfTheMonth.toString() ?? '15',
-                                      pro.recoverableCompleteData[14]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '16',
-                                      pro.recoverableCompleteData[15]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '17',
-                                      pro.recoverableCompleteData[15]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '18',
-                                      pro.recoverableCompleteData[15]!
-                                          .amountOfTheMonth.toString() ?? '19',
-                                      pro.recoverableCompleteData[15]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '20',
-                                      pro.recoverableCompleteData[16]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '21',
-                                      pro.recoverableCompleteData[16]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '22',
-                                      pro.recoverableCompleteData[16]!
-                                          .amountOfTheMonth.toString() ?? '23',
-                                      pro.recoverableCompleteData[16]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '24',
-                                      pro.recoverableCompleteData[17]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '25',
-                                      pro.recoverableCompleteData[17]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '26',
-                                      pro.recoverableCompleteData[17]!
-                                          .amountOfTheMonth.toString() ?? '27',
-                                      pro.recoverableCompleteData[17]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '28',
-                                      pro.arrearTocRecoverable[2]
-                                          .numberOfClosingCases.toString(),
-                                      pro.arrearTocRecoverable[2].closingBalance
-                                          .toString(),),
-                                    _buildDataRow(
-                                      '4',
-                                      'arrear under section 142',
-                                      pro.arrearTocRecoverable[3]
-                                          .numberOfOpeningCases.toString(),
-                                      pro.arrearTocRecoverable[3].openingBalance
-                                          .toString(),
-                                      pro.recoverableCompleteData[18]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '3',
-                                      pro.recoverableCompleteData[18]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '4',
-                                      pro.recoverableCompleteData[18]!
-                                          .amountOfTheMonth.toString() ?? '5',
-                                      pro.recoverableCompleteData[18]!
-                                          .amountUpTotheMonth.toString() ?? '6',
-                                      (pro.arrearTocRecoverable[3]
-                                          .numberOfOpeningCases +
-                                          pro.recoverableCompleteData[18]!
-                                              .noOfCasesOfTheMonth).toString(),
-                                      (pro.arrearTocRecoverable[3]
-                                          .openingBalance +
-                                          pro.recoverableCompleteData[18]!
-                                              .amountOfTheMonth).toString(),
-                                      pro.recoverableCompleteData[19]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '9',
-                                      pro.recoverableCompleteData[19]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '10',
-                                      pro.recoverableCompleteData[19]!
-                                          .amountOfTheMonth.toString() ?? '11',
-                                      pro.recoverableCompleteData[19]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '12',
-                                      pro.recoverableCompleteData[20]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '13',
-                                      pro.recoverableCompleteData[20]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '14',
-                                      pro.recoverableCompleteData[20]!
-                                          .amountOfTheMonth.toString() ?? '15',
-                                      pro.recoverableCompleteData[20]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '16',
-                                      pro.recoverableCompleteData[21]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '17',
-                                      pro.recoverableCompleteData[21]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '18',
-                                      pro.recoverableCompleteData[21]!
-                                          .amountOfTheMonth.toString() ?? '19',
-                                      pro.recoverableCompleteData[21]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '20',
-                                      pro.recoverableCompleteData[22]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '21',
-                                      pro.recoverableCompleteData[22]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '22',
-                                      pro.recoverableCompleteData[22]!
-                                          .amountOfTheMonth.toString() ?? '23',
-                                      pro.recoverableCompleteData[22]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '24',
-                                      pro.recoverableCompleteData[23]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '25',
-                                      pro.recoverableCompleteData[23]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '26',
-                                      pro.recoverableCompleteData[23]!
-                                          .amountOfTheMonth.toString() ?? '27',
-                                      pro.recoverableCompleteData[23]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '28',
-                                      pro.arrearTocRecoverable[3]
-                                          .numberOfClosingCases.toString(),
-                                      pro.arrearTocRecoverable[3].closingBalance
-                                          .toString(),),
+                                    row(pro.recoverableCompleteData, pro.arrearTocRecoverable, 0, 0, 'appeal period over but no appeal field', 1),
+                                    row(pro.recoverableCompleteData, pro.arrearTocRecoverable, 6, 1, 'settlement commision cases', 2),
+                                    row(pro.recoverableCompleteData, pro.arrearTocRecoverable, 12, 2,'arrear under section 11', 3),
+                                    row(pro.recoverableCompleteData, pro.arrearTocRecoverable, 18, 3,'arrear under section 142', 4),
+
                                   ]),
                                 SizedBox(height: 15,),
                                 if(pro.writeOffCompleteData.isNotEmpty)
                                   _buildCustomTable('Writer off', [
-                                    _buildDataRow(
-                                      '1',
-                                      'Write off',
-                                      pro.arrearTocPendingForWirteOff
-                                          .numberOfOpeningCases.toString(),
-                                      pro.arrearTocPendingForWirteOff
-                                          .openingBalance.toString(),
-                                      pro.writeOffCompleteData[0]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '3',
-                                      pro.writeOffCompleteData[0]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '4',
-                                      pro.writeOffCompleteData[0]!
-                                          .amountOfTheMonth.toString() ?? '5',
-                                      pro.writeOffCompleteData[0]!
-                                          .amountUpTotheMonth.toString() ?? '6',
-                                      (pro.arrearTocPendingForWirteOff
-                                          .numberOfOpeningCases +
-                                          pro.writeOffCompleteData[0]!
-                                              .noOfCasesOfTheMonth).toString(),
-                                      (pro.arrearTocPendingForWirteOff
-                                          .openingBalance +
-                                          pro.writeOffCompleteData[0]!
-                                              .amountOfTheMonth).toString(),
-                                      pro.writeOffCompleteData[1]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '9',
-                                      pro.writeOffCompleteData[1]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '10',
-                                      pro.writeOffCompleteData[1]!
-                                          .amountOfTheMonth.toString() ?? '11',
-                                      pro.writeOffCompleteData[1]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '12',
-                                      pro.writeOffCompleteData[2]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '13',
-                                      pro.writeOffCompleteData[2]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '14',
-                                      pro.writeOffCompleteData[2]!
-                                          .amountOfTheMonth.toString() ?? '15',
-                                      pro.writeOffCompleteData[2]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '16',
-                                      pro.writeOffCompleteData[3]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '17',
-                                      pro.writeOffCompleteData[3]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '18',
-                                      pro.writeOffCompleteData[3]!
-                                          .amountOfTheMonth.toString() ?? '19',
-                                      pro.writeOffCompleteData[3]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '20',
-                                      pro.writeOffCompleteData[4]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '21',
-                                      pro.writeOffCompleteData[4]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '22',
-                                      pro.writeOffCompleteData[4]!
-                                          .amountOfTheMonth.toString() ?? '23',
-                                      pro.writeOffCompleteData[4]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '24',
-                                      pro.writeOffCompleteData[5]!
-                                          .noOfCasesOfTheMonth.toString() ??
-                                          '25',
-                                      pro.writeOffCompleteData[5]!
-                                          .noOfCasesUpToTheMonth.toString() ??
-                                          '26',
-                                      pro.writeOffCompleteData[5]!
-                                          .amountOfTheMonth.toString() ?? '27',
-                                      pro.writeOffCompleteData[5]!
-                                          .amountUpTotheMonth.toString() ??
-                                          '28',
-                                      pro.arrearTocPendingForWirteOff
-                                          .numberOfClosingCases.toString(),
-                                      pro.arrearTocPendingForWirteOff
-                                          .closingBalance.toString(),
-                                    ),
+                                    row(pro.writeOffCompleteData, [pro.arrearTocPendingForWirteOff], 0, 0, "Write Off", 1),
+
                                   ]),
                                 SizedBox(height: 30,),
                               ],
@@ -1577,6 +428,45 @@ class _RevenueTableState extends State<RevenueTable> {
     );
   }
 
+   row(List<TarReportModel?>data,List<TocModel>data2, int index,int index2,String title,int no){
+
+    return   _buildDataRow(
+      no.toString(),
+      title,
+     data2[index2].numberOfOpeningCases.toString(),
+      data2[index2].openingBalance.toString(),
+      data[index]!.noOfCasesOfTheMonth.toString(),
+      data[index]!.noOfCasesUpToTheMonth.toString(),
+     data[index]!.amountOfTheMonth.toString(),
+      data[index]!.amountUpTotheMonth.toString(),
+      (data2[index2].numberOfOpeningCases + data[index]!.noOfCasesOfTheMonth).toString(),
+      (data2[index2].openingBalance + data[index]!.amountOfTheMonth).toString(),
+      data[index+1]!.noOfCasesOfTheMonth.toString(),
+      data[index+1]!.noOfCasesUpToTheMonth.toString(),
+      data[index+1]!.amountOfTheMonth.toString(),
+      data[index+1]!.amountUpTotheMonth.toString(),
+      data[index+2]!.noOfCasesOfTheMonth.toString(),
+      data[index+2]!.noOfCasesUpToTheMonth.toString() ,
+      data[index+2]!.amountOfTheMonth.toString(),
+      data[index+2]!.amountUpTotheMonth.toString() ,
+      data[index+3]!.noOfCasesOfTheMonth.toString(),
+      data[index+3]!.noOfCasesUpToTheMonth.toString(),
+      data[index+3]!.amountOfTheMonth.toString(),
+      data[index+3]!.amountUpTotheMonth.toString(),
+      data[index+4]!.noOfCasesOfTheMonth.toString(),
+      data[index+4]!.noOfCasesUpToTheMonth.toString(),
+      data[index+4]!.amountOfTheMonth.toString(),
+      data[index+4]!.amountUpTotheMonth.toString(),
+      data[index+5]!.noOfCasesOfTheMonth.toString(),
+      data[index+5]!.noOfCasesUpToTheMonth.toString() ,
+      data[index+5]!.amountOfTheMonth.toString(),
+      data[index+5]!.amountUpTotheMonth.toString(),
+      data2[index2].numberOfClosingCases.toString(),
+      data2[index2].closingBalance.toString(),
+    );
+  }
+
+
   TableRow _buildDataRow(
       String slNo,
       String arrearsUnderLitigation,
@@ -1610,6 +500,38 @@ class _RevenueTableState extends State<RevenueTable> {
       String arrearsRealisedAmtofcasesuptotheMonth,
       String closingBalanceNo,
       String closingBalanceAMt) {
+    excelData.add([
+       arrearsUnderLitigation,
+       openingBalanceNo,
+       openingBalanceAmt,
+       receiptsNoDuringMonth,
+       receiptsNoUptoMonth,
+       receiptsAmtDuringMonth,
+       receiptsAmtUptoTheMonth,
+       totalNo,
+       totalAmt,
+       decidedInFavorNoDuringMonth,
+       decidedInFavorNoUptoMonth,
+       decidedInFavorAmtDuringMonth,
+       decidedInFavorAmtUptoMonth,
+       decidedAgainstFavorNoDuringMonth,
+       decidedAgainstFavorNoUptoMonth,
+       decidedAgainstFavorAmtDuringMonth,
+       decidedAgainstFavorAmtUptoMonth,
+       orderOfDenovoFavorNoDuringMonth,
+       orderOfDenovoFavorNoUptoMonth,
+       orderOfDenovoFavorAmtDuringMonth,
+       orderOfDenovoFavorAmtUptoMonth,
+       transferredAnotherFormationFavorNoDuringMonth,
+       transferredAnotherFormationFavorNoUptoMonth,
+       transferredAnotherFormationFavorAmtDuringMonth,
+       transferredAnotherFormationFavorAmtUptoMonth,
+       arrearsRealisedNoofcasesOftheMonth,
+       arrearsRealisedNoofcasesuptotheMonth,
+       arrearsRealisedAmtofcasesoftheMonth,
+       arrearsRealisedAmtofcasesuptotheMonth,
+       closingBalanceNo,
+       closingBalanceAMt]);
     return TableRow(
       children: [
         _buildDataCell(slNo),
@@ -1756,14 +678,14 @@ class _RevenueTableState extends State<RevenueTable> {
 
   getData() async {
     var pro = Provider.of<AddNewCase>(context, listen: false);
-
+     pro.updateTarLoader();
     await pro.getAllSubcategoryTocdata();
     await pro.tarArrearLitigation();
     await pro.tarRestrainded();
     await pro.tarAppealPeriodNotOver();
     await pro.tarRecoverable();
     await pro.tarWriteOff();
-
+    pro.updateTarLoader();
     print('hellooerfe');
     print({
       'hello i am khush ${pro.litigationCompleteData[0]!.amountOfTheMonth}'
