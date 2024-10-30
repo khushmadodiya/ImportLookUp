@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.dart';
+import 'package:import_lookup/Backend-New/main-cases-details.dart';
 import 'package:import_lookup/Backend-New/tar-report.dart';
 import 'package:import_lookup/Model-New/tar-model.dart';
 import 'package:provider/provider.dart';
@@ -58,13 +59,19 @@ class _TestState extends State<Test> {
   // await TarReportInformation().recoverableArrears();
   // }
 
+  getData() async {
+    // 576e15e0-936f-11ef-8d76-83920643c546
+    // var res = (await TarReportInformation().TocReport());
+    var res = await MainCasesInformation().deleteMainCase(
+        formation: 'Air Cargo Complex Indore',
+        uid: '576e15e0-936f-11ef-8d76-83920643c546',
+        docName: 'disposal order for denovo');
+    print("nooting is here ");
 
-   getData()async{
-   var res =  (await TarReportInformation().TocReport());
-   if(res['res']=='success'){
-      print("this is my data ${res['data']}");
-   }
-   }
+    //  if(res['res']=='success'){
+    //     print("this is my data ${res['data']}");
+    //  }
+  }
 
   @override
   Widget build(BuildContext context) {
