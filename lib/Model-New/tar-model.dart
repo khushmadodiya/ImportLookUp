@@ -17,12 +17,13 @@ class TarReportModel {
   });
   factory TarReportModel.fromJson(Map<String, dynamic> json) {
     return TarReportModel(
-        amountUpTotheMonth: json['amountUpTotheMonth'] ?? 0.0,
-        amountOfTheMonth: json['amountOfTheMonth'] ?? 0.0,
-        noOfCasesOfTheMonth: json['noOfCasesOfTheMonth'] ?? 0.0,
-        noOfCasesUpToTheMonth: json['noOfCasesUpToTheMonth'] ?? 0.0,
-        openingBalance: json['openingBalance'] ?? 0.0,
-        closingBalance: json['closingBalance'] ?? 0.0);
+        amountUpTotheMonth: (json['amountUpTotheMonth'] ?? 0.0).toDouble(),
+        amountOfTheMonth: (json['amountOfTheMonth'] ?? 0.0).toDouble(),
+        noOfCasesOfTheMonth: (json['noOfCasesOfTheMonth'] ?? 0.0).toDouble(),
+        noOfCasesUpToTheMonth: (json['noOfCasesUpToTheMonth'] ?? 0.0).toDouble(),
+        openingBalance: (json['openingBalance'] ?? 0.0).toDouble(),
+        closingBalance: (json['closingBalance'] ?? 0.0).toDouble(),
+    );
   }
   Map<String, dynamic> toJson() {
     return {
@@ -48,10 +49,10 @@ class TocModel {
       required this.numberOfOpeningCases});
   factory TocModel.fromJson(Map<String, dynamic> json) {
     return TocModel(
-      closingBalance: json["closingBalance"]??0.0,
-      openingBalance: json["openingBalance"]??0.0,
-      numberOfClosingCases: json["numberOfClosingCases"]??0.0,
-      numberOfOpeningCases: json["numberOfOpeningCases"]??0.0,
+      closingBalance: (json["closingBalance"]??0.0).toDouble(),
+      openingBalance: (json["openingBalance"]??0.0).toDouble(),
+      numberOfClosingCases: (json["numberOfClosingCases"]??0.0).toDouble(),
+      numberOfOpeningCases: (json["numberOfOpeningCases"]??0.0).toDouble(),
     );
   }
 

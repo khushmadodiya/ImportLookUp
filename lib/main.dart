@@ -12,10 +12,10 @@ import 'package:import_lookup/Screens/dashboard.dart';
 import 'package:import_lookup/provider/provider.dart';
 import 'package:import_lookup/test.dart';
 import 'package:provider/provider.dart';
-
 import 'Provider-New/add-new-cases.dart';
 import 'Provider-New/get-user-deatils.dart';
 import 'firebase_options.dart';
+// import 'main_cases_details_mobile.dart' if (dart.library.html) 'main_cases_details_web.dart';
 
 bool isadmin = false;
 void main() async {
@@ -57,14 +57,14 @@ class _MyAppState extends State<MyApp> {
 
         useMaterial3: true,
       ),
-      home:
-      Consumer<UserInformation>(
+      // home: Scaffold(body: Text("hellot"))
+     home:  Consumer<UserInformation>(
         builder: (context, pro, child) => StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.active) {
               if (snapshot.hasData) {
-                if (pro.email.isNotEmpty)
+                // if (pro.email.isNotEmpty)
                   return DashboardScreen(isAdmin: pro.userType == USERTYPE[0]);
                 return const Scaffold(
                     body: Center(child: CircularProgressIndicator()));

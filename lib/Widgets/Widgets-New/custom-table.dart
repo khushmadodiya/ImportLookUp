@@ -237,7 +237,7 @@ class _CustomTableState extends State<CustomTable> {
                               11: FixedColumnWidth(350),
                               12: FixedColumnWidth(350),
                               13: FixedColumnWidth(250),
-                              14: FixedColumnWidth(180),
+                              14: FixedColumnWidth(200),
                               15: FixedColumnWidth(120),
                               16: FixedColumnWidth(120),
                             },

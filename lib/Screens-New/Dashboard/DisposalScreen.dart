@@ -10,7 +10,7 @@ class DisposalScreen extends StatelessWidget {
    MainCaseModel model;
    DisposalScreen({super.key,required this.model});
 
-  List<String> disposalValues = ['In favor of Department','Against Department','Order of Denovo','Arrear Transfor to other formation','Write of'];
+  List<String> disposalValues = ['In favor of Department','Against Department','Order of Denovo','Arrear Transfor to other formation'];
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,9 @@ class DisposalScreen extends StatelessWidget {
 
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 200.0),
-                  child: CustomButton(text: 'Dispose', onpress: (){}, isLoading: false),
+                  child: CustomButton(text: 'Dispose', onpress: (){
+                    _dispose();
+                  }, isLoading: false),
                 )
 
               ],
@@ -79,5 +81,9 @@ class DisposalScreen extends StatelessWidget {
       ),
     );
   }
+
+   _dispose()async{
+
+   }
 }
 

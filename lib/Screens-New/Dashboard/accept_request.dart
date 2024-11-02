@@ -101,7 +101,7 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
                                 12: FixedColumnWidth(350),
                                 13: FixedColumnWidth(250),
                                 14: FixedColumnWidth(180),
-                                15: FixedColumnWidth(180),
+                                15: FixedColumnWidth(200),
                                 16: FixedColumnWidth(180),
                               },
                               children: [

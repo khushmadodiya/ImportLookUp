@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:js_util';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.dart';

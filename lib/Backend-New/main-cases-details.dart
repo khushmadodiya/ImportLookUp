@@ -1,9 +1,6 @@
 // ignore_for_file: file_names, avoid_function_literals_in_foreach_calls
 
 import 'dart:async';
-import 'dart:convert';
-import 'dart:js_interop';
-import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.dart';

@@ -185,11 +185,11 @@ return  SingleChildScrollView(
           children: [
             FilledButton(onPressed: (){
               sortBasedofDate();
-            }, child: Text("  Sort Based On Date  ")),
-            SizedBox(width: 10,),
+            }, child: Text("Sort Based On Date",style: TextStyle(fontSize: 12),)),
+            SizedBox(width: 5,),
             FilledButton(onPressed: (){
               sortBasedofToatlArrearsPending();
-            }, child: Text("Sort Based On arrears pending")),
+            }, child: Text("Sort Based On arrears pending",style: TextStyle(fontSize: 12),)),
 
         ],),
       ),
@@ -218,8 +218,9 @@ return  SingleChildScrollView(
               13: FixedColumnWidth(350),
               14: FixedColumnWidth(350),
               15: FixedColumnWidth(250),
-              16: FixedColumnWidth(180),
+              16: FixedColumnWidth(200),
               17: FixedColumnWidth(180),
+              18: FixedColumnWidth(180),
 
 
             },

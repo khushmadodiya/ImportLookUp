@@ -8,7 +8,6 @@ import 'package:import_lookup/Model-New/main-case-model.dart';
 import 'package:import_lookup/Model-New/tar-model.dart';
 import 'package:import_lookup/Provider-New/add-new-cases.dart';
 import 'package:provider/provider.dart';
-
 import '../../Backend/authmethos.dart';
 import '../../excael-download-option.dart';
 import '../Auth-Screens/login-screen.dart';
@@ -677,20 +676,22 @@ class _RevenueTableState extends State<RevenueTable> {
   }
 
   getData() async {
-    var pro = Provider.of<AddNewCase>(context, listen: false);
+   WidgetsBinding.instance.addPostFrameCallback((_)async{
+     var pro = Provider.of<AddNewCase>(context, listen: false);
      pro.updateTarLoader();
-    await pro.getAllSubcategoryTocdata();
-    await pro.tarArrearLitigation();
-    await pro.tarRestrainded();
-    await pro.tarAppealPeriodNotOver();
-    await pro.tarRecoverable();
-    await pro.tarWriteOff();
-    pro.updateTarLoader();
-    print('hellooerfe');
-    print({
-      'hello i am khush ${pro.litigationCompleteData[0]!.amountOfTheMonth}'
-    });
+     await pro.getAllSubcategoryTocdata();
+     await pro.tarArrearLitigation();
+     await pro.tarRestrainded();
+     await pro.tarAppealPeriodNotOver();
+     await pro.tarRecoverable();
+     await pro.tarWriteOff();
+     pro.updateTarLoader();
+     print('hellooerfe');
+     print({
+       'hello i am khush ${pro.litigationCompleteData[0]!.amountOfTheMonth}'
+     });
 
+   });
   }
 }
 
