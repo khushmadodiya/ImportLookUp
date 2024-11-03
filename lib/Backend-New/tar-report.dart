@@ -57,11 +57,13 @@ class TarReportInformation {
             numberOfClosingCases: noOfCasesOfTheMonth,
             numberOfOpeningCases: 0,
           );
-          await tocCreation(
-              category: category,
-              subcategory: subcategory,
-              model: tocmodel,
-              batch: batch);
+          if (docName == 'receipts') {
+            await tocCreation(
+                category: category,
+                subcategory: subcategory,
+                model: tocmodel,
+                batch: batch);
+          }
           //
           DocumentReference ref = firebaseFirestore
               .collection("MP")
@@ -78,18 +80,19 @@ class TarReportInformation {
           batch.set(ref, model.toJson());
         }
       } else {
-        //
         TocModel tocmodel = TocModel(
           closingBalance: closingBalance,
           openingBalance: openingBalance,
           numberOfClosingCases: noOfCasesOfTheMonth,
           numberOfOpeningCases: 0,
         );
-        await tocCreation(
-            category: category,
-            subcategory: subcategory,
-            model: tocmodel,
-            batch: batch);
+        if (docName == 'receipts') {
+          await tocCreation(
+              category: category,
+              subcategory: subcategory,
+              model: tocmodel,
+              batch: batch);
+        }
         // print("heloooo i am fff D");
         await firebaseFirestore
             .collection("MP")
@@ -408,47 +411,45 @@ class TarReportInformation {
     }
   }
 
-  Future TocReport()async{
-    Map<String, TocModel>  tocData = {};
-   try{
-     for(int i=0;i<CATEGORY.length-1;i++){
-       DocumentSnapshot snap = await firebaseFirestore
-           .collection("MP")
-           .doc(CATEGORY[i])
-           .get();
-       if(snap.exists){
-         for(int j=0;j<SUBCATEGORY[CATEGORY[i]]!.length;j++){
-           DocumentSnapshot snap2 = await firebaseFirestore.collection("MP").doc(CATEGORY[i]).collection(SUBCATEGORY[CATEGORY[i]]![j]).doc('toc').get();
-           tocData[SUBCATEGORY[CATEGORY[i]]![j] + snap2.id] =
-               TocModel.fromJson(snap2.data() as Map<String, dynamic>);
-         }
-
-       }
-
-     }
-     try {
-       DocumentSnapshot snap3 = await firebaseFirestore.collection('MP').doc(
-           'arrears pending for write-off').collection('cases')
-           .doc('toc')
-           .get();
-       tocData["arrears pending for write-off" + snap3.id] =
-           TocModel.fromJson(snap3.data() as Map<String, dynamic>);
-       return {"res": "success", "data": tocData};
-     }
-     catch(e){
-       print("some error occure $e");
-     }
-   }
-   catch(e){
-     print("error occurs $e");
-   }
-
+  Future TocReport() async {
+    Map<String, TocModel> tocData = {};
+    try {
+      for (int i = 0; i < CATEGORY.length - 1; i++) {
+        DocumentSnapshot snap =
+            await firebaseFirestore.collection("MP").doc(CATEGORY[i]).get();
+        if (snap.exists) {
+          for (int j = 0; j < SUBCATEGORY[CATEGORY[i]]!.length; j++) {
+            DocumentSnapshot snap2 = await firebaseFirestore
+                .collection("MP")
+                .doc(CATEGORY[i])
+                .collection(SUBCATEGORY[CATEGORY[i]]![j])
+                .doc('toc')
+                .get();
+            tocData[SUBCATEGORY[CATEGORY[i]]![j] + snap2.id] =
+                TocModel.fromJson(snap2.data() as Map<String, dynamic>);
+          }
+        }
+      }
+      try {
+        DocumentSnapshot snap3 = await firebaseFirestore
+            .collection('MP')
+            .doc('arrears pending for write-off')
+            .collection('cases')
+            .doc('toc')
+            .get();
+        tocData["arrears pending for write-off" + snap3.id] =
+            TocModel.fromJson(snap3.data() as Map<String, dynamic>);
+        return {"res": "success", "data": tocData};
+      } catch (e) {
+        print("some error occure $e");
+      }
+    } catch (e) {
+      print("error occurs $e");
+    }
   }
-
 
   Future litigationReport() async {
     Map<String, TarReportModel> allData = {};
-
 
     DocumentSnapshot snap = await firebaseFirestore
         .collection("MP")
@@ -464,15 +465,16 @@ class TarReportInformation {
         for (var data in snap2.docs) {
           print("Data is here: ${data.id}");
 
-            allData[SUBCATEGORY["arrear in litigation"]![i] + data.id] =
-                TarReportModel.fromJson(data.data() as Map<String, dynamic>);
-
-
+          allData[SUBCATEGORY["arrear in litigation"]![i] + data.id] =
+              TarReportModel.fromJson(data.data() as Map<String, dynamic>);
         }
       }
     }
     // print("heeelo $allData")
-    return {"res": "success", "data": allData,};
+    return {
+      "res": "success",
+      "data": allData,
+    };
   }
 
   Future writeOff() async {

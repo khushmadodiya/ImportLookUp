@@ -220,7 +220,6 @@ return  SingleChildScrollView(
               15: FixedColumnWidth(250),
               16: FixedColumnWidth(200),
               17: FixedColumnWidth(180),
-              18: FixedColumnWidth(180),
 
 
             },
@@ -295,7 +294,7 @@ return  SingleChildScrollView(
     return Container(
       color: Colors.blue.withOpacity(0.2),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 12,horizontal: 8),
         child: FilledButton(
           onPressed:(){
             print(completeTrack);

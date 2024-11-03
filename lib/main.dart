@@ -30,7 +30,7 @@ void main() async {
     ChangeNotifierProvider(create: (_) => AddNewCase()),
     ChangeNotifierProvider(create: (_) => UserInformation()),
     ChangeNotifierProvider(create: (_) => GeneralPurposeProvider()),
-  ], child:  MyApp()));
+  ], child: MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -53,12 +53,15 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor:Colors.deepPurple,primary: Colors.deepPurple,background: Colors.white),
-
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.deepPurple,
+            primary: Colors.deepPurple,
+            background: Colors.white),
         useMaterial3: true,
       ),
-      // home: Scaffold(body: Text("hellot"))
+
      home:  Consumer<UserInformation>(
+
         builder: (context, pro, child) => StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {

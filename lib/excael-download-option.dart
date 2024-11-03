@@ -1,11 +1,9 @@
-// ignore_for_file: file_names
 
 import 'dart:convert';
 import 'package:import_lookup/Model-New/main-case-model.dart';
-import 'package:universal_html/html.dart' show AnchorElement, File;
+import 'package:universal_html/html.dart' show AnchorElement, File, Platform;
 import 'package:flutter/foundation.dart';
 import 'package:syncfusion_flutter_xlsio/xlsio.dart' as xcel;
-
 class ExcelDonwloadOption {
   final xcel.Workbook workbook = xcel.Workbook();
 
@@ -257,7 +255,42 @@ class ExcelDonwloadOption {
               .encode(bytes)}')
         ..setAttribute('download', '$excelFor.xlsx')
         ..click();
-    } else {}
+    } else {
+      // Request storage permission if not already granted
+    //   if (await Permission.storage
+    //       .request()
+    //       .isGranted) {
+    //     // Define the file path in the Downloads directory
+    //     Directory? directory = await getExternalStorageDirectory();
+    //     String newPath = "";
+    //
+    //     // Adjust the directory path for Android downloads folder
+    //     List<String> folders = directory!.path.split("/");
+    //     for (int i = 1; i < folders.length; i++) {
+    //       String folder = folders[i];
+    //       if (folder != "Android") {
+    //         newPath += "/" + folder;
+    //       } else {
+    //         break;
+    //       }
+    //     }
+    //     newPath = newPath + "/Download"; // Save file to Downloads folder
+    //     directory = Directory(newPath);
+    //
+    //     // Create directory if it doesn’t exist
+    //     if (!await directory.exists()) {
+    //       await directory.create(recursive: true);
+    //     }
+    //
+    //     // Save the file to the specified path
+    //     File file = File('${directory.path}/Tar Report.xlsx');
+    //     await file.writeAsBytes(bytes, flush: true);
+    //     print("File saved successfully at ${file.path}");
+    //   } else {
+    //     // Handle the permission denied scenario
+    //     print("Storage permission not granted");
+    //   }
+    }
   }
 
 }

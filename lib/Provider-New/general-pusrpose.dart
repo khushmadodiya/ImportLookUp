@@ -6,7 +6,7 @@ class GeneralPurposeProvider extends ChangeNotifier{
   String _userType =USERTYPE[0];
   int _selectedIndex=0;
   String _date='Select OIO Date';
-  String _selectedDisposalValue='In favor of Department';
+  String _selectedDisposalValue="disposal in favour of the department";
 
   String get userType=>_userType;
   String get date=>_date;

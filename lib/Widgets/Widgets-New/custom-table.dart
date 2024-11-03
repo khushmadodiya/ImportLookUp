@@ -242,7 +242,7 @@ class _CustomTableState extends State<CustomTable> {
                               16: FixedColumnWidth(120),
                             },
                             children: [
-                              if(provider.mainCaseData.isNotEmpty)_buildHeaderRow(),
+                              if(provider.mainCaseData.isNotEmpty)_buildHeaderRow(userInfo),
 
                               if(provider.mainCaseData.isNotEmpty)
                               for (int i = 0; i < provider.mainCaseData.length; i++)
@@ -250,7 +250,7 @@ class _CustomTableState extends State<CustomTable> {
                                     widget.subcategory &&
                                     provider.mainCaseData[i].category ==
                                         widget.category)
-                                  _buildDataRow(provider, i,rowNumber++),
+                                  _buildDataRow(provider, i,rowNumber++,userInfo),
                             ],
                           ),
                         ),
@@ -267,7 +267,7 @@ class _CustomTableState extends State<CustomTable> {
   }
 
 
-  TableRow _buildHeaderRow() {
+  TableRow _buildHeaderRow(UserInformation userInfo) {
     return TableRow(
       children: [
         _buildHeaderCell('S No.', 1),
@@ -286,12 +286,13 @@ class _CustomTableState extends State<CustomTable> {
         _buildHeaderCell('Appeal No.', 14),
         _buildHeaderCell('Stay Order No and Date', 15),
         _buildHeaderCell('Change Data', 16),
-        _buildHeaderCell('Disposal', 17),
+       if(userInfo.userType == USERTYPE[0]) _buildHeaderCell('Disposal', 17),
+
       ],
     );
   }
 
-  TableRow _buildDataRow(AddNewCase provider, int index, int rownumber) {
+  TableRow _buildDataRow(AddNewCase provider, int index, int rownumber,UserInformation userInfo) {
     String day =
         _calculateDayCount(provider.mainCaseData[index].date).toString();
     return TableRow(
@@ -312,7 +313,8 @@ class _CustomTableState extends State<CustomTable> {
         _multiLineText(provider.mainCaseData[index].apealNo, 14),
         _multiLineText(provider.mainCaseData[index].stayOrderNumberAndDate, 15),
         _buildTransferButton(provider.mainCaseData[index].uid, provider.mainCaseData[index].formation),
-        _buildDisposalButtton(provider.mainCaseData[index]),
+       if(userInfo.userType==USERTYPE[0]) _buildDisposalButtton(provider.mainCaseData[index]),
+
       ],
     );
   }

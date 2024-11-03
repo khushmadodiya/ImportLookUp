@@ -461,31 +461,59 @@ class MainCasesInformation {
 
   //delete main case
   Future deleteMainCase(
-      {required String formation, required String uid, bool isWriteOff = false,String docName=''}) async {
+      {required String formation,
+      required String uid,
+      bool isWriteOff = false,
+      String docName = ''}) async {
     try {
       WriteBatch batch = _fireStore.batch();
-      // await _fireStore.collection("MP").doc(formation).collection("cases").doc(uid).delete();
+
       DocumentReference ref = _fireStore
           .collection("MP")
           .doc(formation)
           .collection("cases")
           .doc(uid);
+      DocumentSnapshot snap = await ref.get();
+      MainCaseModel model =
+          MainCaseModel.fromJson(snap.data() as Map<String, dynamic>);
       await deletereplicateMainCase(uid: uid, batch: batch);
-      if(isWriteOff){
-        await writeOff(formation: formation, uid: uid, writeBatch: batch);
-      }
-      else{
-        DocumentSnapshot snap= await ref.get();
-        if(snap.exists){
-          MainCaseModel model= MainCaseModel.fromJson(snap as Map<String,dynamic>);
-         // await TarReportInformation().updateDataOfTarReport(batch: batch, category: model.category, subcategory: model.subcategory, docName: docName , noOfCasesOfTheMonth: 1, noOfCasesUpToTheMonth: 0, amountOfTheMonth: double.parse(model.totalArrearPending), amountUpTotheMonth: 0, openingBalance: 0, closingBalance: double.parse(model.totalArrearPending));
-         // await TarReportInformation().updateDataOfTarReport(batch: batch, category: model.category, subcategory: model.subcategory, docName: docName , noOfCasesOfTheMonth: 1, noOfCasesUpToTheMonth: 0, amountOfTheMonth: double.parse(model.totalArrearPending), amountUpTotheMonth: 0, openingBalance: 0, closingBalance: double.parse(model.totalArrearPending));
-
+      if (isWriteOff) {
+        await writeOff(
+            formation: formation,
+            uid: uid,
+            writeBatch: batch,
+            mainCaseModel: model);
+      } else {
+        if (snap.exists) {
+          await TarReportInformation().updateDataOfTarReport(
+              batch: batch,
+              category: model.category,
+              subcategory: model.subcategory,
+              docName: "receipts",
+              noOfCasesOfTheMonth: -1,
+              noOfCasesUpToTheMonth: 0,
+              amountOfTheMonth: -double.parse(model.totalArrearPending),
+              amountUpTotheMonth: 0,
+              openingBalance: 0,
+              closingBalance: double.parse(model.totalArrearPending));
+          // print("here i am inside of it 3");
+          await TarReportInformation().updateDataOfTarReport(
+              batch: batch,
+              category: model.category,
+              subcategory: model.subcategory,
+              docName: docName,
+              noOfCasesOfTheMonth: 1,
+              noOfCasesUpToTheMonth: 0,
+              amountOfTheMonth: double.parse(model.totalArrearPending),
+              amountUpTotheMonth: 0,
+              openingBalance: 0,
+              closingBalance: double.parse(model.totalArrearPending));
+          // print("here i am inside of it 4");
         }
-
       }
       batch.delete(ref);
       await batch.commit();
+      // print("here i am inside of it 5");
       return {"res": "success"};
     } catch (e) {
       return {"res": "some error occured ${e.toString()}"};
@@ -495,7 +523,8 @@ class MainCasesInformation {
   Future writeOff(
       {required String formation,
       required String uid,
-      required WriteBatch writeBatch}) async {
+      required WriteBatch writeBatch,
+      required MainCaseModel mainCaseModel}) async {
     try {
       DocumentSnapshot snap = await _fireStore
           .collection("MP")

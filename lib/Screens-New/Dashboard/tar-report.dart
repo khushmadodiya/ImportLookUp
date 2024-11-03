@@ -90,150 +90,168 @@ class _RevenueTableState extends State<RevenueTable> {
       return value?.toString() ?? defaultValue;
     }
 
-    return Consumer<AddNewCase>(
-      builder: (context, pro, child) {
-
-        if(pro.allTocdata.isNotEmpty) {
-          return Focus(
-            autofocus: true,
-            skipTraversal: true,
-            onKeyEvent: (FocusNode node, KeyEvent event) {
-              _handleKeyEvent(event);
-              return KeyEventResult.handled;
-            },
-            child: Column(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Scrollbar(
-                      controller: horizontalController,
-                      thickness: 13,
-                      child: SingleChildScrollView(
-                        dragStartBehavior: DragStartBehavior.down,
+    return SafeArea(
+      child: Consumer<AddNewCase>(
+        builder: (context, pro, child) {
+      
+          if(pro.allTocdata.isNotEmpty) {
+            return Focus(
+              autofocus: true,
+              skipTraversal: true,
+              onKeyEvent: (FocusNode node, KeyEvent event) {
+                _handleKeyEvent(event);
+                return KeyEventResult.handled;
+              },
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Scrollbar(
                         controller: horizontalController,
-                        scrollDirection: Axis.horizontal,
-                        child: Scrollbar(
-                          controller: verticalController,
-                          thickness: 10,
-                          scrollbarOrientation: ScrollbarOrientation.left,
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.vertical,
+                        thickness: 13,
+                        child: SingleChildScrollView(
+                          dragStartBehavior: DragStartBehavior.down,
+                          controller: horizontalController,
+                          scrollDirection: Axis.horizontal,
+                          child: Scrollbar(
                             controller: verticalController,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                // if(pro.writeOffCompleteData.isNotEmpty)
-                                Container(
-                                  height: 50,
-                                  width: MediaQuery
-                                      .of(context)
-                                      .size
-                                      .width * .9,
-                                  child: Row(
-
-                                    children: [
-                                   if(pro.writeOffCompleteData.isNotEmpty)InkWell(
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 8.0),
-                                          child: Container(
-                                            height: 40,
-                                            width: 150,
-                                            color: Colors.amber.withOpacity(
-                                                0.3),
-                                            child: const Center(
-                                                child: Text("Download Excel")),
+                            thickness: 10,
+                            scrollbarOrientation: ScrollbarOrientation.left,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.vertical,
+                              controller: verticalController,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  // if(pro.writeOffCompleteData.isNotEmpty)
+                                  Container(
+                                    height: 50,
+                                    width: MediaQuery
+                                        .of(context)
+                                        .size
+                                        .width,
+                                    child: Row(
+      
+                                      children: [
+                                     if(pro.writeOffCompleteData.isNotEmpty)InkWell(
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 8.0),
+                                            child: Container(
+                                              height: 40,
+                                              width: MediaQuery.of(context).size.width>600?140:100,
+                                              color: Colors.amber.withOpacity(
+                                                  0.3),
+                                              child: const Center(
+                                                  child: Text("Download Excel")),
+                                            ),
                                           ),
-                                        ),
-                                        onTap: () {
-                                          print('this is excel${excelData![0][0]}');
-                                          List<List<String>> data =removeDuplicates(excelData);
-                                          ExcelDonwloadOption().downloadExcelForTar(data, 'OIO DETAILS');
-                                        },
-                                      ),
-
-                                      InkWell(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Container(
-                                            height: 40,
-                                            width: 150,
-                                            color: Colors.amber.withOpacity(
-                                                0.3),
-                                            child:  Center(
-                                                child: pro.tarLoader? Container(width:25,height: 25,child: CircularProgressIndicator(strokeWidth: 3,)):Text("Refresh")),
-                                          ),
-                                        ),
-                                        onTap: () {
-                                          getData();
-                                        },
-                                      ),
-                                      IconButton(
-                                          onPressed: () {
-                                            AuthMethods().signOut(context);
-                                            Navigator.push(context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        LoginPage()));
+                                          onTap: () {
+                                            print('this is excel${excelData![0][0]}');
+                                            List<List<String>> data =removeDuplicates(excelData);
+                                            ExcelDonwloadOption().downloadExcelForTar(data, 'OIO DETAILS');
                                           },
-                                          icon: Icon(Icons.logout))
+                                        ),
+                                        InkWell(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Container(
+                                              height: 40,
+                                              width: MediaQuery.of(context).size.width>600?140:100,
+                                              color: Colors.amber.withOpacity(
+                                                  0.3),
+                                              child:  Center(
+                                                  child: Text("Financial Year")),
+                                            ),
+                                          ),
+                                          onTap: () {
 
-                                    ],
+                                          },
+                                        ),
+                                        InkWell(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Container(
+                                              height: 40,
+                                              width: MediaQuery.of(context).size.width>600?140:80,
+                                              color: Colors.amber.withOpacity(
+                                                  0.3),
+                                              child:  Center(
+                                                  child: pro.tarLoader? Container(width:25,height: 25,child: CircularProgressIndicator(strokeWidth: 3,)):Text("Refresh")),
+                                            ),
+                                          ),
+                                          onTap: () {
+                                            getData();
+                                          },
+                                        ),
+                                        IconButton(
+                                          padding: EdgeInsets.zero,
+                                            onPressed: () {
+                                              AuthMethods().signOut(context);
+                                              Navigator.push(context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          LoginPage()));
+                                            },
+                                            icon: Icon(Icons.logout))
+      
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                if(pro.litigationCompleteData.isNotEmpty)
-                                  _buildCustomTable('Litigation', [
-                                   row(pro.litigationCompleteData,pro.arrearTocLitgation,0,0, 'Supreme Court cases', 1),
-                                   row(pro.litigationCompleteData,pro.arrearTocLitgation,6,1,"High Court",2),
-                                   row(pro.litigationCompleteData,pro.arrearTocLitgation,12,2,"CESTAT",3),
-                                   row(pro.litigationCompleteData,pro.arrearTocLitgation,18,3,"Comm. Appeal",4),]),
-                                SizedBox(height: 15,),
-                                if(pro.restrainedCompleteData.isNotEmpty)
-                                  _buildCustomTable('Restrained', [
-                                    row(pro.restrainedCompleteData,pro.arrearTocRestrained,0,0,"OL Cases",1),
-                                    row(pro.restrainedCompleteData,pro.arrearTocRestrained,6,1,"DRT Cases",2),
-                                    row(pro.restrainedCompleteData,pro.arrearTocRestrained,12,2,"BIFR Cases",3),
-                                    row(pro.restrainedCompleteData,pro.arrearTocRestrained,18,3,"NCLT Cases",4),
-                                  ]),
-                                SizedBox(height: 15,),
-                                if(pro.apealPeiodNotOverCompleteData.isNotEmpty)
-                                  _buildCustomTable(
-                                      "Where Appeal Period not Over", [
-                                        row(pro.apealPeiodNotOverCompleteData,[pro.arrearTocWhereApealPeriodNotOver],0,0,"Appeal Period not over",1),
-                                  ]),
-                                SizedBox(height: 15,),
-                                if(pro.recoverableCompleteData.isNotEmpty)
-                                  _buildCustomTable('Recoverable', [
-                                    row(pro.recoverableCompleteData, pro.arrearTocRecoverable, 0, 0, 'appeal period over but no appeal field', 1),
-                                    row(pro.recoverableCompleteData, pro.arrearTocRecoverable, 6, 1, 'settlement commision cases', 2),
-                                    row(pro.recoverableCompleteData, pro.arrearTocRecoverable, 12, 2,'arrear under section 11', 3),
-                                    row(pro.recoverableCompleteData, pro.arrearTocRecoverable, 18, 3,'arrear under section 142', 4),
-
-                                  ]),
-                                SizedBox(height: 15,),
-                                if(pro.writeOffCompleteData.isNotEmpty)
-                                  _buildCustomTable('Writer off', [
-                                    row(pro.writeOffCompleteData, [pro.arrearTocPendingForWirteOff], 0, 0, "Write Off", 1),
-
-                                  ]),
-                                SizedBox(height: 30,),
-                              ],
+                                  if(pro.litigationCompleteData.isNotEmpty)
+                                    _buildCustomTable('Litigation', [
+                                     row(pro.litigationCompleteData,pro.arrearTocLitgation,0,0, 'Supreme Court cases', 1),
+                                     row(pro.litigationCompleteData,pro.arrearTocLitgation,6,1,"High Court",2),
+                                     row(pro.litigationCompleteData,pro.arrearTocLitgation,12,2,"CESTAT",3),
+                                     row(pro.litigationCompleteData,pro.arrearTocLitgation,18,3,"Comm. Appeal",4),]),
+                                  SizedBox(height: 15,),
+                                  if(pro.restrainedCompleteData.isNotEmpty)
+                                    _buildCustomTable('Restrained', [
+                                      row(pro.restrainedCompleteData,pro.arrearTocRestrained,0,0,"OL Cases",1),
+                                      row(pro.restrainedCompleteData,pro.arrearTocRestrained,6,1,"DRT Cases",2),
+                                      row(pro.restrainedCompleteData,pro.arrearTocRestrained,12,2,"BIFR Cases",3),
+                                      row(pro.restrainedCompleteData,pro.arrearTocRestrained,18,3,"NCLT Cases",4),
+                                    ]),
+                                  SizedBox(height: 15,),
+                                  if(pro.apealPeiodNotOverCompleteData.isNotEmpty)
+                                    _buildCustomTable(
+                                        "Where Appeal Period not Over", [
+                                          row(pro.apealPeiodNotOverCompleteData,[pro.arrearTocWhereApealPeriodNotOver],0,0,"Appeal Period not over",1),
+                                    ]),
+                                  SizedBox(height: 15,),
+                                  if(pro.recoverableCompleteData.isNotEmpty)
+                                    _buildCustomTable('Recoverable', [
+                                      row(pro.recoverableCompleteData, pro.arrearTocRecoverable, 0, 0, 'appeal period over but no appeal field', 1),
+                                      row(pro.recoverableCompleteData, pro.arrearTocRecoverable, 6, 1, 'settlement commision cases', 2),
+                                      row(pro.recoverableCompleteData, pro.arrearTocRecoverable, 12, 2,'arrear under section 11', 3),
+                                      row(pro.recoverableCompleteData, pro.arrearTocRecoverable, 18, 3,'arrear under section 142', 4),
+      
+                                    ]),
+                                  SizedBox(height: 15,),
+                                  if(pro.writeOffCompleteData.isNotEmpty)
+                                    _buildCustomTable('Writer off', [
+                                      row(pro.writeOffCompleteData, [pro.arrearTocPendingForWirteOff], 0, 0, "Write Off", 1),
+      
+                                    ]),
+                                  SizedBox(height: 30,),
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                // Slider to control horizontal scrolling
-              ],
-            ),
-          );
-        }
-        return Center(child: CircularProgressIndicator(),);
-      },
+                  // Slider to control horizontal scrolling
+                ],
+              ),
+            );
+          }
+          return Center(child: CircularProgressIndicator(),);
+        },
+      ),
     );
   }
 
@@ -408,8 +426,11 @@ class _RevenueTableState extends State<RevenueTable> {
                               children: subSubColumns.map((subSubCol) {
                                 return TableCell(
                                   child: Center(
-                                      child: Text(subSubCol,
-                                          textAlign: TextAlign.center)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(subSubCol,
+                                            textAlign: TextAlign.center),
+                                      )),
                                 );
                               }).toList(),
                             ),
