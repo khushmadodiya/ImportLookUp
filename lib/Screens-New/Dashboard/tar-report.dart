@@ -29,6 +29,7 @@ class _RevenueTableState extends State<RevenueTable> {
   final ScrollController verticalController = ScrollController();
   List<List<String>> excelData=[];
   double sliderValue = 0;
+  String? month;
 
   List<List<String>> removeDuplicates(List<List<String>> excelData) {
     final uniqueRows = <String>{};
@@ -172,10 +173,9 @@ class _RevenueTableState extends State<RevenueTable> {
                                                   child: Text("Shift Data")),
                                             ),
                                           ),
-                                          onTap: () {
-                                                _shiftData();
-                                                
-                                          },
+                                            onTap: month != (DateFormat("MMMM").format(DateTime.now()))? _shiftData:null,
+
+
                                         ),
                                         InkWell(
                                           child: Padding(
@@ -706,7 +706,13 @@ class _RevenueTableState extends State<RevenueTable> {
   getData() async {
    WidgetsBinding.instance.addPostFrameCallback((_)async{
      var pro = Provider.of<AddNewCase>(context, listen: false);
+
+     GeneralPurposeProvider generalPurposeProvider= Provider.of<GeneralPurposeProvider>(context,listen: false);
      pro.updateTarLoader();
+
+     List<String>data = await generalPurposeProvider.getFinancialData();
+     month = data[0];
+
      await pro.getAllSubcategoryTocdata();
      await pro.tarArrearLitigation();
      await pro.tarRestrainded();
@@ -744,7 +750,9 @@ class _RevenueTableState extends State<RevenueTable> {
 
      }
      else{
-       await TarReportInformation().transferCasesUpTheMonth(category: "", subcategory: "", docName: "");
+       print('Shift uptothemonth');
+     var res =   await TarReportInformation().transferCasesUpTheMonth(category: "", subcategory: "", docName: "");
+     print("this is khush${res['res']}");
      }
       
      }

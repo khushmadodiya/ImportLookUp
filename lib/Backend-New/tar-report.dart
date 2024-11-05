@@ -221,17 +221,19 @@ class TarReportInformation {
     try {
       WriteBatch batch = firebaseFirestore.batch();
       
-      await FinancialYear().financialYear(currentMonth:DateFormat('MMMM').format(DateTime.now()));
+      // await FinancialYear().financialYear(currentMonth:DateFormat('MMMM').format(DateTime.now()));
 
       for (int i = 0; i < CATEGORY.length; i++) {
+
         category = CATEGORY[i];
         for (int j = 0; j < SUBCATEGORY[CATEGORY[i]]!.length; j++) {
           subcategory = SUBCATEGORY[category]![j];
 
           for (int k = 0; k < DOCNAME.length; k++) {
-            if(k==0){
-              tocUpdate(batch: batch, category: category, subcategory: subcategory);
-            }
+
+            // if(k==0){
+            //   tocUpdate(batch: batch, category: category, subcategory: subcategory);
+            // }
             docName = DOCNAME[k];
             DocumentSnapshot docsnap = await firebaseFirestore
                 .collection("MP")
@@ -273,6 +275,7 @@ class TarReportInformation {
       await batch.commit();
       return {"res": "success"};
     } catch (e) {
+      // print("this is dipu${e.toString()}");
       return {"res": "some error occurred ${e.toString()}"};
     }
   }
