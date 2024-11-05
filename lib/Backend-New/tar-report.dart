@@ -220,7 +220,7 @@ class TarReportInformation {
   }) async {
     try {
       WriteBatch batch = firebaseFirestore.batch();
-      tocUpdate(batch: batch, category: category, subcategory: subcategory);
+      
       await FinancialYear().financialYear(currentMonth:DateFormat('MMMM').format(DateTime.now()));
 
       for (int i = 0; i < CATEGORY.length; i++) {
@@ -229,6 +229,9 @@ class TarReportInformation {
           subcategory = SUBCATEGORY[category]![j];
 
           for (int k = 0; k < DOCNAME.length; k++) {
+            if(k==0){
+              tocUpdate(batch: batch, category: category, subcategory: subcategory);
+            }
             docName = DOCNAME[k];
             DocumentSnapshot docsnap = await firebaseFirestore
                 .collection("MP")

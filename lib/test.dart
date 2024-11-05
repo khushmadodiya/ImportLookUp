@@ -23,7 +23,17 @@ class _TestState extends State<Test> {
     // TODO: implement initState
     super.initState();
     getData();
-    print("heelo i am ${DateFormat('MMMM').format(DateTime.now())}");
+    // print("heelo i am ${DateFormat('MMMM').format(DateTime.now())}");
+   String time=DateFormat('dd-MMMM-yyyy').format(DateTime.now());
+   DateFormat format=DateFormat('dd-MMMM-yyyy');
+   
+  // DateFormat format=DateFormat("dd-Mmmm-")
+  DateTime? heelo=format.parse("1-April-2025");
+   DateTime? heelo1=format.parse("1-April-2025");
+  //  DateTime dipu= DateTime(2025,3,31);
+  //  DateTime dip= DateTime(2025,4,1);
+  // print("here is dat -> ${time} -> ${dipu.difference(dip).inDays}");
+   print("here is dat -> ${time}  ->${heelo1.difference(heelo).inDays} -> }");
   }
 
   // void getData() async {

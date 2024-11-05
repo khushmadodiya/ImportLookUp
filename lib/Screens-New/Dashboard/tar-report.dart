@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.dart';
+import 'package:import_lookup/Backend-New/financial-year.dart';
+import 'package:import_lookup/Backend-New/tar-report.dart';
 import 'package:import_lookup/Model-New/main-case-model.dart';
 import 'package:import_lookup/Model-New/tar-model.dart';
 import 'package:import_lookup/Provider-New/add-new-cases.dart';
 import 'package:import_lookup/Provider-New/general-pusrpose.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart';
 import '../../Backend/authmethos.dart';
@@ -713,7 +716,7 @@ class _RevenueTableState extends State<RevenueTable> {
      pro.updateTarLoader();
      print('hellooerfe');
      print({
-       'hello i am khush ${pro.litigationCompleteData[0]!.amountOfTheMonth}'
+       'hello i am dipu loda ${pro.litigationCompleteData[0]!.amountOfTheMonth}'
      });
 
    });
@@ -721,9 +724,30 @@ class _RevenueTableState extends State<RevenueTable> {
   
   void _shiftData()async{
    GeneralPurposeProvider pro= Provider.of<GeneralPurposeProvider>(context,listen: false);
-   pro.getFinancialData();
-   print("this is khush${pro.startDate}");
-    // if(pro){ print(pro);}
+   List<String>data = await pro.getFinancialData();
+   print(data[0]);
+     if(data[0]!= DateFormat("MMMM").format(DateTime.now())){
+
+      print("the month is not equal");
+
+   String time=DateFormat('dd-MMMM-yyyy').format(DateTime.now());
+    DateFormat format=DateFormat('dd-MMMM-yyyy');
+
+
+    DateTime? heelo=format.parse(time);
+    DateTime? heelo1=format.parse(data[2]);
+     print("here is dat -> ${time} ${heelo.difference(heelo1).inDays} -> -> }");
+     if(heelo.difference(heelo1).inDays>=0){
+        print("Ïnside if");
+        await TarReportInformation().transferCasesUpTheMonth(category: "", subcategory: "", docName: "");
+        await TarReportInformation().transferCasesYear(category: "", subcategory: "", docName: "");
+
+     }
+     else{
+       await TarReportInformation().transferCasesUpTheMonth(category: "", subcategory: "", docName: "");
+     }
+      
+     }
   }
 }
 

@@ -38,13 +38,14 @@ class GeneralPurposeProvider extends ChangeNotifier{
     notifyListeners();
   }
   
-  void getFinancialData()async{
+  Future<List<String>> getFinancialData()async{
     var res =  await  FinancialYear().getFinancialData();
     print(res['res']);
      if(res['res']=="success"){
-       updateFinancialVars(res['data']['current month'],  res['data']['financial year start date'], res['data']['financial year end date']);
+       return [res['data']['current month'],  res['data']['financial year start date'], res['data']['financial year end date']];
      
      }
+     return [];
   }
 
   void updateFinancialVars(String currentMonth,String startDate ,String endDate){
