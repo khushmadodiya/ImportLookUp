@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.dart';
 import 'package:import_lookup/Backend-New/financial-year.dart';
 import 'package:import_lookup/Backend-New/tar-report.dart';
@@ -189,7 +190,9 @@ class _RevenueTableState extends State<RevenueTable> {
                                                   (DateFormat("MMMM")
                                                       .format(DateTime.now()))
                                               ? _shiftData
-                                              : null,
+                                              : (){
+                                            Fluttertoast.showToast(msg: "Already shifted",timeInSecForIosWeb: 3);
+                                          },
                                         ),
                                         InkWell(
                                           child: Padding(
@@ -876,10 +879,12 @@ class _RevenueTableState extends State<RevenueTable> {
             category: "", subcategory: "", docName: "");
         await TarReportInformation()
             .transferCasesYear(category: "", subcategory: "", docName: "");
+        Fluttertoast.showToast(msg: "Updated financial year",timeInSecForIosWeb: 3);
       } else {
         print('Shift uptothemonth');
         var res = await TarReportInformation().transferCasesUpTheMonth(
             category: "", subcategory: "", docName: "");
+        Fluttertoast.showToast(msg: "Updated upto the month",timeInSecForIosWeb: 3);
         print("this is khush${res['res']}");
       }
     }

@@ -123,26 +123,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
 
     ];
-    return Consumer<AddNewCase>(
-      builder: (context,pro,child) {
-        return Scaffold(
-          // appBar: AppBar(
-          //   actions: [
-          //     IconButton(onPressed: ()async{
-          //       var res = await Authentication().logOut();
-          //       if(res=='success'){
-          //         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>LoginPage()), (route) => false);
-          //       }
-          //     }, icon: Icon(Icons.logout))
-          //   ],
-          // ),
-          drawer: isNarrowScreen ? _buildDrawer() : null,
-          body: _widgetOptions.elementAt(_selectedIndex),
-          bottomNavigationBar: isNarrowScreen ? null : _buildBottomBar(),
-        );
-
-
-      }
+    return PopScope(
+      canPop: false,
+      child: Consumer<AddNewCase>(
+        builder: (context,pro,child) {
+          return Scaffold(
+            // appBar: AppBar(
+            //   actions: [
+            //     IconButton(onPressed: ()async{
+            //       var res = await Authentication().logOut();
+            //       if(res=='success'){
+            //         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>LoginPage()), (route) => false);
+            //       }
+            //     }, icon: Icon(Icons.logout))
+            //   ],
+            // ),
+            drawer: isNarrowScreen ? _buildDrawer() : null,
+            body: _widgetOptions.elementAt(_selectedIndex),
+            bottomNavigationBar: isNarrowScreen ? null : _buildBottomBar(),
+          );
+      
+      
+        }
+      ),
     );
   }
 
