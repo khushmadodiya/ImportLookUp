@@ -195,6 +195,7 @@ class TarReportInformation {
         .get();
 
     if (snp.exists) {
+      print("by by i am $category $subcategory");
       DocumentReference ref = firebaseFirestore
           .collection("MP")
           .doc(category)
@@ -207,8 +208,9 @@ class TarReportInformation {
           numberOfClosingCases: 0,
           numberOfOpeningCases:
               model.numberOfOpeningCases + model.numberOfClosingCases);
-      batch.update(ref, snp.data() as Map<String, dynamic>);
+      batch.update(ref, model.toJson());
     }
+    print("by by i am doem");
   }
 
   //transfer case in up to the month
@@ -220,21 +222,25 @@ class TarReportInformation {
   }) async {
     try {
       WriteBatch batch = firebaseFirestore.batch();
-      
-      // await FinancialYear().financialYear(currentMonth:DateFormat('MMMM').format(DateTime.now()));
 
+      await FinancialYear().financialYear(
+          currentMonth: DateFormat('MMMM').format(DateTime.now()));
+      // print("here the data is ${res["res"]}");
       for (int i = 0; i < CATEGORY.length; i++) {
-
         category = CATEGORY[i];
+        // print("i am testing heer 0 $i");
         for (int j = 0; j < SUBCATEGORY[CATEGORY[i]]!.length; j++) {
           subcategory = SUBCATEGORY[category]![j];
-
+          // print("i am testing heer 1 $j");
           for (int k = 0; k < DOCNAME.length; k++) {
-
-            // if(k==0){
-            //   tocUpdate(batch: batch, category: category, subcategory: subcategory);
-            // }
+            // print("i am testing heer 2 $k");
+            if (k == 0) {
+              await tocUpdate(
+                  batch: batch, category: category, subcategory: subcategory);
+            }
+            // print("i am testing heer 22 $k");
             docName = DOCNAME[k];
+            // print("i am testing heer 2 $k");
             DocumentSnapshot docsnap = await firebaseFirestore
                 .collection("MP")
                 .doc(category)
@@ -243,16 +249,16 @@ class TarReportInformation {
                 .get();
 
             if (docsnap.exists) {
-              Map<String, dynamic> data =
-                  docsnap.data() as Map<String, dynamic>;
+              TarReportModel data = TarReportModel.fromJson(
+                  docsnap.data() as Map<String, dynamic>);
               TarReportModel model = TarReportModel(
                 amountOfTheMonth: 0,
                 amountUpTotheMonth:
-                    data["amountOfTheMonth"] + data["amountUpToTheMonth"],
+                    data.amountOfTheMonth + data.amountUpTotheMonth,
                 noOfCasesOfTheMonth: 0,
                 noOfCasesUpToTheMonth:
-                    data["noOfCasesUpToTheMonth"] + data["noOfCasesOfTheMonth"],
-                openingBalance: data["openingBalance"] + data["closingBalance"],
+                    data.noOfCasesUpToTheMonth + data.noOfCasesOfTheMonth,
+                openingBalance: data.openingBalance + data.closingBalance,
                 closingBalance: 0,
               );
 
@@ -272,6 +278,7 @@ class TarReportInformation {
       }
 
       // Commit the batch after all updates are added
+      // print("i ma here to commit ");
       await batch.commit();
       return {"res": "success"};
     } catch (e) {
@@ -287,14 +294,19 @@ class TarReportInformation {
   }) async {
     try {
       WriteBatch batch = firebaseFirestore.batch();
-      tocUpdate(batch: batch, category: category, subcategory: subcategory);
-      await FinancialYear().financialYear(currentMonth:DateFormat('MMMM').format(DateTime.now()));
+
+      await FinancialYear().financialYear(
+          currentMonth: DateFormat('MMMM').format(DateTime.now()));
 
       for (int i = 0; i < CATEGORY.length; i++) {
         category = CATEGORY[i];
         for (int j = 0; j < SUBCATEGORY[CATEGORY[i]]!.length; j++) {
           subcategory = SUBCATEGORY[category]![j];
           for (int k = 0; k < DOCNAME.length; k++) {
+            // if (k == 0) {
+            //   tocUpdate(
+            //       batch: batch, category: category, subcategory: subcategory);
+            // }
             docName = DOCNAME[k];
             DocumentSnapshot docsnap = await firebaseFirestore
                 .collection("MP")
@@ -473,7 +485,7 @@ class TarReportInformation {
             .collection(SUBCATEGORY["arrear in litigation"]![i])
             .get();
         for (var data in snap2.docs) {
-          print("Data is here: ${data.id}");
+          // print("Data is here: ${data.id}");
 
           allData[SUBCATEGORY["arrear in litigation"]![i] + data.id] =
               TarReportModel.fromJson(data.data() as Map<String, dynamic>);

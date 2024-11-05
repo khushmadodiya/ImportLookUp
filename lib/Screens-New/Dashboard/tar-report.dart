@@ -27,7 +27,7 @@ class RevenueTable extends StatefulWidget {
 class _RevenueTableState extends State<RevenueTable> {
   final ScrollController horizontalController = ScrollController();
   final ScrollController verticalController = ScrollController();
-  List<List<String>> excelData=[];
+  List<List<String>> excelData = [];
   double sliderValue = 0;
   String? month;
 
@@ -48,11 +48,10 @@ class _RevenueTableState extends State<RevenueTable> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if(!isloaded){
+    if (!isloaded) {
       getData();
       isloaded = true;
     }
-
   }
 
   @override
@@ -92,6 +91,7 @@ class _RevenueTableState extends State<RevenueTable> {
         }
       }
     }
+
     String _toStringOrDefault(dynamic value, [String defaultValue = '0']) {
       return value?.toString() ?? defaultValue;
     }
@@ -99,9 +99,8 @@ class _RevenueTableState extends State<RevenueTable> {
     return SafeArea(
       child: Consumer<AddNewCase>(
         builder: (context, pro, child) {
-      
           // if(pro.allTocdata.isNotEmpty)
-           {
+          {
             return Focus(
               autofocus: true,
               skipTraversal: true,
@@ -135,58 +134,86 @@ class _RevenueTableState extends State<RevenueTable> {
                                   // if(pro.writeOffCompleteData.isNotEmpty)
                                   Container(
                                     height: 50,
-                                    width: MediaQuery
-                                        .of(context)
-                                        .size
-                                        .width,
+                                    width: MediaQuery.of(context).size.width,
                                     child: Row(
-      
                                       children: [
-                                     if(pro.writeOffCompleteData.isNotEmpty)InkWell(
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 8.0),
-                                            child: Container(
-                                              height: 40,
-                                              width: MediaQuery.of(context).size.width>600?140:100,
-                                              color: Colors.amber.withOpacity(
-                                                  0.3),
-                                              child: const Center(
-                                                  child: Text("Download Excel")),
+                                        if (pro.writeOffCompleteData.isNotEmpty)
+                                          InkWell(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 8.0),
+                                              child: Container(
+                                                height: 40,
+                                                width: MediaQuery.of(context)
+                                                            .size
+                                                            .width >
+                                                        600
+                                                    ? 140
+                                                    : 100,
+                                                color: Colors.amber
+                                                    .withOpacity(0.3),
+                                                child: const Center(
+                                                    child:
+                                                        Text("Download Excel")),
+                                              ),
                                             ),
+                                            onTap: () {
+                                              print(
+                                                  'this is excel${excelData![0][0]}');
+                                              List<List<String>> data =
+                                                  removeDuplicates(excelData);
+                                              ExcelDonwloadOption()
+                                                  .downloadExcelForTar(
+                                                      data, 'OIO DETAILS');
+                                            },
                                           ),
-                                          onTap: () {
-                                            print('this is excel${excelData![0][0]}');
-                                            List<List<String>> data =removeDuplicates(excelData);
-                                            ExcelDonwloadOption().downloadExcelForTar(data, 'OIO DETAILS');
-                                          },
-                                        ),
                                         InkWell(
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Container(
                                               height: 40,
-                                              width: MediaQuery.of(context).size.width>600?140:100,
-                                              color: Colors.amber.withOpacity(
-                                                  0.3),
-                                              child:  Center(
+                                              width: MediaQuery.of(context)
+                                                          .size
+                                                          .width >
+                                                      600
+                                                  ? 140
+                                                  : 100,
+                                              color:
+                                                  Colors.amber.withOpacity(0.3),
+                                              child: Center(
                                                   child: Text("Shift Data")),
                                             ),
                                           ),
-                                            onTap: month != (DateFormat("MMMM").format(DateTime.now()))? _shiftData:null,
-
-
+                                          onTap: month !=
+                                                  (DateFormat("MMMM")
+                                                      .format(DateTime.now()))
+                                              ? _shiftData
+                                              : null,
                                         ),
                                         InkWell(
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Container(
                                               height: 40,
-                                              width: MediaQuery.of(context).size.width>600?140:80,
-                                              color: Colors.amber.withOpacity(
-                                                  0.3),
-                                              child:  Center(
-                                                  child: pro.tarLoader? Container(width:25,height: 25,child: CircularProgressIndicator(strokeWidth: 3,)):Text("Refresh")),
+                                              width: MediaQuery.of(context)
+                                                          .size
+                                                          .width >
+                                                      600
+                                                  ? 140
+                                                  : 80,
+                                              color:
+                                                  Colors.amber.withOpacity(0.3),
+                                              child: Center(
+                                                  child: pro.tarLoader
+                                                      ? Container(
+                                                          width: 25,
+                                                          height: 25,
+                                                          child:
+                                                              CircularProgressIndicator(
+                                                            strokeWidth: 3,
+                                                          ))
+                                                      : Text("Refresh")),
                                             ),
                                           ),
                                           onTap: () {
@@ -194,55 +221,151 @@ class _RevenueTableState extends State<RevenueTable> {
                                           },
                                         ),
                                         IconButton(
-                                          padding: EdgeInsets.zero,
+                                            padding: EdgeInsets.zero,
                                             onPressed: () {
                                               AuthMethods().signOut(context);
-                                              Navigator.push(context,
+                                              Navigator.push(
+                                                  context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
                                                           LoginPage()));
                                             },
                                             icon: Icon(Icons.logout))
-      
                                       ],
                                     ),
                                   ),
-                                  if(pro.litigationCompleteData.isNotEmpty)
+                                  if (pro.litigationCompleteData.isNotEmpty)
                                     _buildCustomTable('Litigation', [
-                                     row(pro.litigationCompleteData,pro.arrearTocLitgation,0,0, 'Supreme Court cases', 1),
-                                     row(pro.litigationCompleteData,pro.arrearTocLitgation,6,1,"High Court",2),
-                                     row(pro.litigationCompleteData,pro.arrearTocLitgation,12,2,"CESTAT",3),
-                                     row(pro.litigationCompleteData,pro.arrearTocLitgation,18,3,"Comm. Appeal",4),]),
-                                  SizedBox(height: 15,),
-                                  if(pro.restrainedCompleteData.isNotEmpty)
-                                    _buildCustomTable('Restrained', [
-                                      row(pro.restrainedCompleteData,pro.arrearTocRestrained,0,0,"OL Cases",1),
-                                      row(pro.restrainedCompleteData,pro.arrearTocRestrained,6,1,"DRT Cases",2),
-                                      row(pro.restrainedCompleteData,pro.arrearTocRestrained,12,2,"BIFR Cases",3),
-                                      row(pro.restrainedCompleteData,pro.arrearTocRestrained,18,3,"NCLT Cases",4),
+                                      row(
+                                          pro.litigationCompleteData,
+                                          pro.arrearTocLitgation,
+                                          0,
+                                          0,
+                                          'Supreme Court cases',
+                                          1),
+                                      row(
+                                          pro.litigationCompleteData,
+                                          pro.arrearTocLitgation,
+                                          6,
+                                          1,
+                                          "High Court",
+                                          2),
+                                      row(
+                                          pro.litigationCompleteData,
+                                          pro.arrearTocLitgation,
+                                          12,
+                                          2,
+                                          "CESTAT",
+                                          3),
+                                      row(
+                                          pro.litigationCompleteData,
+                                          pro.arrearTocLitgation,
+                                          18,
+                                          3,
+                                          "Comm. Appeal",
+                                          4),
                                     ]),
-                                  SizedBox(height: 15,),
-                                  if(pro.apealPeiodNotOverCompleteData.isNotEmpty)
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  if (pro.restrainedCompleteData.isNotEmpty)
+                                    _buildCustomTable('Restrained', [
+                                      row(
+                                          pro.restrainedCompleteData,
+                                          pro.arrearTocRestrained,
+                                          0,
+                                          0,
+                                          "OL Cases",
+                                          1),
+                                      row(
+                                          pro.restrainedCompleteData,
+                                          pro.arrearTocRestrained,
+                                          6,
+                                          1,
+                                          "DRT Cases",
+                                          2),
+                                      row(
+                                          pro.restrainedCompleteData,
+                                          pro.arrearTocRestrained,
+                                          12,
+                                          2,
+                                          "BIFR Cases",
+                                          3),
+                                      row(
+                                          pro.restrainedCompleteData,
+                                          pro.arrearTocRestrained,
+                                          18,
+                                          3,
+                                          "NCLT Cases",
+                                          4),
+                                    ]),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  if (pro
+                                      .apealPeiodNotOverCompleteData.isNotEmpty)
                                     _buildCustomTable(
                                         "Where Appeal Period not Over", [
-                                          row(pro.apealPeiodNotOverCompleteData,[pro.arrearTocWhereApealPeriodNotOver],0,0,"Appeal Period not over",1),
+                                      row(
+                                          pro.apealPeiodNotOverCompleteData,
+                                          [
+                                            pro.arrearTocWhereApealPeriodNotOver
+                                          ],
+                                          0,
+                                          0,
+                                          "Appeal Period not over",
+                                          1),
                                     ]),
-                                  SizedBox(height: 15,),
-                                  if(pro.recoverableCompleteData.isNotEmpty)
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  if (pro.recoverableCompleteData.isNotEmpty)
                                     _buildCustomTable('Recoverable', [
-                                      row(pro.recoverableCompleteData, pro.arrearTocRecoverable, 0, 0, 'appeal period over but no appeal field', 1),
-                                      row(pro.recoverableCompleteData, pro.arrearTocRecoverable, 6, 1, 'settlement commision cases', 2),
-                                      row(pro.recoverableCompleteData, pro.arrearTocRecoverable, 12, 2,'arrear under section 11', 3),
-                                      row(pro.recoverableCompleteData, pro.arrearTocRecoverable, 18, 3,'arrear under section 142', 4),
-      
+                                      row(
+                                          pro.recoverableCompleteData,
+                                          pro.arrearTocRecoverable,
+                                          0,
+                                          0,
+                                          'appeal period over but no appeal field',
+                                          1),
+                                      row(
+                                          pro.recoverableCompleteData,
+                                          pro.arrearTocRecoverable,
+                                          6,
+                                          1,
+                                          'settlement commision cases',
+                                          2),
+                                      row(
+                                          pro.recoverableCompleteData,
+                                          pro.arrearTocRecoverable,
+                                          12,
+                                          2,
+                                          'arrear under section 11',
+                                          3),
+                                      row(
+                                          pro.recoverableCompleteData,
+                                          pro.arrearTocRecoverable,
+                                          18,
+                                          3,
+                                          'arrear under section 142',
+                                          4),
                                     ]),
-                                  SizedBox(height: 15,),
-                                  if(pro.writeOffCompleteData.isNotEmpty)
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  if (pro.writeOffCompleteData.isNotEmpty)
                                     _buildCustomTable('Writer off', [
-                                      row(pro.writeOffCompleteData, [pro.arrearTocPendingForWirteOff], 0, 0, "Write Off", 1),
-      
+                                      row(
+                                          pro.writeOffCompleteData,
+                                          [pro.arrearTocPendingForWirteOff],
+                                          0,
+                                          0,
+                                          "Write Off",
+                                          1),
                                     ]),
-                                  SizedBox(height: 30,),
+                                  SizedBox(
+                                    height: 30,
+                                  ),
                                 ],
                               ),
                             ),
@@ -256,7 +379,9 @@ class _RevenueTableState extends State<RevenueTable> {
               ),
             );
           }
-          return Center(child: CircularProgressIndicator(),);
+          return Center(
+            child: CircularProgressIndicator(),
+          );
         },
       ),
     );
@@ -415,7 +540,8 @@ class _RevenueTableState extends State<RevenueTable> {
         children: [
           Text(text,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+              style:
+                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
           Table(
             border: TableBorder.all(),
             children: [
@@ -434,10 +560,10 @@ class _RevenueTableState extends State<RevenueTable> {
                                 return TableCell(
                                   child: Center(
                                       child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(subSubCol,
-                                            textAlign: TextAlign.center),
-                                      )),
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(subSubCol,
+                                        textAlign: TextAlign.center),
+                                  )),
                                 );
                               }).toList(),
                             ),
@@ -455,44 +581,44 @@ class _RevenueTableState extends State<RevenueTable> {
     );
   }
 
-   row(List<TarReportModel?>data,List<TocModel>data2, int index,int index2,String title,int no){
-
-    return   _buildDataRow(
+  row(List<TarReportModel?> data, List<TocModel> data2, int index, int index2,
+      String title, int no) {
+    return _buildDataRow(
       no.toString(),
       title,
-     data2[index2].numberOfOpeningCases.toString(),
+      data2[index2].numberOfOpeningCases.toString(),
       data2[index2].openingBalance.toString(),
       data[index]!.noOfCasesOfTheMonth.toString(),
       data[index]!.noOfCasesUpToTheMonth.toString(),
-     data[index]!.amountOfTheMonth.toString(),
+      data[index]!.amountOfTheMonth.toString(),
       data[index]!.amountUpTotheMonth.toString(),
-      (data2[index2].numberOfOpeningCases + data[index]!.noOfCasesOfTheMonth).toString(),
+      (data2[index2].numberOfOpeningCases + data[index]!.noOfCasesOfTheMonth)
+          .toString(),
       (data2[index2].openingBalance + data[index]!.amountOfTheMonth).toString(),
-      data[index+1]!.noOfCasesOfTheMonth.toString(),
-      data[index+1]!.noOfCasesUpToTheMonth.toString(),
-      data[index+1]!.amountOfTheMonth.toString(),
-      data[index+1]!.amountUpTotheMonth.toString(),
-      data[index+2]!.noOfCasesOfTheMonth.toString(),
-      data[index+2]!.noOfCasesUpToTheMonth.toString() ,
-      data[index+2]!.amountOfTheMonth.toString(),
-      data[index+2]!.amountUpTotheMonth.toString() ,
-      data[index+3]!.noOfCasesOfTheMonth.toString(),
-      data[index+3]!.noOfCasesUpToTheMonth.toString(),
-      data[index+3]!.amountOfTheMonth.toString(),
-      data[index+3]!.amountUpTotheMonth.toString(),
-      data[index+4]!.noOfCasesOfTheMonth.toString(),
-      data[index+4]!.noOfCasesUpToTheMonth.toString(),
-      data[index+4]!.amountOfTheMonth.toString(),
-      data[index+4]!.amountUpTotheMonth.toString(),
-      data[index+5]!.noOfCasesOfTheMonth.toString(),
-      data[index+5]!.noOfCasesUpToTheMonth.toString() ,
-      data[index+5]!.amountOfTheMonth.toString(),
-      data[index+5]!.amountUpTotheMonth.toString(),
+      data[index + 1]!.noOfCasesOfTheMonth.toString(),
+      data[index + 1]!.noOfCasesUpToTheMonth.toString(),
+      data[index + 1]!.amountOfTheMonth.toString(),
+      data[index + 1]!.amountUpTotheMonth.toString(),
+      data[index + 2]!.noOfCasesOfTheMonth.toString(),
+      data[index + 2]!.noOfCasesUpToTheMonth.toString(),
+      data[index + 2]!.amountOfTheMonth.toString(),
+      data[index + 2]!.amountUpTotheMonth.toString(),
+      data[index + 3]!.noOfCasesOfTheMonth.toString(),
+      data[index + 3]!.noOfCasesUpToTheMonth.toString(),
+      data[index + 3]!.amountOfTheMonth.toString(),
+      data[index + 3]!.amountUpTotheMonth.toString(),
+      data[index + 4]!.noOfCasesOfTheMonth.toString(),
+      data[index + 4]!.noOfCasesUpToTheMonth.toString(),
+      data[index + 4]!.amountOfTheMonth.toString(),
+      data[index + 4]!.amountUpTotheMonth.toString(),
+      data[index + 5]!.noOfCasesOfTheMonth.toString(),
+      data[index + 5]!.noOfCasesUpToTheMonth.toString(),
+      data[index + 5]!.amountOfTheMonth.toString(),
+      data[index + 5]!.amountUpTotheMonth.toString(),
       data2[index2].numberOfClosingCases.toString(),
       data2[index2].closingBalance.toString(),
     );
   }
-
 
   TableRow _buildDataRow(
       String slNo,
@@ -528,37 +654,38 @@ class _RevenueTableState extends State<RevenueTable> {
       String closingBalanceNo,
       String closingBalanceAMt) {
     excelData.add([
-       arrearsUnderLitigation,
-       openingBalanceNo,
-       openingBalanceAmt,
-       receiptsNoDuringMonth,
-       receiptsNoUptoMonth,
-       receiptsAmtDuringMonth,
-       receiptsAmtUptoTheMonth,
-       totalNo,
-       totalAmt,
-       decidedInFavorNoDuringMonth,
-       decidedInFavorNoUptoMonth,
-       decidedInFavorAmtDuringMonth,
-       decidedInFavorAmtUptoMonth,
-       decidedAgainstFavorNoDuringMonth,
-       decidedAgainstFavorNoUptoMonth,
-       decidedAgainstFavorAmtDuringMonth,
-       decidedAgainstFavorAmtUptoMonth,
-       orderOfDenovoFavorNoDuringMonth,
-       orderOfDenovoFavorNoUptoMonth,
-       orderOfDenovoFavorAmtDuringMonth,
-       orderOfDenovoFavorAmtUptoMonth,
-       transferredAnotherFormationFavorNoDuringMonth,
-       transferredAnotherFormationFavorNoUptoMonth,
-       transferredAnotherFormationFavorAmtDuringMonth,
-       transferredAnotherFormationFavorAmtUptoMonth,
-       arrearsRealisedNoofcasesOftheMonth,
-       arrearsRealisedNoofcasesuptotheMonth,
-       arrearsRealisedAmtofcasesoftheMonth,
-       arrearsRealisedAmtofcasesuptotheMonth,
-       closingBalanceNo,
-       closingBalanceAMt]);
+      arrearsUnderLitigation,
+      openingBalanceNo,
+      openingBalanceAmt,
+      receiptsNoDuringMonth,
+      receiptsNoUptoMonth,
+      receiptsAmtDuringMonth,
+      receiptsAmtUptoTheMonth,
+      totalNo,
+      totalAmt,
+      decidedInFavorNoDuringMonth,
+      decidedInFavorNoUptoMonth,
+      decidedInFavorAmtDuringMonth,
+      decidedInFavorAmtUptoMonth,
+      decidedAgainstFavorNoDuringMonth,
+      decidedAgainstFavorNoUptoMonth,
+      decidedAgainstFavorAmtDuringMonth,
+      decidedAgainstFavorAmtUptoMonth,
+      orderOfDenovoFavorNoDuringMonth,
+      orderOfDenovoFavorNoUptoMonth,
+      orderOfDenovoFavorAmtDuringMonth,
+      orderOfDenovoFavorAmtUptoMonth,
+      transferredAnotherFormationFavorNoDuringMonth,
+      transferredAnotherFormationFavorNoUptoMonth,
+      transferredAnotherFormationFavorAmtDuringMonth,
+      transferredAnotherFormationFavorAmtUptoMonth,
+      arrearsRealisedNoofcasesOftheMonth,
+      arrearsRealisedNoofcasesuptotheMonth,
+      arrearsRealisedAmtofcasesoftheMonth,
+      arrearsRealisedAmtofcasesuptotheMonth,
+      closingBalanceNo,
+      closingBalanceAMt
+    ]);
     return TableRow(
       children: [
         _buildDataCell(slNo),
@@ -704,58 +831,58 @@ class _RevenueTableState extends State<RevenueTable> {
   }
 
   getData() async {
-   WidgetsBinding.instance.addPostFrameCallback((_)async{
-     var pro = Provider.of<AddNewCase>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      var pro = Provider.of<AddNewCase>(context, listen: false);
 
-     GeneralPurposeProvider generalPurposeProvider= Provider.of<GeneralPurposeProvider>(context,listen: false);
-     pro.updateTarLoader();
+      GeneralPurposeProvider generalPurposeProvider =
+          Provider.of<GeneralPurposeProvider>(context, listen: false);
+      pro.updateTarLoader();
 
-     List<String>data = await generalPurposeProvider.getFinancialData();
-     month = data[0];
+      List<String> data = await generalPurposeProvider.getFinancialData();
+      month = data[0];
 
-     await pro.getAllSubcategoryTocdata();
-     await pro.tarArrearLitigation();
-     await pro.tarRestrainded();
-     await pro.tarAppealPeriodNotOver();
-     await pro.tarRecoverable();
-     await pro.tarWriteOff();
-     pro.updateTarLoader();
-     print('hellooerfe');
-     print({
-       'hello i am dipu loda ${pro.litigationCompleteData[0]!.amountOfTheMonth}'
-     });
-
-   });
+      await pro.getAllSubcategoryTocdata();
+      await pro.tarArrearLitigation();
+      await pro.tarRestrainded();
+      await pro.tarAppealPeriodNotOver();
+      await pro.tarRecoverable();
+      await pro.tarWriteOff();
+      pro.updateTarLoader();
+      //  print('hellooerfe');
+      //  print({
+      //  'hello i am dipu loda ${pro.litigationCompleteData[0]!.amountOfTheMonth}'
+      //  });
+    });
   }
-  
-  void _shiftData()async{
-   GeneralPurposeProvider pro= Provider.of<GeneralPurposeProvider>(context,listen: false);
-   List<String>data = await pro.getFinancialData();
-   print(data[0]);
-     if(data[0]!= DateFormat("MMMM").format(DateTime.now())){
 
+  void _shiftData() async {
+    GeneralPurposeProvider pro =
+        Provider.of<GeneralPurposeProvider>(context, listen: false);
+    List<String> data = await pro.getFinancialData();
+    print(data[0]);
+    if (data[0] != DateFormat("MMMM").format(DateTime.now())) {
       print("the month is not equal");
 
-   String time=DateFormat('dd-MMMM-yyyy').format(DateTime.now());
-    DateFormat format=DateFormat('dd-MMMM-yyyy');
+      String time = DateFormat('dd-MMMM-yyyy').format(DateTime.now());
+      DateFormat format = DateFormat('dd-MMMM-yyyy');
 
-
-    DateTime? heelo=format.parse(time);
-    DateTime? heelo1=format.parse(data[2]);
-     print("here is dat -> ${time} ${heelo.difference(heelo1).inDays} -> -> }");
-     if(heelo.difference(heelo1).inDays>=0){
+      DateTime? heelo = format.parse(time);
+      DateTime? heelo1 = format.parse(data[2]);
+      print(
+          "here is dat -> ${time} ${heelo.difference(heelo1).inDays} -> -> }");
+      if (heelo.difference(heelo1).inDays >= 0) {
         print("Ïnside if");
-        await TarReportInformation().transferCasesUpTheMonth(category: "", subcategory: "", docName: "");
-        await TarReportInformation().transferCasesYear(category: "", subcategory: "", docName: "");
-
-     }
-     else{
-       print('Shift uptothemonth');
-     var res =   await TarReportInformation().transferCasesUpTheMonth(category: "", subcategory: "", docName: "");
-     print("this is khush${res['res']}");
-     }
-      
-     }
+        await TarReportInformation().transferCasesUpTheMonth(
+            category: "", subcategory: "", docName: "");
+        await TarReportInformation()
+            .transferCasesYear(category: "", subcategory: "", docName: "");
+      } else {
+        print('Shift uptothemonth');
+        var res = await TarReportInformation().transferCasesUpTheMonth(
+            category: "", subcategory: "", docName: "");
+        print("this is khush${res['res']}");
+      }
+    }
   }
 }
 
