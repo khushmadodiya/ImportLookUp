@@ -7,7 +7,9 @@ import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.
 import 'package:import_lookup/Model-New/main-case-model.dart';
 import 'package:import_lookup/Model-New/tar-model.dart';
 import 'package:import_lookup/Provider-New/add-new-cases.dart';
+import 'package:import_lookup/Provider-New/general-pusrpose.dart';
 import 'package:provider/provider.dart';
+import 'package:universal_html/html.dart';
 import '../../Backend/authmethos.dart';
 import '../../excael-download-option.dart';
 import '../Auth-Screens/login-screen.dart';
@@ -94,7 +96,8 @@ class _RevenueTableState extends State<RevenueTable> {
       child: Consumer<AddNewCase>(
         builder: (context, pro, child) {
       
-          if(pro.allTocdata.isNotEmpty) {
+          // if(pro.allTocdata.isNotEmpty)
+           {
             return Focus(
               autofocus: true,
               skipTraversal: true,
@@ -163,11 +166,12 @@ class _RevenueTableState extends State<RevenueTable> {
                                               color: Colors.amber.withOpacity(
                                                   0.3),
                                               child:  Center(
-                                                  child: Text("Financial Year")),
+                                                  child: Text("Shift Data")),
                                             ),
                                           ),
                                           onTap: () {
-
+                                                _shiftData();
+                                                
                                           },
                                         ),
                                         InkWell(
@@ -713,6 +717,13 @@ class _RevenueTableState extends State<RevenueTable> {
      });
 
    });
+  }
+  
+  void _shiftData()async{
+   GeneralPurposeProvider pro= Provider.of<GeneralPurposeProvider>(context,listen: false);
+   pro.getFinancialData();
+   print("this is khush${pro.startDate}");
+    // if(pro){ print(pro);}
   }
 }
 

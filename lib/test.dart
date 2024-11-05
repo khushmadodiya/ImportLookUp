@@ -5,6 +5,8 @@ import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.
 import 'package:import_lookup/Backend-New/main-cases-details.dart';
 import 'package:import_lookup/Backend-New/tar-report.dart';
 import 'package:import_lookup/Model-New/tar-model.dart';
+import 'package:import_lookup/Provider-New/general-pusrpose.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import 'Backend-New/financial-year.dart';
@@ -21,6 +23,7 @@ class _TestState extends State<Test> {
     // TODO: implement initState
     super.initState();
     getData();
+    print("heelo i am ${DateFormat('MMMM').format(DateTime.now())}");
   }
 
   // void getData() async {
@@ -62,15 +65,22 @@ class _TestState extends State<Test> {
   getData() async {
     // 576e15e0-936f-11ef-8d76-83920643c546
     // var res = (await TarReportInformation().TocReport());
-    var res = await MainCasesInformation().deleteMainCase(
-        formation: 'Air Cargo Complex Indore',
-        uid: '576e15e0-936f-11ef-8d76-83920643c546',
-        docName: 'disposal order for denovo');
-    print("nooting is here ");
+    // var res = await MainCasesInformation().deleteMainCase(
+    //     formation: 'Air Cargo Complex Indore',
+    //     uid: '576e15e0-936f-11ef-8d76-83920643c546',
+    //     docName: 'disposal order for denovo');
+    // print("nooting is here ");
+  //  await FinancialYear().financialYear(currentMonth: DateFormat('MMMM').format(DateTime.now()));
+  //  print("heeelo jnsjn");
 
     //  if(res['res']=='success'){
     //     print("this is my data ${res['data']}");
     //  }
+
+      GeneralPurposeProvider pro= Provider.of<GeneralPurposeProvider>(context,listen: false);
+      pro.getFinancialData();
+      print("hello i am khush");
+      print(pro.currentMonth);
   }
 
   @override

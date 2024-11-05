@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.dart';
+import 'package:import_lookup/Backend-New/financial-year.dart';
 import 'package:import_lookup/Model-New/tar-model.dart';
+import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 class TarReportInformation {
@@ -219,6 +221,7 @@ class TarReportInformation {
     try {
       WriteBatch batch = firebaseFirestore.batch();
       tocUpdate(batch: batch, category: category, subcategory: subcategory);
+      await FinancialYear().financialYear(currentMonth:DateFormat('MMMM').format(DateTime.now()));
 
       for (int i = 0; i < CATEGORY.length; i++) {
         category = CATEGORY[i];
@@ -279,6 +282,7 @@ class TarReportInformation {
     try {
       WriteBatch batch = firebaseFirestore.batch();
       tocUpdate(batch: batch, category: category, subcategory: subcategory);
+      await FinancialYear().financialYear(currentMonth:DateFormat('MMMM').format(DateTime.now()));
 
       for (int i = 0; i < CATEGORY.length; i++) {
         category = CATEGORY[i];

@@ -6,6 +6,23 @@ import 'package:intl/intl.dart';
 class FinancialYear {
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
+  Future getFinancialData()async{
+    try{
+        DocumentSnapshot snap =
+          await firebaseFirestore.collection("MP").doc("financial year").get();
+         if(snap.exists){
+          Map<String, dynamic> data = snap.data() as Map<String, dynamic>;
+           return {"data":data,"res":"success"};
+         }
+         else{
+           return {"res":'Some error occure'};
+         }
+    }
+    catch(e){
+      return {"res":'Some error occure'};
+    }
+  }
+
   Future<Map<String, dynamic>> financialYear({
     required String currentMonth,
     bool isUpdate = false,
@@ -42,6 +59,8 @@ class FinancialYear {
             return {"res": "some error occuured"};
           }
         }
+
+      
 
         // Check if the current date is beyond the financial year end
         DateTime financialYearEndDate =
