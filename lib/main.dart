@@ -59,16 +59,14 @@ class _MyAppState extends State<MyApp> {
             background: Colors.white),
         useMaterial3: true,
       ),
-
-     home:  Consumer<UserInformation>(
-
+      home: Consumer<UserInformation>(
         builder: (context, pro, child) => StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.active) {
               if (snapshot.hasData) {
                 // if (pro.email.isNotEmpty)
-                  return DashboardScreen(isAdmin: pro.userType == USERTYPE[0]);
+                return DashboardScreen(isAdmin: pro.userType == USERTYPE[0]);
                 return const Scaffold(
                     body: Center(child: CircularProgressIndicator()));
               } else if (snapshot.hasError) {

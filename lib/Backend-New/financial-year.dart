@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:import_lookup/Backend-New/tar-report.dart';
 import 'package:intl/intl.dart';
@@ -6,20 +5,18 @@ import 'package:intl/intl.dart';
 class FinancialYear {
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
-  Future getFinancialData()async{
-    try{
-        DocumentSnapshot snap =
+  Future getFinancialData() async {
+    try {
+      DocumentSnapshot snap =
           await firebaseFirestore.collection("MP").doc("financial year").get();
-         if(snap.exists){
-          Map<String, dynamic> data = snap.data() as Map<String, dynamic>;
-           return {"data":data,"res":"success"};
-         }
-         else{
-           return {"res":'Some error occure'};
-         }
-    }
-    catch(e){
-      return {"res":'Some error occure'};
+      if (snap.exists) {
+        Map<String, dynamic> data = snap.data() as Map<String, dynamic>;
+        return {"data": data, "res": "success"};
+      } else {
+        return {"res": 'Some error occure'};
+      }
+    } catch (e) {
+      return {"res": 'Some error occure'};
     }
   }
 
@@ -44,8 +41,7 @@ class FinancialYear {
 
         // Check if current month in Firestore matches the current month
         if (data["current month"] != currentMonth) {
-          var res = await TarReportInformation().transferCasesUpTheMonth(
-              category: '', subcategory: '', docName: '');
+          var res = {"res": "success"};
           // Update current month if it doesn't match
           if (res["res"] == "success") {
             await firebaseFirestore
@@ -59,8 +55,6 @@ class FinancialYear {
             return {"res": "some error occuured"};
           }
         }
-
-      
 
         // Check if the current date is beyond the financial year end
         DateTime financialYearEndDate =
