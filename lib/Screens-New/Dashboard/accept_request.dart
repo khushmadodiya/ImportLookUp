@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.dart';
@@ -23,6 +24,8 @@ class AcceptRequestCase extends StatefulWidget {
 
 class _AcceptRequestCaseState extends State<AcceptRequestCase> {
   ScrollController _scrollController = ScrollController();
+  final ScrollController horizontalController = ScrollController();
+  final ScrollController verticalController = ScrollController();
   int index = 0;
   List<Map<String, dynamic>> myData = [];
 
@@ -38,6 +41,36 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
 
   @override
   Widget build(BuildContext context) {
+    void _handleKeyEvent(KeyEvent event) {
+      if (event is KeyDownEvent) {
+        if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
+          verticalController.animateTo(
+            verticalController.offset - 100, // Adjust scroll amount as needed
+            duration: Duration(milliseconds: 200),
+            curve: Curves.easeInOut,
+          );
+        } else if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
+          verticalController.animateTo(
+            verticalController.offset + 100, // Adjust scroll amount as needed
+            duration: Duration(milliseconds: 200),
+            curve: Curves.easeInOut,
+          );
+        } else if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
+          horizontalController.animateTo(
+            horizontalController.offset - 300, // Adjust scroll amount as needed
+            duration: Duration(milliseconds: 200),
+            curve: Curves.easeInOut,
+          );
+        } else if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
+          horizontalController.animateTo(
+            horizontalController.offset + 300, // Adjust scroll amount as needed
+            duration: Duration(milliseconds: 200),
+            curve: Curves.easeInOut,
+          );
+        }
+      }
+    }
+
     return Consumer<UserInformation>(
       builder: (context, userInfo, child) =>
           Consumer<AddNewCase>(builder: (context, provider, child) {
@@ -55,121 +88,121 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
               ],
             ),
             // body: Text('hell0'),
-            body: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Listener(
-                      onPointerSignal: (pointerSignal) {
-                        if (pointerSignal is PointerScrollEvent) {
-                          // Horizontal scroll based on the mouse wheel's delta
-                          _scrollController.jumpTo(
-                            _scrollController.offset +
-                                pointerSignal.scrollDelta
-                                    .dy, // Use dy for vertical mouse wheel mapped to horizontal scroll
-                          );
-                        }
-                      },
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        controller: _scrollController,
-                        child: Padding(
-                          padding: const EdgeInsets.all(18.0),
-                          child: Card(
-                            elevation: 12,
-                            color: Colors.white,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Table(
-                              border: TableBorder.all(
-                                  width: 1.0, color: Colors.black),
-                              columnWidths: const {
-                                0: FixedColumnWidth(70),
-                                1: FixedColumnWidth(300),
-                                2: FixedColumnWidth(180),
-                                3: FixedColumnWidth(300),
-                                4: FixedColumnWidth(150),
-                                5: FixedColumnWidth(120),
-                                6: FixedColumnWidth(180),
-                                7: FixedColumnWidth(180),
-                                8: FixedColumnWidth(180),
-                                9: FixedColumnWidth(180),
-                                10: FixedColumnWidth(180),
-                                11: FixedColumnWidth(350),
-                                12: FixedColumnWidth(350),
-                                13: FixedColumnWidth(250),
-                                14: FixedColumnWidth(180),
-                                15: FixedColumnWidth(200),
-                                16: FixedColumnWidth(180),
-                              },
-                              children: [
-                                // Header Row
-                                _buildHeaderRow(userInfo),
-                                // Data Rows
-                                for (int i = 0;
-                                    i < provider.requestCaseData.length * 2;
-                                    i++)
-                                  if (i % 2 == 0)
-                                    _buildDataRow(provider, userInfo, i ~/ 2,
-                                        true) // First pass for index
-                                  else
-                                    _buildDataRow(provider, userInfo, i ~/ 2,
-                                        false) // Second pass for the same index
+            body: Focus(
+              autofocus: true,
+              skipTraversal: true,
+              onKeyEvent: (FocusNode node, KeyEvent event) {
+                _handleKeyEvent(event);
+                return KeyEventResult.handled;
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      controller: verticalController,
+                      child: Scrollbar(
+                        controller: horizontalController,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          controller: horizontalController,
+                          child: Padding(
+                            padding: const EdgeInsets.all(18.0),
+                            child: Card(
+                              elevation: 12,
+                              color: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: Table(
+                                border: TableBorder.all(
+                                    width: 1.0, color: Colors.black),
+                                columnWidths: const {
+                                  0: FixedColumnWidth(70),
+                                  1: FixedColumnWidth(300),
+                                  2: FixedColumnWidth(180),
+                                  3: FixedColumnWidth(300),
+                                  4: FixedColumnWidth(150),
+                                  5: FixedColumnWidth(120),
+                                  6: FixedColumnWidth(180),
+                                  7: FixedColumnWidth(180),
+                                  8: FixedColumnWidth(180),
+                                  9: FixedColumnWidth(180),
+                                  10: FixedColumnWidth(180),
+                                  11: FixedColumnWidth(350),
+                                  12: FixedColumnWidth(350),
+                                  13: FixedColumnWidth(250),
+                                  14: FixedColumnWidth(180),
+                                  15: FixedColumnWidth(200),
+                                  16: FixedColumnWidth(180),
+                                },
+                                children: [
+                                  // Header Row
+                                  _buildHeaderRow(userInfo),
+                                  // Data Rows
+                                  for (int i = 0;
+                                      i < provider.requestCaseData.length * 2;
+                                      i++)
+                                    if (i % 2 == 0)
+                                      _buildDataRow(provider, userInfo, i ~/ 2,
+                                          true) // First pass for index
+                                    else
+                                      _buildDataRow(provider, userInfo, i ~/ 2,
+                                          false) // Second pass for the same index
 
-                                // _buildDataRow(provider, userInfo, i, true)
-                              ],
+                                  // _buildDataRow(provider, userInfo, i, true)
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                if (userInfo.userType == USERTYPE[0])
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Consumer<GeneralPurposeProvider>(
-                      builder: (context, generalProvider, child) => Row(
-                        children: List.generate(
-                            FORMATION.length,
-                            (index) => Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: InkWell(
-                                    child: Container(
-                                      color:
-                                          generalProvider.selectedIndex == index
-                                              ? Colors.blue
-                                              : Colors.green,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          FORMATION[index],
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold),
+                  if (userInfo.userType == USERTYPE[0])
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Consumer<GeneralPurposeProvider>(
+                        builder: (context, generalProvider, child) => Row(
+                          children: List.generate(
+                              FORMATION.length,
+                              (index) => Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: InkWell(
+                                      child: Container(
+                                        color:
+                                            generalProvider.selectedIndex == index
+                                                ? Colors.blue
+                                                : Colors.green,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            FORMATION[index],
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold),
+                                          ),
                                         ),
                                       ),
+                                      onTap: () {
+                                        provider.updateLoader();
+                                        generalProvider
+                                            .updateSelectedIndex(index);
+                                        provider.getRequestCasesInformation(
+                                            formation: FORMATION[index],
+                                            isAdmin: false);
+                                        provider.updateLoader();
+                                      },
                                     ),
-                                    onTap: () {
-                                      provider.updateLoader();
-                                      generalProvider
-                                          .updateSelectedIndex(index);
-                                      provider.getRequestCasesInformation(
-                                          formation: FORMATION[index],
-                                          isAdmin: false);
-                                      provider.updateLoader();
-                                    },
-                                  ),
-                                )),
+                                  )),
+                        ),
                       ),
                     ),
+                  const SizedBox(
+                    height: 20,
                   ),
-                const SizedBox(
-                  height: 20,
-                ),
-              ],
+                ],
+              ),
             ),
           );
         }

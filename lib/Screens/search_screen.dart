@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:import_lookup/Model-New/main-case-model.dart';
 import 'package:import_lookup/Provider-New/add-new-cases.dart';
@@ -20,6 +22,8 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   String _searchQuery = ''; // Add a variable to store the search query
+  final ScrollController horizontalController = ScrollController();
+  final ScrollController verticalController = ScrollController();
   var asseserProvider;
   @override
   void initState() {
@@ -31,78 +35,114 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    void _handleKeyEvent(KeyEvent event) {
+      if (event is KeyDownEvent) {
+        if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
+          verticalController.animateTo(
+            verticalController.offset - 100, // Adjust scroll amount as needed
+            duration: Duration(milliseconds: 200),
+            curve: Curves.easeInOut,
+          );
+        } else if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
+          verticalController.animateTo(
+            verticalController.offset + 100, // Adjust scroll amount as needed
+            duration: Duration(milliseconds: 200),
+            curve: Curves.easeInOut,
+          );
+        } else if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
+          horizontalController.animateTo(
+            horizontalController.offset - 300, // Adjust scroll amount as needed
+            duration: Duration(milliseconds: 200),
+            curve: Curves.easeInOut,
+          );
+        } else if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
+          horizontalController.animateTo(
+            horizontalController.offset + 300, // Adjust scroll amount as needed
+            duration: Duration(milliseconds: 200),
+            curve: Curves.easeInOut,
+          );
+        }
+      }
+    }
+    return Focus(
+      autofocus: true,
+      skipTraversal: true,
+      onKeyEvent: (FocusNode node, KeyEvent event) {
+        _handleKeyEvent(event);
+        return KeyEventResult.handled;
+      },
+      child: Consumer<UserInformation>(
+        builder: (context,userInfo,child)=>
+        Consumer<AddNewCase>(
+          builder: (context,provider,child)=>
+         Scaffold(
+            appBar: AppBar(title: const Text('Search Cases')),
+            body: Column(
+              children: [
+                Container(
+                  height: 70,
+                  child: Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: TextField(
 
-    return Consumer<UserInformation>(
-      builder: (context,userInfo,child)=>
-      Consumer<AddNewCase>(
-        builder: (context,provider,child)=>
-       Scaffold(
-          appBar: AppBar(title: const Text('Search Cases')),
-          body: Column(
-            children: [
-              Container(
-                height: 70,
-                child: Padding(
-                  padding: const EdgeInsets.all(14.0),
-                  child: TextField(
-
-                    decoration: const InputDecoration(
-                      labelText: 'Search by Category',
-                      hintText: 'Enter "Supreme Court" to filter...',
-                      border: OutlineInputBorder(),
+                      decoration: const InputDecoration(
+                        labelText: 'Search by Category',
+                        hintText: 'Enter "Supreme Court" to filter...',
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          _searchQuery = value; // Update the search query when user types
+                        });
+                      },
                     ),
-                    onChanged: (value) {
-                      setState(() {
-                        _searchQuery = value; // Update the search query when user types
-                      });
-                    },
                   ),
                 ),
-              ),
-              Expanded(
-                child: _buildTable()
+                Expanded(
+                  child: _buildTable()
 
-              ),
-              if(userInfo.userType==USERTYPE[0])  SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Consumer<GeneralPurposeProvider>(
-                          builder: (context, generalProvider, child) =>
-                              Row(
-                                children: List.generate(
-                                    FORMATION.length,
-                                        (index) =>
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: InkWell(
-                                            child: Container(
-                                              color: generalProvider.selectedIndex ==
-                                                  index ? Colors.blue : Colors.green,
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  FORMATION[index],
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight: FontWeight.bold),
+                ),
+                if(userInfo.userType==USERTYPE[0])  SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Consumer<GeneralPurposeProvider>(
+                            builder: (context, generalProvider, child) =>
+                                Row(
+                                  children: List.generate(
+                                      FORMATION.length,
+                                          (index) =>
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: InkWell(
+                                              child: Container(
+                                                color: generalProvider.selectedIndex ==
+                                                    index ? Colors.blue : Colors.green,
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: Text(
+                                                    FORMATION[index],
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight: FontWeight.bold),
+                                                  ),
                                                 ),
                                               ),
+                                              onTap: () {
+                                                provider.updateLoader();
+                                                generalProvider.updateSelectedIndex(index);
+                                                provider.getMainCasesInformation(formation: FORMATION[index] , isAdmin: false);
+                                                provider.updateLoader();
+
+                                              },
                                             ),
-                                            onTap: () {
-                                              provider.updateLoader();
-                                              generalProvider.updateSelectedIndex(index);
-                                              provider.getMainCasesInformation(formation: FORMATION[index] , isAdmin: false);
-                                              provider.updateLoader();
-        
-                                            },
-                                          ),
-                                        )),
-                              ),
+                                          )),
+                                ),
+                          ),
                         ),
-                      ),
-                      // const SizedBox(
-                      //   height: 20,
-                      // ),
-            ],
+                        // const SizedBox(
+                        //   height: 20,
+                        // ),
+              ],
+            ),
           ),
         ),
       ),
@@ -195,39 +235,44 @@ return  SingleChildScrollView(
       ),
       SingleChildScrollView(
       scrollDirection: Axis.vertical,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Padding(
-          padding: const EdgeInsets.all(18.0),
-          child: Table(
-            border: TableBorder.all(width: 1.0, color: Colors.black),
-            columnWidths: const {
-              0: FixedColumnWidth(70),
-              1: FixedColumnWidth(300),
-              2:FixedColumnWidth(300),
-              3:FixedColumnWidth(180),
-              4: FixedColumnWidth(180),
-              5: FixedColumnWidth(300),
-              6: FixedColumnWidth(150),
-              7: FixedColumnWidth(120),
-              8: FixedColumnWidth(180),
-              9: FixedColumnWidth(180),
-              10: FixedColumnWidth(180),
-              11: FixedColumnWidth(180),
-              12: FixedColumnWidth(180),
-              13: FixedColumnWidth(350),
-              14: FixedColumnWidth(350),
-              15: FixedColumnWidth(250),
-              16: FixedColumnWidth(200),
-              17: FixedColumnWidth(180),
+      controller: verticalController,
+      child: Scrollbar(
+        controller: horizontalController,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          controller: horizontalController,
+          child: Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: Table(
+              border: TableBorder.all(width: 1.0, color: Colors.black),
+              columnWidths: const {
+                0: FixedColumnWidth(70),
+                1: FixedColumnWidth(300),
+                2:FixedColumnWidth(300),
+                3:FixedColumnWidth(180),
+                4: FixedColumnWidth(180),
+                5: FixedColumnWidth(300),
+                6: FixedColumnWidth(150),
+                7: FixedColumnWidth(120),
+                8: FixedColumnWidth(180),
+                9: FixedColumnWidth(180),
+                10: FixedColumnWidth(180),
+                11: FixedColumnWidth(180),
+                12: FixedColumnWidth(180),
+                13: FixedColumnWidth(350),
+                14: FixedColumnWidth(350),
+                15: FixedColumnWidth(250),
+                16: FixedColumnWidth(200),
+                17: FixedColumnWidth(180),
 
 
-            },
-            children: [
-              // Header Row
-              _buildHeaderRow(),
-              ...rows
-            ],
+              },
+              children: [
+                // Header Row
+                _buildHeaderRow(),
+                ...rows
+              ],
+            ),
           ),
         ),
       ),
@@ -294,7 +339,7 @@ return  SingleChildScrollView(
     return Container(
       color: Colors.blue.withOpacity(0.2),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12,horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 18,horizontal: 8),
         child: FilledButton(
           onPressed:(){
             print(completeTrack);

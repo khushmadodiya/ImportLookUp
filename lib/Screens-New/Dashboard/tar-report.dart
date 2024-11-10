@@ -13,7 +13,6 @@ import 'package:import_lookup/Provider-New/add-new-cases.dart';
 import 'package:import_lookup/Provider-New/general-pusrpose.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:universal_html/html.dart';
 import '../../Backend/authmethos.dart';
 import '../../excael-download-option.dart';
 import '../Auth-Screens/login-screen.dart';
@@ -132,7 +131,6 @@ class _RevenueTableState extends State<RevenueTable> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  // if(pro.writeOffCompleteData.isNotEmpty)
                                   Container(
                                     height: 50,
                                     width: MediaQuery.of(context).size.width,
@@ -169,7 +167,7 @@ class _RevenueTableState extends State<RevenueTable> {
                                                       data, 'OIO DETAILS');
                                             },
                                           ),
-                                        InkWell(
+                                        if(pro.writeOffCompleteData.isNotEmpty)     InkWell(
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Container(
@@ -219,11 +217,11 @@ class _RevenueTableState extends State<RevenueTable> {
                                                       : Text("Refresh")),
                                             ),
                                           ),
-                                          onTap: () {
+                                          onTap: !pro.tarLoader?() {
                                             getData();
-                                          },
+                                          }:null,
                                         ),
-                                        IconButton(
+                                        if(pro.writeOffCompleteData.isNotEmpty) IconButton(
                                             padding: EdgeInsets.zero,
                                             onPressed: () {
                                               AuthMethods().signOut(context);
