@@ -14,9 +14,9 @@ import '../Screens-New/Dashboard/tar-report.dart';
 import '../global.dart';
 
 class DashboardScreen extends StatefulWidget {
-bool isAdmin;
+
    DashboardScreen({super.key,
-   required this.isAdmin
+
 });
 
   @override
@@ -357,8 +357,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return {
           'Appeal period over but no appeal filed': 12,
           'Settlement commission cases': 13,
-          'Arrear under section-11': 14,
-          'Arrear under section-142': 15,
+          'Arrear under section-142(1)(C)(II)': 14,
+          'Arrear under section-142(1)(C)(I)': 15,
         };
       default:
         return {};

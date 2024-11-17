@@ -26,6 +26,9 @@ class _AddCaseDeatilState extends State<AddCaseDeatil> {
     // TODO: implement initState
     super.initState();
     var pro = Provider.of<AddNewCase>(context, listen: false);
+    var general = Provider.of<GeneralPurposeProvider>(context, listen: false);
+    general.updateDate('Select OIO Date');
+    pro.clear();
     var userInfo = Provider.of<UserInformation>(context, listen: false);
     if(userInfo.userType==USERTYPE[1]){
       formation = userInfo.formation;
@@ -38,6 +41,8 @@ class _AddCaseDeatilState extends State<AddCaseDeatil> {
   void adddetail(var pro) async {
     print("dhndhijdihn");
     var pro = Provider.of<AddNewCase>(context, listen: false);
+    var general = Provider.of<GeneralPurposeProvider>(context, listen: false);
+
     pro.updateLoader();
     var userInfo = Provider.of<UserInformation>(context, listen: false);
 
@@ -64,6 +69,7 @@ class _AddCaseDeatilState extends State<AddCaseDeatil> {
         Fluttertoast.showToast(
             msg: 'Request submit to the admin', timeInSecForIosWeb: 3);
       }
+      general.updateDate('Select OIO Date');
       pro.clear();
     } else {
       print("heeelo i am here ${res["res"]}");
@@ -156,9 +162,9 @@ class _AddCaseDeatilState extends State<AddCaseDeatil> {
                               ),
                             // const SizedBox(width:20,),
                             SizedBox(
-                              height: 60,
+                              height: 57,
                               width: userInfo.userType == USERTYPE[1]
-                                  ? MediaQuery.of(context).size.width / 2.1
+                                  ? MediaQuery.of(context).size.width /2.1
                                   : MediaQuery.of(context).size.width / 5,
                               child: InkWell(
                                 onTap: () async {
@@ -179,12 +185,19 @@ class _AddCaseDeatilState extends State<AddCaseDeatil> {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15)),
                                   child: Container(
+
                                     decoration: BoxDecoration(
-                                        color: Colors.blue[50],
+                                        // color: Colors.blue[50],
+                                        gradient: LinearGradient(
+                                          colors: [Colors.deepPurple[50]!, Colors.deepPurple[100]!],
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                        ),
+                                        border: Border.all(color: Colors.deepPurple),
                                         borderRadius:
                                             BorderRadius.circular(15)),
                                     // width: MediaQuery.of(context).size.width * 0.48,
-                                    child: Center(child: Text(date.date)),
+                                    child: Center(child: Text(date.date,style: TextStyle(color: Colors.blueAccent,fontSize: 16,fontWeight: FontWeight.w500),)),
                                   ),
                                 ),
                               ),
@@ -244,14 +257,15 @@ class _AddCaseDeatilState extends State<AddCaseDeatil> {
                       pro.briefFact,
                       'Present Status of the case',
                       'Brief facts of the case',
-                      maxLines: 10,
+                      maxLines: 5
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: CustomTextField(
                         controller: pro.effortMade,
                         hintText: 'Efort Made/Remark',
-                        maxLines: 10,
+                        labelText:'Efort Made/Remark',
+                        maxLines: 6,
                         height: 100,
                       ),
                     ),

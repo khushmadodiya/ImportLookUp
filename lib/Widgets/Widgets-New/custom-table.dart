@@ -76,9 +76,9 @@ class _CustomTableState extends State<CustomTable> {
     return Consumer<AddNewCase>(
       builder: (context, provider, child) => Consumer<UserInformation>(
         builder: (context, userInfo, child) => Scaffold(
-          appBar: AppBar(
-            title: Text(widget.title),
-          ),
+          // appBar: AppBar(
+          //   title: Text(widget.title),
+          // ),
           // body: Text('hell0'),
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -347,7 +347,13 @@ class _CustomTableState extends State<CustomTable> {
 
   Widget _buildDisposalButtton(MainCaseModel model){
     return Container(
-      color: Colors.blue.withOpacity(0.2),
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.deepPurple[50]!, Colors.deepPurple[100]!],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          )
+      ),
       child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: CustomButton(
@@ -365,7 +371,13 @@ class _CustomTableState extends State<CustomTable> {
   Widget _buildTransferButton(String uid, String formation) {
     print(uid);
     return Container(
-      color: Colors.blue.withOpacity(0.2),
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.deepPurple[50]!, Colors.deepPurple[100]!],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          )
+      ),
       child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: CustomButton(
@@ -387,9 +399,13 @@ class _CustomTableState extends State<CustomTable> {
 
   Widget _buildHeaderCell(String text, int i) {
     return Container(
-      color: i % 2 == 0
-          ? Colors.blue.withOpacity(0.2)
-          : Colors.blue.withOpacity(0.3),
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.deepPurple[50]!, Colors.deepPurple[100]!],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          )
+      ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text(
@@ -403,9 +419,13 @@ class _CustomTableState extends State<CustomTable> {
   Widget _multiLineText(String text, int i) {
     return Container(
       height: 70,
-      color: i % 2 == 0
-          ? Colors.blue.withOpacity(0.2)
-          : Colors.blue.withOpacity(0.3),
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.deepPurple[50]!, Colors.deepPurple[100]!],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          )
+      ),
       padding: const EdgeInsets.all(8.0),
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,

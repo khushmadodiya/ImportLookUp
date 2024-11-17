@@ -11,6 +11,7 @@ import 'package:import_lookup/Model-New/main-case-model.dart';
 import 'package:import_lookup/Model-New/tar-model.dart';
 import 'package:import_lookup/Provider-New/add-new-cases.dart';
 import 'package:import_lookup/Provider-New/general-pusrpose.dart';
+import 'package:import_lookup/Screens/dashboard.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../Backend/authmethos.dart';
@@ -218,7 +219,7 @@ class _RevenueTableState extends State<RevenueTable> {
                                             ),
                                           ),
                                           onTap: !pro.tarLoader?() {
-                                            getData();
+                                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>DashboardScreen()),  (route) => false,);
                                           }:null,
                                         ),
                                         if(pro.writeOffCompleteData.isNotEmpty) IconButton(
@@ -436,15 +437,15 @@ class _RevenueTableState extends State<RevenueTable> {
             columnWidths: const {
               0: FixedColumnWidth(40),
               1: FixedColumnWidth(260),
-              2: FixedColumnWidth(200),
-              3: FixedColumnWidth(500),
-              4: FixedColumnWidth(200),
-              5: FixedColumnWidth(500),
-              6: FixedColumnWidth(500),
-              7: FixedColumnWidth(500),
-              8: FixedColumnWidth(500),
-              9: FixedColumnWidth(500),
-              10: FixedColumnWidth(200),
+              2: FixedColumnWidth(400),
+              3: FixedColumnWidth(700),
+              4: FixedColumnWidth(400),
+              5: FixedColumnWidth(700),
+              6: FixedColumnWidth(700),
+              7: FixedColumnWidth(700),
+              8: FixedColumnWidth(700),
+              9: FixedColumnWidth(700),
+              10: FixedColumnWidth(400),
             },
             children: [
               TableRow(
@@ -774,7 +775,7 @@ class _RevenueTableState extends State<RevenueTable> {
             children: [
               Table(
                 border: TableBorder.all(color: Colors.black),
-                columnWidths: const {0: FixedColumnWidth(90)},
+                columnWidths: const {0: FixedColumnWidth(150)},
                 children: [
                   TableRow(
                     children: [
@@ -799,7 +800,7 @@ class _RevenueTableState extends State<RevenueTable> {
                 ],
               ),
               Table(
-                columnWidths: const {0: FixedColumnWidth(90)},
+                columnWidths: const {0: FixedColumnWidth(150)},
                 border: TableBorder.all(color: Colors.black),
                 children: [
                   TableRow(

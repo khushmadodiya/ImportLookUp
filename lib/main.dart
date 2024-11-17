@@ -67,7 +67,7 @@ class _MyAppState extends State<MyApp> {
             if (snapshot.connectionState == ConnectionState.active) {
               if (snapshot.hasData) {
                 // if (pro.email.isNotEmpty)
-                return DashboardScreen(isAdmin: pro.userType == USERTYPE[0]);
+                return DashboardScreen();
                 return const Scaffold(
                     body: Center(child: CircularProgressIndicator()));
               } else if (snapshot.hasError) {

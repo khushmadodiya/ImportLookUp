@@ -330,7 +330,14 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget _buildCompleteTrackButton(int i,
       {required List<String> completeTrack, required String name}) {
     return Container(
-      color: Colors.blue.withOpacity(0.2),
+      // color: Colors.blue.withOpacity(0.2),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.deepPurple[50]!, Colors.deepPurple[100]!],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        )
+      ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 8),
         child: FilledButton(
@@ -352,9 +359,13 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Widget _buildHeaderCell(String text, int i) {
     return Container(
-      color: i % 2 == 0
-          ? Colors.blue.withOpacity(0.2)
-          : Colors.blue.withOpacity(0.3),
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.deepPurple[50]!, Colors.deepPurple[100]!],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          )
+      ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text(
@@ -368,9 +379,13 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget _multiLineText(String text, int i) {
     return Container(
       height: 70,
-      color: i % 2 == 0
-          ? Colors.blue.withOpacity(0.2)
-          : Colors.blue.withOpacity(0.3),
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.deepPurple[50]!, Colors.deepPurple[100]!],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          )
+      ),
       padding: const EdgeInsets.all(8.0),
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,

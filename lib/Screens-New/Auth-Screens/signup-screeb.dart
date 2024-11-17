@@ -101,6 +101,7 @@ class _SignupPageState extends State<SignupPage> {
                   const SizedBox(height: 10,),
                   CustomTextField(
                     hintText: 'Enter your username',
+                    labelText: 'Enter your username',
                     controller: _usernameController,
 
                   ),
@@ -109,6 +110,7 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                   CustomTextField(
                     hintText: 'Enter your email',
+                    labelText: 'Enter your email',
                     controller: _emailController,
 
                   ),
@@ -117,8 +119,17 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                   CustomTextField(
                     hintText: 'Enter your password',
+                    labelText: 'Enter your password',
                     controller: _passwordController,
-                    obscureText:true,
+                    obscureText: pro.ispass?false:true,
+                    suffixIcon:IconButton(
+                      icon: Icon(
+                        pro.ispass ? Icons.visibility : Icons.visibility_off,
+
+                      ), onPressed: () {
+                      pro.updatePass();
+                    },
+                    ),
 
                   ),
                   const SizedBox(

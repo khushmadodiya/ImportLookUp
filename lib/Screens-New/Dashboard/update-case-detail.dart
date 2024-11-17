@@ -189,7 +189,12 @@ class _UpdateCaseDetailState extends State<UpdateCaseDetail> {
                                       borderRadius: BorderRadius.circular(15)),
                                   child: Container(
                                     decoration: BoxDecoration(
-                                        color: Colors.blue[50],
+                                        gradient: LinearGradient(
+                                          colors: [Colors.deepPurple[50]!, Colors.deepPurple[100]!],
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                        ),
+                                        border: Border.all(color: Colors.deepPurple),
                                         borderRadius:
                                             BorderRadius.circular(15)),
                                     // width: MediaQuery.of(context).size.width * 0.48,
@@ -253,14 +258,15 @@ class _UpdateCaseDetailState extends State<UpdateCaseDetail> {
                       pro.briefFact,
                       'Present Status of the case',
                       'Brief facts of the case',
-                      maxLines: 10,
+                      maxLines: 6,
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: CustomTextField(
                         controller: pro.effortMade,
                         hintText: 'Efort Made/Remark',
-                        maxLines: 10,
+                        labelText: 'Efort Made/Remark',
+                        maxLines: 5,
                         height: 100,
                       ),
                     ),

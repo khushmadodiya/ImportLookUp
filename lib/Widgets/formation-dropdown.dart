@@ -1,16 +1,21 @@
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../Backend-New/Golbal-Files/category-and-subcategory.dart';
-
 class GlobleDropdown extends StatefulWidget {
-   final dropdownkey;
-   final String selectedItem;
-   ValueChanged <String?> fun;
-   final label;
-   final List<String> listofvalues ;
-   GlobleDropdown({super.key, this.dropdownkey, required this.listofvalues, required this.label,  required this.fun, required this.selectedItem });
+  final GlobalKey? dropdownKey;
+  final String selectedItem;
+  final ValueChanged<String?> fun;
+  final String label;
+  final List<String> listofvalues;
+
+  const GlobleDropdown({
+    super.key,
+    this.dropdownKey,
+    required this.listofvalues,
+    required this.label,
+    required this.fun,
+    required this.selectedItem,
+  });
 
   @override
   State<GlobleDropdown> createState() => _GlobleDropdownState();
@@ -19,49 +24,72 @@ class GlobleDropdown extends StatefulWidget {
 class _GlobleDropdownState extends State<GlobleDropdown> {
   @override
   Widget build(BuildContext context) {
-
-    return  Padding(
-      key: widget.dropdownkey,
-      padding: const EdgeInsets.all(0.0),
+    return Padding(
+      key: widget.dropdownKey,
+      padding: const EdgeInsets.symmetric(vertical: 0.0),
       child: Card(
-        elevation: 8,
+        elevation: 10,
+        shadowColor: Colors.grey.withOpacity(0.3),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15)
+          borderRadius: BorderRadius.circular(15),
         ),
         child: Container(
-
           decoration: BoxDecoration(
-              color: Colors.blue[50],
-            borderRadius: BorderRadius.circular(15)
+            gradient: LinearGradient(
+              colors: [Colors.deepPurple[50]!, Colors.deepPurple[100]!],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(15),
           ),
           child: DropdownSearch<String>(
-
-            onChanged:(val){
+            onChanged: (val) {
               widget.fun(val);
-              setState(() {
-
-              });
+              setState(() {});
             },
             items: widget.listofvalues,
-
             selectedItem: widget.selectedItem,
             dropdownDecoratorProps: DropDownDecoratorProps(
               dropdownSearchDecoration: InputDecoration(
                 labelText: widget.label,
-                border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(15)
+                labelStyle: const TextStyle(
+                  color: Colors.blueAccent,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
                 ),
-                // fillColor: Colors.blue[50],
 
+
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 15,
+                  vertical: 16,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  borderSide: const BorderSide(color: Colors.deepPurple, width: 1),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  borderSide: const BorderSide(color: Colors.deepPurple, width: 2),
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+              baseStyle: const TextStyle(
+                color: Colors.blueAccent, // Color for the selected item text
+                fontSize: 16,
+                // fontWeight: FontWeight.bold,
               ),
             ),
             popupProps: const PopupProps.menu(
-                fit: FlexFit.loose, constraints: BoxConstraints(maxHeight: 300)),
+              fit: FlexFit.loose,
+              constraints: BoxConstraints(maxHeight: 300),
+              // showSearchBox: true,
+            ),
           ),
         ),
       ),
-
     );
   }
 }

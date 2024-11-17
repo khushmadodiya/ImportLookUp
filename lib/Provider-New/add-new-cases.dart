@@ -790,6 +790,7 @@ class AddNewCase with ChangeNotifier {
 
 
   Future getAllSubcategoryTocdata()async{
+    print('hello i am khush');
     _allTocdata =  (await TarReportInformation().TocReport())['data'];
     print('hello i am khush$_allTocdata');
     for(int i=0;i<4;i++){

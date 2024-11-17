@@ -11,6 +11,7 @@ class GeneralPurposeProvider extends ChangeNotifier{
   String? _currentMonth;
   String? _endDate;
   String? _startDate;
+  bool  _ispass = false;
 
   String get userType=>_userType;
   String get date=>_date;
@@ -19,7 +20,12 @@ class GeneralPurposeProvider extends ChangeNotifier{
   String? get currentMonth => _currentMonth;
   String? get endDate => _endDate;
   String? get startDate => _startDate;
+  bool get ispass => _ispass;
 
+  void updatePass(){
+    _ispass = !_ispass;
+    notifyListeners();
+  }
 
   void updateUserType(String value){
     _userType = value;
