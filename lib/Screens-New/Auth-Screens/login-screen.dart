@@ -77,6 +77,7 @@ class _LoginPageState extends State<LoginPage> {
         _isLoading = false;
       });
       if (context.mounted) {
+        loader.updateLoader();
         Fluttertoast.showToast(msg: res,timeInSecForIosWeb: 3);
       }
     }

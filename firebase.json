@@ -1,6 +1,1 @@
-{
-  "hosting": {
-    "public": "build/web",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
-  }
-}
+{"hosting":{"public":"build/web","ignore":["firebase.json","**/.*","**/node_modules/**"]},"flutter":{"platforms":{"android":{"default":{"projectId":"trc-customsindore","appId":"1:144557833666:android:1d4ce52db0cfcd25fd2a5b","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"trc-customsindore","configurations":{"android":"1:144557833666:android:1d4ce52db0cfcd25fd2a5b","ios":"1:144557833666:ios:85f70feec46ba939fd2a5b","macos":"1:144557833666:ios:85f70feec46ba939fd2a5b","web":"1:144557833666:web:201ce17283346f96fd2a5b","windows":"1:144557833666:web:1c879ea53218f437fd2a5b"}}}}}}

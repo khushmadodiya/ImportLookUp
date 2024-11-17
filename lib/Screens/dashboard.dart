@@ -219,8 +219,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             indexMap: {
               'Appeal period not over but appeal filed': 12,
               'Settlement commission cases': 13,
-              'Arrear under section-11': 14,
-              'Arrear under section-142': 15,
+              'Arrear under section-142(1)(C)(II)': 14,
+              'Arrear under section-142(1)(C)(I)': 15,
             },
           ),
           _buildDrawerItem(
@@ -355,7 +355,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         };
       case 6:
         return {
-          'Appeal period not over but appeal filed': 12,
+          'Appeal period over but no appeal filed': 12,
           'Settlement commission cases': 13,
           'Arrear under section-11': 14,
           'Arrear under section-142': 15,

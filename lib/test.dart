@@ -22,7 +22,8 @@ class _TestState extends State<Test> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getData();
+    // getData();
+    financial();
     // print("heelo i am ${DateFormat('MMMM').format(DateTime.now())}");
    String time=DateFormat('dd-MMMM-yyyy').format(DateTime.now());
    DateFormat format=DateFormat('dd-MMMM-yyyy');
@@ -60,6 +61,10 @@ class _TestState extends State<Test> {
   //   batch.commit();
   // }
 
+  void financial(){
+    FinancialYear().financialYear(currentMonth: 'November');
+  }
+
   // void getData() async {
   // AddNewCase dipu=Provider.of<AddNewCase>(context,listen:false);
   //  await dipu.getRequestCasesInformation(formation:"Air Cargo Complex Indore", isAdmin:false);
@@ -72,26 +77,26 @@ class _TestState extends State<Test> {
   // await TarReportInformation().recoverableArrears();
   // }
 
-  getData() async {
-    // 576e15e0-936f-11ef-8d76-83920643c546
-    // var res = (await TarReportInformation().TocReport());
-    // var res = await MainCasesInformation().deleteMainCase(
-    //     formation: 'Air Cargo Complex Indore',
-    //     uid: '576e15e0-936f-11ef-8d76-83920643c546',
-    //     docName: 'disposal order for denovo');
-    // print("nooting is here ");
-  //  await FinancialYear().financialYear(currentMonth: DateFormat('MMMM').format(DateTime.now()));
-  //  print("heeelo jnsjn");
-
-    //  if(res['res']=='success'){
-    //     print("this is my data ${res['data']}");
-    //  }
-
-      GeneralPurposeProvider pro= Provider.of<GeneralPurposeProvider>(context,listen: false);
-      pro.getFinancialData();
-      print("hello i am khush");
-      print(pro.currentMonth);
-  }
+  // getData() async {
+  //   // 576e15e0-936f-11ef-8d76-83920643c546
+  //   // var res = (await TarReportInformation().TocReport());
+  //   // var res = await MainCasesInformation().deleteMainCase(
+  //   //     formation: 'Air Cargo Complex Indore',
+  //   //     uid: '576e15e0-936f-11ef-8d76-83920643c546',
+  //   //     docName: 'disposal order for denovo');
+  //   // print("nooting is here ");
+  // //  await FinancialYear().financialYear(currentMonth: DateFormat('MMMM').format(DateTime.now()));
+  // //  print("heeelo jnsjn");
+  //
+  //   //  if(res['res']=='success'){
+  //   //     print("this is my data ${res['data']}");
+  //   //  }
+  //
+  //     GeneralPurposeProvider pro= Provider.of<GeneralPurposeProvider>(context,listen: false);
+  //     pro.getFinancialData();
+  //     print("hello i am khush");
+  //     print(pro.currentMonth);
+  // }
 
   @override
   Widget build(BuildContext context) {

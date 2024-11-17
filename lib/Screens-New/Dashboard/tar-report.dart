@@ -841,8 +841,9 @@ class _RevenueTableState extends State<RevenueTable> {
 
       List<String> data = await generalPurposeProvider.getFinancialData();
       month = data[0];
-
+      print('data from tar');
       await pro.getAllSubcategoryTocdata();
+      print('data from tarrrrr');
       await pro.tarArrearLitigation();
       await pro.tarRestrainded();
       await pro.tarAppealPeriodNotOver();
