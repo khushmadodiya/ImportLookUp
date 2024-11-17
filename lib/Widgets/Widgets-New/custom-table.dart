@@ -111,7 +111,9 @@ class _CustomTableState extends State<CustomTable> {
                 child: _buildTable(),
               ),
 
-              if (userInfo.userType == USERTYPE[0]) CutomPagging()
+              if (userInfo.userType == USERTYPE[0]) Focus(
+                  child: CutomPagging()
+              )
             ],
           ),
         ),

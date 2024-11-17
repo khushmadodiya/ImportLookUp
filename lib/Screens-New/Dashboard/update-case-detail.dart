@@ -265,7 +265,7 @@ class _UpdateCaseDetailState extends State<UpdateCaseDetail> {
                       ),
                     ),
                     Container(
-                        width: MediaQuery.of(context).size.width / 5,
+                        width: MediaQuery.of(context).size.width / 3.5,
                         child: CustomButton(
                             onpress: () {
                               if (pro.name.text.isEmpty ||
@@ -280,7 +280,7 @@ class _UpdateCaseDetailState extends State<UpdateCaseDetail> {
                                 adddetail(pro);
                               }
                             },
-                            text: 'Add Data',
+                            text: 'Transfer Case',
                             isLoading: pro.isLoading))
                   ],
                 ),

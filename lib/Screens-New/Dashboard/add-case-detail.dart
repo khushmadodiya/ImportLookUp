@@ -256,7 +256,7 @@ class _AddCaseDeatilState extends State<AddCaseDeatil> {
                       ),
                     ),
                     Container(
-                        width: MediaQuery.of(context).size.width / 5,
+                        width: MediaQuery.of(context).size.width / 3.5,
                         child: CustomButton(
                             onpress: () {
                               print('DAteeeeeeeeeeeeeeeeeee');
@@ -274,7 +274,7 @@ class _AddCaseDeatilState extends State<AddCaseDeatil> {
                                 adddetail(pro);
                               }
                             },
-                            text: 'Add Data',
+                            text: 'Add Case',
                             isLoading: pro.isLoading))
                   ],
                 ),

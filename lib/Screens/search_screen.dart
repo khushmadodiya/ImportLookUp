@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,6 +8,7 @@ import 'package:import_lookup/Model-New/main-case-model.dart';
 import 'package:import_lookup/Provider-New/add-new-cases.dart';
 import 'package:import_lookup/Provider-New/general-pusrpose.dart';
 import 'package:import_lookup/Screens-New/Dashboard/complete-track.dart';
+import 'package:import_lookup/Widgets/custom-button.dart';
 import 'package:provider/provider.dart';
 
 import '../Backend-New/Golbal-Files/category-and-subcategory.dart';
@@ -338,16 +340,24 @@ return  SingleChildScrollView(
   Widget _buildCompleteTrackButton(int i,{required List<String>completeTrack,required String name}) {
     return Container(
       color: Colors.blue.withOpacity(0.2),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 18,horizontal: 8),
-        child: FilledButton(
-          onPressed:(){
-            print(completeTrack);
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>CompleteTrack(list: completeTrack, name: name,)));
-          },
+      height: 70,
+      child: Container(
+        height: 30,
+        padding: EdgeInsets.symmetric(vertical: 12),
+        child: CustomButton(text: "Complete Track", onpress: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>CompleteTrack(list: completeTrack, name: name,)));}
+        , isLoading: false),
+      ),
+    );
+    return Container(
 
-          child: Text('Complete Track'),
-        ),
+      padding: EdgeInsets.symmetric(vertical:12,horizontal: 10),
+      child: FilledButton(
+        onPressed:(){
+          print(completeTrack);
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>CompleteTrack(list: completeTrack, name: name,)));
+        },
+
+        child: Text('Complete Track'),
       ),
     );
   }

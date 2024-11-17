@@ -113,8 +113,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       //
       CustomTable(title: "Recoverable where apeal period not over", subcategory: SUBCATEGORY[CATEGORY[3]]![0],category: CATEGORY[3]),
       CustomTable(title: "Recoverable sattelmentcases", subcategory: SUBCATEGORY[CATEGORY[3]]![1],category: CATEGORY[3]),
-      CustomTable(title: "Recoverable unit close", subcategory: SUBCATEGORY[CATEGORY[3]]![2],category: CATEGORY[3]),
-      CustomTable(title: "Recoverable Under section 11", subcategory: SUBCATEGORY[CATEGORY[3]]![3],category: CATEGORY[3]),
+      CustomTable(title: "Recoverable Under section 11", subcategory: SUBCATEGORY[CATEGORY[3]]![2],category: CATEGORY[3]),
       CustomTable(title: "Recoverable Under 142", subcategory: SUBCATEGORY[CATEGORY[3]]![3],category: CATEGORY[3]),
 
       CustomTable(title: "Recoverable Write off", subcategory: SUBCATEGORY[CATEGORY[4]]![0],category:CATEGORY[4]),
@@ -214,16 +213,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
             children: [
               'Appeal period not over but appeal filed',
               'Settlement commission cases',
-              "Units closed/defaulters not traceable",
               'Arrear under section-11',
               'Arrear under section-142',
             ],
             indexMap: {
               'Appeal period not over but appeal filed': 12,
               'Settlement commission cases': 13,
-              "Units closed/defaulters not traceable": 14,
-              'Arrear under section-11': 15,
-              'Arrear under section-142': 16,
+              'Arrear under section-11': 14,
+              'Arrear under section-142': 15,
             },
           ),
           _buildDrawerItem(
@@ -285,11 +282,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
         if (index <= 3) {
           _onItemTapped(index, index == 0 ? 'Home' : index == 1 ? 'OIO' : index==2?'Search': 'Add');
         } else if (index == 7) {
-          _onItemTapped(17, 'Write-off');
+          _onItemTapped(16, 'Write-off');
         }else if(index == 8
             // && widget.isAdmin
         ){
-          _onItemTapped(18, 'Update Req');
+          _onItemTapped(17, 'Update Req');
         } else {
           _showBottomSheet(index);
         }
@@ -302,11 +299,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
     if (_selectedIndex <= 3) return _selectedIndex;
     if (_selectedIndex >= 4 && _selectedIndex <= 7) return 4;  // Updated this line for Litigation options
     if (_selectedIndex >= 8 && _selectedIndex <= 11) return 5; // Restrained Arrears
-    if (_selectedIndex >= 12 && _selectedIndex <= 16) return 6; // Recoverable Arrear
-    if (_selectedIndex == 17) return 7; // Write-off
+    if (_selectedIndex >= 12 && _selectedIndex <= 15) return 6; // Recoverable Arrear
+    if (_selectedIndex == 16) return 7; // Write-off
     if(
     // widget.isAdmin&&
-    _selectedIndex == 18) return 8; // Requests (for Admin)
+    _selectedIndex == 17) return 8; // Requests (for Admin)
     return 0;
   }
 
@@ -360,9 +357,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return {
           'Appeal period not over but appeal filed': 12,
           'Settlement commission cases': 13,
-          "Units closed/defaulters not traceable": 14,
-          'Arrear under section-11': 15,
-          'Arrear under section-142': 16,
+          'Arrear under section-11': 14,
+          'Arrear under section-142': 15,
         };
       default:
         return {};

@@ -268,7 +268,7 @@ class _AcceptRequestCaseTextFieldsState
                       ),
                     ),
                     Container(
-                        width: MediaQuery.of(context).size.width / 5,
+                        width: MediaQuery.of(context).size.width / 3.5,
                         child: CustomButton(
                             onpress: () {
                               if (pro.name.text.isEmpty ||
