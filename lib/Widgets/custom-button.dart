@@ -7,7 +7,9 @@ import 'package:universal_html/js.dart';
 typedef VoidCallback = void Function();
 Widget CustomButton(
     {Color color = Colors.deepPurple,
-    required text,
+      Color textcolor = Colors.black,
+      required text,
+
     required VoidCallback onpress,
     required bool isLoading}) {
   return Consumer<AddNewCase>(
@@ -23,14 +25,19 @@ Widget CustomButton(
           alignment: Alignment.center,
           // padding: const EdgeInsets.symmetric(vertical: 12,horizontal: 10),
           decoration: BoxDecoration(
-              color: color, borderRadius: BorderRadius.circular(15)),
+              border: Border.all(color: Colors.black),
+              gradient: LinearGradient(
+                colors: [Colors.deepPurple[100]!, Colors.deepPurple[500]!],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,),
+              borderRadius: BorderRadius.circular(15)),
           child: !isLoading
               ? Text(
                   text.toString(),
-                  style: TextStyle(color: Colors.white, fontSize: 16),
+                  style: TextStyle(color:textcolor,fontWeight: FontWeight.w600, fontSize: 16),
                 )
               : const CircularProgressIndicator(
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
         ),
       ),

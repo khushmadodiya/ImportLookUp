@@ -7,6 +7,7 @@ import 'package:import_lookup/Model-New/main-case-model.dart';
 import 'package:import_lookup/Provider-New/add-new-cases.dart';
 import 'package:import_lookup/Provider-New/general-pusrpose.dart';
 import 'package:import_lookup/Screens-New/Dashboard/complete-track.dart';
+import 'package:import_lookup/Widgets/custom-button.dart';
 import 'package:provider/provider.dart';
 
 import '../Backend-New/Golbal-Files/category-and-subcategory.dart';
@@ -75,7 +76,7 @@ class _SearchScreenState extends State<SearchScreen> {
               Container(
                 height: 70,
                 child: Padding(
-                  padding: const EdgeInsets.all(14.0),
+                  padding: const EdgeInsets.all( 14.0),
                   child: TextField(
                     controller: _controller,
                     decoration: const InputDecoration(
@@ -201,31 +202,31 @@ class _SearchScreenState extends State<SearchScreen> {
       scrollDirection: Axis.vertical,
       child: Column(children: [
         Container(
-          padding: EdgeInsets.zero,
-          height: 40,
-          // width: MediaQuery.of(context).size.width/3,
+          padding: EdgeInsets.symmetric(horizontal: 10,vertical: 0),
+          // height: 40,
+          // // width: MediaQuery.of(context).size.width/3,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              FilledButton(
-                  onPressed: () {
-                    sortBasedofDate();
-                  },
-                  child: Text(
-                    "Sort Based On Date",
-                    style: TextStyle(fontSize: 12),
-                  )),
+              Expanded(
+                child: CustomButton(
+                    onpress: () {
+                      sortBasedofDate();
+                    },
+                    text: "Sort Based On Date", isLoading: false),
+              ),
               SizedBox(
                 width: 5,
               ),
-              FilledButton(
-                  onPressed: () {
-                    sortBasedofToatlArrearsPending();
-                  },
-                  child: Text(
-                    "Sort Based On arrears pending",
-                    style: TextStyle(fontSize: 12),
-                  )),
+              Expanded(
+                child: CustomButton(
+                    onpress: () {
+                      sortBasedofToatlArrearsPending();
+                    },
+                    text: 
+                      "Sort Based On arrears pending", isLoading: false,
+                      ),
+              ),
             ],
           ),
         ),
@@ -339,10 +340,9 @@ class _SearchScreenState extends State<SearchScreen> {
         )
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 8),
-        child: FilledButton(
-          onPressed: () {
-            print(completeTrack);
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+        child: CustomButton(
+          onpress: () {
             Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -351,7 +351,8 @@ class _SearchScreenState extends State<SearchScreen> {
                       name: name,
                     )));
           },
-          child: Text('Complete Track'),
+          text: 'Complete Track', isLoading: false,
+
         ),
       ),
     );

@@ -11,6 +11,7 @@ import 'package:import_lookup/Model-New/main-case-model.dart';
 import 'package:import_lookup/Model-New/tar-model.dart';
 import 'package:import_lookup/Provider-New/add-new-cases.dart';
 import 'package:import_lookup/Provider-New/general-pusrpose.dart';
+import 'package:import_lookup/Screens-New/Auth-Screens/signup-screeb.dart';
 import 'package:import_lookup/Screens/dashboard.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -134,7 +135,7 @@ class _RevenueTableState extends State<RevenueTable> {
                                 children: <Widget>[
                                   Container(
                                     height: 50,
-                                    width: MediaQuery.of(context).size.width,
+
                                     child: Row(
                                       children: [
                                         if (pro.writeOffCompleteData.isNotEmpty)
@@ -150,7 +151,7 @@ class _RevenueTableState extends State<RevenueTable> {
                                                             .width >
                                                         600
                                                     ? 140
-                                                    : 100,
+                                                    : 120,
                                                 color: Colors.amber
                                                     .withOpacity(0.3),
                                                 child: const Center(
@@ -222,6 +223,30 @@ class _RevenueTableState extends State<RevenueTable> {
                                             Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>DashboardScreen()),  (route) => false,);
                                           }:null,
                                         ),
+                                        // if (pro.writeOffCompleteData.isNotEmpty)
+                                          InkWell(
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.symmetric(
+                                                  vertical: 8.0),
+                                              child: Container(
+                                                height: 40,
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width >
+                                                    600
+                                                    ? 140
+                                                    : 100,
+                                                color: Colors.amber
+                                                    .withOpacity(0.3),
+                                                child: const Center(
+                                                    child:
+                                                    Text("Create User")),
+                                              ),
+                                            ),
+                                            onTap: ()=>
+                                              Navigator.push(context, MaterialPageRoute(builder: (context)=>SignupPage()))
+                                          ),
                                         if(pro.writeOffCompleteData.isNotEmpty) IconButton(
                                             padding: EdgeInsets.zero,
                                             onPressed: () {

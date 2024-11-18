@@ -1,4 +1,5 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -34,6 +35,7 @@ class _LoginPageState extends State<LoginPage> {
   // final usertypeKey = GlobalKey<DropdownSearchState>();
   final TextEditingController userIdController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailcontroller = TextEditingController();
   bool _isLoading = false;
   String? selectedUsertype = USERTYPE[0];
 
@@ -131,9 +133,8 @@ class _LoginPageState extends State<LoginPage> {
                           const SizedBox(
                             height: 24,
                           ),
-                          const Text(
-                            'Import LookUp', style: TextStyle(fontWeight: FontWeight
-                              .w600, fontSize: 30, color: Colors.deepPurple),),
+                          Text("Cutoms TRC Indore",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30,color: Colors.blueAccent),),
+
                           const SizedBox(height: 20,),
                           // GlobleDropdown(dropdownkey: formationKey,listofvalues: FORMATION, label: 'Select Formation',),
                           // const SizedBox(height: 10,),
@@ -144,6 +145,7 @@ class _LoginPageState extends State<LoginPage> {
                           CustomTextField(
                             hintText: 'Enter your UserId',
                             labelText:'Enter your UserId' ,
+                            prefixIcon: Icons.person,
                             controller: userIdController,
                             customValidator: (text){
 
@@ -153,6 +155,7 @@ class _LoginPageState extends State<LoginPage> {
                             height: 24,
                           ),
                           CustomTextField(
+                            prefixIcon: Icons.password,
                             hintText: 'Enter your password',
                             labelText: 'Enter your password',
                             controller: _passwordController,
@@ -189,34 +192,60 @@ class _LoginPageState extends State<LoginPage> {
                             height: 12,
                           ),
 
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.center,
-                          //   children: [
-                          //     Container(
-                          //       padding: const EdgeInsets.symmetric(vertical: 8),
-                          //       child: const Text(
-                          //         'Dont have an account?',
-                          //       ),
-                          //     ),
-                          //     GestureDetector(
-                          //       onTap: () => Navigator.of(context).push(
-                          //         MaterialPageRoute(
-                          //           builder: (context) => const SignupPage(),
-                          //         ),
-                          //       ),
-                          //       child: Container(
-                          //         padding: const EdgeInsets.symmetric(vertical: 8),
-                          //         child: const Text(
-                          //           ' Signup.',
-                          //           style: TextStyle(
-                          //               fontWeight: FontWeight.bold,
-                          //               color: Colors.deepPurple
-                          //           ),
-                          //         ),
-                          //       ),
-                          //     ),
-                          //   ],
-                          // ),
+                         TextButton(onPressed: (){
+                           showDialog(
+                               context: context, builder: (context)=>AlertDialog(
+                             title: Column(
+                               children: [
+                                 Text('Forget Password'),
+                               ],
+                             ),
+                             actions: [
+                               CustomTextField(
+                                 controller: _emailcontroller,
+                                 hintText: 'Enter email',
+                                 labelText: 'Enter email',
+                                 prefixIcon: Icons.email,
+                               ),
+                               TextButton(
+                                   onPressed: () async {
+                                    var res= await Authentication().forgotPassword(email: _emailcontroller.text.trim());
+                                     if(res=='sucess'){
+                                       showDialog(context: context, builder: (context)=>
+                                           AlertDialog(
+                                             title: Column(
+                                               children: [
+                                                 Text('Check your email inbox',style: TextStyle(color: Colors.blueAccent),),
+                                                 SizedBox(height: 20,),
+                                                 IconButton(
+                                                   onPressed: (){
+                                                     Navigator.pop(context);
+                                                     Navigator.pop(context);
+                                                   },
+                                                  icon: Icon(Icons.check_box,size: 40,color: Colors.blueAccent,),
+                                                 )
+                                               ],
+                                             ),
+                                             actions: [
+                                               TextButton(onPressed: (){
+                                                 Navigator.pop(context);
+                                                 Navigator.pop(context);
+                                               }, child: Text('OK'))
+
+                                             ],
+
+                                           )
+                                       );
+                                     }
+                                     else{
+                                       Fluttertoast.showToast(msg: res.toString(),timeInSecForIosWeb: 3);
+                                     }
+                                   },
+                                   child: Text('Send')),
+                             ],
+                           )
+                           );
+                         }, child: Text('Forget password'))
                         ],
 
                       ),

@@ -85,7 +85,7 @@ class _SignupPageState extends State<SignupPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-
+                  Text("Cutoms TRC Indore",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30,color: Colors.blueAccent),),
                   const SizedBox(
                     height: 24,
                   ),
@@ -103,7 +103,7 @@ class _SignupPageState extends State<SignupPage> {
                     hintText: 'Enter your username',
                     labelText: 'Enter your username',
                     controller: _usernameController,
-
+                    prefixIcon: Icons.person,
                   ),
                   const SizedBox(
                     height: 24,
@@ -111,6 +111,7 @@ class _SignupPageState extends State<SignupPage> {
                   CustomTextField(
                     hintText: 'Enter your email',
                     labelText: 'Enter your email',
+                    prefixIcon: Icons.email,
                     controller: _emailController,
 
                   ),
@@ -120,6 +121,7 @@ class _SignupPageState extends State<SignupPage> {
                   CustomTextField(
                     hintText: 'Enter your password',
                     labelText: 'Enter your password',
+                    prefixIcon: Icons.password,
                     controller: _passwordController,
                     obscureText: pro.ispass?false:true,
                     suffixIcon:IconButton(
@@ -141,34 +143,34 @@ class _SignupPageState extends State<SignupPage> {
                     height: 12,
                   ),
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: const Text(
-                          'Already have an account?',
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const LoginPage(),
-                          ),
-                        ),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          child: const Text(
-                            ' Login.',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.deepPurple
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     Container(
+                  //       padding: const EdgeInsets.symmetric(vertical: 8),
+                  //       child: const Text(
+                  //         'Already have an account?',
+                  //       ),
+                  //     ),
+                      // GestureDetector(
+                      //   onTap: () => Navigator.of(context).push(
+                      //     MaterialPageRoute(
+                      //       builder: (context) => const LoginPage(),
+                      //     ),
+                      //   ),
+                      //   child: Container(
+                      //     padding: const EdgeInsets.symmetric(vertical: 8),
+                      //     child: const Text(
+                      //       ' Login.',
+                      //       style: TextStyle(
+                      //           fontWeight: FontWeight.bold,
+                      //           color: Colors.deepPurple
+                      //       ),
+                      //     ),
+                      //   ),
+                  //     // ),
+                  //   ],
+                  // ),
                 ],
               ),
             ),

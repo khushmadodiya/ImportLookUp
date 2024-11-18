@@ -327,6 +327,7 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
       child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: CustomButton(
+            textcolor: Colors.red,
               color: Colors.redAccent,
               text: 'Reject Request',
               onpress: () async {

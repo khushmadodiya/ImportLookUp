@@ -26,7 +26,15 @@ class Authentication {
     }
   }
   Future forgotPassword({required String email})async{
-   await _auth.sendPasswordResetEmail(email: email);
+    String res = "some error occure";
+     try{
+       await _auth.sendPasswordResetEmail(email: email);
+       return res='sucess';
+     }
+     catch(e){
+       res =e.toString();
+       return res;
+     }
   }
   Future logOut()async{
     await _auth.signOut();

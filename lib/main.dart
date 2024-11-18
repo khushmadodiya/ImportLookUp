@@ -24,7 +24,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(MultiProvider(providers: [
+  runApp(
+      MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => AsseserProvider()),
     ChangeNotifierProvider(create: (_) => RequestedAsseserProvider()),
     ChangeNotifierProvider(create: (_) => AddNewCase()),
