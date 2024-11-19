@@ -94,44 +94,44 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               ),
               Expanded(child: _buildTable()),
-              if (userInfo.userType == USERTYPE[0])
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Consumer<GeneralPurposeProvider>(
-                    builder: (context, generalProvider, child) => Row(
-                      children: List.generate(
-                          FORMATION.length,
-                              (index) => Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: InkWell(
-                              child: Container(
-                                color:
-                                generalProvider.selectedIndex == index
-                                    ? Colors.blue
-                                    : Colors.green,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    FORMATION[index],
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ),
-                              onTap: () {
-                                provider.updateLoader();
-                                generalProvider.updateSelectedIndex(index);
-                                provider.getMainCasesInformation(
-                                    formation: FORMATION[index],
-                                    isAdmin: false);
-                                provider.updateLoader();
-                              },
-                            ),
-                          )),
-                    ),
-                  ),
-                ),
+              // if (userInfo.userType == USERTYPE[0])
+              //   SingleChildScrollView(
+              //     scrollDirection: Axis.horizontal,
+              //     child: Consumer<GeneralPurposeProvider>(
+              //       builder: (context, generalProvider, child) => Row(
+              //         children: List.generate(
+              //             FORMATION.length,
+              //                 (index) => Padding(
+              //               padding: const EdgeInsets.all(8.0),
+              //               child: InkWell(
+              //                 child: Container(
+              //                   color:
+              //                   generalProvider.selectedIndex == index
+              //                       ? Colors.blue
+              //                       : Colors.green,
+              //                   child: Padding(
+              //                     padding: const EdgeInsets.all(8.0),
+              //                     child: Text(
+              //                       FORMATION[index],
+              //                       style: const TextStyle(
+              //                           color: Colors.white,
+              //                           fontWeight: FontWeight.bold),
+              //                     ),
+              //                   ),
+              //                 ),
+              //                 onTap: () {
+              //                   provider.updateLoader();
+              //                   generalProvider.updateSelectedIndex(index);
+              //                   provider.getMainCasesInformation(
+              //                       formation: FORMATION[index],
+              //                       isAdmin: false);
+              //                   provider.updateLoader();
+              //                 },
+              //               ),
+              //             )),
+              //       ),
+              //     ),
+              //   ),
               // const SizedBox(
               //   height: 20,
               // ),
@@ -429,7 +429,7 @@ class _SearchScreenState extends State<SearchScreen> {
       final asseserProvider = Provider.of<AddNewCase>(context, listen: false);
       asseserProvider.updateLoader();
       await asseserProvider.getMainCasesInformation(
-          formation: FORMATION[0], isAdmin: false);
+          formation: FORMATION[0], isAdmin: true);
       asseserProvider.updateLoader();
     });
   }

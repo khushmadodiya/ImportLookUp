@@ -23,7 +23,7 @@ class AcceptRequestCase extends StatefulWidget {
 }
 
 class _AcceptRequestCaseState extends State<AcceptRequestCase> {
-  ScrollController _scrollController = ScrollController();
+  ScrollController _pagginController = ScrollController();
   final ScrollController horizontalController = ScrollController();
   final ScrollController verticalController = ScrollController();
   int index = 0;
@@ -160,41 +160,55 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
                     ),
                   ),
                   if (userInfo.userType == USERTYPE[0])
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Consumer<GeneralPurposeProvider>(
-                        builder: (context, generalProvider, child) => Row(
-                          children: List.generate(
-                              FORMATION.length,
-                              (index) => Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: InkWell(
-                                      child: Container(
-                                        color:
-                                            generalProvider.selectedIndex == index
-                                                ? Colors.blue
-                                                : Colors.green,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            FORMATION[index],
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold),
+                    Listener(
+                      onPointerSignal: (pointerSignal) {
+                        if (pointerSignal is PointerScrollEvent) {
+                          final newOffset =
+                              _pagginController.offset + pointerSignal.scrollDelta.dy;
+                          _pagginController.animateTo(
+                            newOffset,
+                            duration: const Duration(milliseconds: 100),
+                            curve: Curves.ease,
+                          );
+                        }
+                      },
+                      child: SingleChildScrollView(
+                        controller: _pagginController,
+                        scrollDirection: Axis.horizontal,
+                        child: Consumer<GeneralPurposeProvider>(
+                          builder: (context, generalProvider, child) => Row(
+                            children: List.generate(
+                                FORMATION.length,
+                                (index) => Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: InkWell(
+                                        child: Container(
+                                          color:
+                                              generalProvider.selectedIndex == index
+                                                  ? Colors.blue
+                                                  : Colors.green,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              FORMATION[index],
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
                                           ),
                                         ),
+                                        onTap: () {
+                                          provider.updateLoader();
+                                          generalProvider
+                                              .updateSelectedIndex(index);
+                                          provider.getRequestCasesInformation(
+                                              formation: FORMATION[index],
+                                              isAdmin: false);
+                                          provider.updateLoader();
+                                        },
                                       ),
-                                      onTap: () {
-                                        provider.updateLoader();
-                                        generalProvider
-                                            .updateSelectedIndex(index);
-                                        provider.getRequestCasesInformation(
-                                            formation: FORMATION[index],
-                                            isAdmin: false);
-                                        provider.updateLoader();
-                                      },
-                                    ),
-                                  )),
+                                    )),
+                          ),
                         ),
                       ),
                     ),

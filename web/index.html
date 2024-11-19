@@ -38,6 +38,16 @@
   </script>
   <!-- This script adds the flutter initialization JS code -->
   <script src="flutter.js" defer></script>
+  <script>
+    // This function will disable the back swipe gesture
+    window.addEventListener('popstate', function (event) {
+      // Prevent the back navigation behavior
+      history.pushState(null, null, location.href);
+    });
+
+    window.history.pushState(null, null, location.href);
+  </script>
+
 </head>
 <body>
   <script>
