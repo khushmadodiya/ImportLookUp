@@ -665,51 +665,53 @@ class MainCasesInformation {
   Future<Map<String, dynamic>> getReplicateMainCase(
       {required String category}) async {
     try {
-      print("Making request for data");
-
-      // String lowerCategory = category.toLowerCase();
-      // String upperCategory = category.toUpperCase();
-
-      // Create a list of queries for each field
       List<Query> queries = [
         _fireStore
             .collection("MP")
             .doc("replicationmaincase")
             .collection("formation")
-            .where(("name").toLowerCase(),
-                isLessThanOrEqualTo: ("GoUrAv").toLowerCase())
-            .where(("name").toLowerCase(),
-                isGreaterThanOrEqualTo: ("GoUrAv").toLowerCase())
-
-        // .where("name", isLessThanOrEqualTo: "GOURAV"),
-        // _fireStore.collection("MP").doc("replicationmaincase").collection("formation")
-        //   .where("formation", isGreaterThanOrEqualTo: lowerCategory)
-        //   .where("formation", isLessThanOrEqualTo: upperCategory + '\uf8ff'),
-        // _fireStore.collection("MP").doc("replicationmaincase").collection("formation")
-        //   .where("briefFact", isGreaterThanOrEqualTo: lowerCategory)
-        //   .where("briefFact", isLessThanOrEqualTo: upperCategory + '\uf8ff'),
-        // _fireStore.collection("MP").doc("replicationmaincase").collection("formation")
-        //   .where("amountRecovered", isGreaterThanOrEqualTo: lowerCategory)
-        //   .where("amountRecovered", isLessThanOrEqualTo: upperCategory + '\uf8ff'),
-        // _fireStore.collection("MP").doc("replicationmaincase").collection("formation")
-        //   .where("apealNo", isGreaterThanOrEqualTo: lowerCategory)
-        //   .where("apealNo", isLessThanOrEqualTo: upperCategory + '\uf8ff'),
-        // _fireStore.collection("MP").doc("replicationmaincase").collection("formation")
-        //   .where("category", isGreaterThanOrEqualTo: lowerCategory)
-        //   .where("category", isLessThanOrEqualTo: upperCategory + '\uf8ff'),
-        // _fireStore.collection("MP").doc("replicationmaincase").collection("formation")
-        //   .where("intrest", isGreaterThanOrEqualTo: lowerCategory)
-        //   .where("intrest", isLessThanOrEqualTo: upperCategory + '\uf8ff'),
+            .orderBy("formation")
+            .startAt([category]).endAt([category + "\uf8ff"]),
+        _fireStore
+            .collection("MP")
+            .doc("replicationmaincase")
+            .collection("formation")
+            .orderBy("name")
+            .startAt([category]).endAt([category + "\uf8ff"]),
+        _fireStore
+            .collection("MP")
+            .doc("replicationmaincase")
+            .collection("formation")
+            .orderBy("category")
+            .startAt([category]).endAt([category + "\uf8ff"]),
+        _fireStore
+            .collection("MP")
+            .doc("replicationmaincase")
+            .collection("formation")
+            .orderBy("subcategory")
+            .startAt([category]).endAt([category + "\uf8ff"]),
+        // _fireStore
+        //     .collection("MP")
+        //     .doc("replicationmaincase")
+        //     .collection("formation")
+        //     .where("category", isLessThanOrEqualTo: category),
+        // _fireStore
+        //     .collection("MP")
+        //     .doc("replicationmaincase")
+        //     .collection("formation")
+        //     .where("category", isLessThanOrEqualTo: category),
+        // _fireStore
+        //     .collection("MP")
+        //     .doc("replicationmaincase")
+        //     .collection("formation")
+        //     .where("formation", isLessThanOrEqualTo: category),
       ];
-
-      // Execute all queries
       List<QuerySnapshot> snapshots =
           await Future.wait(queries.map((query) => query.get()));
-
-      // Combine and deduplicate results
       Map<String, MainCaseModel> uniqueData = {};
 
       for (var snapshot in snapshots) {
+        print("i am in loop");
         for (var doc in snapshot.docs) {
           String docId = doc.id;
           if (!uniqueData.containsKey(docId)) {
@@ -724,7 +726,8 @@ class MainCasesInformation {
       print("Data fetched successfully. Total unique records: ${data.length}");
 
       for (int i = 0; i < data.length; i++) {
-        print("Fetched data: ${data[i].name}");
+        print(
+            "Fetched data:${data[i].uid} ${data[i].name} ${data[i].category}  ${data[i].subcategory}  ${data[i].formation}");
       }
 
       return {"res": "success", "data": data};
