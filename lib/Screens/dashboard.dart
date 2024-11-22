@@ -15,9 +15,9 @@ import '../global.dart';
 
 class DashboardScreen extends StatefulWidget {
 
-   DashboardScreen({super.key,
+  DashboardScreen({super.key,
 
-});
+  });
 
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
@@ -105,6 +105,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       CustomTable(title: "High Court", subcategory: SUBCATEGORY[CATEGORY[0]]![1],category: CATEGORY[0],),
       CustomTable(title: "CESTAT", subcategory: SUBCATEGORY[CATEGORY[0]]![2],category: CATEGORY[0],),
       CustomTable(title: "Comm Apeal", subcategory: SUBCATEGORY[CATEGORY[0]]![3],category: CATEGORY[0],),
+      CustomTable(title: "Additional Secretary", subcategory: SUBCATEGORY[CATEGORY[0]]![3],category: CATEGORY[0],),
       //
       CustomTable(title: "OL", subcategory: SUBCATEGORY[CATEGORY[1]]![0],category: CATEGORY[1],),
       CustomTable(title: "DRT", subcategory: SUBCATEGORY[CATEGORY[1]]![1],category: CATEGORY[1]),
@@ -113,37 +114,39 @@ class _DashboardScreenState extends State<DashboardScreen> {
       //
       CustomTable(title: "Recoverable where apeal period not over", subcategory: SUBCATEGORY[CATEGORY[3]]![0],category: CATEGORY[3]),
       CustomTable(title: "Recoverable sattelmentcases", subcategory: SUBCATEGORY[CATEGORY[3]]![1],category: CATEGORY[3]),
+      CustomTable(title: "Unit colosed", subcategory: SUBCATEGORY[CATEGORY[3]]![2],category: CATEGORY[3]),
       CustomTable(title: "Recoverable Under section 11", subcategory: SUBCATEGORY[CATEGORY[3]]![2],category: CATEGORY[3]),
       CustomTable(title: "Recoverable Under 142", subcategory: SUBCATEGORY[CATEGORY[3]]![3],category: CATEGORY[3]),
 
       CustomTable(title: "Recoverable Write off", subcategory: SUBCATEGORY[CATEGORY[4]]![0],category:CATEGORY[4]),
       // if(widget.isAdmin)
-        AcceptRequestCase(title: 'Reqests',)
+      AcceptRequestCase(title: 'Reqests',)
 
 
     ];
     return PopScope(
       canPop: false,
       child: Consumer<AddNewCase>(
-        builder: (context,pro,child) {
-          return Scaffold(
-            // appBar: AppBar(
-            //   actions: [
-            //     IconButton(onPressed: ()async{
-            //       var res = await Authentication().logOut();
-            //       if(res=='success'){
-            //         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>LoginPage()), (route) => false);
-            //       }
-            //     }, icon: Icon(Icons.logout))
-            //   ],
-            // ),
-            drawer: isNarrowScreen ? _buildDrawer() : null,
-            body: _widgetOptions.elementAt(_selectedIndex),
-            bottomNavigationBar: isNarrowScreen ? null : _buildBottomBar(),
-          );
-      
-      
-        }
+          builder: (context,pro,child) {
+            return Scaffold(
+              // appBar: AppBar(
+              //   actions: [
+              //     IconButton(onPressed: ()async{
+              //       var res = await Authentication().logOut();
+              //       if(res=='success'){
+              //         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>LoginPage()), (route) => false);
+              //       }
+              //     }, icon: Icon(Icons.logout))
+              //   ],
+              // ),
+              // drawer: isNarrowScreen ? _buildDrawer() : null,
+              body: _widgetOptions.elementAt(_selectedIndex),
+                // isNarrowScreen ? null :
+              bottomNavigationBar: _buildBottomBar(),
+            );
+
+
+          }
       ),
     );
   }
@@ -186,12 +189,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
           _buildExpandableListItem(
             title: 'Arrears Under Litigation',
             children: [
-              'Commr Appeal',
+              "Addtional secratary"
+                  'Commr Appeal',
               'CESTAT',
               'High Court',
               'Supreme Court'
             ],
             indexMap: {
+              'Additional secratary':8,
               'Commr Appeal': 7,
               'CESTAT': 6,
               'High Court': 5,
@@ -202,10 +207,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
             title: 'Restrained Arrears',
             children: ['OL', 'DRT', 'BIFR', 'NCLT-Units'],
             indexMap: {
-              'OL': 8,
-              'DRT': 9,
-              'BIFR': 10,
-              'NCLT-Units': 11,
+              'OL': 9,
+              'DRT': 10,
+              'BIFR': 11,
+              'NCLT-Units': 12,
             },
           ),
           _buildExpandableListItem(
@@ -213,20 +218,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
             children: [
               'Appeal period not over but appeal filed',
               'Settlement commission cases',
-              'Arrear under section-11',
+              'Unit closed'
+                  'Arrear under section-11',
               'Arrear under section-142',
             ],
             indexMap: {
-              'Appeal period not over but appeal filed': 12,
-              'Settlement commission cases': 13,
-              'Arrear under section-142(1)(C)(II)': 14,
-              'Arrear under section-142(1)(C)(I)': 15,
+              'Appeal period not over but appeal filed': 13,
+              'Settlement commission cases': 14,
+              'Unit closed':15,
+              'Arrear under section-142(1)(C)(II)': 16,
+              'Arrear under section-142(1)(C)(I)': 17,
             },
           ),
           _buildDrawerItem(
             icon: Icons.delete_outline,
             text: 'Write-off',
-            index: 17,
+            index: 18,
           ),
         ],
       ),
@@ -237,41 +244,41 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       iconSize: 20,
-      items:  <BottomNavigationBarItem>[
-       const BottomNavigationBarItem(
+      items:  const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
           icon: Icon(Icons.home),
           label: 'Home',
         ),
-        const BottomNavigationBarItem(
+        BottomNavigationBarItem(
           icon: Icon(Icons.newspaper),
           label: 'OIO Detail',
         ),
-       const BottomNavigationBarItem(
+        BottomNavigationBarItem(
           icon: Icon(Icons.search),
           label: 'Search',
         ),
-       const BottomNavigationBarItem(
+        BottomNavigationBarItem(
           icon: Icon(Icons.person),
           label: 'Add',
         ),
-       const BottomNavigationBarItem(
+        BottomNavigationBarItem(
           icon: Icon(Icons.gavel),
           label: 'Litigation',
         ),
-      const  BottomNavigationBarItem(
+        BottomNavigationBarItem(
           icon: Icon(Icons.block),
           label: 'Restrained',
         ),
-       const BottomNavigationBarItem(
+        BottomNavigationBarItem(
           icon: Icon(Icons.monetization_on),
           label: 'Recoverable',
         ),
-       const BottomNavigationBarItem(
+        BottomNavigationBarItem(
           icon: Icon(Icons.delete_outline),
           label: 'Write-off',
         ),
-      // if(widget.isAdmin)
-      const BottomNavigationBarItem(
+        // if(widget.isAdmin)
+        BottomNavigationBarItem(
           icon: Icon(Icons.request_quote),
           label: 'Requests',
         ),
@@ -282,11 +289,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         if (index <= 3) {
           _onItemTapped(index, index == 0 ? 'Home' : index == 1 ? 'OIO' : index==2?'Search': 'Add');
         } else if (index == 7) {
-          _onItemTapped(16, 'Write-off');
-        }else if(index == 8
-            // && widget.isAdmin
-        ){
-          _onItemTapped(17, 'Update Req');
+          _onItemTapped(18, 'Write-off');
+        }else if(index == 8){
+          _onItemTapped(19, 'Update Req');
         } else {
           _showBottomSheet(index);
         }
@@ -297,13 +302,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   int _getBottomNavIndex() {
     if (_selectedIndex <= 3) return _selectedIndex;
-    if (_selectedIndex >= 4 && _selectedIndex <= 7) return 4;  // Updated this line for Litigation options
-    if (_selectedIndex >= 8 && _selectedIndex <= 11) return 5; // Restrained Arrears
-    if (_selectedIndex >= 12 && _selectedIndex <= 15) return 6; // Recoverable Arrear
-    if (_selectedIndex == 16) return 7; // Write-off
+    if (_selectedIndex >= 4 && _selectedIndex <= 8) return 4;  // Updated this line for Litigation options
+    if (_selectedIndex >= 9 && _selectedIndex <= 12) return 5; // Restrained Arrears
+    if (_selectedIndex >= 13 && _selectedIndex <= 17) return 6; // Recoverable Arrear
+    if (_selectedIndex == 18) return 7; // Write-off
     if(
     // widget.isAdmin&&
-    _selectedIndex == 17) return 8; // Requests (for Admin)
+    _selectedIndex == 19) return 8; // Requests (for Admin)
     return 0;
   }
 
@@ -323,12 +328,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
               children: _getOptionsForParentIndex(parentIndex)
                   .entries
                   .map((entry) => ListTile(
-                        title: Text(entry.key),
-                        onTap: () {
-                          _onItemTapped(entry.value, entry.key);
-                          Navigator.pop(context);
-                        },
-                      ))
+                title: Text(entry.key),
+                onTap: () {
+                  _onItemTapped(entry.value, entry.key);
+                  Navigator.pop(context);
+                },
+              ))
                   .toList(),
             ),
           ),
@@ -341,6 +346,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     switch (parentIndex) {
       case 4:
         return {
+          'Additional secratory':8,
           'Commr Appeal': 7,
           'CESTAT': 6,
           'High Court': 5,
@@ -348,17 +354,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
         };
       case 5:
         return {
-          'OL': 8,
-          'DRT': 9,
-          'BIFR': 10,
-          'NCLT-Units': 11,
+          'OL': 9,
+          'DRT': 10,
+          'BIFR': 11,
+          'NCLT-Units': 12,
         };
       case 6:
         return {
-          'Appeal period over but no appeal filed': 12,
-          'Settlement commission cases': 13,
-          'Arrear under section-142(1)(C)(II)': 14,
-          'Arrear under section-142(1)(C)(I)': 15,
+          'Appeal period over but no appeal filed': 13,
+          'Settlement commission cases': 14,
+          'Unit closed':15,
+          'Arrear under section-142(1)(C)(II)': 16,
+          'Arrear under section-142(1)(C)(I)': 17,
         };
       default:
         return {};

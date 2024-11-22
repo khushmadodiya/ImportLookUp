@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../Provider-New/add-new-cases.dart';
 import '../../Widgets/Widgets-New/custom-textfield.dart';
+import '../../global.dart';
 
 class AddCaseDeatil extends StatefulWidget {
   @override
@@ -59,8 +60,7 @@ class _AddCaseDeatilState extends State<AddCaseDeatil> {
       print("heeelo i ma divyansh ");
       res = await pro.addRequestCase(false,
           uid: '', oldData: {}, isShifted: false);
-    }
-    ;
+    };
 
     if (res['res'] == 'success') {
       if (userInfo.userType == USERTYPE[0]) {
@@ -71,6 +71,9 @@ class _AddCaseDeatilState extends State<AddCaseDeatil> {
       }
       general.updateDate('Select OIO Date');
       pro.clear();
+      pro.updateSubcategory(selectedSubCategory);
+      pro.setCategory(selectedCategory);
+      print('');
     } else {
       print("heeelo i am here ${res["res"]}");
       Fluttertoast.showToast(msg: 'Some error occur', timeInSecForIosWeb: 3);
@@ -81,9 +84,6 @@ class _AddCaseDeatilState extends State<AddCaseDeatil> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Appeal Period Not Over'),
-      ),
       body: Consumer<GeneralPurposeProvider>(
         builder: (context, date, child) => Consumer<UserInformation>(
           builder: (context, userInfo, child) => Consumer<AddNewCase>(
@@ -97,8 +97,11 @@ class _AddCaseDeatilState extends State<AddCaseDeatil> {
                       children: [
                         Column(
                           children: CATEGORY.map((category) {
+
+                            String text =capitalizeFirstLetter(category);
+                            // print('this is khush$text');
                             return RadioListTile<String>(
-                              title: Text(category),
+                              title: Text(text),
                               value: category,
                               groupValue: selectedCategory,
                               onChanged: (value) {

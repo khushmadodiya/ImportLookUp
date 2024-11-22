@@ -328,11 +328,13 @@ class AddNewCase with ChangeNotifier {
   bool _isLoading = false;
   bool _excelLoader = false;
   bool _tarLoader = false;
+  bool _searchLoader = false;
 
   // Getters for each controller
   bool get isLoading => _isLoading;
   bool get excelLoader => _excelLoader;
   bool get tarLoader => _tarLoader;
+  bool get searchLoader => _searchLoader;
   TextEditingController get name => _nameController;
   TextEditingController get formation => _formationController;
   TextEditingController get oio => _oioController;
@@ -360,10 +362,12 @@ class AddNewCase with ChangeNotifier {
 
   //this or data
   List<MainCaseModel> _mainCaseData = [];
+  List<MainCaseModel> _mainCaseDataForSearching = [];
   List<MainCaseModel> _allMainCaseData = [];
   List<RequestCaseModel> _requestCaseData = [];
 
   List<MainCaseModel> get mainCaseData => _mainCaseData;
+  List<MainCaseModel> get mainCaseDataForSearching => _mainCaseDataForSearching;
   List<MainCaseModel> get allMainCaseData => _mainCaseData;
   List<RequestCaseModel> get requestCaseData => _requestCaseData;
 
@@ -373,6 +377,10 @@ class AddNewCase with ChangeNotifier {
   }
   void updateTarLoader(){
      _tarLoader = !_tarLoader;
+     notifyListeners();
+  }
+  void updateSearchLoader(){
+     _searchLoader = !_searchLoader;
      notifyListeners();
   }
   void updateSubcategory(String subCatregory) {
@@ -501,6 +509,17 @@ class AddNewCase with ChangeNotifier {
     notifyListeners();
   }
 
+  Future getMainCasesInformationForSearching(
+      {required String formation, required bool isAdmin}) async {
+    if (!isAdmin) {
+      _mainCaseDataForSearching = (await MainCasesInformation()
+          .getFormationMainCaseInformation(formation))["res"];
+    } else {
+      _mainCaseDataForSearching =
+          (await MainCasesInformation().getAllMainCasesDetails())["res"];
+    }
+    notifyListeners();
+  }
   Future getMainCasesInformation(
       {required String formation, required bool isAdmin}) async {
     if (!isAdmin) {
@@ -508,7 +527,7 @@ class AddNewCase with ChangeNotifier {
           .getFormationMainCaseInformation(formation))["res"];
     } else {
       _mainCaseData =
-          (await MainCasesInformation().getAllMainCasesDetails())["res"];
+      (await MainCasesInformation().getAllMainCasesDetails())["res"];
     }
     notifyListeners();
   }

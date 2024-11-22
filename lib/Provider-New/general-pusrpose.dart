@@ -12,7 +12,11 @@ class GeneralPurposeProvider extends ChangeNotifier{
   String? _endDate;
   String? _startDate;
   bool  _ispass = false;
+  String _searchQuery = '';
+  String _formationSearch = '';
 
+  String get searchQuery => _searchQuery;
+  String get formationSearch => _formationSearch;
   String get userType=>_userType;
   String get date=>_date;
   int get selectedIndex=>_selectedIndex;
@@ -22,6 +26,15 @@ class GeneralPurposeProvider extends ChangeNotifier{
   String? get startDate => _startDate;
   bool get ispass => _ispass;
 
+
+  void updateSearchQuery(String val){
+    _searchQuery = val;
+    notifyListeners();
+  }
+  void updateFormationSearch(String val){
+    _formationSearch = val;
+    notifyListeners();
+  }
   void updatePass(){
     _ispass = !_ispass;
     notifyListeners();

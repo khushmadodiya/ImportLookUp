@@ -129,9 +129,13 @@ class _LoginPageState extends State<LoginPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           // Icon(Icons.person_outline,size: 150,color: Colors.grey[800],),
-
+                           Container(
+                               height: 200,
+                               width: 200,
+                               child: Image.asset('assets/logo.jpg')
+                           ),
                           const SizedBox(
-                            height: 24,
+                            height: 10,
                           ),
                           Text("Cutoms TRC Indore",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30,color: Colors.blueAccent),),
 

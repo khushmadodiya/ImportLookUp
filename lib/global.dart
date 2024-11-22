@@ -19,3 +19,9 @@ String value14  = "ICD Tihi";
 //
 String selecteditem = value1;
 
+String capitalizeFirstLetter(String input) {
+  if (input.isEmpty) return input; // Handle empty strings
+  String output= '${input[0].toUpperCase()}${input.substring(1)}';
+  print(output);
+  return output;
+}

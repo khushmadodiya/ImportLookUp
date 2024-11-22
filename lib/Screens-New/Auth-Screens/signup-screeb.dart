@@ -85,11 +85,20 @@ class _SignupPageState extends State<SignupPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Cutoms TRC Indore",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30,color: Colors.blueAccent),),
-                  const SizedBox(
-                    height: 24,
+                  Container(
+                      height: 200,
+                      width: 200,
+                      child: Image.asset('assets/logo.jpg')
                   ),
-                  const SizedBox(height: 20,),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text("Cutoms TRC Indore",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30,color: Colors.blueAccent),),
+
+                  const SizedBox(height: 10,),
                   GlobleDropdown(listofvalues: USERTYPE,label: 'Select UserType', fun: (String? value) {
                     pro.updateUserType(value??"");
                     print(pro.userType);

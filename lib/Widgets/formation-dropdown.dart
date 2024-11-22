@@ -36,7 +36,7 @@ class _GlobleDropdownState extends State<GlobleDropdown> {
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.deepPurple[50]!, Colors.deepPurple[100]!],
+              colors: [Colors.deepPurple[50]!, Colors.deepPurple[200]!],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),

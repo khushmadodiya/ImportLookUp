@@ -14,6 +14,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../Provider-New/add-new-cases.dart';
 import '../../Widgets/Widgets-New/custom-textfield.dart';
+import '../../global.dart';
 
 class UpdateCaseDetail extends StatefulWidget {
   String uid;
@@ -100,8 +101,10 @@ class _UpdateCaseDetailState extends State<UpdateCaseDetail> {
                       children: [
                         Column(
                           children: CATEGORY.map((category) {
+                            String text =capitalizeFirstLetter(category);
+
                             return RadioListTile<String>(
-                              title: Text(category),
+                              title: Text(text),
                               value: category,
                               groupValue: selectedCategory,
                               onChanged: (value) {

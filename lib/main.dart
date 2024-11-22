@@ -9,6 +9,7 @@ import 'package:import_lookup/Provider-New/general-pusrpose.dart';
 import 'package:import_lookup/Screens-New/Auth-Screens/login-screen.dart';
 import 'package:import_lookup/Screens-New/Dashboard/DisposalScreen.dart';
 import 'package:import_lookup/Screens/dashboard.dart';
+import 'package:import_lookup/Screens/search_screen.dart';
 import 'package:import_lookup/provider/provider.dart';
 import 'package:import_lookup/test.dart';
 import 'package:provider/provider.dart';
@@ -61,7 +62,8 @@ class _MyAppState extends State<MyApp> {
             background: Colors.white),
         useMaterial3: true,
       ),
-      home: Consumer<UserInformation>(
+      home:
+      Consumer<UserInformation>(
         builder: (context, pro, child) => StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {

@@ -48,7 +48,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.deepPurple[50]!, Colors.deepPurple[100]!],
+            colors: [Colors.deepPurple[50]!, Colors.deepPurple[200]!],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
