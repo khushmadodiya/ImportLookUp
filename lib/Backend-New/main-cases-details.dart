@@ -190,6 +190,7 @@ class MainCasesInformation {
     required String effortMade,
     required bool isShifted,
   }) async {
+    print("i am divyansh i n main case00");
     WriteBatch batch = _fireStore.batch();
     DocumentSnapshot _snap = await _fireStore
         .collection("MP")
@@ -292,7 +293,10 @@ class MainCasesInformation {
             .doc(formation)
             .collection('cases')
             .doc(uid);
+
         batch.update(ref, model.toJson());
+        // print("i am divyansh i n main case01  ${model.toJson().toString()}");
+        await upDatereplicateMainCase(uid: uid, model: model, batch: batch);
         await batch.commit();
         // _fireStore
         //     .collection("MP")
@@ -319,8 +323,9 @@ class MainCasesInformation {
       bool request = false}) async {
     WriteBatch batch = _fireStore.batch();
     try {
+      // print("i am divyansh i n main case 10");
       Map<String, dynamic> modelData = newDataModel.toJson();
-      upDatereplicateMainCase(uid: uid, model: newDataModel, batch: batch);
+
       DocumentSnapshot docSnapshot = await _fireStore
           .collection("MP")
           .doc(formation)
@@ -357,15 +362,15 @@ class MainCasesInformation {
         return {"res": "success"};
       }
 
-      print("i am divyansh patidar");
+      // print("i am divyansh patidar");
       //tar report updating if total arrear pending is changed
       MainCaseModel oldDataModel =
           MainCaseModel.fromJson(docSnapshot.data() as Map<String, dynamic>);
       if ((docSnapshot.data() as Map<String, dynamic>)['totalArrearPending']
               .toString() !=
           modelData['totalArrearPending']) {
-        print(
-            "i am inside of it update  ${oldDataModel.totalArrearPending}  ${newDataModel.totalArrearPending}");
+        // print(
+        //     "i am inside of it update  ${oldDataModel.totalArrearPending}  ${newDataModel.totalArrearPending}");
         await TarReportInformation().updateDataOfTarReport(
             batch: batch,
             category: oldDataModel.category,
@@ -424,6 +429,8 @@ class MainCasesInformation {
           .doc(formation)
           .collection("cases")
           .doc(uid);
+      await upDatereplicateMainCase(
+          uid: uid, model: newDataModel, batch: batch);
       batch.update(ref, newDataModel.toJson());
       if (request) {
         // print("i am in request njndjdnbjdbn");
@@ -635,14 +642,18 @@ class MainCasesInformation {
           .collection("formation")
           .doc(uid)
           .get();
+
       if (!snap.exists) {
+        print("heeli i am hrreretette 12");
         batch.set(ref, model.toJson());
       } else {
+        print("heeli i am hrreretette 123   ${model.toJson().toString()}");
         batch.update(ref, model.toJson());
       }
-
+      print("heeli i am hrreretette 1234");
       return {"res": "success"};
     } catch (e) {
+      print("heeli i am hrreretette 1235  ${e.toString()}");
       return {"res": e.toString()};
     }
   }
