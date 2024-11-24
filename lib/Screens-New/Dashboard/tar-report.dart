@@ -291,6 +291,14 @@ class _RevenueTableState extends State<RevenueTable> {
                                           3,
                                           "Comm. Appeal",
                                           4),
+                                      //pending to change 3,4 params
+                                      row(
+                                          pro.litigationCompleteData,
+                                          pro.arrearTocLitgation,
+                                          18,
+                                          3,
+                                          "Additional secretary",
+                                          5),
                                     ]),
                                   SizedBox(
                                     height: 15,
@@ -353,29 +361,37 @@ class _RevenueTableState extends State<RevenueTable> {
                                           pro.arrearTocRecoverable,
                                           0,
                                           0,
-                                          'appeal period over but no appeal field',
+                                          'Appeal period over but no appeal field',
                                           1),
                                       row(
                                           pro.recoverableCompleteData,
                                           pro.arrearTocRecoverable,
                                           6,
                                           1,
-                                          'settlement commision cases',
+                                          'Settlement commision cases',
                                           2),
+                                      //pending to change 3,4 params
+                                      row(
+                                          pro.recoverableCompleteData,
+                                          pro.arrearTocRecoverable,
+                                          6,
+                                          1,
+                                          'Unit closed',
+                                          3),
                                       row(
                                           pro.recoverableCompleteData,
                                           pro.arrearTocRecoverable,
                                           12,
                                           2,
-                                          'arrear under section 11',
-                                          3),
+                                          'Arrear under section 11',
+                                          4),
                                       row(
                                           pro.recoverableCompleteData,
                                           pro.arrearTocRecoverable,
                                           18,
                                           3,
-                                          'arrear under section 142',
-                                          4),
+                                          'Arrear under section 142',
+                                          5),
                                     ]),
                                   SizedBox(
                                     height: 15,
@@ -461,7 +477,7 @@ class _RevenueTableState extends State<RevenueTable> {
             border: TableBorder.all(),
             columnWidths: const {
               0: FixedColumnWidth(40),
-              1: FixedColumnWidth(260),
+              1: FixedColumnWidth(270),
               2: FixedColumnWidth(400),
               3: FixedColumnWidth(700),
               4: FixedColumnWidth(400),

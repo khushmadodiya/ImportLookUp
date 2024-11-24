@@ -7,7 +7,6 @@ import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.
 import 'package:import_lookup/Backend-New/request-cases-details.dart';
 import 'package:import_lookup/Backend-New/tar-report.dart';
 import 'package:import_lookup/Model-New/main-case-model.dart';
-import 'package:universal_html/html.dart';
 import 'package:uuid/uuid.dart';
 
 class MainCasesInformation {
@@ -658,7 +657,6 @@ class MainCasesInformation {
 
       // String lowerCategory = category.toLowerCase();
       // String upperCategory = category.toUpperCase();
-
       // Create a list of queries for each field
       List<Query> queries = [
         _fireStore

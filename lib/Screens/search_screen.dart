@@ -8,12 +8,9 @@ import 'package:import_lookup/Provider-New/add-new-cases.dart';
 import 'package:import_lookup/Provider-New/general-pusrpose.dart';
 import 'package:import_lookup/Screens-New/Dashboard/complete-track.dart';
 import 'package:import_lookup/Widgets/custom-button.dart';
-import 'package:import_lookup/Widgets/formation-dropdown.dart';
 import 'package:provider/provider.dart';
-
 import '../Backend-New/Golbal-Files/category-and-subcategory.dart';
 import '../Provider-New/get-user-deatils.dart';
-import '../provider/provider.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -199,12 +196,14 @@ class _SearchScreenState extends State<SearchScreen> {
     }).toList();
 
     List<TableRow> rows = [];
+    print('start time ${DateTime.timestamp()}');
     for (int i = 0; i < filteredAssesers.length; i++) {
       MainCaseModel mainCaseModel = filteredAssesers[i];
       // print("here data of complere ${asseser['complete_track'].length}");
       num++;
       rows.add(_buildDataRow(mainCaseModel, i));
     }
+    print('end time ${DateTime.timestamp()}');
     void sortBasedofDate() {
       filteredAssesers = asseserProvider.mainCaseDataForSearching;
       filteredAssesers.sort((a, b) => DateTime(
@@ -215,21 +214,43 @@ class _SearchScreenState extends State<SearchScreen> {
           int.parse(b.date.toString().substring(6, 10)),
           int.parse(b.date.toString().substring(3, 5)),
           int.parse(b.date.toString().substring(0, 2)))));
-      setState(() {});
-    }
+      setState(() {
 
+      });
+    }
     void sortBasedofToatlArrearsPending() {
       filteredAssesers = asseserProvider.mainCaseDataForSearching;
       filteredAssesers.sort((a, b) {
-        if (int.parse(a.totalArrearPending) > int.parse(b.totalArrearPending)) {
+        int aId = int.parse(a.totalArrearPending);
+        int bId = int.parse(b.totalArrearPending);
+
+        if (aId > bId) {
+          return -1; // Descending order
+        } else if (aId < bId) {
           return 1;
+        } else {
+          return 0; // Equal
         }
-        return 0;
       });
-      setState(() {
-        print('Called');
-      });
+setState(() {
+
+});
     }
+
+
+
+    // void sortBasedofToatlArrearsPending() {
+    //   filteredAssesers = asseserProvider.mainCaseDataForSearching;
+    //   filteredAssesers.sort((a, b) {
+    //     if (int.parse(a.totalArrearPending) > int.parse(b.totalArrearPending)) {
+    //       return 1;
+    //     }
+    //     return 0;
+    //   });
+    //   setState(() {
+    //     print('Called');
+    //   });
+    // }
 
     return Focus(
       // autofocus: true,
