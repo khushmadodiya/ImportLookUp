@@ -25,14 +25,13 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(
-      MultiProvider(providers: [
+  runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => AsseserProvider()),
     ChangeNotifierProvider(create: (_) => RequestedAsseserProvider()),
     ChangeNotifierProvider(create: (_) => AddNewCase()),
     ChangeNotifierProvider(create: (_) => UserInformation()),
     ChangeNotifierProvider(create: (_) => GeneralPurposeProvider()),
-  ], child: MyApp()));
+  ], child: Test()));
 }
 
 class MyApp extends StatefulWidget {
@@ -62,8 +61,7 @@ class _MyAppState extends State<MyApp> {
             background: Colors.white),
         useMaterial3: true,
       ),
-      home:
-      Consumer<UserInformation>(
+      home: Consumer<UserInformation>(
         builder: (context, pro, child) => StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
