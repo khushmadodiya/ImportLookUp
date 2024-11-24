@@ -671,25 +671,25 @@ class MainCasesInformation {
             .doc("replicationmaincase")
             .collection("formation")
             .orderBy("formation")
-            .startAt([category]).endAt([category + "\uf8ff"]),
+            .startAt([category]).endAt(["$category\uf8ff"]),
         _fireStore
             .collection("MP")
             .doc("replicationmaincase")
             .collection("formation")
             .orderBy("name")
-            .startAt([category]).endAt([category + "\uf8ff"]),
+            .startAt([category]).endAt(["$category\uf8ff"]),
         _fireStore
             .collection("MP")
             .doc("replicationmaincase")
             .collection("formation")
             .orderBy("category")
-            .startAt([category]).endAt([category + "\uf8ff"]),
+            .startAt([category]).endAt(["$category\uf8ff"]),
         _fireStore
             .collection("MP")
             .doc("replicationmaincase")
             .collection("formation")
             .orderBy("subcategory")
-            .startAt([category]).endAt([category + "\uf8ff"]),
+            .startAt([category]).endAt(["$category\uf8ff"]),
         // _fireStore
         //     .collection("MP")
         //     .doc("replicationmaincase")

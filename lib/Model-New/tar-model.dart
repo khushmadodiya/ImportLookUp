@@ -17,12 +17,12 @@ class TarReportModel {
   });
   factory TarReportModel.fromJson(Map<String, dynamic> json) {
     return TarReportModel(
-        amountUpTotheMonth: (json['amountUpTotheMonth'] ?? 0.0).toDouble(),
-        amountOfTheMonth: (json['amountOfTheMonth'] ?? 0.0).toDouble(),
-        noOfCasesOfTheMonth: (json['noOfCasesOfTheMonth'] ?? 0.0).toDouble(),
-        noOfCasesUpToTheMonth: (json['noOfCasesUpToTheMonth'] ?? 0.0).toDouble(),
-        openingBalance: (json['openingBalance'] ?? 0.0).toDouble(),
-        closingBalance: (json['closingBalance'] ?? 0.0).toDouble(),
+      amountUpTotheMonth: (json['amountUpTotheMonth'] ?? 0.0).toDouble(),
+      amountOfTheMonth: (json['amountOfTheMonth'] ?? 0.0).toDouble(),
+      noOfCasesOfTheMonth: (json['noOfCasesOfTheMonth'] ?? 0.0).toDouble(),
+      noOfCasesUpToTheMonth: (json['noOfCasesUpToTheMonth'] ?? 0.0).toDouble(),
+      openingBalance: (json['openingBalance'] ?? 0.0).toDouble(),
+      closingBalance: (json['closingBalance'] ?? 0.0).toDouble(),
     );
   }
   Map<String, dynamic> toJson() {
@@ -32,7 +32,7 @@ class TarReportModel {
       "noOfCasesOfTheMonth": noOfCasesOfTheMonth,
       "noOfCasesUpToTheMonth": noOfCasesUpToTheMonth,
       "openingBalance": openingBalance,
-      "closingBalance": closingBalance
+      "closingBalance": closingBalance,
     };
   }
 }
@@ -42,18 +42,20 @@ class TocModel {
   double closingBalance;
   double numberOfClosingCases;
   double numberOfOpeningCases;
+  String unit;
   TocModel(
       {required this.closingBalance,
       required this.openingBalance,
       required this.numberOfClosingCases,
-      required this.numberOfOpeningCases});
+      required this.numberOfOpeningCases,
+      required this.unit});
   factory TocModel.fromJson(Map<String, dynamic> json) {
     return TocModel(
-      closingBalance: (json["closingBalance"]??0.0).toDouble(),
-      openingBalance: (json["openingBalance"]??0.0).toDouble(),
-      numberOfClosingCases: (json["numberOfClosingCases"]??0.0).toDouble(),
-      numberOfOpeningCases: (json["numberOfOpeningCases"]??0.0).toDouble(),
-    );
+        closingBalance: (json["closingBalance"] ?? 0.0).toDouble(),
+        openingBalance: (json["openingBalance"] ?? 0.0).toDouble(),
+        numberOfClosingCases: (json["numberOfClosingCases"] ?? 0.0).toDouble(),
+        numberOfOpeningCases: (json["numberOfOpeningCases"] ?? 0.0).toDouble(),
+        unit: json["unit"]);
   }
 
   Map<String, dynamic> toJson() {
@@ -62,6 +64,7 @@ class TocModel {
       "openingBalance": openingBalance,
       "numberOfClosingCases": numberOfClosingCases,
       "numberOfOpeningCases": numberOfOpeningCases,
+      "unit": unit
     };
   }
 }

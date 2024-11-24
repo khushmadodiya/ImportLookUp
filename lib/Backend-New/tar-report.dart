@@ -54,11 +54,11 @@ class TarReportInformation {
               closingBalance: data['closingBalance'] + amountOfTheMonth);
           //
           TocModel tocmodel = TocModel(
-            closingBalance: amountOfTheMonth,
-            openingBalance: openingBalance,
-            numberOfClosingCases: noOfCasesOfTheMonth,
-            numberOfOpeningCases: 0,
-          );
+              closingBalance: amountOfTheMonth,
+              openingBalance: openingBalance,
+              numberOfClosingCases: noOfCasesOfTheMonth,
+              numberOfOpeningCases: 0,
+              unit: 'k');
           if (docName == 'receipts') {
             await tocCreation(
                 category: category,
@@ -83,11 +83,11 @@ class TarReportInformation {
         }
       } else {
         TocModel tocmodel = TocModel(
-          closingBalance: closingBalance,
-          openingBalance: openingBalance,
-          numberOfClosingCases: noOfCasesOfTheMonth,
-          numberOfOpeningCases: 0,
-        );
+            closingBalance: closingBalance,
+            openingBalance: openingBalance,
+            numberOfClosingCases: noOfCasesOfTheMonth,
+            numberOfOpeningCases: 0,
+            unit: 'k');
         if (docName == 'receipts') {
           await tocCreation(
               category: category,
@@ -137,7 +137,8 @@ class TarReportInformation {
             openingBalance: model1.openingBalance,
             numberOfClosingCases:
                 model.numberOfClosingCases + model1.numberOfClosingCases,
-            numberOfOpeningCases: model1.numberOfOpeningCases);
+            numberOfOpeningCases: model1.numberOfOpeningCases,
+            unit: model1.unit);
         DocumentSnapshot snapshot = await firebaseFirestore
             .collection("MP")
             .doc(category)
@@ -151,14 +152,6 @@ class TarReportInformation {
             .collection(subcategory)
             .doc("toc");
         batch.update(ref, model.toJson());
-        // } else {
-        // DocumentReference ref = firebaseFirestore
-        //     .collection("MP")
-        //     .doc(category)
-        //     .collection(subcategory)
-        //     .doc("toc");
-        // batch.set(ref, model.toJson());
-        // }
       } else {
         print("I am in the else part${model.toJson()}");
         DocumentReference ref = firebaseFirestore
@@ -202,12 +195,42 @@ class TarReportInformation {
           .collection(subcategory)
           .doc("toc");
       TocModel model = TocModel.fromJson(snp.data() as Map<String, dynamic>);
+      double amountOfUnit = model.closingBalance;
+      if (model.openingBalance / 100000 >= 1 && model.unit != "lakh") {
+        TocModel tocModelUnit = TocModel(
+            closingBalance: model.closingBalance,
+            openingBalance: model.openingBalance / 100000,
+            numberOfClosingCases: model.numberOfClosingCases,
+            numberOfOpeningCases: model.numberOfOpeningCases,
+            unit: "lakh");
+        firebaseFirestore
+            .collection("MP")
+            .doc(category)
+            .collection(subcategory)
+            .doc("toc")
+            .update(tocModelUnit.toJson());
+      }
+
+      snp = await firebaseFirestore
+          .collection("MP")
+          .doc(category)
+          .collection(subcategory)
+          .doc("toc")
+          .get();
+      model = TocModel.fromJson(snp.data() as Map<String, dynamic>);
+      if (model.unit != 'k') {
+        amountOfUnit = model.closingBalance / 100000;
+        print("heelo i am paiseaaa ${amountOfUnit + model.openingBalance}");
+      }
       model = TocModel(
           closingBalance: 0,
-          openingBalance: model.closingBalance + model.openingBalance,
+          openingBalance: double.tryParse(
+                  (amountOfUnit + model.openingBalance).toStringAsFixed(4)) ??
+              0.0,
           numberOfClosingCases: 0,
           numberOfOpeningCases:
-              model.numberOfOpeningCases + model.numberOfClosingCases);
+              model.numberOfOpeningCases + model.numberOfClosingCases,
+          unit: model.unit);
       batch.update(ref, model.toJson());
     }
     print("by by i am doem");
@@ -258,7 +281,7 @@ class TarReportInformation {
                 noOfCasesOfTheMonth: 0,
                 noOfCasesUpToTheMonth:
                     data.noOfCasesUpToTheMonth + data.noOfCasesOfTheMonth,
-                openingBalance: data.openingBalance + data.closingBalance,
+                openingBalance: 0,
                 closingBalance: 0,
               );
 
