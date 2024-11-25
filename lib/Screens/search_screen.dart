@@ -593,7 +593,7 @@ class _SearchScreenMainState extends State<SearchScreenMain> {
                                   print("OnSubmit called");
                                   provider.updateSearchLoader();
                                   var res = await MainCasesInformation()
-                                      .getReplicateMainCase(category: value);
+                                      .searchInReplication(category: value);
                                   generalProvider.updateSearchDate(res['data']);
 
                                   provider.updateSearchLoader();
@@ -658,7 +658,10 @@ class _SearchScreenMainState extends State<SearchScreenMain> {
                       Expanded(
                         child: CustomButton(
                             onpress: ()async {
-
+                              pro.updateSearchLoader();
+                              var res = await MainCasesInformation().sortReplicationCases(false);
+                              genPro.updateSearchDate(res['data']);
+                              pro.updateSearchLoader();
                             },
                             text: "Sort Based On Date",
                             isLoading: false),
@@ -670,7 +673,7 @@ class _SearchScreenMainState extends State<SearchScreenMain> {
                         child: CustomButton(
                           onpress: () async{
                             pro.updateSearchLoader();
-                            var res = await MainCasesInformation().fetchAndSortByTotalArrearPending();
+                            var res = await MainCasesInformation().sortReplicationCases(true);
                             genPro.updateSearchDate(res['data']);
                             pro.updateSearchLoader();
                           },

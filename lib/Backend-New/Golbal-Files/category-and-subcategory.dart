@@ -9,13 +9,15 @@ const List<String> CATEGORY = [
 ];
 
 Map<String, List<String>> SUBCATEGORY = {
-  CATEGORY[0]: ["sc", "hc", "cestat", "commissioner appleal"
+  CATEGORY[0]: [
+    "sc", "hc", "cestat", "commissioner appleal", "additional secretary"
   ],
   CATEGORY[1]: ["ol", "drt", "bifr", "nclt units"],
   CATEGORY[2]: ["cases"],
   CATEGORY[3]: [
     "appeal period over but no appeal field",
     "settlement commision cases",
+    "unit closed",
     "arrear under section 11",
     "arrear under section 142"
   ],
@@ -48,7 +50,6 @@ const List<String> FORMATION = [
   "ICD Powerkheda ",
   "ICD Raipur",
   "ICD Tihi",
-
 ];
 
 Map<String, List<String>> LITIGATIONKEYS = {
@@ -84,6 +85,15 @@ Map<String, List<String>> LITIGATIONKEYS = {
     "commissioner applealdisposal formations changed",
     "commissioner applealarrearss realised",
     "commissioner appealtoc"
+  ],
+  "additional secretary": [
+    "additional secretaryreceipts",
+    "additional secretarydisposal in favour of the department",
+    "additional secretarydisposal against the department",
+    "additional secretarydisposal order for denovo",
+    "additional secretarydisposal formations changed",
+    "additional secretaryarrearss realised",
+    "additional secretarytoc"
   ]
 };
 // ["ol", "drt", "bifr", "nclt units"]
@@ -145,6 +155,14 @@ Map<String, List<String>> RECOVERABLEKEYS = {
     "settlement commision casesdisposal formations changed",
     "settlement commision casesarrearss realised"
   ],
+  "unit closed" :[
+    "unit closedreceipts",
+    "unit closeddisposal in favour of the department",
+    "unit closeddisposal against the department",
+    "unit closeddisposal order for denovo",
+    "unit closeddisposal formations changed",
+    "unit closedarrearss realised"
+  ],
   "arrear under section 11": [
     "arrear under section 11receipts",
     "arrear under section 11disposal in favour of the department",
@@ -187,7 +205,21 @@ Map<String, List<String>> WRITEOFFKEYS = {
 };
 
 //toc all subcateogry data
-    List<String> TOCKEY = ['sctoc','hctoc','cestattoc','commissioner applealtoc','oltoc','drttoc','bifrtoc','nclt unitstoc','casestoc','appeal period over but no appeal fieldtoc','settlement commision casestoc','arrear under section 11toc','arrear under section 142toc','arrears pending for write-offtoc'];
-//checkloader
+List<String> TOCKEY = [
+  'sctoc',
+  'hctoc',
+  'cestattoc',
+  'commissioner applealtoc',
+  'oltoc',
+  'drttoc',
+  'bifrtoc',
+  'nclt unitstoc',
+  'casestoc',
+  'appeal period over but no appeal fieldtoc',
+  'settlement commision casestoc',
+  'arrear under section 11toc',
+  'arrear under section 142toc',
+  'arrears pending for write-offtoc'
+];
 
 bool isloaded = false;
