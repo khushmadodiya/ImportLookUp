@@ -99,7 +99,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final List<Widget> _widgetOptions =  [
       RevenueTable(),
       CustomTable(title: "Show OIO Details", subcategory: SUBCATEGORY[CATEGORY[2]]![0],category: CATEGORY[2],),
-      SearchScreen(),
+      SearchScreenMain(),
       AddCaseDeatil(),
       CustomTable(title: "Supreme Court", subcategory: SUBCATEGORY[CATEGORY[0]]![0],category: CATEGORY[0],),
       CustomTable(title: "High Court", subcategory: SUBCATEGORY[CATEGORY[0]]![1],category: CATEGORY[0],),

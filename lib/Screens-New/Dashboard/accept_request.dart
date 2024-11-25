@@ -4,13 +4,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.dart';
-import 'package:import_lookup/Backend/authmethos.dart';
+
 import 'package:import_lookup/Provider-New/add-new-cases.dart';
 import 'package:import_lookup/Provider-New/general-pusrpose.dart';
 import 'package:import_lookup/Provider-New/get-user-deatils.dart';
 import 'package:import_lookup/Widgets/custom-button.dart';
 import 'package:provider/provider.dart';
 import 'package:import_lookup/excael-download-option.dart';
+import '../../Backend-New/authentication.dart';
 import 'accept-request-case-textfield.dart';
 
 class AcceptRequestCase extends StatefulWidget {
@@ -81,7 +82,7 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
               actions: [
                 IconButton(
                     onPressed: () {
-                      AuthMethods().signOut(context);
+                      Authentication().logOut();
                       setState(() {});
                     },
                     icon: Icon(Icons.logout))

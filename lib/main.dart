@@ -2,15 +2,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.dart';
-import 'package:import_lookup/Backend-New/main-cases-details.dart';
 import 'package:import_lookup/Backend-New/request-cases-details.dart';
 import 'package:import_lookup/Provider-New/general-pusrpose.dart';
 import 'package:import_lookup/Screens-New/Auth-Screens/login-screen.dart';
 import 'package:import_lookup/Screens-New/Dashboard/DisposalScreen.dart';
 import 'package:import_lookup/Screens/dashboard.dart';
-import 'package:import_lookup/Screens/search_screen.dart';
-import 'package:import_lookup/provider/provider.dart';
 import 'package:import_lookup/test.dart';
 import 'package:provider/provider.dart';
 import 'Provider-New/add-new-cases.dart';
@@ -26,12 +22,10 @@ void main() async {
   );
 
   runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (_) => AsseserProvider()),
-    ChangeNotifierProvider(create: (_) => RequestedAsseserProvider()),
     ChangeNotifierProvider(create: (_) => AddNewCase()),
     ChangeNotifierProvider(create: (_) => UserInformation()),
     ChangeNotifierProvider(create: (_) => GeneralPurposeProvider()),
-  ], child: Test()));
+  ], child: MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -61,7 +55,9 @@ class _MyAppState extends State<MyApp> {
             background: Colors.white),
         useMaterial3: true,
       ),
-      home: Consumer<UserInformation>(
+      home:
+      // UploadExcelScreen()
+      Consumer<UserInformation>(
         builder: (context, pro, child) => StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {

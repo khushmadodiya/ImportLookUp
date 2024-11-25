@@ -15,7 +15,7 @@ import 'package:import_lookup/Screens-New/Auth-Screens/signup-screeb.dart';
 import 'package:import_lookup/Screens/dashboard.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import '../../Backend/authmethos.dart';
+import '../../Backend-New/authentication.dart';
 import '../../excael-download-option.dart';
 import '../Auth-Screens/login-screen.dart';
 
@@ -250,7 +250,7 @@ class _RevenueTableState extends State<RevenueTable> {
                                         if(pro.writeOffCompleteData.isNotEmpty) IconButton(
                                             padding: EdgeInsets.zero,
                                             onPressed: () {
-                                              AuthMethods().signOut(context);
+                                              Authentication().logOut();
                                               Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
@@ -291,6 +291,14 @@ class _RevenueTableState extends State<RevenueTable> {
                                           3,
                                           "Comm. Appeal",
                                           4),
+                                      //pending to change 3,4 params
+                                      row(
+                                          pro.litigationCompleteData,
+                                          pro.arrearTocLitgation,
+                                          18,
+                                          3,
+                                          "Additional secretary",
+                                          5),
                                     ]),
                                   SizedBox(
                                     height: 15,
@@ -353,29 +361,37 @@ class _RevenueTableState extends State<RevenueTable> {
                                           pro.arrearTocRecoverable,
                                           0,
                                           0,
-                                          'appeal period over but no appeal field',
+                                          'Appeal period over but no appeal field',
                                           1),
                                       row(
                                           pro.recoverableCompleteData,
                                           pro.arrearTocRecoverable,
                                           6,
                                           1,
-                                          'settlement commision cases',
+                                          'Settlement commision cases',
                                           2),
+                                      //pending to change 3,4 params
+                                      row(
+                                          pro.recoverableCompleteData,
+                                          pro.arrearTocRecoverable,
+                                          6,
+                                          1,
+                                          'Unit closed',
+                                          3),
                                       row(
                                           pro.recoverableCompleteData,
                                           pro.arrearTocRecoverable,
                                           12,
                                           2,
-                                          'arrear under section 11',
-                                          3),
+                                          'Arrear under section 11',
+                                          4),
                                       row(
                                           pro.recoverableCompleteData,
                                           pro.arrearTocRecoverable,
                                           18,
                                           3,
-                                          'arrear under section 142',
-                                          4),
+                                          'Arrear under section 142',
+                                          5),
                                     ]),
                                   SizedBox(
                                     height: 15,
@@ -461,7 +477,7 @@ class _RevenueTableState extends State<RevenueTable> {
             border: TableBorder.all(),
             columnWidths: const {
               0: FixedColumnWidth(40),
-              1: FixedColumnWidth(260),
+              1: FixedColumnWidth(270),
               2: FixedColumnWidth(400),
               3: FixedColumnWidth(700),
               4: FixedColumnWidth(400),
@@ -533,7 +549,7 @@ class _RevenueTableState extends State<RevenueTable> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(6.0),
+            padding: const EdgeInsets.all(9.0),
             child: Text(text,
                 textAlign: TextAlign.center,
                 style:
@@ -546,7 +562,7 @@ class _RevenueTableState extends State<RevenueTable> {
                 children: subcolumns.map((subCol) {
                   return TableCell(
                     child: Padding(
-                      padding: const EdgeInsets.all(4.0),
+                      padding: const EdgeInsets.all(9.0),
                       child: Center(
                           child: Text(subCol, textAlign: TextAlign.center)),
                     ),
@@ -610,18 +626,25 @@ class _RevenueTableState extends State<RevenueTable> {
 
   row(List<TarReportModel?> data, List<TocModel> data2, int index, int index2,
       String title, int no) {
+    print("here is unit ${data2[index2].unit}");
+    double value = data2[index2].openingBalance;
+    if(data2[index2].unit=="Lakh"){
+      value = value/100000;
+      print('this is value$value');
+      // data2[index2].openingBalance /= 100000;
+    }
     return _buildDataRow(
       no.toString(),
       title,
       data2[index2].numberOfOpeningCases.toString(),
-      data2[index2].openingBalance.toString(),
+      (value.toString()+ (data2[index2].unit=="Lakh"?"L":'')),
       data[index]!.noOfCasesOfTheMonth.toString(),
       data[index]!.noOfCasesUpToTheMonth.toString(),
       data[index]!.amountOfTheMonth.toString(),
       data[index]!.amountUpTotheMonth.toString(),
       (data2[index2].numberOfOpeningCases + data[index]!.noOfCasesOfTheMonth)
           .toString(),
-      (data2[index2].openingBalance + data[index]!.amountOfTheMonth).toString(),
+      (value + data[index]!.amountOfTheMonth).toString(),
       data[index + 1]!.noOfCasesOfTheMonth.toString(),
       data[index + 1]!.noOfCasesUpToTheMonth.toString(),
       data[index + 1]!.amountOfTheMonth.toString(),
@@ -800,7 +823,6 @@ class _RevenueTableState extends State<RevenueTable> {
             children: [
               Table(
                 border: TableBorder.all(color: Colors.black),
-                columnWidths: const {0: FixedColumnWidth(150)},
                 children: [
                   TableRow(
                     children: [
@@ -825,7 +847,7 @@ class _RevenueTableState extends State<RevenueTable> {
                 ],
               ),
               Table(
-                columnWidths: const {0: FixedColumnWidth(150)},
+
                 border: TableBorder.all(color: Colors.black),
                 children: [
                   TableRow(

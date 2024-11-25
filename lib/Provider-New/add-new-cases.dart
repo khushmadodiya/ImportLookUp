@@ -305,22 +305,22 @@ class AddNewCase with ChangeNotifier {
   final TextEditingController _dutyOfArrearController = TextEditingController();
   final TextEditingController _penaltyController = TextEditingController();
   final TextEditingController _amountRecoveredController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _preDepositController = TextEditingController();
   final TextEditingController _interestController = TextEditingController();
   final TextEditingController _totalArrearPendingController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _briefFactController = TextEditingController();
   final TextEditingController _statusController = TextEditingController();
   final TextEditingController _appealNoController = TextEditingController();
   final TextEditingController _stayOrderNumberAndDateController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _iecController = TextEditingController();
   final TextEditingController _gstinController = TextEditingController();
   final TextEditingController _panController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
   final TextEditingController _completeTrackController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
   final TextEditingController _effortMadeController = TextEditingController();
   final TextEditingController _remarkController = TextEditingController();
@@ -372,16 +372,16 @@ class AddNewCase with ChangeNotifier {
   List<RequestCaseModel> get requestCaseData => _requestCaseData;
 
   void updateExcelLoader(){
-     _excelLoader = !_excelLoader;
-     notifyListeners();
+    _excelLoader = !_excelLoader;
+    notifyListeners();
   }
   void updateTarLoader(){
-     _tarLoader = !_tarLoader;
-     notifyListeners();
+    _tarLoader = !_tarLoader;
+    notifyListeners();
   }
   void updateSearchLoader(){
-     _searchLoader = !_searchLoader;
-     notifyListeners();
+    _searchLoader = !_searchLoader;
+    notifyListeners();
   }
   void updateSubcategory(String subCatregory) {
     subcategory.text = subCatregory;
@@ -516,7 +516,7 @@ class AddNewCase with ChangeNotifier {
           .getFormationMainCaseInformation(formation))["res"];
     } else {
       _mainCaseDataForSearching =
-          (await MainCasesInformation().getAllMainCasesDetails())["res"];
+      (await MainCasesInformation().getAllMainCasesDetails())["res"];
     }
     notifyListeners();
   }
@@ -539,7 +539,7 @@ class AddNewCase with ChangeNotifier {
           .getFormationRequestedCaseInformation(formation))["res"];
     } else {
       _requestCaseData =
-          (await RequestCasesInformation().getAllReuqestCasesDetails())["res"];
+      (await RequestCasesInformation().getAllReuqestCasesDetails())["res"];
     }
     notifyListeners();
     return {"res": "success"};
@@ -579,8 +579,8 @@ class AddNewCase with ChangeNotifier {
   // Update main case details
   Future updateMainCaseDetails(bool isAdmin,
       {required String uid,
-      required bool isShifted,
-      required MainCaseModel oldDataModel}) async {
+        required bool isShifted,
+        required MainCaseModel oldDataModel}) async {
     var res = await MainCasesInformation().updateCaseDetails(
       oldDataModel: oldDataModel,
       uid: uid,
@@ -600,7 +600,7 @@ class AddNewCase with ChangeNotifier {
       gstin: _gstinController.text,
       pan: _panController.text,
       completeTrack:
-          "On date ${DateFormat('dd/MM/yyyy').format(DateTime.now())} case is in ${_categoryController.text} ${_subcategoryController.text}",
+      "On date ${DateFormat('dd/MM/yyyy').format(DateTime.now())} case is in ${_categoryController.text} ${_subcategoryController.text}",
       category: _categoryController.text,
       remark: _remarkController.text,
       subcategory: _subcategoryController.text,
@@ -615,8 +615,8 @@ class AddNewCase with ChangeNotifier {
   // Add case request
   Future addRequestCase(bool isAdmin,
       {required String uid,
-      required Map<String, dynamic> oldData,
-      required bool isShifted}) async {
+        required Map<String, dynamic> oldData,
+        required bool isShifted}) async {
     var res = await RequestCasesInformation().addCases(
       uid: uid,
       oldData: oldData,
@@ -636,7 +636,7 @@ class AddNewCase with ChangeNotifier {
       gstin: _gstinController.text,
       pan: _panController.text,
       completeTrack:
-          "On Date ${DateFormat('dd/MM/yyyy').format(DateTime.now())} case is in ${_categoryController.text}  ${_subcategoryController.text}",
+      "On Date ${DateFormat('dd/MM/yyyy').format(DateTime.now())} case is in ${_categoryController.text}  ${_subcategoryController.text}",
       category: _categoryController.text,
       remark: _remarkController.text,
       subcategory: _subcategoryController.text,
@@ -651,8 +651,8 @@ class AddNewCase with ChangeNotifier {
   // Update data of requested cases
   Future updateRequestCase(bool isAdmin,
       {required String uid,
-      required Map<String, dynamic> oldData,
-      required bool isShifted}) async {
+        required Map<String, dynamic> oldData,
+        required bool isShifted}) async {
     var res = await RequestCasesInformation().addCases(
       uid: uid,
       oldData: oldData,
@@ -672,7 +672,7 @@ class AddNewCase with ChangeNotifier {
       gstin: _gstinController.text,
       pan: _panController.text,
       completeTrack:
-          "On Date ${DateFormat('dd/MM/yyyy').format(DateTime.now())} case is in ${_categoryController.text}  ${_subcategoryController.text}",
+      "On Date ${DateFormat('dd/MM/yyyy').format(DateTime.now())} case is in ${_categoryController.text}  ${_subcategoryController.text}",
       category: _categoryController.text,
       remark: _remarkController.text,
       subcategory: _subcategoryController.text,
@@ -687,8 +687,8 @@ class AddNewCase with ChangeNotifier {
   //acceptRequest usin admin
   Future acceptRequestByAdmin(
       {required String uid,
-      required String formation,
-      required bool isRequest}) async {
+        required String formation,
+        required bool isRequest}) async {
     var res = RequestCasesInformation().acceptRequest(
       uid: uid,
       name: _nameController.text,
@@ -761,7 +761,7 @@ class AddNewCase with ChangeNotifier {
   Future getMainCasesFromReplication({required String query}) async {
     // print("i am djjdnjdn");
     _mainCaseData = (await MainCasesInformation()
-        .getReplicateMainCase(category: query))["res"];
+        .searchInReplication(category: query))["res"];
 
     notifyListeners();
   }
@@ -824,8 +824,8 @@ class AddNewCase with ChangeNotifier {
     }
     _arrearTocPendingForWirteOff=_allTocdata[TOCKEY[13]]!;
 
-     // print(_allTocdata['sctoc']!.);
-     notifyListeners();
+    // print(_allTocdata['sctoc']!.);
+    notifyListeners();
   }
 
 
@@ -841,7 +841,7 @@ class AddNewCase with ChangeNotifier {
 
   Future tarRestrainded() async {
     _restrainded =
-        (await TarReportInformation().restrainedArrearReport())["data"];
+    (await TarReportInformation().restrainedArrearReport())["data"];
     for (var i in RESTRAINEDKEYS.keys) {
       for (int j = 0; j < RESTRAINEDKEYS[i]!.length; j++) {
         _restrainedCompleteData.add(_restrainded[RESTRAINEDKEYS![i]![j]]);
@@ -852,7 +852,7 @@ class AddNewCase with ChangeNotifier {
 
   Future tarAppealPeriodNotOver() async {
     _appealPeriodNotOver =
-        (await TarReportInformation().periodNotOver())["data"];
+    (await TarReportInformation().periodNotOver())["data"];
     for (var i in PERIODNOTOVERKEYS.keys) {
       for (int j = 0; j < PERIODNOTOVERKEYS[i]!.length; j++) {
         _apealPeriodNotOverCompleteData

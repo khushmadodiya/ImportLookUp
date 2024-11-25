@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:import_lookup/Backend-New/financial-year.dart';
 
 import '../Backend-New/Golbal-Files/category-and-subcategory.dart';
+import '../Model-New/main-case-model.dart';
 
 class GeneralPurposeProvider extends ChangeNotifier{
   String _userType =USERTYPE[0];
@@ -14,6 +15,7 @@ class GeneralPurposeProvider extends ChangeNotifier{
   bool  _ispass = false;
   String _searchQuery = '';
   String _formationSearch = '';
+  List<MainCaseModel> _searchData = [];
 
   String get searchQuery => _searchQuery;
   String get formationSearch => _formationSearch;
@@ -25,6 +27,14 @@ class GeneralPurposeProvider extends ChangeNotifier{
   String? get endDate => _endDate;
   String? get startDate => _startDate;
   bool get ispass => _ispass;
+  List<MainCaseModel> get searchData => _searchData;
+
+
+
+  void updateSearchDate(List<MainCaseModel> data){
+    _searchData = data;
+    notifyListeners();
+  }
 
 
   void updateSearchQuery(String val){

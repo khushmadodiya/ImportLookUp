@@ -23,9 +23,9 @@ class _TestState extends State<Test> {
     // TODO: implement initState
     super.initState();
 
-    searchdata();
+    // searchdata();
     // getData();
-    // financial();
+    financial();
     // print("heelo i am ${DateFormat('MMMM').format(DateTime.now())}");
     //  String time=DateFormat('dd-MMMM-yyyy').format(DateTime.now());
     //  DateFormat format=DateFormat('dd-MMMM-yyyy');
