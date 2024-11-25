@@ -9,7 +9,8 @@ const List<String> CATEGORY = [
 ];
 
 Map<String, List<String>> SUBCATEGORY = {
-  CATEGORY[0]: ["sc", "hc", "cestat", "commissioner appleal",
+  CATEGORY[0]: [
+    "sc", "hc", "cestat", "commissioner appleal",
     // "additional secretary"
   ],
   CATEGORY[1]: ["ol", "drt", "bifr", "nclt units"],
@@ -50,7 +51,6 @@ const List<String> FORMATION = [
   "ICD Powerkheda ",
   "ICD Raipur",
   "ICD Tihi",
-
 ];
 
 Map<String, List<String>> LITIGATIONKEYS = {
@@ -189,7 +189,21 @@ Map<String, List<String>> WRITEOFFKEYS = {
 };
 
 //toc all subcateogry data
-    List<String> TOCKEY = ['sctoc','hctoc','cestattoc','commissioner applealtoc','oltoc','drttoc','bifrtoc','nclt unitstoc','casestoc','appeal period over but no appeal fieldtoc','settlement commision casestoc','arrear under section 11toc','arrear under section 142toc','arrears pending for write-offtoc'];
-//checkloader
+List<String> TOCKEY = [
+  'sctoc',
+  'hctoc',
+  'cestattoc',
+  'commissioner applealtoc',
+  'oltoc',
+  'drttoc',
+  'bifrtoc',
+  'nclt unitstoc',
+  'casestoc',
+  'appeal period over but no appeal fieldtoc',
+  'settlement commision casestoc',
+  'arrear under section 11toc',
+  'arrear under section 142toc',
+  'arrears pending for write-offtoc'
+];
 
 bool isloaded = false;

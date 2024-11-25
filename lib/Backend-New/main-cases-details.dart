@@ -662,7 +662,7 @@ class MainCasesInformation {
 
 // import 'package:cloud_firestore/cloud_firestore.dart';
 
-  Future<Map<String, dynamic>> getReplicateMainCase(
+  Future<Map<String, dynamic>> searchInReplication(
       {required String category}) async {
     try {
       List<Query> queries = [
@@ -690,21 +690,6 @@ class MainCasesInformation {
             .collection("formation")
             .orderBy("subcategory")
             .startAt([category]).endAt(["$category\uf8ff"]),
-        // _fireStore
-        //     .collection("MP")
-        //     .doc("replicationmaincase")
-        //     .collection("formation")
-        //     .where("category", isLessThanOrEqualTo: category),
-        // _fireStore
-        //     .collection("MP")
-        //     .doc("replicationmaincase")
-        //     .collection("formation")
-        //     .where("category", isLessThanOrEqualTo: category),
-        // _fireStore
-        //     .collection("MP")
-        //     .doc("replicationmaincase")
-        //     .collection("formation")
-        //     .where("formation", isLessThanOrEqualTo: category),
       ];
       List<QuerySnapshot> snapshots =
           await Future.wait(queries.map((query) => query.get()));
@@ -735,5 +720,29 @@ class MainCasesInformation {
       print("Error fetching data: $e"); // Log the error
       return {"res": e.toString(), "data": []};
     }
+  }
+
+  Future sortReplicationCases(bool isArrearPending) async {
+    List<MainCaseModel> data = [];
+    QuerySnapshot? snap;
+    if (isArrearPending) {
+      snap = await _fireStore
+          .collection("MP")
+          .doc("replicationmaincase")
+          .collection("formation")
+          .orderBy("originalAmount")
+          .get();
+    } else {
+      snap = await _fireStore
+          .collection("MP")
+          .doc("replicationmaincase")
+          .collection("formation")
+          .orderBy("originalDate")
+          .get();
+    }
+    for (DocumentSnapshot val in snap.docs) {
+      data.add(MainCaseModel.fromJson(val.data() as Map<String, dynamic>));
+    }
+    return {"res": "success", "data": data};
   }
 }

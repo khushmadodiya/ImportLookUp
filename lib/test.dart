@@ -40,7 +40,7 @@ class _TestState extends State<Test> {
   }
 
   void searchdata() async {
-    await MainCasesInformation().getReplicateMainCase(category: 'ICD Tihi');
+    await MainCasesInformation().searchInReplication(category: 'ICD Tihi');
   }
 
   // void getData() async {

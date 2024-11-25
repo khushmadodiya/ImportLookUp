@@ -26,6 +26,8 @@ class MainCaseModel {
   String effortMade;
   String remark;
   String subcategory;
+  DateTime? originalDate;
+  double? originalAmount;
 
   MainCaseModel(
       {required this.uid,
@@ -76,7 +78,8 @@ class MainCaseModel {
         age: (json['age'] as num?)?.toDouble() ?? 0.0,
         completeTrack: (json['completeTrack'] as List<dynamic>?)
                 ?.map((item) => item as String)
-                .toList() ?? [],
+                .toList() ??
+            [],
         isshifted: json['isshifted'] as bool? ?? false,
         category: json['category'] as String? ?? '',
         subcategory: json['subcategory'] as String? ?? '',
@@ -86,6 +89,7 @@ class MainCaseModel {
   }
 
   Map<String, dynamic> toJson() {
+    List<String> newDate = date.split('-');
     return {
       'uid': uid,
       'name': name,
@@ -111,7 +115,10 @@ class MainCaseModel {
       'subcategory': subcategory,
       'remark': remark,
       'effortMade': effortMade,
-      'intrest': intrest
+      'intrest': intrest,
+      'originalDate':
+          DateTime.parse("${newDate[2]}-${newDate[1]}-${newDate[0]}"),
+      'originalAmount': double.tryParse(totalArrearPending),
     };
   }
 }
