@@ -9,15 +9,13 @@ const List<String> CATEGORY = [
 ];
 
 Map<String, List<String>> SUBCATEGORY = {
-  CATEGORY[0]: ["sc", "hc", "cestat", "commissioner appleal",
-    // "additional secretary"
+  CATEGORY[0]: ["sc", "hc", "cestat", "commissioner appleal"
   ],
   CATEGORY[1]: ["ol", "drt", "bifr", "nclt units"],
   CATEGORY[2]: ["cases"],
   CATEGORY[3]: [
     "appeal period over but no appeal field",
     "settlement commision cases",
-    // "unit closed",
     "arrear under section 11",
     "arrear under section 142"
   ],

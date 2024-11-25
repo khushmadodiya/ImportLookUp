@@ -33,6 +33,8 @@ class ExcelDonwloadOption {
     sheet.getRangeByIndex(1, 21).setText("Category");
     sheet.getRangeByIndex(1, 22).setText("Remark");
     sheet.getRangeByIndex(1, 23).setText("Subcategory");
+    sheet.getRangeByIndex(1, 24).setText("EffortMade");
+    sheet.getRangeByIndex(1, 25).setText("Interest");
 
 // Populate the data rows starting from the second row
     for (var i = 0; i < myList.length; i++) {
@@ -67,6 +69,10 @@ class ExcelDonwloadOption {
       sheet.getRangeByIndex(i + 2, 22).setText(item.remark.toString() ?? '');
       sheet.getRangeByIndex(i + 2, 23).setText(
           item.subcategory.toString() ?? '');
+      sheet.getRangeByIndex(i + 2, 24).setText(
+          item.effortMade.toString() ?? '');
+      sheet.getRangeByIndex(i + 2, 25).setText(
+          item.intrest.toString() ?? '');
     }
 
 

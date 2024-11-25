@@ -662,7 +662,7 @@ class MainCasesInformation {
 
 // import 'package:cloud_firestore/cloud_firestore.dart';
 
-  Future<Map<String, dynamic>> getReplicateMainCase(
+  Future getReplicateMainCase(
       {required String category}) async {
     try {
       List<Query> queries = [
@@ -735,5 +735,44 @@ class MainCasesInformation {
       print("Error fetching data: $e"); // Log the error
       return {"res": e.toString(), "data": []};
     }
+  }
+  Future getAllReplicationData()async{
+   try{
+     QuerySnapshot snapshot = await _fireStore
+         .collection("MP")
+         .doc("replicationmaincase")
+         .collection("formation").get();
+     List<MainCaseModel> data = [];
+     for(var i in snapshot.docs){
+       data.add(MainCaseModel.fromJson(i.data() as Map<String,dynamic>));
+
+     }
+     return {'data':data,'res':'success'};
+   }
+   catch(e){
+     return {'res':"some error occured"};
+   }
+  }
+  Future fetchAndSortByTotalArrearPending() async {
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection("MP")
+        .doc("replicationmaincase")
+        .collection("formation")
+        .get();
+
+    // Convert documents into a list and sort them
+    List<DocumentSnapshot> sortedDocuments = snapshot.docs;
+    sortedDocuments.sort((a, b) {
+      double totalA = double.tryParse(a['totalArrearPending']) ?? 0;
+      double totalB = double.tryParse(b['totalArrearPending']) ?? 0;
+      return totalA.compareTo(totalB); // Ascending order
+      // Use totalB.compareTo(totalA) for descending order
+    });
+    List<MainCaseModel> data = [];
+    for(var doc in sortedDocuments){
+      data.add(MainCaseModel.fromJson(doc.data() as Map<String,dynamic>));
+    }
+    print('Hello i am here ${data[0].name}');
+    return {'data':data,'res':'success'};
   }
 }

@@ -23,6 +23,7 @@ class _TestState extends State<Test> {
     // TODO: implement initState
     super.initState();
 
+
     searchdata();
     // getData();
     // financial();
@@ -40,7 +41,44 @@ class _TestState extends State<Test> {
   }
 
   void searchdata() async {
-    await MainCasesInformation().getReplicateMainCase(category: 'ICD Tihi');
+    // await MainCasesInformation().getReplicateMainCase(category: 'ICD Tihi');
+   // QuerySnapshot sna =  await FirebaseFirestore.instance.collection("MP")
+   //     .doc("replicationmaincase")
+   //     .collection("formation").get();
+   // List<QueryDocumentSnapshot> sortedDocuments = sna.docs;
+   // sortedDocuments.sort((a, b) {
+   //   double totalA = double.tryParse(a['totalArrearPending']) ?? 0;
+   //   double totalB = double.tryParse(b['totalArrearPending']) ?? 0;
+   //   return totalA.compareTo(totalB); // Ascending order
+   //   // Use totalB.compareTo(totalA) for descending order
+   // });
+   //
+   // for(var i in sna.docs){
+   //   print("Hello i khush${(i.data() as Map<String,dynamic>)['totalArrearPending'] }");
+   // }
+
+    List<DocumentSnapshot> documents = await fetchAndSortByTotalArrearPending();
+    for (var doc in documents) {
+      print("Name: ${doc['name']}, Total Arrear Pending: ${doc['totalArrearPending']}");
+    }
+  }
+  Future<List<DocumentSnapshot>> fetchAndSortByTotalArrearPending() async {
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection("MP")
+        .doc("replicationmaincase")
+        .collection("formation")
+        .get();
+
+    // Convert documents into a list and sort them
+    List<DocumentSnapshot> sortedDocuments = snapshot.docs;
+    sortedDocuments.sort((a, b) {
+      double totalA = double.tryParse(a['totalArrearPending']) ?? 0;
+      double totalB = double.tryParse(b['totalArrearPending']) ?? 0;
+      return totalA.compareTo(totalB); // Ascending order
+      // Use totalB.compareTo(totalA) for descending order
+    });
+
+    return sortedDocuments;
   }
 
   // void getData() async {
@@ -150,3 +188,158 @@ class _TestState extends State<Test> {
     ];
   }
 }
+
+// import 'dart:io';
+//
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:excel/excel.dart';
+// import 'package:file_picker/file_picker.dart';
+// import 'package:flutter/material.dart';
+//
+// class UploadExcelScreen extends StatefulWidget {
+//   @override
+//   _UploadExcelScreenState createState() => _UploadExcelScreenState();
+// }
+//
+// class _UploadExcelScreenState extends State<UploadExcelScreen> {
+//   Map<String, Map<String, dynamic>> jsonData = {};
+//   String? filePath;
+//   String columnName = '';
+//   String filterValue = '';
+//   bool isLoading = false;
+//
+//   Future<void> pickFile() async {
+//     FilePickerResult? result = await FilePicker.platform.pickFiles(
+//       type: FileType.custom,
+//       allowedExtensions: ['xlsx'],
+//     );
+//
+//     if (result != null) {
+//       setState(() {
+//         filePath = result.files.single.path;
+//       });
+//     }
+//   }
+//
+//   Future<void> processAndUploadData() async {
+//     if (filePath == null || columnName.isEmpty || filterValue.isEmpty) {
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         SnackBar(content: Text("Please provide all inputs.")),
+//       );
+//       return;
+//     }
+//
+//     setState(() {
+//       isLoading = true;
+//     });
+//
+//     try {
+//       // Load Excel file
+//       var file = File(filePath!);
+//       var bytes = file.readAsBytesSync();
+//       var excel = Excel.decodeBytes(bytes);
+//
+//       // Identify column index
+//       Sheet sheet = excel.sheets.values.first; // Assuming the first sheet
+//       int? columnIndex;
+//       var headerRow = sheet.rows[0]; // Header row
+//
+//       for (int i = 0; i < headerRow.length; i++) {
+//         if (headerRow[i]?.value == columnName) {
+//           columnIndex = i;
+//           break;
+//         }
+//       }
+//
+//       if (columnIndex == null) {
+//         ScaffoldMessenger.of(context).showSnackBar(
+//           SnackBar(content: Text("Column '$columnName' not found.")),
+//         );
+//         return;
+//       }
+//
+//       // Filter rows
+//       List<Map<String, dynamic>> filteredData = [];
+//       for (int i = 1; i < sheet.rows.length; i++) {
+//         var row = sheet.rows[i];
+//         // if (row[columnIndex]?.value.toString() == filterValue) {
+//           Map<String, dynamic> rowData = {};
+//           for (int j = 0; j < row.length; j++) {
+//             rowData[headerRow[j]?.value.toString() ?? ""] = row[j]?.value;
+//           }
+//           filteredData.add(rowData);
+//
+//         // }
+//       }
+//
+//       // Upload data to Firebase
+//       for (var data in filteredData) {
+//         // await FirebaseFirestore.instance.collection("your_collection_name").add(data);
+//         print("this is khush${data}" );
+//       }
+//
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         SnackBar(content: Text("Data uploaded successfully!")),
+//       );
+//     } catch (e) {
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         SnackBar(content: Text("Error: $e")),
+//       );
+//     } finally {
+//       setState(() {
+//         isLoading = false;
+//       });
+//     }
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Upload Excel to Firebase'),
+//       ),
+//       body: Center(
+//         child: Container(
+//           height: 100,
+//           width: 100,
+//           color: Colors.red,
+//           child: ElevatedButton(
+//               onPressed: () async {
+//                 FilePickerResult? pickedFile =
+//                 await FilePicker.platform.pickFiles(
+//                   type: FileType.custom,
+//                   allowedExtensions: ['xlsx'],
+//                   allowMultiple: false,
+//                 );
+//                 if (pickedFile != null) {
+//                   // print("i ma hete ");
+//                   var bytes = pickedFile.files.single.bytes;
+//                   var excel = Excel.decodeBytes(bytes!);
+//                   for (var table in excel.tables.keys) {
+//                     int i = 0;
+//                     for (var row in excel.tables[table]!.rows) {
+//                       if (i != 0) {
+//                         print('this is khus data${row[2]!.value.toString()}');
+//                         // jsonData[row[1]!.value.toString()] = {
+//                         //   "newTotal": int.parse(row[0]!.value.toString()),
+//                         //   "warehouseId": "66fceb5163c6d5c106cfa809",
+//                         //   "additionalInfo": {"reason": "Excel update"}
+//                         // };
+//                       } else {
+//                         i++;
+//                       }
+//                     }
+//                     if (jsonData.isNotEmpty) {
+//                       // provider.updateJsonData();
+//                     }
+//                   }
+//                 }
+//               },
+//               child: Text("Upload Excel")),
+//         ),
+//         ),
+//
+//
+//     );
+//   }
+// }
