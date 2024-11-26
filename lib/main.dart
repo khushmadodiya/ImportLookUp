@@ -8,6 +8,7 @@ import 'package:import_lookup/Screens-New/Auth-Screens/login-screen.dart';
 import 'package:import_lookup/Screens-New/Dashboard/DisposalScreen.dart';
 import 'package:import_lookup/Screens/dashboard.dart';
 import 'package:import_lookup/test.dart';
+import 'package:import_lookup/upload-data.dart';
 import 'package:provider/provider.dart';
 import 'Provider-New/add-new-cases.dart';
 import 'Provider-New/get-user-deatils.dart';
@@ -56,7 +57,7 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
       ),
       home:
-      // UploadExcelScreen()
+      // UploadData()
       Consumer<UserInformation>(
         builder: (context, pro, child) => StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
@@ -177,4 +178,3 @@ class _MyAppState extends State<MyApp> {
 //     );
 //   }
 // }
-

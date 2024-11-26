@@ -118,10 +118,10 @@ class _RevenueTableState extends State<RevenueTable> {
                    strokeWidth: 3,
                    color: Colors.black,
                  ):Icon(Icons.refresh,size: 30,color: Colors.black,),
-                 onTap: (){
+                 onTap:!pro.tarLoader? (){
                    pro.clearAllTarReportData();
                    getData();
-                 },
+                 }:null,
                ),
              )
             ],
@@ -520,25 +520,19 @@ class _RevenueTableState extends State<RevenueTable> {
 
   row(List<TarReportModel?> data, List<TocModel> data2, int index, int index2,
       String title, int no) {
-    print("here is unit ${data2[index2].unit}");
-    double value = data2[index2].openingBalance;
-    if(data2[index2].unit=="Lakh"){
-      value = value/100000;
-      print('this is value$value');
-      // data2[index2].openingBalance /= 100000;
-    }
+
     return _buildDataRow(
       no.toString(),
       title,
       data2[index2].numberOfOpeningCases.toString(),
-      (value.toString()+ (data2[index2].unit=="Lakh"?"L":'')),
+      (data2[index2].openingBalance.toString()+ (data2[index2].unit=="Lakh"?"L":'')),
       data[index]!.noOfCasesOfTheMonth.toString(),
       data[index]!.noOfCasesUpToTheMonth.toString(),
       data[index]!.amountOfTheMonth.toString(),
       data[index]!.amountUpTotheMonth.toString(),
       (data2[index2].numberOfOpeningCases + data[index]!.noOfCasesOfTheMonth)
           .toString(),
-      (value + data[index]!.amountOfTheMonth).toString(),
+      (data2[index2].unit=="Lakh"?  (data2[index2].openingBalance + data[index]!.amountOfTheMonth).toString(): ((data2[index2].openingBalance + (data[index]!.amountOfTheMonth/100000)).toString()+ (data2[index2].unit=="Lakh"?"L":''))),
       data[index + 1]!.noOfCasesOfTheMonth.toString(),
       data[index + 1]!.noOfCasesUpToTheMonth.toString(),
       data[index + 1]!.amountOfTheMonth.toString(),
