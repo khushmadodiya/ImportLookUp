@@ -27,7 +27,7 @@ class CompleteTrack extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 24, // Larger font size for emphasis
                   fontWeight: FontWeight.bold, // Bold for prominence
-                  color: Colors.deepPurple, // Color match with AppBar
+                  color: Colors.black, // Color match with AppBar
                 ),
               ),
             ),

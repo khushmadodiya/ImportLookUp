@@ -89,7 +89,7 @@ class _CustomTableState extends State<CustomTable> {
                     height: 40,
                     width: 150,
                     color: Colors.amber.withOpacity(0.3),
-                    child: provider.excelLoader?Center(child: Container(height:20,width:20,child: CircularProgressIndicator(strokeWidth: 3,))): Center(child: Text("Download Excel")),
+                    child: provider.excelLoader?Center(child: Container(height:20,width:20,child: CircularProgressIndicator(strokeWidth: 3,color: Colors.black,))): Center(child: Text("Download Excel")),
                   ),
                 ),
                 onTap: () async{
@@ -180,7 +180,7 @@ class _CustomTableState extends State<CustomTable> {
        Consumer<AddNewCase>(builder: (context, provider, child) {
           if (provider.isLoading) {
             return const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
+              body: Center(child: CircularProgressIndicator(color: Colors.black,)),
             );
           }
           int rowNumber = 1;
@@ -273,7 +273,7 @@ class _CustomTableState extends State<CustomTable> {
       children: [
         _buildHeaderCell('S No.', 1),
         _buildHeaderCell('Name', 2),
-        _buildHeaderCell('Division/Range', 3),
+        _buildHeaderCell('Formation', 3),
         _buildHeaderCell('OIO', 4),
         _buildHeaderCell('Date', 5),
         _buildHeaderCell('Day Count', 6),

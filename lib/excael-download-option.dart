@@ -12,7 +12,7 @@ class ExcelDonwloadOption {
     // Set headers in the first row
     sheet.getRangeByIndex(1, 1).setText("UID");
     sheet.getRangeByIndex(1, 2).setText("Name");
-    sheet.getRangeByIndex(1, 3).setText("Division Range");
+    sheet.getRangeByIndex(1, 3).setText("formation");
     sheet.getRangeByIndex(1, 4).setText("OIO");
     sheet.getRangeByIndex(1, 5).setText("Date");
     sheet.getRangeByIndex(1, 6).setText("Duty or Arrear");
@@ -84,7 +84,7 @@ class ExcelDonwloadOption {
           href:
           'data:application/octet-stream;charset=utf-16le;base64,${base64
               .encode(bytes)}')
-        ..setAttribute('download', '$excelFor.xlsx')
+        ..setAttribute('download', 'ALL CASES.xlsx')
         ..click();
     } else {}
   }
@@ -259,7 +259,7 @@ class ExcelDonwloadOption {
           href:
           'data:application/octet-stream;charset=utf-16le;base64,${base64
               .encode(bytes)}')
-        ..setAttribute('download', '$excelFor.xlsx')
+        ..setAttribute('download', 'Tar Report.xlsx')
         ..click();
     } else {
       // Request storage permission if not already granted
