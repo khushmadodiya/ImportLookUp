@@ -14,30 +14,30 @@ class MainCasesInformation {
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   Future addCases(
       {required String uid,
-        required String name,
-        required String formation,
-        required String oio,
-        required String date,
-        required String dutyOfArrear,
-        required String penalty,
-        required String amountRecovered,
-        required String preDeposit,
-        required String intrest,
-        required String totalArrearPending,
-        required String briefFact,
-        required String status,
-        required String apealNo,
-        required String stayOrderNumberAndDate,
-        required String iec,
-        required String gstin,
-        required String pan,
-        double? age,
-        required List<String> completeTrack,
-        required String category,
-        // required String efforMade,
-        required String remark,
-        required String subcategory,
-        required String effortMade}) async {
+      required String name,
+      required String formation,
+      required String oio,
+      required String date,
+      required String dutyOfArrear,
+      required String penalty,
+      required String amountRecovered,
+      required String preDeposit,
+      required String intrest,
+      required String totalArrearPending,
+      required String briefFact,
+      required String status,
+      required String apealNo,
+      required String stayOrderNumberAndDate,
+      required String iec,
+      required String gstin,
+      required String pan,
+      double? age,
+      required List<String> completeTrack,
+      required String category,
+      // required String efforMade,
+      required String remark,
+      required String subcategory,
+      required String effortMade}) async {
     String uuid = const Uuid().v1();
     MainCaseModel model = MainCaseModel(
       category: category,
@@ -70,7 +70,7 @@ class MainCasesInformation {
     await replicateMainCase(mainCaseModel: model, batch: batch);
     try {
       DocumentReference formationDocRef =
-      _fireStore.collection("MP").doc(formation);
+          _fireStore.collection("MP").doc(formation);
       DocumentSnapshot docSnapshot = await formationDocRef.get();
 
       if (!docSnapshot.exists) {
@@ -206,9 +206,12 @@ class MainCasesInformation {
       if (isShifted) {
         trac.add(completeTrack);
       }
-      if ((_snap.data() as Map<String, dynamic>)['totalArrearPending']
-          .toString() !=
+      // print(
+      //     "nice is work is gere ${(_snap.data() as Map<String, dynamic>)['totalArrearPending'] != totalArrearPending}  ${totalArrearPending}");
+      if ((_snap.data() as Map<String, dynamic>)['totalArrearPending'] !=
           totalArrearPending) {
+        // print(
+        //     "heelo amoutn is pu dipu ${double.parse(totalArrearPending) - double.parse(oldDataModel.totalArrearPending)}");
         await TarReportInformation().updateDataOfTarReport(
             batch: batch,
             category: oldDataModel.category,
@@ -216,21 +219,11 @@ class MainCasesInformation {
             docName: "receipts",
             noOfCasesOfTheMonth: 0,
             noOfCasesUpToTheMonth: 0,
-            amountOfTheMonth: double.parse(oldDataModel.totalArrearPending) -
-                double.parse(totalArrearPending) <
-                0
-                ? double.parse(totalArrearPending) -
-                double.parse(oldDataModel.totalArrearPending)
-                : double.parse(oldDataModel.totalArrearPending) -
+            amountOfTheMonth: -double.parse(oldDataModel.totalArrearPending) +
                 double.parse(totalArrearPending),
             amountUpTotheMonth: 0,
             openingBalance: 0,
-            closingBalance: double.parse(oldDataModel.totalArrearPending) -
-                double.parse(totalArrearPending) <
-                0
-                ? double.parse(totalArrearPending) -
-                double.parse(oldDataModel.totalArrearPending)
-                : double.parse(oldDataModel.totalArrearPending) -
+            closingBalance: -double.parse(oldDataModel.totalArrearPending) +
                 double.parse(totalArrearPending));
       }
       if (oldDataModel.category != category ||
@@ -318,9 +311,9 @@ class MainCasesInformation {
   //update maincase datils (requested cases)
   Future updateMainCaseDetails(
       {required MainCaseModel newDataModel,
-        required String formation,
-        required String uid,
-        bool request = false}) async {
+      required String formation,
+      required String uid,
+      bool request = false}) async {
     WriteBatch batch = _fireStore.batch();
     try {
       // print("i am divyansh i n main case 10");
@@ -342,7 +335,7 @@ class MainCasesInformation {
         // .set(model.toJson());
         //updating tarreport if this request is not present in database
         await TarReportInformation().updateDataOfTarReport(
-          // batch:_fireStore.batch(),
+            // batch:_fireStore.batch(),
             batch: batch,
             category: modelData['category'],
             subcategory: modelData['subcategory'],
@@ -365,9 +358,9 @@ class MainCasesInformation {
       // print("i am divyansh patidar");
       //tar report updating if total arrear pending is changed
       MainCaseModel oldDataModel =
-      MainCaseModel.fromJson(docSnapshot.data() as Map<String, dynamic>);
+          MainCaseModel.fromJson(docSnapshot.data() as Map<String, dynamic>);
       if ((docSnapshot.data() as Map<String, dynamic>)['totalArrearPending']
-          .toString() !=
+              .toString() !=
           modelData['totalArrearPending']) {
         // print(
         //     "i am inside of it update  ${oldDataModel.totalArrearPending}  ${newDataModel.totalArrearPending}");
@@ -380,21 +373,15 @@ class MainCasesInformation {
             noOfCasesUpToTheMonth: 0,
             // amountOfTheMonth: double.parse(modelData['totalArrearPending']),
             amountOfTheMonth: double.parse(oldDataModel.totalArrearPending) -
-                double.parse(newDataModel.totalArrearPending) <
-                0
+                        double.parse(newDataModel.totalArrearPending) <
+                    0
                 ? double.parse(newDataModel.totalArrearPending) -
-                double.parse(oldDataModel.totalArrearPending)
+                    double.parse(oldDataModel.totalArrearPending)
                 : double.parse(oldDataModel.totalArrearPending) -
-                double.parse(newDataModel.totalArrearPending),
+                    double.parse(newDataModel.totalArrearPending),
             amountUpTotheMonth: 0,
             openingBalance: 0,
-            closingBalance: double.parse(oldDataModel.totalArrearPending) -
-                double.parse(newDataModel.totalArrearPending) <
-                0
-                ? double.parse(newDataModel.totalArrearPending) -
-                double.parse(oldDataModel.totalArrearPending)
-                : double.parse(oldDataModel.totalArrearPending) -
-                double.parse(newDataModel.totalArrearPending));
+            closingBalance: -double.parse(oldDataModel.totalArrearPending));
       }
       print("i am inside of it above of it");
       if (oldDataModel.category != newDataModel.category ||
@@ -469,9 +456,9 @@ class MainCasesInformation {
   //delete main case
   Future deleteMainCase(
       {required String formation,
-        required String uid,
-        bool isWriteOff = false,
-        String docName = ''}) async {
+      required String uid,
+      bool isWriteOff = false,
+      String docName = ''}) async {
     try {
       WriteBatch batch = _fireStore.batch();
 
@@ -482,7 +469,7 @@ class MainCasesInformation {
           .doc(uid);
       DocumentSnapshot snap = await ref.get();
       MainCaseModel model =
-      MainCaseModel.fromJson(snap.data() as Map<String, dynamic>);
+          MainCaseModel.fromJson(snap.data() as Map<String, dynamic>);
       await deletereplicateMainCase(uid: uid, batch: batch);
       if (isWriteOff) {
         await writeOff(
@@ -529,9 +516,9 @@ class MainCasesInformation {
 
   Future writeOff(
       {required String formation,
-        required String uid,
-        required WriteBatch writeBatch,
-        required MainCaseModel mainCaseModel}) async {
+      required String uid,
+      required WriteBatch writeBatch,
+      required MainCaseModel mainCaseModel}) async {
     try {
       DocumentSnapshot snap = await _fireStore
           .collection("MP")
@@ -568,7 +555,7 @@ class MainCasesInformation {
           .doc(uid)
           .get();
       MainCaseModel model =
-      MainCaseModel.fromJson(qsnap.data() as Map<String, dynamic>);
+          MainCaseModel.fromJson(qsnap.data() as Map<String, dynamic>);
       return {'res': 'success', 'model': model};
     } catch (e) {
       return {'res': 'some error occure $e'};
@@ -586,7 +573,7 @@ class MainCasesInformation {
           .doc(uid)
           .get();
       MainCaseModel model =
-      MainCaseModel.fromJson(qsnap.data() as Map<String, dynamic>);
+          MainCaseModel.fromJson(qsnap.data() as Map<String, dynamic>);
       return {'res': 'success', 'model': model};
     } catch (e) {
       return {'res': 'some error occure $e'};
@@ -627,8 +614,8 @@ class MainCasesInformation {
 
   Future upDatereplicateMainCase(
       {required String uid,
-        required MainCaseModel model,
-        required WriteBatch batch}) async {
+      required MainCaseModel model,
+      required WriteBatch batch}) async {
     try {
       DocumentReference ref = _fireStore
           .collection("MP")
@@ -692,7 +679,7 @@ class MainCasesInformation {
             .startAt([category]).endAt(["$category\uf8ff"]),
       ];
       List<QuerySnapshot> snapshots =
-      await Future.wait(queries.map((query) => query.get()));
+          await Future.wait(queries.map((query) => query.get()));
       Map<String, MainCaseModel> uniqueData = {};
 
       for (var snapshot in snapshots) {
