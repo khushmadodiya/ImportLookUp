@@ -24,8 +24,8 @@ class _TestState extends State<Test> {
     super.initState();
 
     // searchdata();
-    // getData();
-    financial();
+    getData();
+    // financial();
     // print("heelo i am ${DateFormat('MMMM').format(DateTime.now())}");
     //  String time=DateFormat('dd-MMMM-yyyy').format(DateTime.now());
     //  DateFormat format=DateFormat('dd-MMMM-yyyy');
@@ -43,29 +43,29 @@ class _TestState extends State<Test> {
     await MainCasesInformation().searchInReplication(category: 'ICD Tihi');
   }
 
-  // void getData() async {
-  //   FirebaseFirestore store = FirebaseFirestore.instance;
-  //   WriteBatch batch = store.batch();
-  //   for (int i = 0; i < CATEGORY.length; i++) {
-  //     for (int j = 0; j < SUBCATEGORY[CATEGORY[i]]!.length; j++) {
-  //       for (int k = 0; k < DOCNAME.length; k++) {
-  //         await TarReportInformation().updateDataOfTarReport(
-  //             batch: batch,
-  //             category: CATEGORY[i],
-  //             subcategory: SUBCATEGORY[CATEGORY[i]]![j],
-  //             docName: DOCNAME[k],
-  //             noOfCasesOfTheMonth: 0,
-  //             noOfCasesUpToTheMonth: 0,
-  //             amountOfTheMonth: 0,
-  //             amountUpTotheMonth: 0,
-  //             openingBalance: 0,
-  //             closingBalance: 0);
-  //       }
-  //       print("heeli i am ${CATEGORY[i]}   ${SUBCATEGORY[CATEGORY[i]]![j]}");
-  //     }
-  //   }
-  //   batch.commit();
-  // }
+  void getData() async {
+    FirebaseFirestore store = FirebaseFirestore.instance;
+    WriteBatch batch = store.batch();
+    for (int i = 0; i < CATEGORY.length; i++) {
+      for (int j = 0; j < SUBCATEGORY[CATEGORY[i]]!.length; j++) {
+        for (int k = 0; k < DOCNAME.length; k++) {
+          await TarReportInformation().updateDataOfTarReport(
+              batch: batch,
+              category: CATEGORY[i],
+              subcategory: SUBCATEGORY[CATEGORY[i]]![j],
+              docName: DOCNAME[k],
+              noOfCasesOfTheMonth: 0,
+              noOfCasesUpToTheMonth: 0,
+              amountOfTheMonth: 0,
+              amountUpTotheMonth: 0,
+              openingBalance: 0,
+              closingBalance: 0);
+        }
+        print("heeli i am ${CATEGORY[i]}   ${SUBCATEGORY[CATEGORY[i]]![j]}");
+      }
+    }
+    batch.commit();
+  }
 
   void financial() {
     FinancialYear().financialYear(currentMonth: 'November');
