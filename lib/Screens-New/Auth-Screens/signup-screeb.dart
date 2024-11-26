@@ -70,6 +70,7 @@ class _SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      appBar: AppBar(),
       body: Consumer<AddNewCase>(
         builder: (context,p,child)=>
          Consumer<GeneralPurposeProvider>(

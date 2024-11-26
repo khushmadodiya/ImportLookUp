@@ -1,3 +1,4 @@
+import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
 import 'package:import_lookup/Backend-New/Golbal-Files/category-and-subcategory.dart';
 import 'package:import_lookup/Backend-New/authentication.dart';
@@ -244,6 +245,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       iconSize: 20,
+      unselectedItemColor: Colors.black,
       items:  const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
@@ -251,7 +253,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.newspaper),
-          label: 'OIO Detail',
+          label: 'APNO',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.search),
@@ -320,15 +322,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
           width: 350,
           height: 250,
           decoration: BoxDecoration(
-            color: Colors.amber.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(5),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
           ),
           child: Center(
             child: ListView(
               children: _getOptionsForParentIndex(parentIndex)
                   .entries
                   .map((entry) => ListTile(
-                title: Text(entry.key),
+                title: Text(entry.key,style: TextStyle(fontWeight: FontWeight.w500),),
                 onTap: () {
                   _onItemTapped(entry.value, entry.key);
                   Navigator.pop(context);

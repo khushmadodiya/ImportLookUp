@@ -329,12 +329,14 @@ class AddNewCase with ChangeNotifier {
   bool _excelLoader = false;
   bool _tarLoader = false;
   bool _searchLoader = false;
+  bool _shiftDataLoader = false;
 
   // Getters for each controller
   bool get isLoading => _isLoading;
   bool get excelLoader => _excelLoader;
   bool get tarLoader => _tarLoader;
   bool get searchLoader => _searchLoader;
+  bool get shiftDataLoader => _shiftDataLoader;
   TextEditingController get name => _nameController;
   TextEditingController get formation => _formationController;
   TextEditingController get oio => _oioController;
@@ -383,6 +385,11 @@ class AddNewCase with ChangeNotifier {
     _searchLoader = !_searchLoader;
     notifyListeners();
   }
+  void updateShiftDataLoader(){
+    _shiftDataLoader = !_shiftDataLoader;
+    notifyListeners();
+  }
+
   void updateSubcategory(String subCatregory) {
     subcategory.text = subCatregory;
   }
@@ -885,6 +892,25 @@ class AddNewCase with ChangeNotifier {
     notifyListeners();
   }
 
+  void clearAllTarReportData(){
+    _litigationCompleteData = [];
+    _restrainedCompleteData = [];
+    _apealPeriodNotOverCompleteData = [];
+    _recoverableCompleteData = [];
+    _writeOffCompleteData = [];
+    _arrearLitigation = {};
+    _restrainded = {};
+    _appealPeriodNotOver = {};
+    _recoverable = {};
+    _writeOff = {};
+    _allTocdata = {};
+    _arrearTocLitgation = [];
+    _arrearTocRestrained = [];
+    _arrearTocRecoverable = [];
+    _arrearTocWhereApealPeriodNotOver =null;
+    _arrearTocPendingForWirteOff=null;
+     notifyListeners();
+  }
   void clear() {
     _nameController.clear();
     _formationController.clear();

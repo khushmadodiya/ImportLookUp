@@ -99,334 +99,228 @@ class _RevenueTableState extends State<RevenueTable> {
     }
 
     return SafeArea(
-      child: Consumer<AddNewCase>(
-        builder: (context, pro, child) {
-          // if(pro.allTocdata.isNotEmpty)
-          {
-            return Focus(
-              autofocus: true,
-              skipTraversal: true,
-              onKeyEvent: (FocusNode node, KeyEvent event) {
-                _handleKeyEvent(event);
-                return KeyEventResult.handled;
-              },
-              child: Column(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Scrollbar(
-                        controller: horizontalController,
-                        thickness: 13,
-                        child: SingleChildScrollView(
-                          dragStartBehavior: DragStartBehavior.down,
-                          controller: horizontalController,
-                          scrollDirection: Axis.horizontal,
-                          child: Scrollbar(
-                            controller: verticalController,
-                            thickness: 10,
-                            scrollbarOrientation: ScrollbarOrientation.left,
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.vertical,
-                              controller: verticalController,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Container(
-                                    height: 50,
 
-                                    child: Row(
-                                      children: [
-                                        if (pro.writeOffCompleteData.isNotEmpty)
-                                          InkWell(
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 8.0),
-                                              child: Container(
-                                                height: 40,
-                                                width: MediaQuery.of(context)
-                                                            .size
-                                                            .width >
-                                                        600
-                                                    ? 140
-                                                    : 120,
-                                                color: Colors.amber
-                                                    .withOpacity(0.3),
-                                                child: const Center(
-                                                    child:
-                                                        Text("Download Excel")),
-                                              ),
-                                            ),
-                                            onTap: () {
-                                              print(
-                                                  'this is excel${excelData![0][0]}');
-                                              List<List<String>> data =
-                                                  removeDuplicates(excelData);
-                                              ExcelDonwloadOption()
-                                                  .downloadExcelForTar(
-                                                      data, 'OIO DETAILS');
-                                            },
-                                          ),
-                                        if(pro.writeOffCompleteData.isNotEmpty)     InkWell(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Container(
-                                              height: 40,
-                                              width: MediaQuery.of(context)
-                                                          .size
-                                                          .width >
-                                                      600
-                                                  ? 140
-                                                  : 100,
-                                              color:
-                                                  Colors.amber.withOpacity(0.3),
-                                              child: Center(
-                                                  child: Text("Shift Data")),
-                                            ),
-                                          ),
-                                          onTap: month !=
-                                                  (DateFormat("MMMM")
-                                                      .format(DateTime.now()))
-                                              ? _shiftData
-                                              : (){
-                                            Fluttertoast.showToast(msg: "Already shifted",timeInSecForIosWeb: 3);
-                                          },
-                                        ),
-                                        InkWell(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Container(
-                                              height: 40,
-                                              width: MediaQuery.of(context)
-                                                          .size
-                                                          .width >
-                                                      600
-                                                  ? 140
-                                                  : 80,
-                                              color:
-                                                  Colors.amber.withOpacity(0.3),
-                                              child: Center(
-                                                  child: pro.tarLoader
-                                                      ? Container(
-                                                          width: 25,
-                                                          height: 25,
-                                                          child:
-                                                              CircularProgressIndicator(
-                                                            strokeWidth: 3,
-                                                          ))
-                                                      : Text("Refresh")),
-                                            ),
-                                          ),
-                                          onTap: !pro.tarLoader?() {
-                                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>DashboardScreen()),  (route) => false,);
-                                          }:null,
-                                        ),
-                                        // if (pro.writeOffCompleteData.isNotEmpty)
-                                          InkWell(
-                                            child: Padding(
-                                              padding:
-                                              const EdgeInsets.symmetric(
-                                                  vertical: 8.0),
-                                              child: Container(
-                                                height: 40,
-                                                width: MediaQuery.of(context)
-                                                    .size
-                                                    .width >
-                                                    600
-                                                    ? 140
-                                                    : 100,
-                                                color: Colors.amber
-                                                    .withOpacity(0.3),
-                                                child: const Center(
-                                                    child:
-                                                    Text("Create User")),
-                                              ),
-                                            ),
-                                            onTap: ()=>
-                                              Navigator.push(context, MaterialPageRoute(builder: (context)=>SignupPage()))
-                                          ),
-                                        if(pro.writeOffCompleteData.isNotEmpty) IconButton(
-                                            padding: EdgeInsets.zero,
-                                            onPressed: () {
-                                              Authentication().logOut();
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          LoginPage()));
-                                            },
-                                            icon: Icon(Icons.logout))
-                                      ],
-                                    ),
+      child:   Consumer<AddNewCase>(
+        builder: (context, pro, child)=>
+         Scaffold(
+          appBar: AppBar(
+            title: Text("Tar Report",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
+            leading: IconButton(onPressed: (){
+              showDialogg();
+            }, icon: Icon(Icons.menu,size: 30,)),
+            actions: [
+             Container(
+               height: 45,
+               width: 45,
+               padding: EdgeInsets.all(10),
+               child: InkWell(
+                 child: pro.tarLoader? CircularProgressIndicator(
+                   strokeWidth: 3,
+                   color: Colors.black,
+                 ):Icon(Icons.refresh,size: 30,color: Colors.black,),
+                 onTap: (){
+                   pro.clearAllTarReportData();
+                   getData();
+                 },
+               ),
+             )
+            ],
+          ),
+          body: Focus(
+                  autofocus: true,
+                  skipTraversal: true,
+                  onKeyEvent: (FocusNode node, KeyEvent event) {
+                    _handleKeyEvent(event);
+                    return KeyEventResult.handled;
+                  },
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Scrollbar(
+                            controller: horizontalController,
+                            thickness: 13,
+                            child: SingleChildScrollView(
+                              dragStartBehavior: DragStartBehavior.down,
+                              controller: horizontalController,
+                              scrollDirection: Axis.horizontal,
+                              child: Scrollbar(
+                                controller: verticalController,
+                                thickness: 10,
+                                scrollbarOrientation: ScrollbarOrientation.left,
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.vertical,
+                                  controller: verticalController,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      if (pro.litigationCompleteData.isNotEmpty)
+                                        _buildCustomTable('Litigation', [
+                                          row(
+                                              pro.litigationCompleteData,
+                                              pro.arrearTocLitgation,
+                                              0,
+                                              0,
+                                              'Supreme Court cases',
+                                              1),
+                                          row(
+                                              pro.litigationCompleteData,
+                                              pro.arrearTocLitgation,
+                                              6,
+                                              1,
+                                              "High Court",
+                                              2),
+                                          row(
+                                              pro.litigationCompleteData,
+                                              pro.arrearTocLitgation,
+                                              12,
+                                              2,
+                                              "CESTAT",
+                                              3),
+                                          row(
+                                              pro.litigationCompleteData,
+                                              pro.arrearTocLitgation,
+                                              18,
+                                              3,
+                                              "Comm. Appeal",
+                                              4),
+                                          //pending to change 3,4 params
+                                          row(
+                                              pro.litigationCompleteData,
+                                              pro.arrearTocLitgation,
+                                              18,
+                                              3,
+                                              "Additional secretary",
+                                              5),
+                                        ]),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      if (pro.restrainedCompleteData.isNotEmpty)
+                                        _buildCustomTable('Restrained', [
+                                          row(
+                                              pro.restrainedCompleteData,
+                                              pro.arrearTocRestrained,
+                                              0,
+                                              0,
+                                              "OL Cases",
+                                              1),
+                                          row(
+                                              pro.restrainedCompleteData,
+                                              pro.arrearTocRestrained,
+                                              6,
+                                              1,
+                                              "DRT Cases",
+                                              2),
+                                          row(
+                                              pro.restrainedCompleteData,
+                                              pro.arrearTocRestrained,
+                                              12,
+                                              2,
+                                              "BIFR Cases",
+                                              3),
+                                          row(
+                                              pro.restrainedCompleteData,
+                                              pro.arrearTocRestrained,
+                                              18,
+                                              3,
+                                              "NCLT Cases",
+                                              4),
+                                        ]),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      if (pro
+                                          .apealPeiodNotOverCompleteData.isNotEmpty)
+                                        _buildCustomTable(
+                                            "Where Appeal Period not Over", [
+                                          row(
+                                              pro.apealPeiodNotOverCompleteData,
+                                              [
+                                                pro.arrearTocWhereApealPeriodNotOver
+                                              ],
+                                              0,
+                                              0,
+                                              "Appeal Period not over",
+                                              1),
+                                        ]),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      if (pro.recoverableCompleteData.isNotEmpty)
+                                        _buildCustomTable('Recoverable', [
+                                          row(
+                                              pro.recoverableCompleteData,
+                                              pro.arrearTocRecoverable,
+                                              0,
+                                              0,
+                                              'Appeal period over but no appeal field',
+                                              1),
+                                          row(
+                                              pro.recoverableCompleteData,
+                                              pro.arrearTocRecoverable,
+                                              6,
+                                              1,
+                                              'Settlement commision cases',
+                                              2),
+                                          //pending to change 3,4 params
+                                          row(
+                                              pro.recoverableCompleteData,
+                                              pro.arrearTocRecoverable,
+                                              6,
+                                              1,
+                                              'Unit closed',
+                                              3),
+                                          row(
+                                              pro.recoverableCompleteData,
+                                              pro.arrearTocRecoverable,
+                                              12,
+                                              2,
+                                              'Arrear under section 11',
+                                              4),
+                                          row(
+                                              pro.recoverableCompleteData,
+                                              pro.arrearTocRecoverable,
+                                              18,
+                                              3,
+                                              'Arrear under section 142',
+                                              5),
+                                        ]),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      if (pro.writeOffCompleteData.isNotEmpty)
+                                        _buildCustomTable('Writer off', [
+                                          row(
+                                              pro.writeOffCompleteData,
+                                              [pro.arrearTocPendingForWirteOff],
+                                              0,
+                                              0,
+                                              "Write Off",
+                                              1),
+                                        ]),
+                                      SizedBox(
+                                        height: 30,
+                                      ),
+                                    ],
                                   ),
-                                  if (pro.litigationCompleteData.isNotEmpty)
-                                    _buildCustomTable('Litigation', [
-                                      row(
-                                          pro.litigationCompleteData,
-                                          pro.arrearTocLitgation,
-                                          0,
-                                          0,
-                                          'Supreme Court cases',
-                                          1),
-                                      row(
-                                          pro.litigationCompleteData,
-                                          pro.arrearTocLitgation,
-                                          6,
-                                          1,
-                                          "High Court",
-                                          2),
-                                      row(
-                                          pro.litigationCompleteData,
-                                          pro.arrearTocLitgation,
-                                          12,
-                                          2,
-                                          "CESTAT",
-                                          3),
-                                      row(
-                                          pro.litigationCompleteData,
-                                          pro.arrearTocLitgation,
-                                          18,
-                                          3,
-                                          "Comm. Appeal",
-                                          4),
-                                      //pending to change 3,4 params
-                                      row(
-                                          pro.litigationCompleteData,
-                                          pro.arrearTocLitgation,
-                                          18,
-                                          3,
-                                          "Additional secretary",
-                                          5),
-                                    ]),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  if (pro.restrainedCompleteData.isNotEmpty)
-                                    _buildCustomTable('Restrained', [
-                                      row(
-                                          pro.restrainedCompleteData,
-                                          pro.arrearTocRestrained,
-                                          0,
-                                          0,
-                                          "OL Cases",
-                                          1),
-                                      row(
-                                          pro.restrainedCompleteData,
-                                          pro.arrearTocRestrained,
-                                          6,
-                                          1,
-                                          "DRT Cases",
-                                          2),
-                                      row(
-                                          pro.restrainedCompleteData,
-                                          pro.arrearTocRestrained,
-                                          12,
-                                          2,
-                                          "BIFR Cases",
-                                          3),
-                                      row(
-                                          pro.restrainedCompleteData,
-                                          pro.arrearTocRestrained,
-                                          18,
-                                          3,
-                                          "NCLT Cases",
-                                          4),
-                                    ]),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  if (pro
-                                      .apealPeiodNotOverCompleteData.isNotEmpty)
-                                    _buildCustomTable(
-                                        "Where Appeal Period not Over", [
-                                      row(
-                                          pro.apealPeiodNotOverCompleteData,
-                                          [
-                                            pro.arrearTocWhereApealPeriodNotOver
-                                          ],
-                                          0,
-                                          0,
-                                          "Appeal Period not over",
-                                          1),
-                                    ]),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  if (pro.recoverableCompleteData.isNotEmpty)
-                                    _buildCustomTable('Recoverable', [
-                                      row(
-                                          pro.recoverableCompleteData,
-                                          pro.arrearTocRecoverable,
-                                          0,
-                                          0,
-                                          'Appeal period over but no appeal field',
-                                          1),
-                                      row(
-                                          pro.recoverableCompleteData,
-                                          pro.arrearTocRecoverable,
-                                          6,
-                                          1,
-                                          'Settlement commision cases',
-                                          2),
-                                      //pending to change 3,4 params
-                                      row(
-                                          pro.recoverableCompleteData,
-                                          pro.arrearTocRecoverable,
-                                          6,
-                                          1,
-                                          'Unit closed',
-                                          3),
-                                      row(
-                                          pro.recoverableCompleteData,
-                                          pro.arrearTocRecoverable,
-                                          12,
-                                          2,
-                                          'Arrear under section 11',
-                                          4),
-                                      row(
-                                          pro.recoverableCompleteData,
-                                          pro.arrearTocRecoverable,
-                                          18,
-                                          3,
-                                          'Arrear under section 142',
-                                          5),
-                                    ]),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  if (pro.writeOffCompleteData.isNotEmpty)
-                                    _buildCustomTable('Writer off', [
-                                      row(
-                                          pro.writeOffCompleteData,
-                                          [pro.arrearTocPendingForWirteOff],
-                                          0,
-                                          0,
-                                          "Write Off",
-                                          1),
-                                    ]),
-                                  SizedBox(
-                                    height: 30,
-                                  ),
-                                ],
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
+                      // Slider to control horizontal scrolling
+                    ],
                   ),
-                  // Slider to control horizontal scrolling
-                ],
-              ),
-            );
-          }
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        },
+                )
+
+          ),
+
       ),
+
     );
   }
 
@@ -905,9 +799,10 @@ class _RevenueTableState extends State<RevenueTable> {
     });
   }
 
-  void _shiftData() async {
-    GeneralPurposeProvider pro =
-        Provider.of<GeneralPurposeProvider>(context, listen: false);
+  void shiftData() async {
+    print("hello");
+    GeneralPurposeProvider pro = Provider.of<GeneralPurposeProvider>(context, listen: false);
+    AddNewCase promain = Provider.of<AddNewCase>(context, listen: false);
     List<String> data = await pro.getFinancialData();
     print(data[0]);
     if (data[0] != DateFormat("MMMM").format(DateTime.now())) {
@@ -920,6 +815,8 @@ class _RevenueTableState extends State<RevenueTable> {
       DateTime? heelo1 = format.parse(data[2]);
       print(
           "here is dat -> ${time} ${heelo.difference(heelo1).inDays} -> -> }");
+      Fluttertoast.showToast(msg: "It will take some time please wait then refresh",timeInSecForIosWeb: 4);
+      promain.updateShiftDataLoader();
       if (heelo.difference(heelo1).inDays >= 0) {
         print("Ïnside if");
         await TarReportInformation().transferCasesUpTheMonth(
@@ -934,7 +831,104 @@ class _RevenueTableState extends State<RevenueTable> {
         Fluttertoast.showToast(msg: "Updated upto the month",timeInSecForIosWeb: 3);
         print("this is khush${res['res']}");
       }
+      promain.updateShiftDataLoader();
+
     }
+    else{
+      Fluttertoast.showToast(msg: "Already shifted",timeInSecForIosWeb: 3);
+    }
+    Navigator.pop(context);
+  }
+
+  void showDialogg() {
+    showDialog(context: context,
+        builder: (context){
+          return Dialog(
+            child: Consumer<AddNewCase>(
+              builder: (context, pro,child)=>
+               Container(
+                width: MediaQuery.of(context).size.width*.27,
+                height: MediaQuery.of(context).size.height*.55,
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20, vertical: 15),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(5),
+
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (pro.writeOffCompleteData.isNotEmpty)
+                      customButton(fun: (){
+                        print(
+                            'this is excel${excelData![0][0]}');
+                        List<List<String>> data =
+                        removeDuplicates(excelData);
+                        ExcelDonwloadOption()
+                            .downloadExcelForTar(
+                            data, 'OIO DETAILS');
+                        Navigator.pop(context);
+                      }, isloader: false, title: "Download Excel"),
+                    if(pro.writeOffCompleteData.isNotEmpty)
+                      customButton(fun: (){
+                        shiftData();
+                        // Navigator.pop(context);
+                      }, isloader: pro.shiftDataLoader?true:false, title: "Shift Data"),
+                    customButton(fun: (){
+                          Navigator.pop(context);
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>SignupPage()));
+                    }, isloader: false, title: "Create User"),
+                    customButton(fun: (){
+                      Authentication().logOut();
+                      Navigator.pop(context);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  LoginPage()));
+                    }, isloader: false, title: "Log out")
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+    );
+  }
+  Widget customButton({required VoidCallback fun ,required bool isloader, required String title }){
+    return InkWell(
+        child: Padding(
+          padding:
+          const EdgeInsets.symmetric(
+              vertical: 8.0),
+          child: Container(
+            height: 40,
+            width: MediaQuery.of(context)
+                .size
+                .width >
+                600
+                ? 140
+                : 100,
+            color: Colors.amber
+                .withOpacity(0.3),
+            child: isloader? Center(
+              child: SizedBox(
+                height: 30,
+                width: 30,
+                child: CircularProgressIndicator(
+                  strokeWidth: 3,
+                  color: Colors.black,
+                ),
+              ),
+            ): Center(
+                child:
+                Text(title)),
+          ),
+        ),
+        onTap: fun,
+    );
   }
 }
 
