@@ -250,7 +250,6 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
         _buildHeaderCell('Status', 14),
         _buildHeaderCell('Appeal No.', 15),
         _buildHeaderCell('Stay Order No and Date', 16),
-        if (provider.userType == USERTYPE[0])
           _buildHeaderCell('Change Data', 17),
       ],
     );
@@ -281,11 +280,11 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
           _multiLineText(provider.requestCaseData[index].apealNo, 15),
           _multiLineText(
               provider.requestCaseData[index].stayOrderNumberAndDate, 16),
-          if (userInfo.userType == USERTYPE[0])
+      userInfo.userType == USERTYPE[0] ?
             _buildTransferButton(
                 provider.requestCaseData[index].uid,
                 provider.requestCaseData[index].formation,
-                provider.requestCaseData[index].oldDataMode!.uid == ''),
+                provider.requestCaseData[index].oldDataMode!.uid == ''): _multiLineText("", 17),
         ],
       );
     }
@@ -320,7 +319,7 @@ class _AcceptRequestCaseState extends State<AcceptRequestCase> {
         _multiLineText(
             provider.requestCaseData[index].oldDataMode!.stayOrderNumberAndDate,
             16),
-        if (userInfo.userType == USERTYPE[0])
+
           _buildRejectButton(provider.requestCaseData[index].uid,
               provider.requestCaseData[index].formation),
       ],

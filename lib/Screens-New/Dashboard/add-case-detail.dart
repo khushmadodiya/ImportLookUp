@@ -291,7 +291,7 @@ class _AddCaseDeatilState extends State<AddCaseDeatil> {
                                 adddetail(pro);
                               }
                             },
-                            text: 'Add Case',
+                            text: userInfo.userType==USERTYPE[0] ?'Add Case':"Request Case",
                             isLoading: pro.isLoading))
                   ],
                 ),

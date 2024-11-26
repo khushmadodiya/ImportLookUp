@@ -289,7 +289,7 @@ class _UpdateCaseDetailState extends State<UpdateCaseDetail> {
                                 adddetail(pro);
                               }
                             },
-                            text: 'Transfer Case',
+                            text: userInfo.userType==USERTYPE[0]?'Transfer Case':'Add Request Case',
                             isLoading: pro.isLoading))
                   ],
                 ),

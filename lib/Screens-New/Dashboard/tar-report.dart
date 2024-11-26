@@ -11,6 +11,7 @@ import 'package:import_lookup/Model-New/main-case-model.dart';
 import 'package:import_lookup/Model-New/tar-model.dart';
 import 'package:import_lookup/Provider-New/add-new-cases.dart';
 import 'package:import_lookup/Provider-New/general-pusrpose.dart';
+import 'package:import_lookup/Provider-New/get-user-deatils.dart';
 import 'package:import_lookup/Screens-New/Auth-Screens/signup-screeb.dart';
 import 'package:import_lookup/Screens/dashboard.dart';
 import 'package:intl/intl.dart';
@@ -530,9 +531,8 @@ class _RevenueTableState extends State<RevenueTable> {
       data[index]!.noOfCasesUpToTheMonth.toString(),
       data[index]!.amountOfTheMonth.toString(),
       data[index]!.amountUpTotheMonth.toString(),
-      (data2[index2].numberOfOpeningCases + data[index]!.noOfCasesOfTheMonth)
-          .toString(),
-      (data2[index2].unit=="Lakh"?  (data2[index2].openingBalance + data[index]!.amountOfTheMonth).toString(): ((data2[index2].openingBalance + (data[index]!.amountOfTheMonth/100000)).toString()+ (data2[index2].unit=="Lakh"?"L":''))),
+      (data2[index2].numberOfOpeningCases + data[index]!.noOfCasesOfTheMonth).toString(),
+      (data2[index2].unit=="Lakh"?((data2[index2].openingBalance + (data[index]!.amountOfTheMonth/100000)).toString()+ (data2[index2].unit=="Lakh"?"L":'')): (data2[index2].openingBalance + data[index]!.amountOfTheMonth).toString()),
       data[index + 1]!.noOfCasesOfTheMonth.toString(),
       data[index + 1]!.noOfCasesUpToTheMonth.toString(),
       data[index + 1]!.amountOfTheMonth.toString(),
@@ -797,6 +797,7 @@ class _RevenueTableState extends State<RevenueTable> {
     print("hello");
     GeneralPurposeProvider pro = Provider.of<GeneralPurposeProvider>(context, listen: false);
     AddNewCase promain = Provider.of<AddNewCase>(context, listen: false);
+
     List<String> data = await pro.getFinancialData();
     print(data[0]);
     if (data[0] != DateFormat("MMMM").format(DateTime.now())) {
@@ -835,6 +836,7 @@ class _RevenueTableState extends State<RevenueTable> {
   }
 
   void showDialogg() {
+    UserInformation userInfo = Provider.of<UserInformation>(context, listen: false);
     showDialog(context: context,
         builder: (context){
           return Dialog(
@@ -870,7 +872,7 @@ class _RevenueTableState extends State<RevenueTable> {
                         shiftData();
                         // Navigator.pop(context);
                       }, isloader: pro.shiftDataLoader?true:false, title: "Shift Data"),
-                    customButton(fun: (){
+                  if(userInfo.userType==USERTYPE[0])  customButton(fun: (){
                           Navigator.pop(context);
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>SignupPage()));
                     }, isloader: false, title: "Create User"),
