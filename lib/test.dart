@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import 'Backend-New/financial-year.dart';
+import 'Model-New/main-case-model.dart';
 import 'Provider-New/add-new-cases.dart';
 
 class Test extends StatefulWidget {
@@ -22,9 +23,10 @@ class _TestState extends State<Test> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    // updateData();
+      // test();
     // searchdata();
-    getData();
+    // getData();
     // financial();
     // print("heelo i am ${DateFormat('MMMM').format(DateTime.now())}");
     //  String time=DateFormat('dd-MMMM-yyyy').format(DateTime.now());
@@ -37,6 +39,37 @@ class _TestState extends State<Test> {
     //  DateTime dip= DateTime(2025,4,1);
     // print("here is dat -> ${time} -> ${dipu.difference(dip).inDays}");
     //  print("here is dat -> ${time}  ->${heelo1.difference(heelo).inDays} -> }");
+  }
+  updatedata()async{
+    try{
+      QuerySnapshot snapshot =  await FirebaseFirestore.instance.collection("MP").doc("replicationmaincase").collection('formation').get();
+      for (var i in snapshot.docs){
+       await i.reference.update({
+         // newFieldName: value,
+         // oldFieldName: FieldValue.delete(),
+        });
+      }
+    }
+    catch(e){
+      print(e);
+    }
+  }
+
+  test()async{
+    int a=0;
+     // AggregateQuerySnapshot query = await FirebaseFirestore.instance.collection('MP').doc(FORMATION[FORMATION.length-1]).collection('cases').count().get();
+     //  print('this is count form ${query.count}');
+    int total =0;
+     for(var j in FORMATION){
+       QuerySnapshot query = await FirebaseFirestore.instance.collection('MP').doc(j).collection('cases').get();
+       total += query.docs.length;
+       print('this is lenght of all case${query.docs.length}');
+       for(var i in query.docs){
+         MainCaseModel model = MainCaseModel.fromJson(i.data() as Map<String,dynamic>);
+         print("this is subcategory and name of each case count :${a++}  ${model.subcategory} ${model.formation} ${model.name}");
+       }
+     }
+     print("total length $total");
   }
 
   void searchdata() async {

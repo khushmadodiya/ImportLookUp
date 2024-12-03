@@ -98,229 +98,230 @@ class _RevenueTableState extends State<RevenueTable> {
     String _toStringOrDefault(dynamic value, [String defaultValue = '0']) {
       return value?.toString() ?? defaultValue;
     }
-
     return SafeArea(
 
-      child:   Consumer<AddNewCase>(
-        builder: (context, pro, child)=>
-         Scaffold(
-          appBar: AppBar(
-            title: Text("Tar Report",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
-            leading: IconButton(onPressed: (){
-              showDialogg();
-            }, icon: Icon(Icons.menu,size: 30,)),
-            actions: [
+      child:   Scaffold(
+       appBar: AppBar(
+         title: Text("Tar Report",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
+         leading: IconButton(onPressed: (){
+           showDialogg();
+         }, icon: Icon(Icons.menu,size: 30,)),
+         actions: [
+          Consumer<AddNewCase>(
+            builder: (context,proo,child)=>
              Container(
-               height: 45,
-               width: 45,
-               padding: EdgeInsets.all(10),
-               child: InkWell(
-                 child: pro.tarLoader? CircularProgressIndicator(
-                   strokeWidth: 3,
-                   color: Colors.black,
-                 ):Icon(Icons.refresh,size: 30,color: Colors.black,),
-                 onTap:!pro.tarLoader? (){
-                   pro.clearAllTarReportData();
-                   getData();
-                 }:null,
+              height: 45,
+              width: 45,
+              padding: EdgeInsets.all(10),
+              child: InkWell(
+                child: proo.tarLoader? CircularProgressIndicator(
+                  strokeWidth: 3,
+                  color: Colors.black,
+                ):Icon(Icons.refresh,size: 30,color: Colors.black,),
+                onTap:!proo.tarLoader? (){
+                  proo.clearAllTarReportData();
+                  getData();
+                }:null,
+              ),
+            ),
+          )
+         ],
+       ),
+       body: Consumer<AddNewCase>(
+         builder: (context,pro,child)=>
+          Focus(
+                 autofocus: true,
+                 skipTraversal: true,
+                 onKeyEvent: (FocusNode node, KeyEvent event) {
+                   _handleKeyEvent(event);
+                   return KeyEventResult.handled;
+                 },
+                 child: Column(
+                   children: [
+                     Expanded(
+                       child: Padding(
+                         padding: const EdgeInsets.all(8.0),
+                         child: Scrollbar(
+                           controller: horizontalController,
+                           thickness: 13,
+                           child: SingleChildScrollView(
+                             dragStartBehavior: DragStartBehavior.down,
+                             controller: horizontalController,
+                             scrollDirection: Axis.horizontal,
+                             child: Scrollbar(
+                               controller: verticalController,
+                               thickness: 10,
+                               scrollbarOrientation: ScrollbarOrientation.left,
+                               child: SingleChildScrollView(
+                                 scrollDirection: Axis.vertical,
+                                 controller: verticalController,
+                                 child: Column(
+                                   mainAxisAlignment: MainAxisAlignment.start,
+                                   crossAxisAlignment: CrossAxisAlignment.start,
+                                   children: <Widget>[
+                                     if (pro.litigationCompleteData.isNotEmpty)
+                                       _buildCustomTable('Arrear in Litigation', [
+                                         row(
+                                             pro.litigationCompleteData,
+                                             pro.arrearTocLitgation,
+                                             0,
+                                             0,
+                                             'Supreme Court cases',
+                                             1),
+                                         row(
+                                             pro.litigationCompleteData,
+                                             pro.arrearTocLitgation,
+                                             6,
+                                             1,
+                                             "High Court",
+                                             2),
+                                         row(
+                                             pro.litigationCompleteData,
+                                             pro.arrearTocLitgation,
+                                             12,
+                                             2,
+                                             "CESTAT",
+                                             3),
+                                         row(
+                                             pro.litigationCompleteData,
+                                             pro.arrearTocLitgation,
+                                             18,
+                                             3,
+                                             "Comm. Appeal",
+                                             4),
+                                         // pending to change 3,4 params
+                                         row(
+                                             pro.litigationCompleteData,
+                                             pro.arrearTocLitgation,
+                                             24,
+                                             4,
+                                             "Additional secretary",
+                                             5),
+                                       ]),
+                                     SizedBox(
+                                       height: 15,
+                                     ),
+                                     if (pro.restrainedCompleteData.isNotEmpty)
+                                       _buildCustomTable('Restrained Arrear', [
+                                         row(
+                                             pro.restrainedCompleteData,
+                                             pro.arrearTocRestrained,
+                                             0,
+                                             0,
+                                             "OL Cases",
+                                             1),
+                                         row(
+                                             pro.restrainedCompleteData,
+                                             pro.arrearTocRestrained,
+                                             6,
+                                             1,
+                                             "DRT Cases",
+                                             2),
+                                         row(
+                                             pro.restrainedCompleteData,
+                                             pro.arrearTocRestrained,
+                                             12,
+                                             2,
+                                             "BIFR Cases",
+                                             3),
+                                         row(
+                                             pro.restrainedCompleteData,
+                                             pro.arrearTocRestrained,
+                                             18,
+                                             3,
+                                             "NCLT Cases",
+                                             4),
+                                       ]),
+                                     SizedBox(
+                                       height: 15,
+                                     ),
+                                     if (pro
+                                         .apealPeiodNotOverCompleteData.isNotEmpty)
+                                       _buildCustomTable(
+                                           "Arrears where appeal period not over", [
+                                         row(
+                                             pro.apealPeiodNotOverCompleteData,
+                                             [
+                                               pro.arrearTocWhereApealPeriodNotOver
+                                             ],
+                                             0,
+                                             0,
+                                             "Appeal Period not over",
+                                             1),
+                                       ]),
+                                     SizedBox(
+                                       height: 15,
+                                     ),
+                                     if (pro.recoverableCompleteData.isNotEmpty)
+                                       _buildCustomTable('Recoverable arrears', [
+                                         row(
+                                             pro.recoverableCompleteData,
+                                             pro.arrearTocRecoverable,
+                                             0,
+                                             0,
+                                             'Appeal period over but no appeal field',
+                                             1),
+                                         row(
+                                             pro.recoverableCompleteData,
+                                             pro.arrearTocRecoverable,
+                                             6,
+                                             1,
+                                             'Settlement commision cases',
+                                             2),
+                                         //pending to change 3,4 params
+                                         row(
+                                             pro.recoverableCompleteData,
+                                             pro.arrearTocRecoverable,
+                                             12,
+                                             2,
+                                             'Unit closed',
+                                             3),
+                                         row(
+                                             pro.recoverableCompleteData,
+                                             pro.arrearTocRecoverable,
+                                             18,
+                                             3,
+                                             'Arrear under section 11',
+                                             4),
+                                              row(
+                                               pro.recoverableCompleteData,
+                                               pro.arrearTocRecoverable,
+                                               24,
+                                               4,
+                                               'Arrear under section 142',
+                                               5),
+                                       ]),
+                                       SizedBox(
+                                         height: 15,
+                                       ),
+                                     if (pro.writeOffCompleteData.isNotEmpty)
+                                       _buildCustomTable('Arrears pending for write-off', [
+                                         row(
+                                             pro.writeOffCompleteData,
+                                             [pro.arrearTocPendingForWirteOff],
+                                             0,
+                                             0,
+                                             "Write Off",
+                                             1),
+                                       ]),
+                                     SizedBox(
+                                       height: 30,
+                                     ),
+                                   ],
+                                 ),
+                               ),
+                             ),
+                           ),
+                         ),
+                       ),
+                     ),
+                     // Slider to control horizontal scrolling
+                   ],
+                 ),
                ),
-             )
-            ],
-          ),
-          body: Focus(
-                  autofocus: true,
-                  skipTraversal: true,
-                  onKeyEvent: (FocusNode node, KeyEvent event) {
-                    _handleKeyEvent(event);
-                    return KeyEventResult.handled;
-                  },
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Scrollbar(
-                            controller: horizontalController,
-                            thickness: 13,
-                            child: SingleChildScrollView(
-                              dragStartBehavior: DragStartBehavior.down,
-                              controller: horizontalController,
-                              scrollDirection: Axis.horizontal,
-                              child: Scrollbar(
-                                controller: verticalController,
-                                thickness: 10,
-                                scrollbarOrientation: ScrollbarOrientation.left,
-                                child: SingleChildScrollView(
-                                  scrollDirection: Axis.vertical,
-                                  controller: verticalController,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      if (pro.litigationCompleteData.isNotEmpty)
-                                        _buildCustomTable('Litigation', [
-                                          row(
-                                              pro.litigationCompleteData,
-                                              pro.arrearTocLitgation,
-                                              0,
-                                              0,
-                                              'Supreme Court cases',
-                                              1),
-                                          row(
-                                              pro.litigationCompleteData,
-                                              pro.arrearTocLitgation,
-                                              6,
-                                              1,
-                                              "High Court",
-                                              2),
-                                          row(
-                                              pro.litigationCompleteData,
-                                              pro.arrearTocLitgation,
-                                              12,
-                                              2,
-                                              "CESTAT",
-                                              3),
-                                          row(
-                                              pro.litigationCompleteData,
-                                              pro.arrearTocLitgation,
-                                              18,
-                                              3,
-                                              "Comm. Appeal",
-                                              4),
-                                          //pending to change 3,4 params
-                                          row(
-                                              pro.litigationCompleteData,
-                                              pro.arrearTocLitgation,
-                                              18,
-                                              3,
-                                              "Additional secretary",
-                                              5),
-                                        ]),
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                      if (pro.restrainedCompleteData.isNotEmpty)
-                                        _buildCustomTable('Restrained', [
-                                          row(
-                                              pro.restrainedCompleteData,
-                                              pro.arrearTocRestrained,
-                                              0,
-                                              0,
-                                              "OL Cases",
-                                              1),
-                                          row(
-                                              pro.restrainedCompleteData,
-                                              pro.arrearTocRestrained,
-                                              6,
-                                              1,
-                                              "DRT Cases",
-                                              2),
-                                          row(
-                                              pro.restrainedCompleteData,
-                                              pro.arrearTocRestrained,
-                                              12,
-                                              2,
-                                              "BIFR Cases",
-                                              3),
-                                          row(
-                                              pro.restrainedCompleteData,
-                                              pro.arrearTocRestrained,
-                                              18,
-                                              3,
-                                              "NCLT Cases",
-                                              4),
-                                        ]),
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                      if (pro
-                                          .apealPeiodNotOverCompleteData.isNotEmpty)
-                                        _buildCustomTable(
-                                            "Where Appeal Period not Over", [
-                                          row(
-                                              pro.apealPeiodNotOverCompleteData,
-                                              [
-                                                pro.arrearTocWhereApealPeriodNotOver
-                                              ],
-                                              0,
-                                              0,
-                                              "Appeal Period not over",
-                                              1),
-                                        ]),
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                      if (pro.recoverableCompleteData.isNotEmpty)
-                                        _buildCustomTable('Recoverable', [
-                                          row(
-                                              pro.recoverableCompleteData,
-                                              pro.arrearTocRecoverable,
-                                              0,
-                                              0,
-                                              'Appeal period over but no appeal field',
-                                              1),
-                                          row(
-                                              pro.recoverableCompleteData,
-                                              pro.arrearTocRecoverable,
-                                              6,
-                                              1,
-                                              'Settlement commision cases',
-                                              2),
-                                          //pending to change 3,4 params
-                                          row(
-                                              pro.recoverableCompleteData,
-                                              pro.arrearTocRecoverable,
-                                              6,
-                                              1,
-                                              'Unit closed',
-                                              3),
-                                          row(
-                                              pro.recoverableCompleteData,
-                                              pro.arrearTocRecoverable,
-                                              12,
-                                              2,
-                                              'Arrear under section 11',
-                                              4),
-                                          row(
-                                              pro.recoverableCompleteData,
-                                              pro.arrearTocRecoverable,
-                                              18,
-                                              3,
-                                              'Arrear under section 142',
-                                              5),
-                                        ]),
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                      if (pro.writeOffCompleteData.isNotEmpty)
-                                        _buildCustomTable('Writer off', [
-                                          row(
-                                              pro.writeOffCompleteData,
-                                              [pro.arrearTocPendingForWirteOff],
-                                              0,
-                                              0,
-                                              "Write Off",
-                                              1),
-                                        ]),
-                                      SizedBox(
-                                        height: 30,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      // Slider to control horizontal scrolling
-                    ],
-                  ),
-                )
+       )
 
-          ),
-
-      ),
+       ),
 
     );
   }
@@ -691,7 +692,7 @@ class _RevenueTableState extends State<RevenueTable> {
               return TableCell(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Center(child: Text(cell)),
+                  child: Center(child: _cutomText(cell)),
                 ),
               );
             }).toList(),
@@ -719,7 +720,7 @@ class _RevenueTableState extends State<RevenueTable> {
                           padding: const EdgeInsets.all(8.0),
                           child: Center(
                               child:
-                                  Text(data[0], textAlign: TextAlign.center)),
+                                  _cutomText(data[0])),
                         ),
                       ),
                       TableCell(
@@ -727,7 +728,7 @@ class _RevenueTableState extends State<RevenueTable> {
                           padding: const EdgeInsets.all(8.0),
                           child: Center(
                               child:
-                                  Text(data[1], textAlign: TextAlign.center)),
+                                 _cutomText(data[1])),
                         ),
                       ),
                     ],
@@ -744,16 +745,14 @@ class _RevenueTableState extends State<RevenueTable> {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Center(
-                              child: Text(subcoldata[0],
-                                  textAlign: TextAlign.center)),
+                              child: _cutomText(subcoldata[0])),
                         ),
                       ),
                       TableCell(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Center(
-                              child: Text(subcoldata[1],
-                                  textAlign: TextAlign.center)),
+                              child: _cutomText(subcoldata[1])),
                         ),
                       ),
                     ],
@@ -766,6 +765,12 @@ class _RevenueTableState extends State<RevenueTable> {
       ),
     );
   }
+  _cutomText(String text){
+    return Container(
+        // height:50,
+        child:  Text(text, textAlign: TextAlign.center,overflow: TextOverflow.visible,softWrap: true,));
+  }
+
 
   getData() async {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -781,6 +786,7 @@ class _RevenueTableState extends State<RevenueTable> {
       await pro.getAllSubcategoryTocdata();
       print('data from tarrrrr');
       await pro.tarArrearLitigation();
+      print('this is completed');
       await pro.tarRestrainded();
       await pro.tarAppealPeriodNotOver();
       await pro.tarRecoverable();

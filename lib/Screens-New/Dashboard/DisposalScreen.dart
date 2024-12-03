@@ -16,11 +16,11 @@ class DisposalScreen extends StatelessWidget {
    DisposalScreen({super.key,required this.model});
 
   List<String> disposalValues =  [
-    "disposal in favour of the department",
-    "disposal against the department",
-    "disposal order for denovo",
-    "disposal formations changed",
-    "arrearss realised"
+    "Disposal in favour of the department",
+    "Disposal against the department",
+    "Disposal order for denovo",
+    "Disposal formations changed",
+    "Arrearss realised"
   ];
 
   @override
@@ -100,7 +100,7 @@ class DisposalScreen extends StatelessWidget {
      GeneralPurposeProvider userInfo= Provider.of<GeneralPurposeProvider>(context,listen: false);
      var pro= Provider.of<AddNewCase>(context,listen: false);
             pro.updateLoader();
-            var res =   await MainCasesInformation().deleteMainCase(formation: model.formation, uid:model.uid,docName: userInfo. selectedDisposalValue);
+            var res =   await MainCasesInformation().deleteMainCase(formation: model.formation, uid:model.uid,docName: userInfo.selectedDisposalValue);
             pro.updateLoader();
             if(res['res']=='success'){
               Fluttertoast.showToast(msg: "Disposed",timeInSecForIosWeb: 3);

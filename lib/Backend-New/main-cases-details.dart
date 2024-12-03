@@ -69,7 +69,7 @@ class MainCasesInformation {
     WriteBatch batch = _fireStore.batch();
     await replicateMainCase(mainCaseModel: model, batch: batch);
     try {
-      DocumentReference formationDocRef =
+      DocumentReference formationDocRef = 
           _fireStore.collection("MP").doc(formation);
       DocumentSnapshot docSnapshot = await formationDocRef.get();
 
@@ -101,6 +101,7 @@ class MainCasesInformation {
       batch.commit();
       return {"res": "success"};
     } catch (e) {
+      print("this is error by khush");
       return {"res": e.toString()};
     }
   }

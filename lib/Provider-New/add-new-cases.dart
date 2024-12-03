@@ -281,6 +281,7 @@
 import 'dart:async';
 
 import 'dart:core';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:import_lookup/Backend-New/main-cases-details.dart';
@@ -536,6 +537,12 @@ class AddNewCase with ChangeNotifier {
       _mainCaseData =
       (await MainCasesInformation().getAllMainCasesDetails())["res"];
     }
+    for(MainCaseModel i in _mainCaseData){
+      print("this is subcategory and name of each case ${i.subcategory} ${i.formation} ${i.name}");
+    }
+    print("this is length of MainCase data ${_mainCaseData.length}");
+    int a=0;
+
     notifyListeners();
   }
 
@@ -818,18 +825,24 @@ class AddNewCase with ChangeNotifier {
   Future getAllSubcategoryTocdata()async{
     print('hello i am khush');
     _allTocdata =  (await TarReportInformation().TocReport())['data'];
-    print('hello i am khush$_allTocdata');
-    for(int i=0;i<4;i++){
+
+    for(int i=0;i<=4;i++){
       _arrearTocLitgation.add(_allTocdata[TOCKEY[i]]!);
+
     }
-    for(int i=4;i<8;i++){
+
+    for(int i=5;i<=8;i++){
       _arrearTocRestrained.add(_allTocdata[TOCKEY[i]]!);
     }
-    _arrearTocWhereApealPeriodNotOver=_allTocdata[TOCKEY[8]]!;
-    for(int i=9;i<13;i++){
-      _arrearTocRecoverable.add(_allTocdata[TOCKEY[i]]!);
+    _arrearTocWhereApealPeriodNotOver=_allTocdata[TOCKEY[9]]!;
+    for(int i=10;i<=14;i++){
+      print("this is tocKeys ${TOCKEY[i]}");
+
+        _arrearTocRecoverable.add(_allTocdata[TOCKEY[i]]!);
+
     }
-    _arrearTocPendingForWirteOff=_allTocdata[TOCKEY[13]]!;
+    // print("this is tocKeys ${TOCKEY[15]}");
+    _arrearTocPendingForWirteOff=_allTocdata[TOCKEY[TOCKEY.length-1]]!;
 
     // print(_allTocdata['sctoc']!.);
     notifyListeners();
@@ -839,10 +852,12 @@ class AddNewCase with ChangeNotifier {
   Future tarArrearLitigation() async {
     _arrearLitigation = (await TarReportInformation().litigationReport())["data"];
     for (var i in LITIGATIONKEYS.keys) {
-      for (int j = 0; j < LITIGATIONKEYS[i]!.length; j++) {
+      for (int j = 0; j < 6; j++) {
+        print("this is in litigation data ${LITIGATIONKEYS[i]!.length}");
         _litigationCompleteData.add(_arrearLitigation[LITIGATIONKEYS![i]![j]]);
       }
     }
+    print(' this is lenght of litigaition data${_litigationCompleteData.length}');
     notifyListeners();
   }
 
@@ -852,6 +867,7 @@ class AddNewCase with ChangeNotifier {
     for (var i in RESTRAINEDKEYS.keys) {
       for (int j = 0; j < RESTRAINEDKEYS[i]!.length; j++) {
         _restrainedCompleteData.add(_restrainded[RESTRAINEDKEYS![i]![j]]);
+
       }
     }
     notifyListeners();
@@ -863,7 +879,7 @@ class AddNewCase with ChangeNotifier {
     for (var i in PERIODNOTOVERKEYS.keys) {
       for (int j = 0; j < PERIODNOTOVERKEYS[i]!.length; j++) {
         _apealPeriodNotOverCompleteData
-            .add(_appealPeriodNotOver[PERIODNOTOVERKEYS![i]![j]]);
+            .add(_appealPeriodNotOver[PERIODNOTOVERKEYS[i]![j]]);
       }
     }
 
@@ -873,10 +889,14 @@ class AddNewCase with ChangeNotifier {
   Future tarRecoverable() async {
     _recoverable = (await TarReportInformation().recoverableArrears())["data"];
     for (var i in RECOVERABLEKEYS.keys) {
-      for (int j = 0; j < RECOVERABLEKEYS[i]!.length; j++) {
+      for (int j = 0; j < RECOVERABLEKEYS![i]!.length; j++) {
         _recoverableCompleteData.add(_recoverable[RECOVERABLEKEYS![i]![j]]);
       }
     }
+    for(var i=0;i<_recoverableCompleteData.length;i++){
+      print("this is each data from recoverable ${_recoverableCompleteData[i]!.openingBalance} $i");
+    }
+    print(' this is lenght of reverable data${_recoverableCompleteData.length}');
 
     notifyListeners();
   }

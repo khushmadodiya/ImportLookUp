@@ -1,36 +1,36 @@
 // ignore_for_file: non_constant_identifier_names, constant_identifier_names
 
 const List<String> CATEGORY = [
-  "arrear in litigation",
-  "restrained arrear",
-  "arrears where appeal period not over",
-  "recoverable arrears",
-  "arrears pending for write-off"
+  "Arrear in litigation",
+  "Restrained arrear",
+  "Arrears where appeal period not over",
+  "Recoverable arrears",
+  "Arrears pending for write-off"
 ];
 
 Map<String, List<String>> SUBCATEGORY = {
   CATEGORY[0]: [
-    "sc", "hc", "cestat", "commissioner appleal", "additional secretary"
+    "Supreme Court", "High Court", "CESTAT", "Commissioner Appeal", "Additional Secretary"
   ],
-  CATEGORY[1]: ["ol", "drt", "bifr", "nclt units"],
-  CATEGORY[2]: ["cases"],
+  CATEGORY[1]: ["OL", "DRT", "BIFR", "NCLT Units"],
+  CATEGORY[2]: ["Cases"],
   CATEGORY[3]: [
-    "appeal period over but no appeal field",
-    "settlement commision cases",
-    "unit closed",
-    "arrear under section 11",
-    "arrear under section 142"
+    "Appeal period over but no appeal field",
+    "Settlement commission cases",
+    "Unit closed",
+    "Arrear under section 11",
+    "Arrear under section 142"
   ],
-  CATEGORY[4]: ["cases"],
+  CATEGORY[4]: ["Cases"],
 };
 
 List<String> DOCNAME = [
   "receipts",
-  "disposal in favour of the department",
-  "disposal against the department",
-  "disposal order for denovo",
-  "disposal formations changed",
-  "arrearss realised"
+  "Disposal in favour of the department",
+  "Disposal against the department",
+  "Disposal order for denovo",
+  "Disposal formations changed",
+  "Arrears realised"
 ];
 
 const List<String> USERTYPE = ['Admin', 'Others'];
@@ -46,89 +46,89 @@ const List<String> FORMATION = [
   "ICD Dhannad",
   "ICD Kheda",
   "ICD Malanpur",
-  "ICD Mandideep ",
-  "ICD Powerkheda ",
+  "ICD Mandideep",
+  "ICD Powerkheda",
   "ICD Raipur",
   "ICD Tihi",
 ];
 
 Map<String, List<String>> LITIGATIONKEYS = {
-  "sc": [
-    "screceipts",
-    "scdisposal in favour of the department",
-    "scdisposal against the department",
-    "scdisposal order for denovo",
-    "scdisposal formations changed",
-    "scarrearss realised",
+  "Supreme Court": [
+    "Supreme Courtreceipts",
+    "Supreme CourtDisposal in favour of the department",
+    "Supreme CourtDisposal against the department",
+    "Supreme CourtDisposal order for denovo",
+    "Supreme CourtDisposal formations changed",
+    "Supreme CourtArrears realised",
   ],
-  "hc": [
-    "hcreceipts",
-    "hcdisposal in favour of the department",
-    "hcdisposal against the department",
-    "hcdisposal order for denovo",
-    "hcdisposal formations changed",
-    "hcarrearss realised",
+  "High Court": [
+    "High Courtreceipts",
+    "High CourtDisposal in favour of the department",
+    "High CourtDisposal against the department",
+    "High CourtDisposal order for denovo",
+    "High CourtDisposal formations changed",
+    "High CourtArrears realised",
   ],
-  "cestat": [
-    "cestatreceipts",
-    "cestatdisposal in favour of the department",
-    "cestatdisposal against the department",
-    "cestatdisposal order for denovo",
-    "cestatdisposal formations changed",
-    "cestatarrearss realised",
+  "CESTAT": [
+    "CESTATreceipts",
+    "CESTATDisposal in favour of the department",
+    "CESTATDisposal against the department",
+    "CESTATDisposal order for denovo",
+    "CESTATDisposal formations changed",
+    "CESTATArrears realised",
   ],
-  "commissioner appleal": [
-    "commissioner applealreceipts",
-    "commissioner applealdisposal in favour of the department",
-    "commissioner applealdisposal against the department",
-    "commissioner applealdisposal order for denovo",
-    "commissioner applealdisposal formations changed",
-    "commissioner applealarrearss realised",
-    "commissioner appealtoc"
+  "Commissioner Appeal": [
+    "Commissioner Appealreceipts",
+    "Commissioner AppealDisposal in favour of the department",
+    "Commissioner AppealDisposal against the department",
+    "Commissioner AppealDisposal order for denovo",
+    "Commissioner AppealDisposal formations changed",
+    "Commissioner AppealArrears realised",
+    "Commissioner Appealtoc"
   ],
-  "additional secretary": [
-    "additional secretaryreceipts",
-    "additional secretarydisposal in favour of the department",
-    "additional secretarydisposal against the department",
-    "additional secretarydisposal order for denovo",
-    "additional secretarydisposal formations changed",
-    "additional secretaryarrearss realised",
-    "additional secretarytoc"
+  "Additional Secretary": [
+    "Additional Secretaryreceipts",
+    "Additional SecretaryDisposal in favour of the department",
+    "Additional SecretaryDisposal against the department",
+    "Additional SecretaryDisposal order for denovo",
+    "Additional SecretaryDisposal formations changed",
+    "Additional SecretaryArrears realised",
+    "Additional Secretarytoc"
   ]
 };
 // ["ol", "drt", "bifr", "nclt units"]
 Map<String, List<String>> RESTRAINEDKEYS = {
-  "ol": [
-    "olreceipts",
-    "oldisposal in favour of the department",
-    "oldisposal against the department",
-    "oldisposal order for denovo",
-    "oldisposal formations changed",
-    "olarrearss realised"
+  "OL": [
+    "OLreceipts",
+    "OLDisposal in favour of the department",
+    "OLDisposal against the department",
+    "OLDisposal order for denovo",
+    "OLDisposal formations changed",
+    "OLArrears realised"
   ],
-  "drt": [
-    "drtreceipts",
-    "drtdisposal in favour of the department",
-    "drtdisposal against the department",
-    "drtdisposal order for denovo",
-    "drtdisposal formations changed",
-    "drtarrearss realised"
+  "DRT": [
+    "DRTreceipts",
+    "DRTDisposal in favour of the department",
+    "DRTDisposal against the department",
+    "DRTDisposal order for denovo",
+    "DRTDisposal formations changed",
+    "DRTArrears realised"
   ],
-  "bifr": [
-    "bifrreceipts",
-    "bifrdisposal in favour of the department",
-    "bifrdisposal against the department",
-    "bifrdisposal order for denovo",
-    "bifrdisposal formations changed",
-    "bifrarrearss realised"
+  "BIFR": [
+    "BIFRreceipts",
+    "BIFRDisposal in favour of the department",
+    "BIFRDisposal against the department",
+    "BIFRDisposal order for denovo",
+    "BIFRDisposal formations changed",
+    "BIFRArrears realised"
   ],
-  "nclt units": [
-    "nclt unitsreceipts",
-    "nclt unitsdisposal in favour of the department",
-    "nclt unitsdisposal against the department",
-    "nclt unitsdisposal order for denovo",
-    "nclt unitsdisposal formations changed",
-    "nclt unitsarrearss realised"
+  "NCLT Units": [
+    "NCLT Unitsreceipts",
+    "NCLT UnitsDisposal in favour of the department",
+    "NCLT UnitsDisposal against the department",
+    "NCLT UnitsDisposal order for denovo",
+    "NCLT UnitsDisposal formations changed",
+    "NCLT UnitsArrears realised"
   ]
 };
 
@@ -139,87 +139,89 @@ Map<String, List<String>> RESTRAINEDKEYS = {
 //     "arrear under section 142"
 //   ],
 Map<String, List<String>> RECOVERABLEKEYS = {
-  "appeal period over but no appeal field": [
-    "appeal period over but no appeal fieldreceipts",
-    "appeal period over but no appeal fielddisposal in favour of the department",
-    "appeal period over but no appeal fielddisposal against the department",
-    "appeal period over but no appeal fielddisposal order for denovo",
-    "appeal period over but no appeal fielddisposal formations changed",
-    "appeal period over but no appeal fieldarrearss realised"
+  "Appeal period over but no appeal field": [
+    "Appeal period over but no appeal fieldreceipts",
+    "Appeal period over but no appeal fieldDisposal in favour of the department",
+    "Appeal period over but no appeal fieldDisposal against the department",
+    "Appeal period over but no appeal fieldDisposal order for denovo",
+    "Appeal period over but no appeal fieldDisposal formations changed",
+    "Appeal period over but no appeal fieldArrears realised"
   ],
-  "settlement commision cases": [
-    "settlement commision casesreceipts",
-    "settlement commision casesdisposal in favour of the department",
-    "settlement commision casesdisposal against the department",
-    "settlement commision casesdisposal order for denovo",
-    "settlement commision casesdisposal formations changed",
-    "settlement commision casesarrearss realised"
+  "Settlement commission cases": [
+    "Settlement commission casesreceipts",
+    "Settlement commission casesDisposal in favour of the department",
+    "Settlement commission casesDisposal against the department",
+    "Settlement commission casesDisposal order for denovo",
+    "Settlement commission casesDisposal formations changed",
+    "Settlement commission casesArrears realised"
   ],
-  "unit closed" :[
-    "unit closedreceipts",
-    "unit closeddisposal in favour of the department",
-    "unit closeddisposal against the department",
-    "unit closeddisposal order for denovo",
-    "unit closeddisposal formations changed",
-    "unit closedarrearss realised"
+  "Unit closed" :[
+    "Unit closedreceipts",
+    "Unit closedDisposal in favour of the department",
+    "Unit closedDisposal against the department",
+    "Unit closedDisposal order for denovo",
+    "Unit closedDisposal formations changed",
+    "Unit closedArrears realised"
   ],
-  "arrear under section 11": [
-    "arrear under section 11receipts",
-    "arrear under section 11disposal in favour of the department",
-    "arrear under section 11disposal against the department",
-    "arrear under section 11disposal order for denovo",
-    "arrear under section 11disposal formations changed",
-    "arrear under section 11arrearss realised"
+  "Arrear under section 11": [
+    "Arrear under section 11receipts",
+    "Arrear under section 11Disposal in favour of the department",
+    "Arrear under section 11Disposal against the department",
+    "Arrear under section 11Disposal order for denovo",
+    "Arrear under section 11Disposal formations changed",
+    "Arrear under section 11Arrears realised"
   ],
-  "arrear under section 142": [
-    "arrear under section 142receipts",
-    "arrear under section 142disposal in favour of the department",
-    "arrear under section 142disposal against the department",
-    "arrear under section 142disposal order for denovo",
-    "arrear under section 142disposal formations changed",
-    "arrear under section 142arrearss realised"
+  "Arrear under section 142": [
+    "Arrear under section 142receipts",
+    "Arrear under section 142Disposal in favour of the department",
+    "Arrear under section 142Disposal against the department",
+    "Arrear under section 142Disposal order for denovo",
+    "Arrear under section 142Disposal formations changed",
+    "Arrear under section 142Arrears realised"
   ]
 };
 
 Map<String, List<String>> PERIODNOTOVERKEYS = {
-  "cases": [
-    "casesreceipts",
-    "casesdisposal in favour of the department",
-    "casesdisposal against the department",
-    "casesdisposal order for denovo",
-    "casesdisposal formations changed",
-    "casesarrearss realised"
+  "Cases": [
+    "Casesreceipts",
+    "CasesDisposal in favour of the department",
+    "CasesDisposal against the department",
+    "CasesDisposal order for denovo",
+    "CasesDisposal formations changed",
+    "CasesArrears realised"
   ],
 };
 
 // ["cases"]
 Map<String, List<String>> WRITEOFFKEYS = {
-  "cases": [
-    "casesreceipts",
-    "casesdisposal in favour of the department",
-    "casesdisposal against the department",
-    "casesdisposal order for denovo",
-    "casesdisposal formations changed",
-    "casesarrearss realised"
+  "Cases": [
+    "Casesreceipts",
+    "CasesDisposal in favour of the department",
+    "CasesDisposal against the department",
+    "CasesDisposal order for denovo",
+    "CasesDisposal formations changed",
+    "CasesArrears realised"
   ],
 };
 
 //toc all subcateogry data
 List<String> TOCKEY = [
-  'sctoc',
-  'hctoc',
-  'cestattoc',
-  'commissioner applealtoc',
-  'oltoc',
-  'drttoc',
-  'bifrtoc',
-  'nclt unitstoc',
-  'casestoc',
-  'appeal period over but no appeal fieldtoc',
-  'settlement commision casestoc',
-  'arrear under section 11toc',
-  'arrear under section 142toc',
-  'arrears pending for write-offtoc'
+  'Supreme Courttoc',
+  'High Courttoc',
+  'CESTATtoc',
+  'Commissioner Appealtoc',
+  'additional secretarytoc',
+  'OLtoc',
+  'DRTtoc',
+  'BIFRtoc',
+  'NCLT Unitstoc',
+  'Casestoc',
+  'Appeal period over but no appeal fieldtoc',
+  'Settlement commission casestoc',
+  'Arrear under section 11toc',
+  'Unit closedtoc',
+  'Arrear under section 142toc',
+  'Arrears pending for write-offtoc'
 ];
 
 bool isloaded = false;

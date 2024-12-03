@@ -377,17 +377,17 @@ class TarReportInformation {
     Map<String, TarReportModel> allData = {};
 
     DocumentSnapshot snap =
-        await firebaseFirestore.collection("MP").doc("restrained arrear").get();
+        await firebaseFirestore.collection("MP").doc("Restrained arrear").get();
     if (snap.exists) {
-      for (int i = 0; i < SUBCATEGORY["restrained arrear"]!.length; i++) {
+      for (int i = 0; i < SUBCATEGORY["Restrained arrear"]!.length; i++) {
         QuerySnapshot snap2 = await firebaseFirestore
             .collection("MP")
-            .doc("restrained arrear")
-            .collection(SUBCATEGORY["restrained arrear"]![i])
+            .doc("Restrained arrear")
+            .collection(SUBCATEGORY["Restrained arrear"]![i])
             .get();
         for (var data in snap2.docs) {
           // print("Data is here: ${data.data().toString()}");
-          allData[SUBCATEGORY["restrained arrear"]![i] + data.id] =
+          allData[SUBCATEGORY["Restrained arrear"]![i] + data.id] =
               TarReportModel.fromJson(data.data() as Map<String, dynamic>);
         }
       }
@@ -401,20 +401,20 @@ class TarReportInformation {
 
     DocumentSnapshot snap = await firebaseFirestore
         .collection("MP")
-        .doc("arrears where appeal period not over")
+        .doc("Arrears where appeal period not over")
         .get();
     if (snap.exists) {
       for (int i = 0;
-          i < SUBCATEGORY["arrears where appeal period not over"]!.length;
+          i < SUBCATEGORY["Arrears where appeal period not over"]!.length;
           i++) {
         QuerySnapshot snap2 = await firebaseFirestore
             .collection("MP")
-            .doc("arrears where appeal period not over")
-            .collection(SUBCATEGORY["arrears where appeal period not over"]![i])
+            .doc("Arrears where appeal period not over")
+            .collection(SUBCATEGORY["Arrears where appeal period not over"]![i])
             .get();
         for (var data in snap2.docs) {
           // print("Data is here: ${data.data().toString()}");
-          allData[SUBCATEGORY["arrears where appeal period not over"]![i] +
+          allData[SUBCATEGORY["Arrears where appeal period not over"]![i] +
                   data.id] =
               TarReportModel.fromJson(data.data() as Map<String, dynamic>);
         }
@@ -430,20 +430,20 @@ class TarReportInformation {
       // print("here is dipuu");
       DocumentSnapshot snap = await firebaseFirestore
           .collection("MP")
-          .doc("recoverable arrears")
+          .doc("Recoverable arrears")
           .get();
       // print("here is dipuu  n ");
       if (snap.exists) {
         // print("here is dipuu");
-        for (int i = 0; i < SUBCATEGORY["recoverable arrears"]!.length; i++) {
+        for (int i = 0; i < SUBCATEGORY["Recoverable arrears"]!.length; i++) {
           QuerySnapshot snap2 = await firebaseFirestore
               .collection("MP")
-              .doc("recoverable arrears")
-              .collection(SUBCATEGORY["recoverable arrears"]![i])
+              .doc("Recoverable arrears")
+              .collection(SUBCATEGORY["Recoverable arrears"]![i])
               .get();
           for (var data in snap2.docs) {
             // print("Data is here: ${data.data().toString()}");
-            allData[SUBCATEGORY["recoverable arrears"]![i] + data.id] =
+            allData[SUBCATEGORY["Recoverable arrears"]![i] + data.id] =
                 TarReportModel.fromJson(data.data() as Map<String, dynamic>);
           }
         }
@@ -470,19 +470,21 @@ class TarReportInformation {
                 .collection(SUBCATEGORY[CATEGORY[i]]![j])
                 .doc('toc')
                 .get();
+            print('This is from backend${snap2.data()}');
             tocData[SUBCATEGORY[CATEGORY[i]]![j] + snap2.id] =
                 TocModel.fromJson(snap2.data() as Map<String, dynamic>);
+            print(tocData.keys);
           }
         }
       }
       try {
         DocumentSnapshot snap3 = await firebaseFirestore
             .collection('MP')
-            .doc('arrears pending for write-off')
+            .doc('Arrears pending for write-off')
             .collection('cases')
             .doc('toc')
             .get();
-        tocData["arrears pending for write-off" + snap3.id] =
+        tocData["Arrears pending for write-off" + snap3.id] =
             TocModel.fromJson(snap3.data() as Map<String, dynamic>);
         return {"res": "success", "data": tocData};
       } catch (e) {
@@ -498,20 +500,21 @@ class TarReportInformation {
 
     DocumentSnapshot snap = await firebaseFirestore
         .collection("MP")
-        .doc("arrear in litigation")
+        .doc("Arrear in litigation")
         .get();
     if (snap.exists) {
-      for (int i = 0; i < SUBCATEGORY["arrear in litigation"]!.length; i++) {
+      for (int i = 0; i < SUBCATEGORY["Arrear in litigation"]!.length; i++) {
         QuerySnapshot snap2 = await firebaseFirestore
             .collection("MP")
-            .doc("arrear in litigation")
-            .collection(SUBCATEGORY["arrear in litigation"]![i])
+            .doc("Arrear in litigation")
+            .collection(SUBCATEGORY["Arrear in litigation"]![i])
             .get();
         for (var data in snap2.docs) {
           // print("Data is here: ${data.id}");
 
-          allData[SUBCATEGORY["arrear in litigation"]![i] + data.id] =
+          allData[SUBCATEGORY["Arrear in litigation"]![i] + data.id] =
               TarReportModel.fromJson(data.data() as Map<String, dynamic>);
+          print("allData from litigation${allData[SUBCATEGORY["Arrear in litigation"]![i] + data.id]!.amountOfTheMonth}");
         }
       }
     }
@@ -527,20 +530,20 @@ class TarReportInformation {
 
     DocumentSnapshot snap = await firebaseFirestore
         .collection("MP")
-        .doc("arrears pending for write-off")
+        .doc("Arrears pending for write-off")
         .get();
     if (snap.exists) {
       for (int i = 0;
-          i < SUBCATEGORY["arrears pending for write-off"]!.length;
+          i < SUBCATEGORY["Arrears pending for write-off"]!.length;
           i++) {
         QuerySnapshot snap2 = await firebaseFirestore
             .collection("MP")
-            .doc("arrears pending for write-off")
-            .collection(SUBCATEGORY["arrears pending for write-off"]![i])
+            .doc("Arrears pending for write-off")
+            .collection(SUBCATEGORY["Arrears pending for write-off"]![i])
             .get();
         for (var data in snap2.docs) {
           // print("Data is here: ${data.data().toString()}");
-          allData[SUBCATEGORY["arrears pending for write-off"]![i] + data.id] =
+          allData[SUBCATEGORY["Arrears pending for write-off"]![i] + data.id] =
               TarReportModel.fromJson(data.data() as Map<String, dynamic>);
         }
       }

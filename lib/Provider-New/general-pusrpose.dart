@@ -16,6 +16,7 @@ class GeneralPurposeProvider extends ChangeNotifier{
   String _searchQuery = '';
   String _formationSearch = '';
   List<MainCaseModel> _searchData = [];
+  int _currentMax = 20;
 
   String get searchQuery => _searchQuery;
   String get formationSearch => _formationSearch;
@@ -28,6 +29,14 @@ class GeneralPurposeProvider extends ChangeNotifier{
   String? get startDate => _startDate;
   bool get ispass => _ispass;
   List<MainCaseModel> get searchData => _searchData;
+  int get currentMax => _currentMax;
+
+
+  void updateCurrentMax(int value){
+    _currentMax += value;
+    notifyListeners();
+
+  }
 
 
 

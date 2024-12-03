@@ -106,7 +106,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       CustomTable(title: "High Court", subcategory: SUBCATEGORY[CATEGORY[0]]![1],category: CATEGORY[0],),
       CustomTable(title: "CESTAT", subcategory: SUBCATEGORY[CATEGORY[0]]![2],category: CATEGORY[0],),
       CustomTable(title: "Comm Apeal", subcategory: SUBCATEGORY[CATEGORY[0]]![3],category: CATEGORY[0],),
-      CustomTable(title: "Additional Secretary", subcategory: SUBCATEGORY[CATEGORY[0]]![3],category: CATEGORY[0],),
+      CustomTable(title: "Additional Secretary", subcategory: SUBCATEGORY[CATEGORY[0]]![4],category: CATEGORY[0],),
       //
       CustomTable(title: "OL", subcategory: SUBCATEGORY[CATEGORY[1]]![0],category: CATEGORY[1],),
       CustomTable(title: "DRT", subcategory: SUBCATEGORY[CATEGORY[1]]![1],category: CATEGORY[1]),
@@ -116,8 +116,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       CustomTable(title: "Recoverable where apeal period not over", subcategory: SUBCATEGORY[CATEGORY[3]]![0],category: CATEGORY[3]),
       CustomTable(title: "Recoverable sattelmentcases", subcategory: SUBCATEGORY[CATEGORY[3]]![1],category: CATEGORY[3]),
       CustomTable(title: "Unit colosed", subcategory: SUBCATEGORY[CATEGORY[3]]![2],category: CATEGORY[3]),
-      CustomTable(title: "Recoverable Under section 11", subcategory: SUBCATEGORY[CATEGORY[3]]![2],category: CATEGORY[3]),
-      CustomTable(title: "Recoverable Under 142", subcategory: SUBCATEGORY[CATEGORY[3]]![3],category: CATEGORY[3]),
+      CustomTable(title: "Recoverable Under section 11", subcategory: SUBCATEGORY[CATEGORY[3]]![3],category: CATEGORY[3]),
+      CustomTable(title: "Recoverable Under 142", subcategory: SUBCATEGORY[CATEGORY[3]]![4],category: CATEGORY[3]),
 
       CustomTable(title: "Recoverable Write off", subcategory: SUBCATEGORY[CATEGORY[4]]![0],category:CATEGORY[4]),
       // if(widget.isAdmin)

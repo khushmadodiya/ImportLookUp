@@ -67,7 +67,7 @@ class MainCaseModel {
         penalty: json['penalty'] as String? ?? '',
         amountRecovered: json['amountRecovered'] as String? ?? '',
         preDeposit: json['preDeposit'] as String? ?? '',
-        totalArrearPending: json['totalArrearPending'] as String? ?? '',
+        totalArrearPending: json['totalArrearPending'] as String? ?? '0',
         briefFact: json['briefFact'] as String? ?? '',
         status: json['status'] as String? ?? '',
         apealNo: json['apealNo'] as String? ?? '',

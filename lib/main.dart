@@ -56,9 +56,8 @@ class _MyAppState extends State<MyApp> {
             background: Colors.white),
         useMaterial3: true,
       ),
-      home:
-      // UploadData()
-      Consumer<UserInformation>(
+      // home: UploadData()
+     home:  Consumer<UserInformation>(
         builder: (context, pro, child) => StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {

@@ -1,5 +1,4 @@
 import 'dart:core';
-
 import 'package:import_lookup/Model-New/main-case-model.dart';
 
 class RequestCaseModel {
