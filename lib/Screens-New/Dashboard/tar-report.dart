@@ -160,7 +160,7 @@ class _RevenueTableState extends State<RevenueTable> {
                                    crossAxisAlignment: CrossAxisAlignment.start,
                                    children: <Widget>[
                                      if (pro.litigationCompleteData.isNotEmpty)
-                                       _buildCustomTable('Arrear in Litigation', [
+                                       _buildCustomTable('Arrears under litigation',' CASES OF ARREARS OF REVENUE PENDING LITIGATION ( LEGAL FORUM)', [
                                          row(
                                              pro.litigationCompleteData,
                                              pro.arrearTocLitgation,
@@ -197,12 +197,13 @@ class _RevenueTableState extends State<RevenueTable> {
                                              4,
                                              "Additional secretary",
                                              5),
-                                       ]),
+                                       ]
+                                       ),
                                      SizedBox(
                                        height: 15,
                                      ),
                                      if (pro.restrainedCompleteData.isNotEmpty)
-                                       _buildCustomTable('Restrained Arrear', [
+                                       _buildCustomTable('Restrained Arrears','PENDING CASES OF ARREARS WHERE RECOVERY IS RESTRAINED', [
                                          row(
                                              pro.restrainedCompleteData,
                                              pro.arrearTocRestrained,
@@ -238,7 +239,7 @@ class _RevenueTableState extends State<RevenueTable> {
                                      if (pro
                                          .apealPeiodNotOverCompleteData.isNotEmpty)
                                        _buildCustomTable(
-                                           "Arrears where appeal period not over", [
+                                           "Arrears where appeal period not over",'PENDING CASES OF ARREARS WHERE APPEAL PERIOD IS NOT OVER', [
                                          row(
                                              pro.apealPeiodNotOverCompleteData,
                                              [
@@ -253,7 +254,7 @@ class _RevenueTableState extends State<RevenueTable> {
                                        height: 15,
                                      ),
                                      if (pro.recoverableCompleteData.isNotEmpty)
-                                       _buildCustomTable('Recoverable arrears', [
+                                       _buildCustomTable('Recoverable arrears', 'RECOVERABLE ARREARS',[
                                          row(
                                              pro.recoverableCompleteData,
                                              pro.arrearTocRecoverable,
@@ -295,7 +296,7 @@ class _RevenueTableState extends State<RevenueTable> {
                                          height: 15,
                                        ),
                                      if (pro.writeOffCompleteData.isNotEmpty)
-                                       _buildCustomTable('Arrears pending for write-off', [
+                                       _buildCustomTable('Arrears pending for write-off', 'ARREARS PENDING FOR WRITE-OFF',[
                                          row(
                                              pro.writeOffCompleteData,
                                              [pro.arrearTocPendingForWirteOff],
@@ -326,7 +327,7 @@ class _RevenueTableState extends State<RevenueTable> {
     );
   }
 
-  Widget _buildCustomTable(String title, List<TableRow> rows) {
+  Widget _buildCustomTable(String title,String headingTitle, List<TableRow> rows,) {
     Offset? _startDragPosition;
 
     // Handle the drag update for scrolling in both directions
@@ -365,7 +366,7 @@ class _RevenueTableState extends State<RevenueTable> {
             alignment: Alignment.topLeft,
             color: Colors.yellow[100],
             child: Text(
-              title,
+              headingTitle,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
@@ -849,8 +850,8 @@ class _RevenueTableState extends State<RevenueTable> {
             child: Consumer<AddNewCase>(
               builder: (context, pro,child)=>
                Container(
-                width: MediaQuery.of(context).size.width*.27,
-                height: MediaQuery.of(context).size.height*.55,
+                width: MediaQuery.of(context).size.width/5.5,
+                height: MediaQuery.of(context).size.height*.4,
                 padding: const EdgeInsets.symmetric(
                     horizontal: 20, vertical: 15),
                 decoration: BoxDecoration(

@@ -366,7 +366,7 @@ class AddNewCase with ChangeNotifier {
   //this or data
   List<MainCaseModel> _mainCaseData = [];
   List<MainCaseModel> _mainCaseDataForSearching = [];
-  List<MainCaseModel> _allMainCaseData = [];
+  final List<MainCaseModel> _allMainCaseData = [];
   List<RequestCaseModel> _requestCaseData = [];
 
   List<MainCaseModel> get mainCaseData => _mainCaseData;
@@ -825,7 +825,7 @@ class AddNewCase with ChangeNotifier {
   Future getAllSubcategoryTocdata()async{
     print('hello i am khush');
     _allTocdata =  (await TarReportInformation().TocReport())['data'];
-
+     print("this is length of all tok data ${_allTocdata.length} and last model ${_allTocdata['Arrears pending for write-offtoc']!.unit}");
     for(int i=0;i<=4;i++){
       _arrearTocLitgation.add(_allTocdata[TOCKEY[i]]!);
 
@@ -842,7 +842,7 @@ class AddNewCase with ChangeNotifier {
 
     }
     // print("this is tocKeys ${TOCKEY[15]}");
-    _arrearTocPendingForWirteOff=_allTocdata[TOCKEY[TOCKEY.length-1]]!;
+    _arrearTocPendingForWirteOff=_allTocdata["Arrears pending for write-offtoc"]!;
 
     // print(_allTocdata['sctoc']!.);
     notifyListeners();
@@ -854,7 +854,7 @@ class AddNewCase with ChangeNotifier {
     for (var i in LITIGATIONKEYS.keys) {
       for (int j = 0; j < 6; j++) {
         print("this is in litigation data ${LITIGATIONKEYS[i]!.length}");
-        _litigationCompleteData.add(_arrearLitigation[LITIGATIONKEYS![i]![j]]);
+        _litigationCompleteData.add(_arrearLitigation[LITIGATIONKEYS[i]![j]]);
       }
     }
     print(' this is lenght of litigaition data${_litigationCompleteData.length}');
@@ -866,7 +866,7 @@ class AddNewCase with ChangeNotifier {
     (await TarReportInformation().restrainedArrearReport())["data"];
     for (var i in RESTRAINEDKEYS.keys) {
       for (int j = 0; j < RESTRAINEDKEYS[i]!.length; j++) {
-        _restrainedCompleteData.add(_restrainded[RESTRAINEDKEYS![i]![j]]);
+        _restrainedCompleteData.add(_restrainded[RESTRAINEDKEYS[i]![j]]);
 
       }
     }
@@ -889,8 +889,8 @@ class AddNewCase with ChangeNotifier {
   Future tarRecoverable() async {
     _recoverable = (await TarReportInformation().recoverableArrears())["data"];
     for (var i in RECOVERABLEKEYS.keys) {
-      for (int j = 0; j < RECOVERABLEKEYS![i]!.length; j++) {
-        _recoverableCompleteData.add(_recoverable[RECOVERABLEKEYS![i]![j]]);
+      for (int j = 0; j < RECOVERABLEKEYS[i]!.length; j++) {
+        _recoverableCompleteData.add(_recoverable[RECOVERABLEKEYS[i]![j]]);
       }
     }
     for(var i=0;i<_recoverableCompleteData.length;i++){
@@ -905,7 +905,7 @@ class AddNewCase with ChangeNotifier {
     _writeOff = (await TarReportInformation().writeOff())["data"];
     for (var i in WRITEOFFKEYS.keys) {
       for (int j = 0; j < WRITEOFFKEYS[i]!.length; j++) {
-        _writeOffCompleteData.add(_writeOff[WRITEOFFKEYS![i]![j]]);
+        _writeOffCompleteData.add(_writeOff[WRITEOFFKEYS[i]![j]]);
       }
     }
 

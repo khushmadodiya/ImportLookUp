@@ -476,6 +476,7 @@ class _CustomTableState extends State<CustomTable> {
         await asseserProvider.getMainCasesInformation(
             formation: userinfo.formation, isAdmin: false);
       }
+      print("this is user info type ${userinfo.userType}");
       asseserProvider.updateLoader();
 
     });

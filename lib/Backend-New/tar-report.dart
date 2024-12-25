@@ -470,7 +470,7 @@ class TarReportInformation {
                 .collection(SUBCATEGORY[CATEGORY[i]]![j])
                 .doc('toc')
                 .get();
-            print('This is from backend${snap2.data()}');
+            // print('This is from backend${snap2.data()}');
             tocData[SUBCATEGORY[CATEGORY[i]]![j] + snap2.id] =
                 TocModel.fromJson(snap2.data() as Map<String, dynamic>);
             print(tocData.keys);
@@ -481,11 +481,15 @@ class TarReportInformation {
         DocumentSnapshot snap3 = await firebaseFirestore
             .collection('MP')
             .doc('Arrears pending for write-off')
-            .collection('cases')
+            .collection('Cases')
             .doc('toc')
             .get();
-        tocData["Arrears pending for write-off" + snap3.id] =
+            if(snap3.exists){
+              print("write off exists ${snap3.data() as Map<String, dynamic>}  ${snap3.id}");
+            }
+        tocData["Arrears pending for write-off${snap3.id}"] =
             TocModel.fromJson(snap3.data() as Map<String, dynamic>);
+            print("${tocData["Arrears pending for write-off${snap3.id}"]!.unit}");
         return {"res": "success", "data": tocData};
       } catch (e) {
         print("some error occure $e");

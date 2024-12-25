@@ -193,23 +193,23 @@ class MainCasesInformation {
   }) async {
     print("i am divyansh i n main case00");
     WriteBatch batch = _fireStore.batch();
-    DocumentSnapshot _snap = await _fireStore
+    DocumentSnapshot snap = await _fireStore
         .collection("MP")
         .doc(formation)
         .collection('cases')
         .doc(uid)
         .get();
-    if (_snap.exists) {
+    if (snap.exists) {
       oldDataModel =
-          MainCaseModel.fromJson(_snap.data() as Map<String, dynamic>);
+          MainCaseModel.fromJson(snap.data() as Map<String, dynamic>);
       List<String> trac = List<String>.from(
-          (_snap.data() as Map<String, dynamic>)['completeTrack']);
+          (snap.data() as Map<String, dynamic>)['completeTrack']);
       if (isShifted) {
         trac.add(completeTrack);
       }
       // print(
       //     "nice is work is gere ${(_snap.data() as Map<String, dynamic>)['totalArrearPending'] != totalArrearPending}  ${totalArrearPending}");
-      if ((_snap.data() as Map<String, dynamic>)['totalArrearPending'] !=
+      if ((snap.data() as Map<String, dynamic>)['totalArrearPending'] !=
           totalArrearPending) {
         // print(
         //     "heelo amoutn is pu dipu ${double.parse(totalArrearPending) - double.parse(oldDataModel.totalArrearPending)}");

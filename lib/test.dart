@@ -26,7 +26,7 @@ class _TestState extends State<Test> {
     // updateData();
       // test();
     // searchdata();
-    // getData();
+    getData();
     // financial();
     // print("heelo i am ${DateFormat('MMMM').format(DateTime.now())}");
     //  String time=DateFormat('dd-MMMM-yyyy').format(DateTime.now());

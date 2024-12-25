@@ -47,44 +47,44 @@ class _DashboardScreenState extends State<DashboardScreen> {
     setState(() {
       _selectedIndex = index;
     });
-    _showSnackBar(itemName);
+    // _showSnackBar(itemName);
   }
 
-  void _showSnackBar(String itemName) {
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Container(
-          width: MediaQuery.of(context).size.width * 0.5,
-          child: Row(
-            children: [
-              Icon(Icons.info_outline, color: Colors.white),
-              SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  'Selected: $itemName',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ],
-          ),
-        ),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        backgroundColor: Colors.blue.shade700,
-        duration: const Duration(seconds: 2),
-        action: SnackBarAction(
-          label: 'OK',
-          textColor: Colors.white,
-          onPressed: () {
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-          },
-        ),
-      ),
-    );
-  }
+  // void _showSnackBar(String itemName) {
+  //   ScaffoldMessenger.of(context).removeCurrentSnackBar();
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     SnackBar(
+  //       content: Container(
+  //         width: MediaQuery.of(context).size.width * 0.5,
+  //         child: Row(
+  //           children: [
+  //             Icon(Icons.info_outline, color: Colors.white),
+  //             SizedBox(width: 10),
+  //             Expanded(
+  //               child: Text(
+  //                 'Selected: $itemName',
+  //                 style: TextStyle(color: Colors.white),
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //       behavior: SnackBarBehavior.floating,
+  //       shape: RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.circular(10),
+  //       ),
+  //       backgroundColor: Colors.blue.shade700,
+  //       duration: const Duration(seconds: 2),
+  //       action: SnackBarAction(
+  //         label: 'OK',
+  //         textColor: Colors.white,
+  //         onPressed: () {
+  //           ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  //         },
+  //       ),
+  //     ),
+  //   );
+  // }
   // @override
   // void initState(){
   //   super.initState();
