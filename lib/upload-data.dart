@@ -58,12 +58,13 @@ class _UploadDataState extends State<UploadData> {
                       for (var row in excel.tables[table]!.rows) {
                         if (i != 0) {
                           String val = formatDate(row[3]!.value.toString());
-                          print("date $val");
+                          // print("date $val");
                        MainCaseModel model=   await MainCaseModel(uid: '',
                               name: row[0]!.value.toString().trim(),
                               formation: row[1]!.value.toString().trim(),
                               oio: row[2]!.value.toString().trim(),
-                              date: val,
+                              // date: val,
+                                date:'',
                               dutyOfArrear: row[4]!.value.toString().trim(),
                               penalty: row[5]!.value.toString().trim(),
                               intrest: row[19]!.value.toString().trim(),

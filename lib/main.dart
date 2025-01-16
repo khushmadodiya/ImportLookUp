@@ -56,32 +56,33 @@ class _MyAppState extends State<MyApp> {
             background: Colors.white),
         useMaterial3: true,
       ),
-      // home: UploadData()
-     home:  Consumer<UserInformation>(
-        builder: (context, pro, child) => StreamBuilder<User?>(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.active) {
-              if (snapshot.hasData) {
-                // if (pro.email.isNotEmpty)
-                return DashboardScreen();
-                return const Scaffold(
-                    body: Center(child: CircularProgressIndicator()));
-              } else if (snapshot.hasError) {
-                return Center(child: Text('An error occurred'));
-              }
-              // return DashboardScreen(isadmin: false);
-            }
-
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            return LoginPage();
-          },
-        ),
-      ),
+      home: UploadData()
+     // home: Test()
+     // Consumer<UserInformation>(
+     //    builder: (context, pro, child) => StreamBuilder<User?>(
+     //      stream: FirebaseAuth.instance.authStateChanges(),
+     //      builder: (context, snapshot) {
+     //        if (snapshot.connectionState == ConnectionState.active) {
+     //          if (snapshot.hasData) {
+     //            // if (pro.email.isNotEmpty)
+     //            return DashboardScreen();
+     //            return const Scaffold(
+     //                body: Center(child: CircularProgressIndicator()));
+     //          } else if (snapshot.hasError) {
+     //            return Center(child: Text('An error occurred'));
+     //          }
+     //          // return DashboardScreen(isadmin: false);
+     //        }
+     //
+     //        if (snapshot.connectionState == ConnectionState.waiting) {
+     //          return const Center(
+     //            child: CircularProgressIndicator(),
+     //          );
+     //        }
+     //        return LoginPage();
+     //      },
+     //    ),
+     //  ),
     );
   }
 
